@@ -18,9 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.anadi.prabhupadalectures.network.api.UserPreview
-
-private val UserPreview.fullName get() = "$title. $firstName $lastName"
+import com.anadi.prabhupadalectures.network.api.dumy.UserPreview
 
 @Composable
 fun UserCard(user: UserPreview, callback: () -> Unit) {

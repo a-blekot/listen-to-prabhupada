@@ -66,5 +66,8 @@ dependencies {
     //Navigation
     implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta13")
     //WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.7.0")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+
+    implementation("com.google.android.exoplayer:exoplayer-core:2.16.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.16.1")
 }

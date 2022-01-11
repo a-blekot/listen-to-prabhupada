@@ -1,6 +1,6 @@
-package com.anadi.prabhupadalectures.repository
+package com.anadi.prabhupadalectures.repository.dumy
 
-import com.anadi.prabhupadalectures.network.api.UserApi
+import com.anadi.prabhupadalectures.network.api.dumy.UserApi
 import io.github.aakira.napier.Napier
 
 class UserRepositoryImpl(private val userApi: UserApi): UsersRepository {

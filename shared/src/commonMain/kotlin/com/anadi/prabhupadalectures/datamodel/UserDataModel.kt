@@ -1,9 +1,8 @@
 package com.anadi.prabhupadalectures.datamodel
 
-import com.anadi.prabhupadalectures.network.Routes
-import com.anadi.prabhupadalectures.network.api.UserPreview
-import com.anadi.prabhupadalectures.network.api.Users
-import com.anadi.prabhupadalectures.repository.UsersRepository
+import com.anadi.prabhupadalectures.network.api.dumy.UserPreview
+import com.anadi.prabhupadalectures.network.api.dumy.Users
+import com.anadi.prabhupadalectures.repository.dumy.UsersRepository
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +15,7 @@ data class UserState(
     val users: List<UserPreview>
 )
 
-data class Pagination(
+data class UserPagination(
     val total: Int = 0,
     val page: Int = 0,
     val limit: Int = 20
@@ -34,7 +33,7 @@ class UserDataModel(private val usersRepository: UsersRepository, withLog: Boole
     CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private val state = MutableStateFlow(UserState(false, emptyList()))
-    private var pagination = Pagination()
+    private var pagination = UserPagination()
 
     init {
         if (withLog) Napier.base(DebugAntilog())
@@ -57,7 +56,6 @@ class UserDataModel(private val usersRepository: UsersRepository, withLog: Boole
                 setLoading(false)
             }
         }
-
     }
 
     private fun setLoading(loading: Boolean) {
@@ -71,7 +69,7 @@ class UserDataModel(private val usersRepository: UsersRepository, withLog: Boole
     }
 
     private fun updatePagination(users: Users) {
-        pagination = Pagination(users).next()
+        pagination = UserPagination(users).next()
     }
 
     private fun addUsers(newUsers: List<UserPreview>) {

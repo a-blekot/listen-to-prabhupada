@@ -10,24 +10,37 @@ import androidx.compose.ui.graphics.Color
 
 private val BrownDark = Color(0xFF603004)
 private val BrownMed = Color(0xB2DE924D)
+private val BrownMedLight = Color(0xFFFEC795)
 private val BrownLight = Color(0xB2FFECDB)
 private val BrownXLight = Color(0xFFE5E5E5)
 
+private val Orange = Color(0xFFB65D0D)
+val GrayLight = Color(0xFF919191)
+
 private val LightColors = lightColors(
     primary = BrownMed,
-    primaryVariant = BrownMed,
-    onPrimary = BrownXLight,
+
+    primaryVariant = BrownMedLight,
+    onPrimary = BrownDark,
+
     secondary = BrownLight,
-    onSecondary = BrownXLight,
-    surface = BrownXLight
+    onSecondary = BrownDark,
+
+    surface = BrownXLight,
+    onSurface = Orange,
+
+    background = BrownXLight,
+    onBackground = Orange
 )
+
 private val DarkColors = darkColors(
     primary = BrownLight,
     primaryVariant = BrownLight,
     onPrimary = BrownMed,
     secondary = BrownMed,
     onSecondary = BrownMed,
-    surface = BrownDark
+    surface = BrownDark,
+    background = BrownDark
 )
 
 @Composable

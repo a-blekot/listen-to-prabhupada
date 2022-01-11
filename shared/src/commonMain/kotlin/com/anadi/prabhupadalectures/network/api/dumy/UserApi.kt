@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.network.api
+package com.anadi.prabhupadalectures.network.api.dumy
 
 import com.anadi.prabhupadalectures.network.KtorClientFactory
 import kotlinx.serialization.Serializable
@@ -26,7 +26,10 @@ data class UserPreview(
     val firstName: String, // (length: 2-50)
     val lastName: String, // (length: 2-50)
     val picture: String, // (url)
-)
+) {
+    val fullName
+        get() = "$title. $firstName $lastName"
+}
 
 @Serializable
 data class User(
@@ -50,32 +53,4 @@ data class Location(
     val state: String, // length: 2-30)
     val country: String, // length: 2-30)
     val timezone: String // Valid timezone value ex. +7:00, -1:00)
-)
-
-data class LecturesAndFilters(
-    val lectures: Lectures,
-    val filters: Filters
-)
-
-data class Lectures(
-    val list: List<Lecture>,
-    val pagination: Pagination
-)
-
-data class Lecture(
-    val name: String,
-    val url: String
-)
-
-data class Pagination(
-    val prev: Int,
-    val curr: Int,
-    val next: Int,
-    val size: Int
-)
-
-data class Filters(
-    val year: Int? = null,
-    val scripture: Int? = null,
-    val chapter: Int? = null
 )

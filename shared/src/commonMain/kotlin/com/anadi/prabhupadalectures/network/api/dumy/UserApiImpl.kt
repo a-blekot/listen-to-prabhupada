@@ -1,7 +1,6 @@
-package com.anadi.prabhupadalectures.network.api
+package com.anadi.prabhupadalectures.network.api.dumy
 
 import com.anadi.prabhupadalectures.network.Routes
-import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.request.*
 

@@ -5,6 +5,7 @@ import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
@@ -16,8 +17,13 @@ actual class KtorClientFactory {
                 serializer = KotlinxSerializer(
                     kotlinx.serialization.json.Json {
                         ignoreUnknownKeys = true
+//                        coerceInputValues = true
                     }
                 )
+            }
+            install(Logging) {
+                logger = Logger.ANDROID
+                level = LogLevel.ALL
             }
 //            install(CustomHeadersFeature) {
 //                appId = APP_ID
