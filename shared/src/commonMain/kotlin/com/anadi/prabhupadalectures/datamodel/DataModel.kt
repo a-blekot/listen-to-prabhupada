@@ -1,17 +1,20 @@
 package com.anadi.prabhupadalectures.datamodel
 
+import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.network.api.QueryParams
 import com.anadi.prabhupadalectures.repository.Repository
+import com.anadi.prabhupadalectures.repository.getFilters
+import com.anadi.prabhupadalectures.repository.saveFilters
+import com.anadi.prabhupadalectures.repository.settings
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 
 data class State(
     val loading: Boolean,
@@ -19,7 +22,11 @@ data class State(
     val filters: List<Filter> = emptyList()
 )
 
-class DataModel(private val repository: Repository, withLog: Boolean) :
+class DataModel(
+    private val db: Database,
+    private val repository: Repository,
+    withLog: Boolean
+) :
     CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private val state = MutableStateFlow(State(false))
@@ -31,14 +38,37 @@ class DataModel(private val repository: Repository, withLog: Boolean) :
 
     fun observeState(): StateFlow<State> = state
 
+    private fun printFavorites() =
+        db.getAllFavorites().forEach {
+            Napier.d("favorite $it}")
+        }
+
+    fun addFavorite(id: Long) {
+        db.setFavorite(id)
+        pushNewState()
+        printFavorites()
+    }
+
+    fun removeFavorite(id: Long) {
+        db.removeFavorite(id)
+        pushNewState()
+        printFavorites()
+    }
+
     suspend fun updateQuery(queryParam: QueryParam) =
         loadMore(queryParam)
 
-    suspend fun loadMore(queryParam: QueryParam? = null) {
+    suspend fun init() =
+        loadMore(settings.getFilters())
+
+    suspend fun loadMore(queryParam: QueryParam? = null) =
+        loadMore(buildQueryParams(queryParam))
+
+    suspend fun loadMore(queryParams: QueryParams) {
         setLoading(true)
 
         Napier.d("firstLoad: pagination = $pagination")
-        val result = repository.getResults(buildQueryParams(queryParam))
+        val result = repository.getResults(queryParams)
         if (result.isSuccess) {
             result.getOrNull()?.let {
                 updatePagination(it)
@@ -65,14 +95,27 @@ class DataModel(private val repository: Repository, withLog: Boolean) :
         )
 
         pushNewState(state)
+        settings.saveFilters(buildQueryParams())
     }
 
-    private fun pushNewState(newState: State) {
-        if (newState != state.value) {
+    private fun pushNewState(newState: State = state.value) {
+        val stateWithDB = newState.copy(
+            lectures = newState.lectures.updateFromDB()
+        )
+
+        if (stateWithDB != state.value) {
 //            Napier.d(tag = "DataModel", message = "NewState: $newState")
-            state.value = newState
+            state.value = stateWithDB
         }
     }
+
+    private fun List<Lecture>.updateFromDB() =
+        map { lecture ->
+            lecture.copy(
+                isFavorite = db.isFavorite(lecture.id),
+                isDownloaded = db.isDownloaded(lecture.id)
+            )
+        }
 
     private fun QueryParam?.unSelected(option: String) =
         this != null && !isSelected && selectedOption == option

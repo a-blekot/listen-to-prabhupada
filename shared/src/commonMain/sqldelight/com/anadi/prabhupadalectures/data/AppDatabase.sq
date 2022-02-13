@@ -1,0 +1,74 @@
+CREATE TABLE Download (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    date TEXT NOT NULL,
+    place TEXT NOT NULL,
+    durationMillis INTEGER NOT NULL,
+    fileUrl TEXT
+);
+
+CREATE TABLE Favorite (
+    id INTEGER NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE SavedPosition (
+    id INTEGER NOT NULL PRIMARY KEY,
+    pos INTEGER NOT NULL
+);
+
+insertDownload:
+INSERT INTO Download(id, title, description, date, place, durationMillis, fileUrl)
+VALUES(?, ?, ?, ?, ?, ?, ?);
+
+selectDownload:
+SELECT 1 FROM Download
+WHERE id = ?
+LIMIT 1
+;
+
+selectAllDownload:
+SELECT * FROM Download;
+
+removeDownload:
+DELETE FROM Download
+WHERE id = ?;
+
+removeAllDownload:
+DELETE FROM Download;
+
+insertFavorite:
+INSERT INTO Favorite(id)
+VALUES(?)
+ON CONFLICT DO NOTHING;
+
+selectFavorite:
+SELECT 1 FROM Favorite
+WHERE id = ?
+LIMIT 1
+;
+
+selectAllFavorite:
+SELECT * FROM Favorite;
+
+removeFavorite:
+DELETE FROM Favorite
+WHERE id = ?;
+
+removeAllFavorite:
+DELETE FROM Favorite;
+
+insertSavedPosition:
+INSERT INTO SavedPosition(id, pos)
+VALUES(?, ?);
+
+selectSavedPosition:
+SELECT * FROM SavedPosition
+WHERE id = ?;
+
+removeSavedPosition:
+DELETE FROM SavedPosition
+WHERE id = ?;
+
+removeAllSavedPosition:
+DELETE FROM SavedPosition;

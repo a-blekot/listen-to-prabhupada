@@ -13,13 +13,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.datamodel.DataModel
 import com.anadi.prabhupadalectures.datamodel.QueryParam
 
 class MainScreen(
     private val dataModel: DataModel,
     private val onOptionSelected: ((QueryParam) -> Unit)? = null,
-    private val exoCallback: (String) -> Unit
+    private val exoCallback: (Lecture) -> Unit,
+    private val onFavorite: (Long, Boolean) -> Unit
 ) : Screen {
 
     @Composable
@@ -42,14 +44,13 @@ class MainScreen(
                     item { FilterButton() }
                 }
 
-                items(state.value.lectures) { LectureListItem(it, exoCallback) }
+                items(state.value.lectures) { LectureListItem(it, exoCallback, onFavorite) }
 
                 if (isNotEmpty) {
                     item { PageControl(1, 309) }
                 }
 
                 items(state.value.filters) { FilterListItem(it, onOptionSelected) }
-
             }
         }
     }

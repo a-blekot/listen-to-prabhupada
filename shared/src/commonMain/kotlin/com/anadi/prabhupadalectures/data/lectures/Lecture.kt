@@ -1,5 +1,7 @@
 package com.anadi.prabhupadalectures.data.lectures
 
+import com.anadi.prabhupadalectures.data.Favorite
+
 data class Lecture(
     val id: Long = 0L,
     val slug: String = "",
@@ -18,5 +20,16 @@ data class Lecture(
     val tags: List<Tag> = emptyList(),
     val event: Event? = null,
     val period: Period? = null,
-    val resolution: String? = null
-)
+    val resolution: String? = null,
+    val isFavorite: Boolean = false,
+    val isDownloaded: Boolean = false,
+) {
+    val displayedTitle
+        get() = title
+
+    val displayedSubTitle
+        get() = "$date, $place"
+
+    val displayedDescription
+        get() = description
+}
