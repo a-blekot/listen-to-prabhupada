@@ -18,7 +18,7 @@ import com.anadi.prabhupadalectures.datamodel.QueryParam
 @Composable
 fun FilterListItem(
     filter: Filter,
-    onOptionSelected: ((QueryParam) -> Unit)? = null,
+    uiListener: ((UIAction) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) =
     Column(
@@ -27,11 +27,13 @@ fun FilterListItem(
         FilterTitle(filter)
         filter.options.forEach { option ->
             OptionListItem(option) { isSelected ->
-                onOptionSelected?.invoke(
-                    QueryParam(
-                        filterName = filter.name,
-                        selectedOption = option.value,
-                        isSelected = isSelected
+                uiListener?.invoke(
+                    OptionClick(
+                        QueryParam(
+                            filterName = filter.name,
+                            selectedOption = option.value,
+                            isSelected = isSelected
+                        )
                     )
                 )
             }
@@ -98,7 +100,7 @@ fun OptionListItem(
 
 @Preview
 @Composable
-fun previewFilterListItem() {
+fun PreviewFilterListItem() {
     AppTheme {
         FilterListItem(
             getFilter(

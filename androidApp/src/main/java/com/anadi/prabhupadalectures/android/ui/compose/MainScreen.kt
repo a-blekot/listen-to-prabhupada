@@ -13,44 +13,39 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.datamodel.DataModel
 import com.anadi.prabhupadalectures.datamodel.QueryParam
 
-class MainScreen(
-    private val dataModel: DataModel,
-    private val onOptionSelected: ((QueryParam) -> Unit)? = null,
-    private val exoCallback: (Lecture) -> Unit,
-    private val onFavorite: (Long, Boolean) -> Unit
-) : Screen {
+class MainScreen(private val uiListener: ((UIAction) -> Unit)? = null) : Screen {
 
     @Composable
     override fun Content() {
-        val state = dataModel.observeState().collectAsState()
+        val state = app.dataModel.observeState().collectAsState()
 
         Box(
             Modifier
                 .background(color = MaterialTheme.colors.surface)
                 .padding(all = 12.dp)) {
-            val coroutineScope = rememberCoroutineScope()
 
             LazyColumn(
                 Modifier.fillMaxWidth()
             ) {
-                val isNotEmpty = state.value.lectures.isNotEmpty()
+                val isNotEmpty = !state.value.playlist.isEmpty
 
                 if (isNotEmpty) {
                     item { Header() }
                     item { FilterButton() }
                 }
 
-                items(state.value.lectures) { LectureListItem(it, exoCallback, onFavorite) }
+                items(state.value.playlist.lectures) { LectureListItem(it, it.id == state.value.playlist.currentLecture?.id, uiListener) }
 
                 if (isNotEmpty) {
                     item { PageControl(1, 309) }
                 }
 
-                items(state.value.filters) { FilterListItem(it, onOptionSelected) }
+                items(state.value.filters) { FilterListItem(it, uiListener) }
             }
         }
     }

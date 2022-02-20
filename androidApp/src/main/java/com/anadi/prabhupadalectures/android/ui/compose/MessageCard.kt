@@ -32,7 +32,7 @@ fun MessageCard(msg: Message) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(R.drawable.prabhupada_murti),
+            painter = painterResource(R.drawable.ic_logo),
             contentDescription = "Contact profile picture",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier

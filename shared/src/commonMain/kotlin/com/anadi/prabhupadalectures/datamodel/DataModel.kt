@@ -15,11 +15,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 
 data class State(
     val loading: Boolean,
-    val lectures: List<Lecture> = emptyList(),
-    val filters: List<Filter> = emptyList()
+    val filters: List<Filter> = emptyList(),
+    val playlist: Playlist = Playlist()
 )
 
 class DataModel(
@@ -45,13 +46,13 @@ class DataModel(
 
     fun addFavorite(id: Long) {
         db.setFavorite(id)
-        pushNewState()
+        refreshFavorites()
         printFavorites()
     }
 
     fun removeFavorite(id: Long) {
         db.removeFavorite(id)
-        pushNewState()
+        refreshFavorites()
         printFavorites()
     }
 
@@ -64,7 +65,7 @@ class DataModel(
     suspend fun loadMore(queryParam: QueryParam? = null) =
         loadMore(buildQueryParams(queryParam))
 
-    suspend fun loadMore(queryParams: QueryParams) {
+    suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
         setLoading(true)
 
         Napier.d("firstLoad: pagination = $pagination")
@@ -84,23 +85,27 @@ class DataModel(
         pagination = Pagination(apiModel).copy(curr = pagination.next ?: 0)
     }
 
-    private fun setLoading(loading: Boolean) =
-        pushNewState(state.value.copy(loading = loading))
+    private fun setLoading(loading: Boolean) {
+        if (loading != state.value.loading) {
+            state.value = state.value.copy(loading = loading)
+        }
+    }
 
     private fun updateData(apiModel: ApiModel) {
-        val state = State(
+        val newState = State(
             loading = false,
-            lectures = ApiMapper.lectures(apiModel),
+            playlist = Playlist(ApiMapper.lectures(apiModel).updateFromDB()),
             filters = ApiMapper.filters(apiModel)
         )
 
-        pushNewState(state)
+        state.value = newState
         settings.saveFilters(buildQueryParams())
     }
 
-    private fun pushNewState(newState: State = state.value) {
-        val stateWithDB = newState.copy(
-            lectures = newState.lectures.updateFromDB()
+    private fun refreshFavorites() {
+        val lecturesWithDB = state.value.playlist.lectures.updateFromDB()
+        val stateWithDB = state.value.copy(
+            playlist = state.value.playlist.copy(lectures = lecturesWithDB)
         )
 
         if (stateWithDB != state.value) {
@@ -137,18 +142,4 @@ class DataModel(
 
         return params
     }
-
-//    data class QueryParams(
-//        val page: Int,
-//        val category: Int? = null,
-//        val fileType: Int? = null,
-//        val year: Int? = null,
-//        val month: Int? = null,
-//        val scripture: Int? = null,
-//        val canto: Int? = null,
-//        val chapter: Int? = null,
-//        val verse: Int? = null,
-//        val country: Int? = null,
-//        val city: Int? = null
-//    )
 }
