@@ -1,21 +1,11 @@
-package com.anadi.prabhupadalectures.android
+package com.anadi.prabhupadalectures.android.player
 
-import android.app.Notification
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
-import androidx.core.app.NotificationCompat
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
-
+import com.anadi.prabhupadalectures.android.DebugLog
 
 
 class PlaybackService : Service() {

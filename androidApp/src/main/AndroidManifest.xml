@@ -25,7 +25,11 @@
         </activity>
 
         <service
-            android:name=".PlaybackService"
+            android:name=".player.TimerService"
+            android:foregroundServiceType="location" />
+
+        <service
+            android:name=".player.PlaybackService"
             android:foregroundServiceType="mediaPlayback" />
     </application>
 </manifest> 

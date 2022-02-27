@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
+import com.anadi.prabhupadalectures.android.player.PlaybackService
+import com.anadi.prabhupadalectures.android.player.ServiceAction
+import com.anadi.prabhupadalectures.android.player.TimerService
 import com.anadi.prabhupadalectures.android.ui.compose.*
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.google.accompanist.insets.LocalWindowInsets
@@ -71,8 +74,14 @@ class MainActivity : ComponentActivity(), ServiceConnection {
             }
         }
 
-
+        startOrResumeTimerService()
     }
+
+    private fun startOrResumeTimerService() =
+        Intent(this, TimerService::class.java).also {
+            it.action = ServiceAction.PLAY.actionName
+            startService(it)
+        }
 
     private fun playLecture(lecture: Lecture) {
         DebugLog.d("PlaybackService", "ACTIVITY::playLecture")
