@@ -9,20 +9,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
-import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.datamodel.DataModel
-import com.anadi.prabhupadalectures.datamodel.QueryParam
+import com.anadi.prabhupadalectures.repository.Repository
 
-class MainScreen(private val uiListener: ((UIAction) -> Unit)? = null) : Screen {
+class MainScreen(
+    private val repository : Repository,
+    private val uiListener: ((UIAction) -> Unit)? = null
+) : Screen {
 
     @Composable
     override fun Content() {
-        val state = app.dataModel.observeState().collectAsState()
+        val state = repository.observeState().collectAsState()
+        val playbackState = repository.observePlaybackState().collectAsState()
 
         Box(
             Modifier
@@ -46,6 +47,8 @@ class MainScreen(private val uiListener: ((UIAction) -> Unit)? = null) : Screen 
                 }
 
                 items(state.value.filters) { FilterListItem(it, uiListener) }
+
+                item { PlayerListItem(playbackState.value, uiListener) }
             }
         }
     }

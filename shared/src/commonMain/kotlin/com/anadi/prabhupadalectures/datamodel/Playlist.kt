@@ -2,15 +2,10 @@ package com.anadi.prabhupadalectures.datamodel
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 
-enum class PlaybackState {
-    PLAYING, PAUSED
-}
-
-private const val NO_INDEX = -1
-
 data class Playlist(
     val lectures: List<Lecture> = emptyList(),
-    val currentIndex: Int = 0,
+    val currentId: Long = lectures.firstOrNull()?.id ?: 0L,
+    val currentIndex: Int = lectures.indexOfFirst { it.id == currentId },
     val isPlaying: Boolean = false
 ) {
     val isEmpty
@@ -27,12 +22,12 @@ data class Playlist(
 
     fun prev(): Playlist {
         if (!hasPrev) return this
-        return copy(currentIndex = currentIndex - 1)
+        return copy(currentId = lectures.getOrNull(currentIndex - 1)?.id ?: 0L)
     }
 
     fun next(): Playlist {
         if (!hasNext) return this
-        return copy(currentIndex = currentIndex + 1)
+        return copy(currentId = lectures.getOrNull(currentIndex + 1)?.id ?: 0L)
     }
 
     fun play() =

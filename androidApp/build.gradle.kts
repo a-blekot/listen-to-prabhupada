@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 val composeVersion = findProperty("version.compose") as String
@@ -44,6 +46,9 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+
+//    com.android.support:appcompat-v7
+
     //desugar utils
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     //Compose
@@ -61,16 +66,15 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     //DI
-    implementation("io.insert-koin:koin-core:3.1.2")
-    implementation("io.insert-koin:koin-android:3.1.2")
+    implementation("com.google.dagger:hilt-android:${findProperty("version.hilt")}")
+    kapt("com.google.dagger:hilt-compiler:${findProperty("version.hilt")}")
     //Navigation
     implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta13")
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
-    implementation("com.google.android.exoplayer:exoplayer-core:2.16.1")
-    implementation("com.google.android.exoplayer:exoplayer-ui:2.16.1")
-
+    implementation("com.google.android.exoplayer:exoplayer-core:2.17.0")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.17.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 }

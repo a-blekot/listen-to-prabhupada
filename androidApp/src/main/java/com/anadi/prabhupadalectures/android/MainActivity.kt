@@ -13,46 +13,46 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.Navigator
-import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
 import com.anadi.prabhupadalectures.android.player.PlaybackService
-import com.anadi.prabhupadalectures.android.player.ServiceAction
-import com.anadi.prabhupadalectures.android.player.TimerService
 import com.anadi.prabhupadalectures.android.ui.compose.*
-import com.anadi.prabhupadalectures.data.lectures.Lecture
+import com.anadi.prabhupadalectures.repository.Repository
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-const val EXTRA_LECTURE_URL = "EXTRA_LECTURE_URL"
-const val EXTRA_LECTURE_DURATION = "EXTRA_LECTURE_DURATION"
-const val EXTRA_LECTURE_TITLE = "EXTRA_LECTURE_TITLE"
-const val EXTRA_LECTURE_DESCRIPTION = "EXTRA_LECTURE_DESCRIPTION"
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity(), ServiceConnection {
 
     private val uiListener: (UIAction) -> Unit = { uiAction ->
         when (uiAction) {
-            is PlayClick -> playLecture(uiAction.lecture)
-            is OptionClick -> {
+            is Option -> {
                 lifecycleScope.launchWhenStarted {
-                    app.dataModel.updateQuery(uiAction.queryParam)
+                    repository.updateQuery(uiAction.queryParam)
                 }
             }
-            is FavoriteClick -> {
+            is Favorite -> {
                 if (uiAction.isFavorite) {
-                    app.dataModel.addFavorite(uiAction.lectureId)
+                    repository.addFavorite(uiAction.lectureId)
                 } else {
-                    app.dataModel.removeFavorite(uiAction.lectureId)
+                    repository.removeFavorite(uiAction.lectureId)
                 }
             }
+            else -> playbackService?.handleAction(uiAction)
         }
     }
 
-    private var boundService: PlaybackService? = null
+    private val serviceIntent
+        get() = Intent(this, PlaybackService::class.java)
+
+    private var playbackService: PlaybackService? = null
+
+    @Inject
+    lateinit var repository: Repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DebugLog.d("PlaybackService", "ACTIVITY::onCreate")
 
         setContent {
             AppTheme {
@@ -68,56 +68,32 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                             )
                         )
                     ) {
-                        Navigator(MainScreen(uiListener))
+                        Navigator(MainScreen(repository, uiListener))
                     }
                 }
             }
         }
-
-        startOrResumeTimerService()
-    }
-
-    private fun startOrResumeTimerService() =
-        Intent(this, TimerService::class.java).also {
-            it.action = ServiceAction.PLAY.actionName
-            startService(it)
-        }
-
-    private fun playLecture(lecture: Lecture) {
-        DebugLog.d("PlaybackService", "ACTIVITY::playLecture")
-        val intent = Intent(this, PlaybackService::class.java)
-        intent.putExtra(EXTRA_LECTURE_URL, lecture.fileInfo.mediaStreamUrl)
-        intent.putExtra(EXTRA_LECTURE_DURATION, lecture.fileInfo.durationMillis)
-        intent.putExtra(EXTRA_LECTURE_TITLE, lecture.displayedTitle)
-        intent.putExtra(EXTRA_LECTURE_DESCRIPTION, lecture.displayedDescription)
-        startService(intent)
-        bindService(intent, this, Context.BIND_IMPORTANT)
     }
 
     override fun onStart() {
         super.onStart()
-        boundService?.stopForeground(true)
-        DebugLog.d("PlaybackService", "ACTIVITY::onStart")
-        DebugLog.d("PlaybackService", "ACTIVITY boundService = $boundService")
+        bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)
+        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
     }
 
     override fun onStop() {
         super.onStop()
-        boundService?.goForeground()
-        DebugLog.d("PlaybackService", "ACTIVITY::onStop")
-        DebugLog.d("PlaybackService", "ACTIVITY boundService = $boundService")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        DebugLog.d("PlaybackService", "ACTIVITY::onDestroy")
+        unbindService(this)
+        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
     }
 
     override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-        boundService = (binder as? PlaybackService.PlaybackBinder)?.service
+        playbackService = (binder as? PlaybackService.PlaybackBinder)?.service
+        playbackService?.onActivityStarted()
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        boundService = null
+        playbackService?.onActivityStopped()
+        playbackService = null
     }
 }

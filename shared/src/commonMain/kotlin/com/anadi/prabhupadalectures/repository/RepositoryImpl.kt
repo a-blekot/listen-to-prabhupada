@@ -1,21 +1,20 @@
-package com.anadi.prabhupadalectures.datamodel
+package com.anadi.prabhupadalectures.repository
 
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.lectures.Lecture
+import com.anadi.prabhupadalectures.datamodel.ApiMapper
+import com.anadi.prabhupadalectures.datamodel.Pagination
+import com.anadi.prabhupadalectures.datamodel.Playlist
+import com.anadi.prabhupadalectures.datamodel.QueryParam
 import com.anadi.prabhupadalectures.network.api.ApiModel
+import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
 import com.anadi.prabhupadalectures.network.api.QueryParams
-import com.anadi.prabhupadalectures.repository.Repository
-import com.anadi.prabhupadalectures.repository.getFilters
-import com.anadi.prabhupadalectures.repository.saveFilters
-import com.anadi.prabhupadalectures.repository.settings
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.withContext
 
 data class State(
     val loading: Boolean,
@@ -23,60 +22,80 @@ data class State(
     val playlist: Playlist = Playlist()
 )
 
-class DataModel(
+data class PlaybackState(
+    val lectureId: Long = 0L,
+    val title: String = "",
+    val description: String = "",
+    val isPlaying: Boolean = false,
+    val hasNext: Boolean = false,
+    val hasPrevious: Boolean = false,
+    val timeMs: Long = 0L,
+    val durationMs: Long = 1L
+)
+
+class RepositoryImpl(
     private val db: Database,
-    private val repository: Repository,
+    private val api: PrabhupadaApi,
     withLog: Boolean
 ) :
-    CoroutineScope by CoroutineScope(Dispatchers.Main) {
+    CoroutineScope by CoroutineScope(Dispatchers.Main), Repository {
 
     private val state = MutableStateFlow(State(false))
+    private val playbackState = MutableStateFlow(PlaybackState())
     private var pagination = Pagination()
 
     init {
         if (withLog) Napier.base(DebugAntilog())
     }
 
-    fun observeState(): StateFlow<State> = state
+    override fun observeState(): StateFlow<State> = state
+    override fun observePlaybackState(): StateFlow<PlaybackState> = playbackState
+
+    override fun setPlaybackState(newState: PlaybackState) {
+        playbackState.value = newState
+    }
 
     private fun printFavorites() =
         db.getAllFavorites().forEach {
             Napier.d("favorite $it}")
         }
 
-    fun addFavorite(id: Long) {
+    override fun addFavorite(id: Long) {
         db.setFavorite(id)
         refreshFavorites()
         printFavorites()
     }
 
-    fun removeFavorite(id: Long) {
+    override fun removeFavorite(id: Long) {
         db.removeFavorite(id)
         refreshFavorites()
         printFavorites()
     }
 
-    suspend fun updateQuery(queryParam: QueryParam) =
+    override fun getSavedPosition(lectureId: Long) =
+        runBlocking { db.getSavedPosition(lectureId) }
+
+    override suspend fun updateQuery(queryParam: QueryParam) =
         loadMore(queryParam)
 
-    suspend fun init() =
+    override suspend fun init() =
         loadMore(settings.getFilters())
 
-    suspend fun loadMore(queryParam: QueryParam? = null) =
+    override suspend fun loadMore(queryParam: QueryParam?) =
         loadMore(buildQueryParams(queryParam))
 
-    suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
+    override suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
         setLoading(true)
 
         Napier.d("firstLoad: pagination = $pagination")
-        val result = repository.getResults(queryParams)
+        val result = api.getResults(queryParams)
         if (result.isSuccess) {
             result.getOrNull()?.let {
                 updatePagination(it)
                 updateData(it)
             }
         } else {
-            Napier.e(message = "repository.getResults isFailure", tag = "DataModel", throwable = result.exceptionOrNull())
+            Napier.e(message = "api.getResults isFailure", tag = "DataModel", throwable = result.exceptionOrNull())
             setLoading(false)
         }
     }
@@ -126,8 +145,14 @@ class DataModel(
         this != null && !isSelected && selectedOption == option
 
     private fun buildQueryParams(queryParam: QueryParam? = null): HashMap<String, Any> {
+        val page =
+            when {
+                queryParam != null -> 1
+                else -> pagination.curr.coerceAtLeast(1)
+            }
+
         val params = HashMap<String, Any>().apply {
-            put("page", pagination.curr.coerceAtLeast(1))
+            put("page", page)
 
             if (queryParam?.isSelected == true) {
                 put(queryParam.filterName, queryParam.selectedOption)

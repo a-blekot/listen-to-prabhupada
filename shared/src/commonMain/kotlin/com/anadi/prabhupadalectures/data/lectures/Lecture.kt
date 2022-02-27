@@ -1,7 +1,5 @@
 package com.anadi.prabhupadalectures.data.lectures
 
-import com.anadi.prabhupadalectures.data.Favorite
-
 data class Lecture(
     val id: Long = 0L,
     val slug: String = "",
@@ -21,6 +19,7 @@ data class Lecture(
     val event: Event? = null,
     val period: Period? = null,
     val resolution: String? = null,
+    val isPlaying: Boolean = false,
     val isFavorite: Boolean = false,
     val isDownloaded: Boolean = false,
 ) {

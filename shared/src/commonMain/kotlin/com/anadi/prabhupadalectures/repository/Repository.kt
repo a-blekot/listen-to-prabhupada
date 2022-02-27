@@ -1,23 +1,20 @@
 package com.anadi.prabhupadalectures.repository
 
-import com.anadi.prabhupadalectures.network.api.ApiModel
-import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
+import com.anadi.prabhupadalectures.datamodel.QueryParam
 import com.anadi.prabhupadalectures.network.api.QueryParams
-import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.StateFlow
 
 interface Repository {
-    suspend fun getResults(queryParams: QueryParams): Result<ApiModel>
-}
+    suspend fun updateQuery(queryParam: QueryParam): Unit?
+    suspend fun init(): Unit?
+    suspend fun loadMore(queryParam: QueryParam? = null): Unit?
+    suspend fun loadMore(queryParams: QueryParams): Unit?
 
-class RepositoryImpl(private val prabhupadaApi: PrabhupadaApi): Repository {
-    override suspend fun getResults(queryParams: QueryParams): Result<ApiModel> =
-        result { prabhupadaApi.getResults(queryParams) }
-}
+    fun setPlaybackState(newState: PlaybackState)
+    fun observeState(): StateFlow<State>
+    fun observePlaybackState(): StateFlow<PlaybackState>
+    fun addFavorite(id: Long)
+    fun removeFavorite(id: Long)
 
-private inline fun <T> result(block: () -> T) =
-    try {
-        Result.success(block())
-    } catch (t: Throwable) {
-        Napier.e("UserRepositoryImpl ", throwable = t)
-        Result.failure(t)
-    }
+    fun getSavedPosition(lectureId: Long): Long
+}

@@ -38,7 +38,7 @@ fun LectureListItem(
             Modifier
                 .aspectRatio(1f)
                 .weight(0.1f)
-                .clickable { uiListener?.invoke(PlayClick(lecture, !isPlaying)) }
+                .clickable { uiListener?.invoke(Play(lecture, !isPlaying)) }
         )
 
         Spacer(modifier = Modifier.width(4.dp))
@@ -74,7 +74,7 @@ fun LectureListItem(
             Modifier
                 .aspectRatio(1f)
                 .weight(0.08f)
-                .clickable { uiListener?.invoke(FavoriteClick(lecture.id, !lecture.isFavorite)) }
+                .clickable { uiListener?.invoke(Favorite(lecture.id, !lecture.isFavorite)) }
         )
     }
 

@@ -28,7 +28,7 @@ fun FilterListItem(
         filter.options.forEach { option ->
             OptionListItem(option) { isSelected ->
                 uiListener?.invoke(
-                    OptionClick(
+                    Option(
                         QueryParam(
                             filterName = filter.name,
                             selectedOption = option.value,
