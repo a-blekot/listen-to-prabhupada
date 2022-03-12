@@ -1,6 +1,7 @@
 package com.anadi.prabhupadalectures.android.player
 
 import android.Manifest.permission.WAKE_LOCK
+import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -40,8 +41,17 @@ class PlaybackService : Service(), Player.Listener {
 
     fun onActivityStopped() =
         player?.run {
-            notification?.let { startForeground(NOTIFICATION_ID, it) }
-            showNotification()
+            DebugLog.d("PlaybackService", "onActivityStopped")
+
+            DebugLog.d("PlaybackService", "isPlaying = $isPlaying")
+
+//            if (isPlaying) {
+                showNotification()
+                DebugLog.d("PlaybackService", "showNotification")
+//            } else {
+//                stopForeground(true)
+//                stopSelf()
+//            }
         }
 
     override fun onBind(intent: Intent): IBinder {
@@ -50,7 +60,8 @@ class PlaybackService : Service(), Player.Listener {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        return START_REDELIVER_INTENT
+        DebugLog.d("PlaybackService", "onStartCommand")
+        return START_STICKY
     }
 
     override fun onCreate() {
@@ -72,22 +83,24 @@ class PlaybackService : Service(), Player.Listener {
         super.onDestroy()
     }
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        DebugLog.d("PlaybackService", "onTaskRemoved")
-        super.onTaskRemoved(rootIntent)
-        stopSelf()
+    override fun onFinished() {
+//        TODO("Not yet implemented")
     }
 
-    override fun onFinished() {
-        TODO("Not yet implemented")
+    override fun onNotificationPosted(notification: Notification) {
+        DebugLog.d("PlaybackService", "startForeground notification = $notification")
+        startForeground(NOTIFICATION_ID, notification)
     }
 
     override fun onNotificationCancelled() {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
+        DebugLog.d("PlaybackService", "onNotificationCancelled")
+        stopForeground(true)
+        stopSelf()
     }
 
     override fun onPlaybackStarted(timeLeft: Long) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     fun handleAction(uiAction: UIAction) =

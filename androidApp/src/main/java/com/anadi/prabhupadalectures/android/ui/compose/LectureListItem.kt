@@ -38,7 +38,7 @@ fun LectureListItem(
             Modifier
                 .aspectRatio(1f)
                 .weight(0.1f)
-                .clickable { uiListener?.invoke(Play(lecture, !isPlaying)) }
+                .clickable { uiListener?.invoke(if (isPlaying) Pause else Play(lecture.id)) }
         )
 
         Spacer(modifier = Modifier.width(4.dp))

@@ -33,14 +33,22 @@ class MainScreen(
             LazyColumn(
                 Modifier.fillMaxWidth()
             ) {
-                val isNotEmpty = !state.value.playlist.isEmpty
+                val isNotEmpty = !state.value.playlist.isEmpty()
 
                 if (isNotEmpty) {
                     item { Header() }
                     item { FilterButton() }
                 }
 
-                items(state.value.playlist.lectures) { LectureListItem(it, it.id == state.value.playlist.currentLecture?.id, uiListener) }
+                items(state.value.playlist.lectures, key = { it.id }) { lecture ->
+                    playbackState.value.run {
+                        LectureListItem(
+                            lecture = lecture,
+                            isPlaying = lecture.id == lectureId && isPlaying,
+                            uiListener = uiListener
+                        )
+                    }
+                }
 
                 if (isNotEmpty) {
                     item { PageControl(1, 309) }

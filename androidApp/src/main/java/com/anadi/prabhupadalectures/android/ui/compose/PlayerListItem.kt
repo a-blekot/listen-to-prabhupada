@@ -89,12 +89,12 @@ fun PlayerListItem(
             }
             Spacer(modifier = Modifier.weight(0.1f))
 
-            val playIconId = if (playbackState.isPlaying) R.drawable.ic_player_play else R.drawable.ic_player_pause
+            val playIconId = if (playbackState.isPlaying) R.drawable.ic_player_pause else R.drawable.ic_player_play
             PlayerActionIcon(
                 playIconId,
                 "play/pause",
                 uiListener,
-                Play(Lecture(), !playbackState.isPlaying),
+                if (playbackState.isPlaying) Pause else Play(playbackState.lectureId),
                 ratio = 0.9f
             )
             Spacer(modifier = Modifier.weight(0.1f))

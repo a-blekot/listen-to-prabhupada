@@ -16,5 +16,6 @@ interface Repository {
     fun addFavorite(id: Long)
     fun removeFavorite(id: Long)
 
+    fun savePosition(lectureId: Long, timeMs: Long)
     fun getSavedPosition(lectureId: Long): Long
 }

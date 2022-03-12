@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import com.anadi.prabhupadalectures.android.DebugLog
 import com.anadi.prabhupadalectures.android.MainActivity
@@ -15,13 +16,13 @@ import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.datamodel.Playlist
 import com.anadi.prabhupadalectures.repository.PlaybackState
 import com.anadi.prabhupadalectures.repository.Repository
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.IllegalSeekPositionException
-import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.*
 
+private const val UPDATE_PLAYBACK_STATE_INTERVAL_MS = 1000L
+private const val SAVE_POSITION_INTERVAL_SECONDS = UPDATE_PLAYBACK_STATE_INTERVAL_MS * 5 / 1000
 private const val CHANNEL_ID = "PlaybackService_CHANNEL_16108"
 const val NOTIFICATION_ID = 16108
 const val SEEK_INCREMENT_MS = 10_000L
@@ -35,13 +36,12 @@ class Player(
 
     interface Listener {
         fun onFinished() {}
+        fun onNotificationPosted(notification: Notification) {}
         fun onNotificationCancelled() {}
         fun onPlaybackStarted(timeLeft: Long) {}
         fun onIsPlayingChanged(isPlaying: Boolean) {}
         fun onTrackChanged(mediaItem: MediaItem?) {}
     }
-
-    val notificationBg: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.prabhupada_speaking)
 
     private val playbackListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -52,10 +52,8 @@ class Player(
                         updateJob?.cancel()
                     }
                     listener.onFinished()
-
                 }
                 else -> {
-                    DebugLog.d("PlaybackService", "playbackState = $playbackState")
                     /** do nothing */
                 }
             }
@@ -72,9 +70,22 @@ class Player(
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
             listener.onTrackChanged(mediaItem)
+            DebugLog.d("PlaybackService", "onMediaItemTransition")
+            mediaItem?.mediaId?.toLongOrNull()?.let { lectureId ->
+                DebugLog.d("PlaybackService", "lectureId = $lectureId, pos = ${repository.getSavedPosition(lectureId)}")
+                exoPlayer?.seekTo(repository.getSavedPosition(lectureId))
+            }
             launchUpdateJob()
         }
     }
+
+    private var exoPlayer: ExoPlayer? = ExoPlayer.Builder(context)
+        .setSeekForwardIncrementMs(SEEK_INCREMENT_MS)
+        .setSeekBackIncrementMs(SEEK_INCREMENT_MS)
+        .build().apply {
+            repeatMode = Player.REPEAT_MODE_OFF
+            addListener(playbackListener)
+        }
 
     private val mediaDescriptionAdapter by lazy {
         object : PlayerNotificationManager.MediaDescriptionAdapter {
@@ -91,22 +102,23 @@ class Player(
             }
 
             override fun getCurrentContentText(player: Player) =
-                playlist.currentLecture?.displayedDescription
+                exoPlayer?.mediaMetadata?.description.toString()
 
             override fun getCurrentContentTitle(player: Player) =
-                playlist.currentLecture?.displayedTitle ?: ""
+                exoPlayer?.mediaMetadata?.title.toString()
 
-            // TODO add bitmap
             override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback) =
                 notificationBg
         }
     }
 
+    private val notificationBg: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.prabhupada_speaking)
+
     private val notificationListener by lazy {
         object : PlayerNotificationManager.NotificationListener {
             override fun onNotificationPosted(notificationId: Int, notification: Notification, onGoing: Boolean) {
                 DebugLog.d("PlaybackService", "onNotificationPosted = $notificationId")
-                this@Player.notification = notification
+                listener.onNotificationPosted(notification)
             }
 
             override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
@@ -133,20 +145,14 @@ class Player(
                 setUsePreviousAction(true)
                 setUseFastForwardAction(true)
                 setUseRewindAction(true)
+                setUseChronometer(true)
+                setColorized(true)
+                setColor(Color.rgb(182, 93, 13))
             }
     }
 
-    private var exoPlayer: ExoPlayer? = ExoPlayer.Builder(context)
-        .setSeekForwardIncrementMs(SEEK_INCREMENT_MS)
-        .setSeekBackIncrementMs(SEEK_INCREMENT_MS)
-        .build().apply {
-            repeatMode = Player.REPEAT_MODE_OFF
-            addListener(playbackListener)
-        }
-
-    private var playlist = Playlist()
-
-    var notification: Notification? = null
+    private var currentPlaylist = Playlist()
+    private var pendingPlaylist = Playlist()
 
     private fun updatePlaybackState() {
         val newState =
@@ -166,7 +172,20 @@ class Player(
         repository.setPlaybackState(newState)
     }
 
+    private fun saveCurrentPosition() =
+        exoPlayer?.run {
+            repository.savePosition(
+                lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
+                timeMs = currentPosition
+            )
+        }
+
     private var updateJob: Job? = null
+
+    val isPlaying
+        get() = exoPlayer?.isPlaying == true
+
+    var counter = 0L
 
     fun launchUpdateJob() {
         if (updateJob?.isActive == true) {
@@ -175,7 +194,12 @@ class Player(
         updateJob = playerScope.launch {
             while (true) {
                 this@Player.updatePlaybackState()
-                delay(1000L)
+
+                if ((counter++ % SAVE_POSITION_INTERVAL_SECONDS) == 0L) {
+                    this@Player.saveCurrentPosition()
+                }
+
+                delay(UPDATE_PLAYBACK_STATE_INTERVAL_MS)
             }
         }
     }
@@ -188,8 +212,7 @@ class Player(
 
     fun handleAction(uiAction: UIAction) =
         when (uiAction) {
-            is Play -> switchTrack(uiAction.lecture, uiAction.isPlaying)
-            is Pause -> switchTrack(uiAction.lecture, uiAction.isPlaying)
+            is Play -> play(uiAction.lectureId)
             Next -> exoPlayer?.seekToNextMediaItem()
             Prev -> exoPlayer?.seekToPreviousMediaItem()
             SeekForward -> exoPlayer?.seekForward()
@@ -201,19 +224,12 @@ class Player(
 
     suspend fun setPlaylist(playlist: Playlist) =
         withContext(Dispatchers.Main) {
-            if (this@Player.playlist.lectures != playlist.lectures) {
-                resetTracks(playlist.lectures)
-            }
+            pendingPlaylist = playlist
 
-            if (this@Player.playlist.currentIndex != playlist.currentIndex) {
-                playlist.currentLecture?.let { switchTrack(it) }
+            if (currentPlaylist.isEmpty()) {
+                currentPlaylist = pendingPlaylist
+                resetTracks(currentPlaylist.lectures)
             }
-
-            if (this@Player.playlist.isPlaying != playlist.isPlaying) {
-                exoPlayer?.playWhenReady = playlist.isPlaying
-            }
-
-            this@Player.playlist = playlist
         }
 
     fun showNotification() =
@@ -229,27 +245,37 @@ class Player(
             prepare()
         }
 
-    private fun Lecture.toMediaItem() =
-        MediaItem.Builder()
-            .setUri(fileInfo.mediaStreamUrl)
-            .setMediaId("$id")
-            .build()
-
-    private fun switchTrack(lecture: Lecture, isPlaying: Boolean = exoPlayer?.isPlaying ?: false) =
+    private fun play(lectureId: Long) =
         exoPlayer?.run {
             playWhenReady = false
 
-            if (playlist.lectures.isEmpty()) return@run
+            if (pendingPlaylist.any { it.id == lectureId }) {
+                currentPlaylist = pendingPlaylist
+                resetTracks(currentPlaylist.lectures)
+            }
 
-            val index = playlist.lectures.indexOf(lecture)
-            if (index >= 0 && index < playlist.lectures.size) {
+            val index = currentPlaylist.lectures.indexOfFirst { it.id == lectureId }
+            if (index >= 0 && index < currentPlaylist.lectures.size) {
                 try {
-                    exoPlayer?.seekTo(index, repository.getSavedPosition(lecture.id))
+                    exoPlayer?.seekTo(index, repository.getSavedPosition(lectureId))
                 } catch (e: IllegalSeekPositionException) {
 
                 }
             }
 
-            playWhenReady = isPlaying
+            playWhenReady = true
         }
+
+    private fun Lecture.toMediaItem(): MediaItem {
+        val metaData = MediaMetadata.Builder()
+            .setDescription(displayedDescription)
+            .setTitle(displayedTitle)
+            .build()
+
+        return MediaItem.Builder()
+            .setUri(fileInfo.mediaStreamUrl)
+            .setMediaId("$id")
+            .setMediaMetadata(metaData)
+            .build()
+    }
 }

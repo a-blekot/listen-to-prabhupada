@@ -72,6 +72,9 @@ class RepositoryImpl(
         printFavorites()
     }
 
+    override fun savePosition(lectureId: Long, timeMs: Long) =
+        runBlocking { db.savePosition(lectureId, timeMs) }
+
     override fun getSavedPosition(lectureId: Long) =
         runBlocking { db.getSavedPosition(lectureId) }
 

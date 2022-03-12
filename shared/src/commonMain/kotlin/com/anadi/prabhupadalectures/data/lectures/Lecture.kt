@@ -19,9 +19,8 @@ data class Lecture(
     val event: Event? = null,
     val period: Period? = null,
     val resolution: String? = null,
-    val isPlaying: Boolean = false,
     val isFavorite: Boolean = false,
-    val isDownloaded: Boolean = false,
+    val isDownloaded: Boolean = false
 ) {
     val displayedTitle
         get() = title

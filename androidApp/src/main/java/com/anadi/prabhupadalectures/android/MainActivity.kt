@@ -20,6 +20,7 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -77,23 +78,35 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
     override fun onStart() {
         super.onStart()
-        bindService(serviceIntent, this, Context.BIND_AUTO_CREATE)
-        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
+        DebugLog.d("PlaybackService", "ACTIVITY startService")
+        startService(serviceIntent)
+        lifecycleScope.launchWhenStarted {
+            delay(300L)
+            applicationContext.bindService(serviceIntent, this@MainActivity, Context.BIND_IMPORTANT)
+        }
     }
 
     override fun onStop() {
-        super.onStop()
+        playbackService?.onActivityStopped()
         unbindService(this)
-        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        DebugLog.d("PlaybackService", "ACTIVITY onDestroy")
+        super.onDestroy()
     }
 
     override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
         playbackService = (binder as? PlaybackService.PlaybackBinder)?.service
         playbackService?.onActivityStarted()
+        DebugLog.d("PlaybackService", "ACTIVITY onServiceConnected")
+        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        playbackService?.onActivityStopped()
         playbackService = null
+        DebugLog.d("PlaybackService", "ACTIVITY onServiceDisconnected")
+        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
     }
 }
