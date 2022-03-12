@@ -213,6 +213,7 @@ class Player(
     fun handleAction(uiAction: UIAction) =
         when (uiAction) {
             is Play -> play(uiAction.lectureId)
+            Pause -> exoPlayer?.playWhenReady = false
             Next -> exoPlayer?.seekToNextMediaItem()
             Prev -> exoPlayer?.seekToPreviousMediaItem()
             SeekForward -> exoPlayer?.seekForward()

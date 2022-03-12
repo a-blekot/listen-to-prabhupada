@@ -82,7 +82,8 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         startService(serviceIntent)
         lifecycleScope.launchWhenStarted {
             delay(300L)
-            applicationContext.bindService(serviceIntent, this@MainActivity, Context.BIND_IMPORTANT)
+            // TODO applicationContext.bindService ??
+            bindService(serviceIntent, this@MainActivity, Context.BIND_IMPORTANT)
         }
     }
 
