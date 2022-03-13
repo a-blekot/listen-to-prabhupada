@@ -15,12 +15,14 @@ import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.anadi.prabhupadalectures.android.player.PlaybackService
 import com.anadi.prabhupadalectures.android.ui.compose.*
+import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
 import com.anadi.prabhupadalectures.repository.Repository
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint

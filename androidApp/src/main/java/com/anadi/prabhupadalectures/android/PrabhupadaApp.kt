@@ -3,13 +3,14 @@ package com.anadi.prabhupadalectures.android
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import com.anadi.prabhupadalectures.data.DatabaseImpl
-import com.anadi.prabhupadalectures.data.DatabaseDriverFactory
-import com.anadi.prabhupadalectures.repository.RepositoryImpl
-import com.anadi.prabhupadalectures.network.api.createPrabhupadaApi
+import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
 import com.anadi.prabhupadalectures.repository.Repository
+import com.anadi.prabhupadalectures.utils.ConnectionState
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -57,7 +58,12 @@ class PrabhupadaApp : Application() {
 
         backgroundScope.launch {
             delay(200L)
-            repository.init()
+
+            observeConnectivityAsFlow().collect {
+                if (it == ConnectionState.Online) {
+                    repository.init()
+                }
+            }
         }
     }
 }
