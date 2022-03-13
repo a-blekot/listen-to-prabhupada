@@ -42,16 +42,15 @@ class PlaybackService : Service(), Player.Listener {
     fun onActivityStopped() =
         player?.run {
             DebugLog.d("PlaybackService", "onActivityStopped")
-
             DebugLog.d("PlaybackService", "isPlaying = $isPlaying")
 
-//            if (isPlaying) {
+            if (isPlaying) {
                 showNotification()
                 DebugLog.d("PlaybackService", "showNotification")
-//            } else {
-//                stopForeground(true)
-//                stopSelf()
-//            }
+            } else {
+                stopForeground(true)
+                stopSelf()
+            }
         }
 
     override fun onBind(intent: Intent): IBinder {

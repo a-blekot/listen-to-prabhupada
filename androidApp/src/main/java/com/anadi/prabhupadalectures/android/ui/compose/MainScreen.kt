@@ -54,7 +54,7 @@ class MainScreen(
                     item { PageControl(1, 309) }
                 }
 
-                items(state.value.filters) { FilterListItem(it, uiListener) }
+                items(state.value.filters, key = { it.name }) { FilterListItem(it, repository, uiListener) }
 
                 item { PlayerListItem(playbackState.value, uiListener) }
             }

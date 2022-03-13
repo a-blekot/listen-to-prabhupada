@@ -130,6 +130,7 @@ class Player(
 
     private val playerNotificationManager by lazy {
         PlayerNotificationManager.Builder(context, NOTIFICATION_ID, CHANNEL_ID)
+            .setSmallIconResourceId(R.drawable.ic_logo)
             .setPlayActionIconResourceId(R.drawable.ic_player_play)
             .setPauseActionIconResourceId(R.drawable.ic_player_pause)
             .setNextActionIconResourceId(R.drawable.ic_player_next)
@@ -140,6 +141,7 @@ class Player(
             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
             .setNotificationListener(notificationListener)
             .build().apply {
+//                setMediaSessionToken()
                 setUsePlayPauseActions(true)
                 setUseNextAction(true)
                 setUsePreviousAction(true)

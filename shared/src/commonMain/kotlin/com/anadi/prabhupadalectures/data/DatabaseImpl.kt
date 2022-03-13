@@ -1,6 +1,8 @@
 package com.anadi.prabhupadalectures.data
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
+import com.anadi.prabhupadalectures.utils.toBoolean
+import com.anadi.prabhupadalectures.utils.toLong
 
 class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
     private val database = AppDatabase(databaseDriverFactory.createDriver())
@@ -63,4 +65,10 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
 
     override fun removeAllSavedPosition() =
         dbQuery.removeAllSavedPosition()
+
+    override fun isExpanded(filterName: String) =
+        dbQuery.selectExpandedFilter(id = filterName.toLong()).executeAsOneOrNull()?.expanded?.toBoolean() ?: true
+
+    override fun saveExpanded(filterName: String, isExpanded: Boolean) =
+        dbQuery.insertExpandedFilter(id = filterName.toLong(), isExpanded.toLong())
 }

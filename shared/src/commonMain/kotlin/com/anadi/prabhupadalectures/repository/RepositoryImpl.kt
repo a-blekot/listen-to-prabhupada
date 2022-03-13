@@ -78,6 +78,12 @@ class RepositoryImpl(
     override fun getSavedPosition(lectureId: Long) =
         runBlocking { db.getSavedPosition(lectureId) }
 
+    override fun isExpanded(filterName: String): Boolean =
+        runBlocking { db.isExpanded(filterName) }
+
+    override fun saveExpanded(filterName: String, isExpanded: Boolean) =
+        runBlocking { db.saveExpanded(filterName, isExpanded) }
+
     override suspend fun updateQuery(queryParam: QueryParam) =
         loadMore(queryParam)
 

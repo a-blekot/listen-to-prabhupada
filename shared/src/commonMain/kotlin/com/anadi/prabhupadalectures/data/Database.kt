@@ -21,4 +21,7 @@ interface Database {
     fun getSavedPosition(id: Long): Long
     fun removeSavedPosition(id: Long)
     fun removeAllSavedPosition()
+
+    fun isExpanded(filterName: String): Boolean
+    fun saveExpanded(filterName: String, isExpanded: Boolean)
 }

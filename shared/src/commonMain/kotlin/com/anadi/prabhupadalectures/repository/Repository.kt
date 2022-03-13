@@ -18,4 +18,7 @@ interface Repository {
 
     fun savePosition(lectureId: Long, timeMs: Long)
     fun getSavedPosition(lectureId: Long): Long
+
+    fun isExpanded(filterName: String): Boolean
+    fun saveExpanded(filterName: String, isExpanded: Boolean)
 }
