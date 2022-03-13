@@ -48,9 +48,7 @@ class Player(
             when (playbackState) {
                 Player.STATE_ENDED -> {
                     DebugLog.d("PlaybackService", "playbackState = STATE_ENDED")
-                    if (updateJob?.isActive == true) {
-                        updateJob?.cancel()
-                    }
+                    stopUpdateJob()
                     listener.onFinished()
                 }
                 else -> {
@@ -63,7 +61,9 @@ class Player(
             if (isPlaying) {
                 launchUpdateJob()
             } else {
+                stopUpdateJob()
                 updatePlaybackState()
+                saveCurrentPosition()
             }
             listener.onIsPlayingChanged(isPlaying)
         }
@@ -154,23 +154,8 @@ class Player(
     private var currentPlaylist = Playlist()
     private var pendingPlaylist = Playlist()
 
-    private fun updatePlaybackState() {
-        val newState =
-            exoPlayer?.run {
-                PlaybackState(
-                    lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
-                    title = mediaMetadata.title?.toString() ?: "",
-                    description = mediaMetadata.description?.toString() ?: "",
-                    isPlaying = isPlaying,
-                    hasNext = hasNextMediaItem(),
-                    hasPrevious = hasPreviousMediaItem(),
-                    timeMs = currentPosition,
-                    durationMs = duration
-                )
-            } ?: PlaybackState()
-
-        repository.setPlaybackState(newState)
-    }
+    private fun updatePlaybackState(playbackState: PlaybackState = exoPlayer?.myPlaybackState ?: PlaybackState()) =
+        repository.setPlaybackState(playbackState)
 
     private fun saveCurrentPosition() =
         exoPlayer?.run {
@@ -180,29 +165,12 @@ class Player(
             )
         }
 
+    private var updateCounter = 0L
     private var updateJob: Job? = null
 
     val isPlaying
         get() = exoPlayer?.isPlaying == true
 
-    var counter = 0L
-
-    fun launchUpdateJob() {
-        if (updateJob?.isActive == true) {
-            updateJob?.cancel()
-        }
-        updateJob = playerScope.launch {
-            while (true) {
-                this@Player.updatePlaybackState()
-
-                if ((counter++ % SAVE_POSITION_INTERVAL_SECONDS) == 0L) {
-                    this@Player.saveCurrentPosition()
-                }
-
-                delay(UPDATE_PLAYBACK_STATE_INTERVAL_MS)
-            }
-        }
-    }
 
     fun release() {
         hideNotification()
@@ -213,11 +181,13 @@ class Player(
     fun handleAction(uiAction: UIAction) =
         when (uiAction) {
             is Play -> play(uiAction.lectureId)
+            is SeekTo -> seekTo(uiAction.timeMs)
             Pause -> exoPlayer?.playWhenReady = false
             Next -> exoPlayer?.seekToNextMediaItem()
             Prev -> exoPlayer?.seekToPreviousMediaItem()
             SeekForward -> exoPlayer?.seekForward()
             SeekBack -> exoPlayer?.seekBack()
+            SliderReleased -> onSliderReleased()
             else -> {
                 /** do nothing */
             }
@@ -250,22 +220,78 @@ class Player(
         exoPlayer?.run {
             playWhenReady = false
 
-            if (pendingPlaylist.any { it.id == lectureId }) {
-                currentPlaylist = pendingPlaylist
-                resetTracks(currentPlaylist.lectures)
-            }
-
-            val index = currentPlaylist.lectures.indexOfFirst { it.id == lectureId }
-            if (index >= 0 && index < currentPlaylist.lectures.size) {
-                try {
-                    exoPlayer?.seekTo(index, repository.getSavedPosition(lectureId))
-                } catch (e: IllegalSeekPositionException) {
-
-                }
+            if (currentMediaItem?.mediaId?.toLongOrNull() != lectureId) {
+                switchTrack(lectureId)
             }
 
             playWhenReady = true
         }
+
+    private fun switchTrack(lectureId: Long) {
+        if (pendingPlaylist.any { it.id == lectureId }) {
+            currentPlaylist = pendingPlaylist
+            resetTracks(currentPlaylist.lectures)
+        }
+
+        val index = currentPlaylist.lectures.indexOfFirst { it.id == lectureId }
+        if (index >= 0 && index < currentPlaylist.lectures.size) {
+            try {
+                exoPlayer?.seekTo(index, repository.getSavedPosition(lectureId))
+            } catch (e: IllegalSeekPositionException) {
+
+            }
+        }
+    }
+
+    private var playOnSliderRelease: Boolean? = null
+    private var seekState: PlaybackState? = null
+    private fun seekTo(timeMs: Long) =
+        exoPlayer?.run {
+            if (playOnSliderRelease == null) {
+                playOnSliderRelease = isPlaying
+                playWhenReady = false
+                seekState = myPlaybackState
+                stopUpdateJob()
+            }
+
+            seekState?.copy(timeMs = timeMs)?.let {
+                updatePlaybackState(it)
+            }
+
+            try {
+                exoPlayer?.seekTo(timeMs)
+            } catch (e: IllegalSeekPositionException) {
+
+            }
+        }
+
+    private fun onSliderReleased() {
+        playOnSliderRelease?.let { exoPlayer?.playWhenReady = it }
+        playOnSliderRelease = null
+        seekState = null
+    }
+
+    private fun launchUpdateJob() {
+        stopUpdateJob()
+        updateJob = playerScope.launch {
+            while (true) {
+                this@Player.updatePlaybackState()
+
+                if ((updateCounter++ % SAVE_POSITION_INTERVAL_SECONDS) == 0L) {
+                    this@Player.saveCurrentPosition()
+                }
+
+                delay(UPDATE_PLAYBACK_STATE_INTERVAL_MS)
+            }
+        }
+    }
+
+    private fun stopUpdateJob() {
+        if (updateJob?.isActive == true) {
+            updateJob?.cancel()
+            updateJob = null
+        }
+    }
 
     private fun Lecture.toMediaItem(): MediaItem {
         val metaData = MediaMetadata.Builder()
@@ -279,4 +305,16 @@ class Player(
             .setMediaMetadata(metaData)
             .build()
     }
+
+    private val ExoPlayer.myPlaybackState
+        get() = PlaybackState(
+            lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
+            title = mediaMetadata.title?.toString() ?: "",
+            description = mediaMetadata.description?.toString() ?: "",
+            isPlaying = isPlaying,
+            hasNext = hasNextMediaItem(),
+            hasPrevious = hasPreviousMediaItem(),
+            timeMs = currentPosition,
+            durationMs = duration
+        )
 }

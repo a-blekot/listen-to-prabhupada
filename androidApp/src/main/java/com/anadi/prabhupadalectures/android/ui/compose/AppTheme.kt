@@ -16,6 +16,7 @@ private val BrownXLight = Color(0xFFFFFFFF)
 //private val BrownXLight = Color(0xFFE5E5E5)
 
 private val Orange = Color(0xFFB65D0D)
+//private val OrangeLight = Color(0xFFFAD1B4) ?? BrownMedLight
 val GrayLight = Color(0xFF919191)
 
 private val LightColors = lightColors(

@@ -45,19 +45,18 @@ fun LectureListItem(
 
         // We toggle the isExpanded variable when we click on this Column
         Column(modifier = Modifier.weight(0.82f)) {
-            var isExpanded by remember { mutableStateOf(false) }
             Text(
                 text = lecture.title,
-                maxLines = if (isExpanded) Int.MAX_VALUE else 1,
-                overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.h6,
-                modifier = Modifier.clickable { isExpanded = !isExpanded }
+                modifier = Modifier.clickable { uiListener?.invoke(if (isPlaying) Pause else Play(lecture.id)) }
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = lecture.displayedSubTitle,
-                maxLines = 1,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 color = GrayLight,
                 style = MaterialTheme.typography.body1

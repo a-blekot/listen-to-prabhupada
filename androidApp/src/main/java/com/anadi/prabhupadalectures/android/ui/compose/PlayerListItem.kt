@@ -2,9 +2,13 @@ package com.anadi.prabhupadalectures.android.ui.compose
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
+import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,8 +19,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.anadi.prabhupadalectures.android.DebugLog
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.player.SEEK_INCREMENT_MS
+import com.anadi.prabhupadalectures.android.util.ONE_DAY_MS
 import com.anadi.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.repository.PlaybackState
@@ -28,18 +34,19 @@ fun PlayerListItem(
 ) =
     Column(
         modifier = Modifier
-            .padding(all = 4.dp)
-            .padding(top = 12.dp),
+            .padding(top = 12.dp)
+            .background(
+                color = MaterialTheme.colors.secondary,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .padding(all = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = playbackState.displayedTime,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colors.onPrimary,
-            style = MaterialTheme.typography.body1,
-            textAlign = TextAlign.Center
+        SliderComposable(
+            playbackState,
+            uiListener
         )
+
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = playbackState.title,
@@ -167,6 +174,33 @@ fun BoxScope.SeekText(modifier: Modifier = Modifier) =
         textAlign = TextAlign.Center,
         modifier = modifier.align(Alignment.Center)
     )
+
+@Composable
+fun SliderComposable(playbackState: PlaybackState, uiListener: ((UIAction) -> Unit)? = null) {
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Slider(
+            value = playbackState.timeMs.toFloat(),
+            valueRange = 0f..playbackState.durationMs.coerceIn(1000L, ONE_DAY_MS).toFloat(),
+            onValueChange = { uiListener?.invoke(SeekTo(it.toLong())) },
+            onValueChangeFinished = { uiListener?.invoke(SliderReleased) },
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colors.onSurface,
+                activeTrackColor = MaterialTheme.colors.primaryVariant
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = playbackState.displayedTime,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colors.onPrimary,
+            style = MaterialTheme.typography.body1,
+            textAlign = TextAlign.Center
+        )
+    }
+}
 
 val PlaybackState.displayedTime
     get() = "${formatTimeAdaptiveHoursMax(timeMs)} / ${formatTimeAdaptiveHoursMax(durationMs)}"

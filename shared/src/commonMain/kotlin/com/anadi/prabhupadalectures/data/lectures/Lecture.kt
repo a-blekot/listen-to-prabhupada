@@ -29,5 +29,5 @@ data class Lecture(
         get() = "$date, $place"
 
     val displayedDescription
-        get() = description
+        get() = description ?: "no description"
 }
