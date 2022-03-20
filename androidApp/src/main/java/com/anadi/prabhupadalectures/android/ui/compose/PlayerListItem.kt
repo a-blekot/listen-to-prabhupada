@@ -12,7 +12,6 @@ import androidx.compose.material.Slider
 import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.player.SEEK_INCREMENT_MS
-import com.anadi.prabhupadalectures.android.ui.screens.PlayerViewModel
+import com.anadi.prabhupadalectures.android.ui.screens.results.ResultsEvent
 import com.anadi.prabhupadalectures.android.util.ONE_DAY_MS
 import com.anadi.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
 import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
@@ -36,7 +34,8 @@ import com.anadi.prabhupadalectures.repository.PlayerAction
 
 @Composable
 fun PlayerListItem(
-    playerViewModel: PlayerViewModel = viewModel()
+    playbackState: PlaybackState = PlaybackState(),
+    onEvent: (ResultsEvent) -> Unit = {},
 ) =
     Column(
         modifier = Modifier
@@ -49,20 +48,14 @@ fun PlayerListItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val playbackState = playerViewModel.observePlayback().collectAsState()
-
-        val listener: (PlayerAction) -> Unit = {
-            playerViewModel.handle(it)
-        }
-
         SliderComposable(
-            playbackState.value,
-            listener
+            playbackState,
+            onEvent
         )
 
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = playbackState.value.lecture.title,
+            text = playbackState.lecture.title,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colors.onPrimary,
@@ -71,7 +64,7 @@ fun PlayerListItem(
         )
 
         Text(
-            text = playbackState.value.lecture.displayedDescription,
+            text = playbackState.lecture.displayedDescription,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = GrayLight,
@@ -90,7 +83,7 @@ fun PlayerListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.weight(0.15f))
-            PlayerActionIcon(R.drawable.ic_player_prev, "previous", listener, Prev, ratio = 1.4f)
+            PlayerActionIcon(R.drawable.ic_player_prev, "previous", onEvent, Prev, ratio = 1.4f)
             Spacer(modifier = Modifier.weight(0.1f))
 
             Box(
@@ -101,7 +94,7 @@ fun PlayerListItem(
                 PlayerActionIcon(
                     R.drawable.ic_player_seek_backward,
                     "seek back",
-                    listener,
+                    onEvent,
                     SeekBack,
                     ratio = 1.1f
                 )
@@ -110,12 +103,12 @@ fun PlayerListItem(
             Spacer(modifier = Modifier.weight(0.1f))
 
             val playIconId =
-                if (playbackState.value.isPlaying) R.drawable.ic_player_pause else R.drawable.ic_player_play
+                if (playbackState.isPlaying) R.drawable.ic_player_pause else R.drawable.ic_player_play
             PlayerActionIcon(
                 playIconId,
                 "play/pause",
-                listener,
-                if (playbackState.value.isPlaying) Pause else Play(playbackState.value.lecture.id),
+                onEvent,
+                if (playbackState.isPlaying) Pause else Play(playbackState.lecture.id),
                 ratio = 0.9f
             )
             Spacer(modifier = Modifier.weight(0.1f))
@@ -128,7 +121,7 @@ fun PlayerListItem(
                 PlayerActionIcon(
                     R.drawable.ic_player_seek_forward,
                     "seek forward",
-                    listener,
+                    onEvent,
                     SeekForward,
                     ratio = 1.1f
                 )
@@ -136,13 +129,13 @@ fun PlayerListItem(
             }
             Spacer(modifier = Modifier.weight(0.1f))
 
-            PlayerActionIcon(R.drawable.ic_player_next, "next", listener, Next, ratio = 1.4f)
+            PlayerActionIcon(R.drawable.ic_player_next, "next", onEvent, Next, ratio = 1.4f)
             Spacer(modifier = Modifier.weight(0.15f))
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        when (playbackState.value.lecture.downloadProgress) {
+        when (playbackState.lecture.downloadProgress) {
             null ->
                 Text(
                     text = stringResource(R.string.download_lecture),
@@ -151,7 +144,7 @@ fun PlayerListItem(
                     color = MaterialTheme.colors.onPrimary,
                     style = MaterialTheme.typography.body1,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.clickable { listener.invoke(Download(playbackState.value.lecture)) }
+                    modifier = Modifier.clickable { onEvent(ResultsEvent.Player(Download(playbackState.lecture))) }
                 )
 
             FULL_PROGRESS ->
@@ -164,7 +157,7 @@ fun PlayerListItem(
             else ->
                 Row {
                     Text(
-                        text = "${playbackState.value.lecture.downloadProgress}%",
+                        text = "${playbackState.lecture.downloadProgress}%",
                         maxLines = 1,
                         color = MaterialTheme.colors.onPrimary,
                         style = MaterialTheme.typography.body1,
@@ -201,7 +194,7 @@ fun PlayerListItem(
 fun RowScope.PlayerActionIcon(
     @DrawableRes id: Int,
     description: String,
-    listener: ((PlayerAction) -> Unit)? = null,
+    onEvent: (ResultsEvent) -> Unit = {},
     playerAction: PlayerAction,
     ratio: Float = 1f
 ) =
@@ -213,14 +206,14 @@ fun RowScope.PlayerActionIcon(
         Modifier
             .aspectRatio(ratio)
             .weight(0.1f)
-            .clickable { listener?.invoke(playerAction) }
+            .clickable { onEvent(ResultsEvent.Player(playerAction)) }
     )
 
 @Composable
 fun BoxScope.PlayerActionIcon(
     @DrawableRes id: Int,
     description: String,
-    listener: ((PlayerAction) -> Unit)? = null,
+    onEvent: (ResultsEvent) -> Unit = {},
     playerAction: PlayerAction,
     ratio: Float = 1f
 ) =
@@ -231,7 +224,7 @@ fun BoxScope.PlayerActionIcon(
         modifier =
         Modifier
             .aspectRatio(ratio)
-            .clickable { listener?.invoke(playerAction) }
+            .clickable { onEvent(ResultsEvent.Player(playerAction)) }
     )
 
 @Composable
@@ -246,14 +239,14 @@ fun BoxScope.SeekText(modifier: Modifier = Modifier) =
     )
 
 @Composable
-fun SliderComposable(playbackState: PlaybackState, listener: ((PlayerAction) -> Unit)? = null) {
+fun SliderComposable(playbackState: PlaybackState, onEvent: (ResultsEvent) -> Unit = {}) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Slider(
             value = playbackState.timeMs.toFloat(),
             valueRange = 0f..playbackState.durationMs.coerceIn(1000L, ONE_DAY_MS).toFloat(),
-            onValueChange = { listener?.invoke(SeekTo(it.toLong())) },
-            onValueChangeFinished = { listener?.invoke(SliderReleased) },
+            onValueChange = { onEvent(ResultsEvent.Player(SeekTo(it.toLong()))) },
+            onValueChangeFinished = { onEvent(ResultsEvent.Player(SliderReleased)) },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colors.onSurface,
                 activeTrackColor = MaterialTheme.colors.primaryVariant

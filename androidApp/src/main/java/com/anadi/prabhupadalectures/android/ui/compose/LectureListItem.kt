@@ -18,9 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anadi.prabhupadalectures.android.R
-import com.anadi.prabhupadalectures.android.ui.screens.LectureViewModel
+import com.anadi.prabhupadalectures.android.ui.screens.results.ResultsEvent
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
 import com.anadi.prabhupadalectures.network.api.ZERO_PROGRESS
@@ -31,7 +30,7 @@ import com.anadi.prabhupadalectures.repository.Play
 fun LectureListItem(
     lecture: Lecture,
     isPlaying: Boolean,
-    lectureViewModel: LectureViewModel = viewModel()
+    onEvent: (ResultsEvent) -> Unit = {},
 ) =
     Row(
         modifier = Modifier
@@ -56,7 +55,7 @@ fun LectureListItem(
                 Modifier
                     .aspectRatio(1f)
                     .weight(0.1f)
-                    .clickable { lectureViewModel.handleAction(if (isPlaying) Pause else Play(lecture.id)) }
+                    .clickable { onEvent(ResultsEvent.Player(if (isPlaying) Pause else Play(lecture.id))) }
             )
 
             if (lecture.downloadProgress in ZERO_PROGRESS until FULL_PROGRESS) {
@@ -115,7 +114,7 @@ fun LectureListItem(
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.h6,
-                modifier = Modifier.clickable { lectureViewModel.handleAction(if (isPlaying) Pause else Play(lecture.id)) }
+                modifier = Modifier.clickable { onEvent(ResultsEvent.Player(if (isPlaying) Pause else Play(lecture.id))) }
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -138,8 +137,7 @@ fun LectureListItem(
                 .align(CenterVertically)
                 .aspectRatio(1f)
                 .weight(0.08f)
-                .clickable { lectureViewModel.setFavorite(lecture, !lecture.isFavorite) }
-//                .clickable { uiListener?.invoke(Favorite(lecture, !lecture.isFavorite)) }
+                .clickable { onEvent(ResultsEvent.Favorite(lecture, !lecture.isFavorite)) }
         )
     }
 

@@ -32,11 +32,11 @@ android {
     compileOptions {
         // Flag to enable support for the new language APIs
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
     composeOptions {
@@ -62,8 +62,9 @@ dependencies {
     //Compose Utils
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("com.google.accompanist:accompanist-insets:0.20.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.20.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("com.google.accompanist:accompanist-insets:0.23.0")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.23.0")
     //Coroutines
     val coroutinesVersion = findProperty("version.kotlinx.coroutines")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -72,9 +73,15 @@ dependencies {
     implementation("com.google.dagger:hilt-android:${findProperty("version.hilt")}")
     kapt("com.google.dagger:hilt-compiler:${findProperty("version.hilt")}")
     //Navigation
-    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta16")
+    implementation("cafe.adriel.voyager:voyager-navigator:${findProperty("version.voyager")}")
+    implementation("cafe.adriel.voyager:voyager-transitions:${findProperty("version.voyager")}")
+    implementation("cafe.adriel.voyager:voyager-androidx:${findProperty("version.voyager")}")
+    implementation("cafe.adriel.voyager:voyager-hilt:${findProperty("version.voyager")}")
+
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:2.7.1")
+    //Logger
+    implementation("io.github.aakira:napier-android-debug:2.4.0")
 
     implementation("com.google.android.exoplayer:exoplayer-core:2.17.1")
     implementation("com.google.android.exoplayer:exoplayer-ui:2.17.1")

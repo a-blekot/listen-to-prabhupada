@@ -3,6 +3,7 @@ package com.anadi.prabhupadalectures.data
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.data.lectures.LectureFullModel
 import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
+import com.anadi.prabhupadalectures.repository.FIRST_PAGE
 import com.anadi.prabhupadalectures.utils.toBoolean
 import com.anadi.prabhupadalectures.utils.toLong
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -33,6 +34,7 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
                 fileUrl = fileUrl ?: "",
                 remoteUrl = remoteUrl,
                 isFavorite = isFavorite.toLong(),
+                isCompleted = isCompleted.toLong(),
                 downloadProgress = downloadProgress?.toLong(),
             )
         }
@@ -88,6 +90,20 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
 
     override fun deleteAllCachedLectures() =
         dbQuery.deleteAllCachedLectures()
+
+    override fun insertPage(id: Long, page: Int) =
+        dbQuery.insertPage(id = id, page = page.toLong())
+
+    override fun selectPage(id: Long) =
+        dbQuery.selectPage(id = id)
+            .executeAsOneOrNull()
+            ?.page?.toInt() ?: FIRST_PAGE
+
+    override fun deletePage(id: Long) =
+        dbQuery.deletePage(id = id)
+
+    override fun deleteAllPages() =
+        dbQuery.deleteAllPages()
 
     override fun insertSavedPosition(id: Long, pos: Long) =
         dbQuery.insertSavedPosition(id = id, pos = pos)

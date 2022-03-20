@@ -90,6 +90,6 @@ private inline fun <T> result(block: () -> T) =
     try {
         Result.success(block())
     } catch (t: Throwable) {
-        Napier.e("UserRepositoryImpl ", throwable = t)
+        Napier.e("PrabhupadaApiImpl ", throwable = t)
         Result.failure(t)
     }

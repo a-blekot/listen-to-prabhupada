@@ -22,17 +22,19 @@ import kotlinx.coroutines.withContext
 import java.io.Serializable
 
 data class ResultsState(
-    val loading: Boolean = false,
+    val isLoading: Boolean = false,
     val lecturesCount: Int = 0,
     val filters: List<Filter> = emptyList(),
-    val lectures: List<Lecture> = emptyList()
+    val lectures: List<Lecture> = emptyList(),
+    val pagination: Pagination = Pagination(),
 )
 
 interface ResultsRepository {
     fun observeState(): StateFlow<ResultsState>
 
     suspend fun init(): Unit?
-    suspend fun updateQuery(queryParam: QueryParam): Unit?
+    suspend fun updatePage(page: Int)
+    suspend fun updateQuery(queryParam: QueryParam)
 }
 
 class ResultsRepositoryImpl(
@@ -43,7 +45,8 @@ class ResultsRepositoryImpl(
     CoroutineScope by CoroutineScope(Dispatchers.Main), ResultsRepository, Serializable {
 
     private val state = MutableStateFlow(ResultsState())
-    private var pagination = Pagination()
+    private val currentPage
+        get() = state.value.pagination.curr
 
     init {
         if (withLog) Napier.base(DebugAntilog())
@@ -54,8 +57,16 @@ class ResultsRepositoryImpl(
 
     override fun observeState(): StateFlow<ResultsState> = state
 
-    override suspend fun init() =
-        loadMore(settings.getFilters())
+    override suspend fun init() {
+        loadMore(
+            settings
+                .getQueryParams()
+                .addPage(settings.getPage())
+        )
+    }
+
+    override suspend fun updatePage(page: Int) =
+        loadMore(buildQueryParams(page = page))
 
     override suspend fun updateQuery(queryParam: QueryParam) =
         loadMore(queryParam)
@@ -66,55 +77,62 @@ class ResultsRepositoryImpl(
     private suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
         updateLoading(true)
 
+        Napier.d("loadMore $queryParams", tag = "PAGE_DB")
+
         val result = api.getResults(queryParams)
         if (result.isSuccess) {
             result.getOrNull()?.let {
-                updatePagination(it)
                 updateData(it)
-            }
+            } ?: Unit
         } else {
             Napier.e(message = "api.getResults isFailure", throwable = result.exceptionOrNull())
             updateLoading(false)
         }
     }
 
-    private fun updatePagination(apiModel: ApiModel) {
-        pagination = Pagination(apiModel).copy(curr = pagination.next ?: 0)
-    }
-
     private fun updateData(apiModel: ApiModel) {
         val newState = ResultsState(
-            loading = false,
+            isLoading = false,
             lecturesCount = apiModel.count,
-            filters = ApiMapper.filters(apiModel),
-            lectures = ApiMapper.lectures(apiModel).updateFromDB()
+            filters = ApiMapper.filters(apiModel).updateFiltersFromDB(),
+            lectures = ApiMapper.lectures(apiModel).updateLecturesFromDB(),
+            pagination = Pagination(apiModel),
         )
 
         state.value = newState
-        settings.saveFilters(buildQueryParams())
+
+        val queryParams = buildQueryParams().toQueryParamsStringWithoutPage()
+
+        Napier.d("loadMore $queryParams", tag = "PAGE_DB")
+
+        settings.saveQueryParams(queryParams)
+        settings.savePage(currentPage)
+
+        Napier.d("save: id=${queryParams.hashCode().toLong()}, page=${currentPage}", tag = "PAGE_DB")
+        db.insertPage(queryParams.hashCode().toLong(), currentPage)
     }
 
     private fun updateLoading(loading: Boolean) =
         updateStateIfNeeded(loading = loading)
 
     private fun updateFromDb() =
-        updateStateIfNeeded(lectures = state.value.lectures.updateFromDB())
+        updateStateIfNeeded(lectures = state.value.lectures.updateLecturesFromDB())
 
     private fun updateStateIfNeeded(
-        loading: Boolean = state.value.loading,
+        loading: Boolean = state.value.isLoading,
         lectures: List<Lecture> = state.value.lectures
     ) {
-        if (loading != state.value.loading || lectures != state.value.lectures) {
+        if (loading != state.value.isLoading || lectures != state.value.lectures) {
             state.value = state.value.run {
                 copy(
-                    loading = loading,
+                    isLoading = loading,
                     lectures = lectures
                 )
             }
         }
     }
 
-    private fun List<Lecture>.updateFromDB() =
+    private fun List<Lecture>.updateLecturesFromDB() =
         map { lecture ->
             val cachedLecture = db.selectCachedLecture(lecture.id)
             lecture.copy(
@@ -124,8 +142,13 @@ class ResultsRepositoryImpl(
             )
         }
 
-    private fun buildQueryParams(queryParam: QueryParam? = null) =
-        buildQueryParams(queryParam, state.value.filters, pagination.curr)
+    private fun List<Filter>.updateFiltersFromDB() =
+        map { filter ->
+            filter.copy(isExpanded = db.selectExpandedFilter(filter.name))
+        }
+
+    private fun buildQueryParams(queryParam: QueryParam? = null, page: Int = currentPage) =
+        buildQueryParams(queryParam, state.value.filters, page, db)
 
     private fun observeDownloads() =
         launch {

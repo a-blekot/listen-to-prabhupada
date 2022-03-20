@@ -10,6 +10,9 @@
     <string name="download_lecture">Скачать</string>
     <string name="loading">Loading …</string>
 
+    <string name="previous_page">Предыдущая</string>
+    <string name="next_page">Следующая</string>
+
     <string name="playback_channel_name">Listen to Prabhupada playback notifications</string>
     <string name="download_channel_name">Listen to Prabhupada downloads notifications</string>
 </resources>

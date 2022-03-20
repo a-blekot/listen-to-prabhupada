@@ -7,12 +7,16 @@ import android.os.Environment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
+import cafe.adriel.voyager.core.registry.ScreenRegistry
+import com.anadi.prabhupadalectures.android.navigation.ScreenModules
 import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.repository.ResultsRepository
 import com.anadi.prabhupadalectures.utils.ConnectionState
 import com.anadi.prabhupadalectures.utils.DOWNLOADS_DIR
 import dagger.hilt.android.HiltAndroidApp
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -80,8 +84,20 @@ class PrabhupadaApp : Application() {
     @Inject
     lateinit var backgroundScope: CoroutineScope
 
+    @Inject
+    lateinit var screenModules: ScreenModules
+
     override fun onCreate() {
         super.onCreate()
+
+        Napier.base(DebugAntilog())
+
+        ScreenRegistry {
+            screenModules.forEach { it() }
+        }
+
+        Napier.d("КРИШНА ХАРЕ РАМА")
+
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleEventObserver)
 

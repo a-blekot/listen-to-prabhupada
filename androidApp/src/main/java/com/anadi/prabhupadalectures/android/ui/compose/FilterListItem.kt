@@ -5,7 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,9 +18,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anadi.prabhupadalectures.android.R
-import com.anadi.prabhupadalectures.android.ui.screens.FiltersViewModel
+import com.anadi.prabhupadalectures.android.ui.screens.results.ResultsEvent
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
 import com.anadi.prabhupadalectures.datamodel.QueryParam
@@ -26,38 +28,30 @@ import com.anadi.prabhupadalectures.datamodel.QueryParam
 fun FilterListItem(
     filter: Filter,
     modifier: Modifier = Modifier,
-    filtersViewModel: FiltersViewModel = viewModel()
+    onEvent: (ResultsEvent) -> Unit = {}
 ) =
     Column(
         modifier = modifier.padding(all = 8.dp),
     ) {
 
-        var isExpanded by remember { mutableStateOf(filtersViewModel.isExpanded(filter.name) ?: true) }
+        var isExpanded by remember { mutableStateOf(filter.isExpanded) }
 
         FilterTitle(filter, isExpanded) {
             isExpanded = it
-            filtersViewModel.saveExpanded(filter.name, it)
+            onEvent(ResultsEvent.Expand(filter.name, it))
         }
         if (isExpanded) {
             filter.options.forEach { option ->
                 OptionListItem(option) { isSelected ->
-
-                    filtersViewModel.updateQuery(
-                        QueryParam(
-                            filterName = filter.name,
-                            selectedOption = option.value,
-                            isSelected = isSelected
+                    onEvent(
+                        ResultsEvent.Option(
+                            QueryParam(
+                                filterName = filter.name,
+                                selectedOption = option.value,
+                                isSelected = isSelected
+                            )
                         )
                     )
-//                    uiListener?.invoke(
-//                        Option(
-//                            QueryParam(
-//                                filterName = filter.name,
-//                                selectedOption = option.value,
-//                                isSelected = isSelected
-//                            )
-//                        )
-//                    )
                 }
             }
         }

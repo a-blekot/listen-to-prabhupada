@@ -167,10 +167,18 @@ class Player(
 
     private fun saveCurrentPosition() =
         exoPlayer?.run {
-            tools.savePosition(
-                id = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
-                timeMs = currentPosition
-            )
+            if (duration < SAVE_POSITION_INTERVAL_SECONDS) {
+                return@run
+            }
+
+            val timeMs = if (trackIsAlmostCompleted) {
+                tools.setCompleted(currentId)
+                0L
+            } else {
+                currentPosition
+            }
+
+            tools.savePosition(id = currentId, timeMs = timeMs)
         }
 
     private var updateCounter = 0L
@@ -243,7 +251,7 @@ class Player(
         exoPlayer?.run {
             playWhenReady = false
 
-            if (currentMediaItem?.mediaId?.toLongOrNull() != lectureId) {
+            if (currentId != lectureId) {
                 switchTrack(lectureId)
             }
 
@@ -334,15 +342,22 @@ class Player(
 
     private val ExoPlayer.myPlaybackState
         get() = PlaybackState(
-            lecture = currentPlaylist.firstOrNull {
-                it.id == currentMediaItem?.mediaId?.toLongOrNull() ?: 0L
-            } ?: Lecture(),
+            lecture = currentLecture,
             isPlaying = isPlaying,
             hasNext = hasNextMediaItem(),
             hasPrevious = hasPreviousMediaItem(),
             timeMs = currentPosition,
             durationMs = duration
         )
+
+    private val ExoPlayer.currentId
+        get() = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L
+
+    private val ExoPlayer.currentLecture
+        get() = currentPlaylist.firstOrNull { it.id == currentId } ?: Lecture()
+
+    private val ExoPlayer.trackIsAlmostCompleted
+        get() = duration - currentPosition < SAVE_POSITION_INTERVAL_SECONDS * 1000L
 
 //    lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
 //    url = currentMediaItem?.localConfiguration?.uri?.toString() ?: "",

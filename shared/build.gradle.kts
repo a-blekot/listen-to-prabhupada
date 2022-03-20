@@ -46,7 +46,7 @@ kotlin {
                 //Coroutines
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${findProperty("version.kotlinx.coroutines")}")
                 //Logger
-                implementation("io.github.aakira:napier:2.1.0")
+                implementation("io.github.aakira:napier:${findProperty("version.napier")}")
                 //JSON
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${findProperty("version.kotlinx.serialization")}")
                 //Key-Value storage
@@ -69,6 +69,8 @@ kotlin {
                 api("io.ktor:ktor-client-okhttp:${findProperty("version.ktor")}")
                 implementation("io.ktor:ktor-client-android:${findProperty("version.ktor")}")
                 implementation("com.squareup.sqldelight:android-driver:${findProperty("version.sql_delight")}")
+                //Logger
+//                implementation("io.github.aakira:napier-android:${findProperty("version.napier")}")
             }
         }
         val androidTest by getting {
@@ -82,6 +84,8 @@ kotlin {
                 //Network
                 implementation("io.ktor:ktor-client-ios:${findProperty("version.ktor")}")
                 implementation("com.squareup.sqldelight:native-driver:${findProperty("version.sql_delight")}")
+                //Logger
+//                implementation("io.github.aakira:napier-ios:${findProperty("version.napier")}")
             }
         }
         val iosTest by getting

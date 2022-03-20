@@ -17,6 +17,11 @@ interface Database {
     fun deleteFromFavoritesOnly(lecture: Lecture)
     fun deleteAllCachedLectures()
 
+    fun insertPage(id: Long, page: Int)
+    fun selectPage(id: Long): Int
+    fun deletePage(id: Long)
+    fun deleteAllPages()
+
     fun insertSavedPosition(id: Long, pos: Long)
     fun selectSavedPosition(id: Long): Long
     fun deleteSavedPosition(id: Long)

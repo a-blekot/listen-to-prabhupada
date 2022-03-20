@@ -12,12 +12,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import cafe.adriel.voyager.navigator.Navigator
 import com.anadi.prabhupadalectures.android.download.DownloadService
 import com.anadi.prabhupadalectures.android.download.DownloadServiceAction
+import com.anadi.prabhupadalectures.android.navigation.NavigatorWrapper
 import com.anadi.prabhupadalectures.android.player.PlaybackService
 import com.anadi.prabhupadalectures.android.ui.compose.AppTheme
-import com.anadi.prabhupadalectures.android.ui.compose.MainScreen
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
@@ -46,13 +45,14 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                             rememberInsetsPaddingValues(
                                 insets = LocalWindowInsets.current.systemBars,
                                 applyStart = true,
-                                applyTop = false,
+                                applyTop = true,
                                 applyEnd = true,
-                                applyBottom = false
+                                applyBottom = true
                             )
                         )
                     ) {
-                        Navigator(MainScreen())
+                        NavigatorWrapper()
+//                        Navigator(MainScreen())
                     }
                 }
             }

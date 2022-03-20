@@ -5,6 +5,7 @@ import com.anadi.prabhupadalectures.data.lectures.Lecture
 import java.io.Serializable
 
 interface ToolsRepository {
+    fun setCompleted(id: Long)
     fun setFavorite(lecture: Lecture, isFavorite: Boolean)
     fun savePosition(id: Long, timeMs: Long)
     fun getPosition(id: Long): Long
@@ -16,6 +17,11 @@ interface ToolsRepository {
 class ToolsRepositoryImpl(
     private val db: Database
 ) : ToolsRepository {
+
+    override fun setCompleted(id: Long) =
+        db.selectCachedLecture(id)?.let {
+            db.insertCachedLecture(it.copy(isCompleted = true))
+        } ?: Unit
 
     override fun setFavorite(lecture: Lecture, isFavorite: Boolean) =
         db.insertCachedLecture(lecture.copy(isFavorite = isFavorite))

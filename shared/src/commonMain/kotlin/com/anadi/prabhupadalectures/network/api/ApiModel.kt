@@ -20,4 +20,4 @@ data class ApiModel(
 }
 
 private val String.pageNumber
-    get() = split("?page=").getOrNull(1)?.toIntOrNull()
+    get() = split("page=").getOrNull(1)?.toIntOrNull()

@@ -28,6 +28,7 @@ data class Lecture(
     val fileUrl: String? = null,
     val remoteUrl: String = "",
     val isFavorite: Boolean = false,
+    val isCompleted: Boolean = false,
     val downloadProgress: Int? = null
 ) {
     constructor(lecture: LectureFullModel) : this(
@@ -50,6 +51,7 @@ data class Lecture(
         fileUrl = cachedLecture.fileUrl,
         remoteUrl = cachedLecture.remoteUrl,
         isFavorite = cachedLecture.isFavorite.toBoolean(),
+        isCompleted = cachedLecture.isCompleted.toBoolean(),
         downloadProgress = cachedLecture.downloadProgress?.toInt()
     )
 

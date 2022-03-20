@@ -15,8 +15,9 @@ data class PlaybackState(
 
 interface PlaybackRepository {
     fun observeState(): StateFlow<PlaybackState>
+    fun currentState(): PlaybackState
     fun observePlayerActions(): SharedFlow<PlayerAction>
-    fun updateState(state: PlaybackState)
+    fun updateState(value: PlaybackState)
     suspend fun handleAction(playerAction: PlayerAction)
 }
 
@@ -26,6 +27,8 @@ class PlaybackRepositoryImpl : PlaybackRepository, Serializable {
     private val playerActionFlow = MutableSharedFlow<PlayerAction>()
 
     override fun observeState() = playbackFlow.asStateFlow()
+
+    override fun currentState() = playbackFlow.value
 
     override fun observePlayerActions() = playerActionFlow.asSharedFlow()
 
