@@ -3,6 +3,7 @@ package com.anadi.prabhupadalectures.datamodel
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
 import com.anadi.prabhupadalectures.data.lectures.*
+import com.anadi.prabhupadalectures.network.Routes
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.network.api.filters.FilterApiModel
 import com.anadi.prabhupadalectures.network.api.filters.OptionApiModel
@@ -20,6 +21,17 @@ object ApiMapper {
 
     fun lecture(apiModel: LectureApiModel) =
         Lecture(
+            id = apiModel.id,
+            title = apiModel.title,
+            description = apiModel.description,
+            date = apiModel.date,
+            place = apiModel.place.name,
+            durationMillis = apiModel.duration.parseDuration(),
+            remoteUrl = "${Routes.BASE_URL}${apiModel.url}"
+        )
+
+    fun lectureFullModel(apiModel: LectureApiModel) =
+        LectureFullModel(
             id = apiModel.id,
             slug = apiModel.slug,
             date = apiModel.date,

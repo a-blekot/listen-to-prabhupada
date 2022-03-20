@@ -1,27 +1,28 @@
 package com.anadi.prabhupadalectures.data
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
+import kotlinx.coroutines.flow.Flow
 
 interface Database {
     fun clearDatabase()
 
-    fun saveDownload(lecture: Lecture, fileUrl: String? = null)
-    fun isDownloaded(id: Long): Boolean
-    fun getAllDownloads(): List<Download>
-    fun removeDownload(id: Long)
-    fun removeAllDownloads()
+    fun insertCachedLecture(lecture: Lecture)
+    fun selectCachedLecture(id: Long): Lecture?
+    fun selectAllDownloads(): List<Lecture>
+    fun selectAllFavorites(): List<Lecture>
+    fun observeAllDownloads(): Flow<List<Lecture>>
+    fun observeAllFavorites(): Flow<List<Lecture>>
+    fun deleteCachedLecture(id: Long)
+    fun deleteFromDownloadsOnly(lecture: Lecture)
+    fun deleteFromFavoritesOnly(lecture: Lecture)
+    fun deleteAllCachedLectures()
 
-    fun setFavorite(id: Long)
-    fun isFavorite(id: Long): Boolean
-    fun getAllFavorites(): List<Long>
-    fun removeFavorite(id: Long)
-    fun removeAllFavorites()
+    fun insertSavedPosition(id: Long, pos: Long)
+    fun selectSavedPosition(id: Long): Long
+    fun deleteSavedPosition(id: Long)
+    fun deleteAllSavedPositions()
 
-    fun savePosition(id: Long, pos: Long)
-    fun getSavedPosition(id: Long): Long
-    fun removeSavedPosition(id: Long)
-    fun removeAllSavedPosition()
-
-    fun isExpanded(filterName: String): Boolean
-    fun saveExpanded(filterName: String, isExpanded: Boolean)
+    fun insertExpandedFilter(filterName: String, isExpanded: Boolean)
+    fun selectExpandedFilter(filterName: String): Boolean
+    fun deleteAllExpandedFilters()
 }

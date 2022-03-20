@@ -1,15 +1,14 @@
-CREATE TABLE Download (
+CREATE TABLE CachedLecture (
     id INTEGER NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
     date TEXT NOT NULL,
     place TEXT NOT NULL,
     durationMillis INTEGER NOT NULL,
-    fileUrl TEXT
-);
-
-CREATE TABLE Favorite (
-    id INTEGER NOT NULL PRIMARY KEY
+    fileUrl TEXT NOT NULL,
+    remoteUrl TEXT NOT NULL,
+    isFavorite INTEGER NOT NULL,
+    downloadProgress INTEGER
 );
 
 CREATE TABLE SavedPosition (
@@ -22,45 +21,32 @@ CREATE TABLE ExpandedFilter (
     expanded INTEGER NOT NULL
 );
 
-insertDownload:
-INSERT OR REPLACE INTO Download(id, title, description, date, place, durationMillis, fileUrl)
-VALUES(?, ?, ?, ?, ?, ?, ?);
+insertCachedLecture:
+INSERT OR REPLACE INTO CachedLecture(id, title, description, date, place, durationMillis, fileUrl, remoteUrl, isFavorite, downloadProgress)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
-selectDownload:
-SELECT 1 FROM Download
+selectCachedLecture:
+SELECT * FROM CachedLecture
 WHERE id = ?
-LIMIT 1
-;
+LIMIT 1;
 
-selectAllDownload:
-SELECT * FROM Download;
+selectAllCachedLectures:
+SELECT * FROM CachedLecture;
 
-removeDownload:
-DELETE FROM Download
+selectAllDownloads:
+SELECT * FROM CachedLecture
+WHERE downloadProgress = 100;
+
+selectAllFavorites:
+SELECT * FROM CachedLecture
+WHERE isFavorite = 1;
+
+deleteCachedLecture:
+DELETE FROM CachedLecture
 WHERE id = ?;
 
-removeAllDownload:
-DELETE FROM Download;
-
-insertFavorite:
-INSERT OR REPLACE INTO Favorite(id)
-VALUES(?);
-
-selectFavorite:
-SELECT 1 FROM Favorite
-WHERE id = ?
-LIMIT 1
-;
-
-selectAllFavorite:
-SELECT * FROM Favorite;
-
-removeFavorite:
-DELETE FROM Favorite
-WHERE id = ?;
-
-removeAllFavorite:
-DELETE FROM Favorite;
+deleteAllCachedLectures:
+DELETE FROM CachedLecture;
 
 insertSavedPosition:
 INSERT OR REPLACE INTO SavedPosition(id, pos)
@@ -70,11 +56,11 @@ selectSavedPosition:
 SELECT * FROM SavedPosition
 WHERE id = ?;
 
-removeSavedPosition:
+deleteSavedPosition:
 DELETE FROM SavedPosition
 WHERE id = ?;
 
-removeAllSavedPosition:
+deleteAllSavedPositions:
 DELETE FROM SavedPosition;
 
 insertExpandedFilter:
@@ -84,3 +70,6 @@ VALUES(?, ?);
 selectExpandedFilter:
 SELECT * FROM ExpandedFilter
 WHERE id = ?;
+
+deleteAllExpandedFilters:
+DELETE FROM ExpandedFilter;

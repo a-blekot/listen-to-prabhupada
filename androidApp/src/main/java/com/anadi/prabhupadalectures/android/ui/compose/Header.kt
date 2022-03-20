@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Header(modifier: Modifier = Modifier) =
-    Text(text = "Header")
+fun Header(lecturesCount: Int) =
+    Text(text = "Header lecturesCount = $lecturesCount")

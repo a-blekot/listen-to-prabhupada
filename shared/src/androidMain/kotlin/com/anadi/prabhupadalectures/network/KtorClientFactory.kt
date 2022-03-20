@@ -1,5 +1,6 @@
 package com.anadi.prabhupadalectures.network
 
+import com.anadi.prabhupadalectures.network.api.DEFAULT_HTTP_TIMEOUT
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -24,6 +25,11 @@ actual class KtorClientFactory {
             install(Logging) {
                 logger = Logger.ANDROID
                 level = LogLevel.ALL
+            }
+            install(HttpTimeout) {
+                requestTimeoutMillis = DEFAULT_HTTP_TIMEOUT
+                socketTimeoutMillis = DEFAULT_HTTP_TIMEOUT
+                connectTimeoutMillis = DEFAULT_HTTP_TIMEOUT
             }
 //            install(CustomHeadersFeature) {
 //                appId = APP_ID

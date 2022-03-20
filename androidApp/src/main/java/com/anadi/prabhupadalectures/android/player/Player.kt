@@ -6,20 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Build
 import com.anadi.prabhupadalectures.android.DebugLog
 import com.anadi.prabhupadalectures.android.MainActivity
 import com.anadi.prabhupadalectures.android.R
-import com.anadi.prabhupadalectures.android.ui.compose.*
+import com.anadi.prabhupadalectures.android.util.notificationColor
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.datamodel.Playlist
-import com.anadi.prabhupadalectures.repository.PlaybackState
-import com.anadi.prabhupadalectures.repository.Repository
+import com.anadi.prabhupadalectures.repository.*
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 private const val UPDATE_PLAYBACK_STATE_INTERVAL_MS = 1000L
 private const val SAVE_POSITION_INTERVAL_SECONDS = UPDATE_PLAYBACK_STATE_INTERVAL_MS * 5 / 1000
@@ -29,7 +28,8 @@ const val SEEK_INCREMENT_MS = 10_000L
 
 class Player(
     context: Context,
-    private val repository: Repository,
+    private val playbackRepository: PlaybackRepository,
+    private val tools: ToolsRepository,
     private val playerScope: CoroutineScope,
     private val listener: Listener
 ) {
@@ -70,10 +70,8 @@ class Player(
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
             listener.onTrackChanged(mediaItem)
-            DebugLog.d("PlaybackService", "onMediaItemTransition")
             mediaItem?.mediaId?.toLongOrNull()?.let { lectureId ->
-                DebugLog.d("PlaybackService", "lectureId = $lectureId, pos = ${repository.getSavedPosition(lectureId)}")
-                exoPlayer?.seekTo(repository.getSavedPosition(lectureId))
+                exoPlayer?.seekTo(tools.getPosition(lectureId))
             }
             launchUpdateJob()
         }
@@ -137,7 +135,7 @@ class Player(
             .setPreviousActionIconResourceId(R.drawable.ic_player_prev)
             .setFastForwardActionIconResourceId(R.drawable.ic_player_seek_forward)
             .setRewindActionIconResourceId(R.drawable.ic_player_seek_backward)
-            .setChannelNameResourceId(R.string.channel_name)
+            .setChannelNameResourceId(R.string.playback_channel_name)
             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
             .setNotificationListener(notificationListener)
             .build().apply {
@@ -149,20 +147,28 @@ class Player(
                 setUseRewindAction(true)
                 setUseChronometer(true)
                 setColorized(true)
-                setColor(Color.rgb(182, 93, 13))
+                setColor(notificationColor)
             }
     }
 
-    private var currentPlaylist = Playlist()
-    private var pendingPlaylist = Playlist()
+    private var currentPlaylist: List<Lecture> = emptyList()
+    private var pendingPlaylist: List<Lecture> = emptyList()
+
+    init {
+        playerScope.launch {
+            playbackRepository.observePlayerActions()
+                .onEach { handleAction(it) }
+                .collect()
+        }
+    }
 
     private fun updatePlaybackState(playbackState: PlaybackState = exoPlayer?.myPlaybackState ?: PlaybackState()) =
-        repository.setPlaybackState(playbackState)
+        playbackRepository.updateState(playbackState)
 
     private fun saveCurrentPosition() =
         exoPlayer?.run {
-            repository.savePosition(
-                lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
+            tools.savePosition(
+                id = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
                 timeMs = currentPosition
             )
         }
@@ -180,10 +186,12 @@ class Player(
         exoPlayer = null
     }
 
-    fun handleAction(uiAction: UIAction) =
-        when (uiAction) {
-            is Play -> play(uiAction.lectureId)
-            is SeekTo -> seekTo(uiAction.timeMs)
+    private fun handleAction(playerAction: PlayerAction) {
+        DebugLog.d("PlaybackService", "handleAction $playerAction")
+
+        when (playerAction) {
+            is Play -> play(playerAction.lectureId)
+            is SeekTo -> seekTo(playerAction.timeMs)
             Pause -> exoPlayer?.playWhenReady = false
             Next -> exoPlayer?.seekToNextMediaItem()
             Prev -> exoPlayer?.seekToPreviousMediaItem()
@@ -194,16 +202,29 @@ class Player(
                 /** do nothing */
             }
         }
+    }
 
-    suspend fun setPlaylist(playlist: Playlist) =
+
+    suspend fun setPlaylist(playlist: List<Lecture>) =
         withContext(Dispatchers.Main) {
             pendingPlaylist = playlist
-
-            if (currentPlaylist.isEmpty()) {
-                currentPlaylist = pendingPlaylist
-                resetTracks(currentPlaylist.lectures)
-            }
+            maybeUpdateCurrentPlaylist(playlist)
         }
+
+    private fun maybeUpdateCurrentPlaylist(playlist: List<Lecture>) {
+        if (currentPlaylist.isEmpty()) {
+            currentPlaylist = playlist
+            resetTracks(currentPlaylist)
+            return
+        }
+
+        val old = currentPlaylist.map { it.id }
+        val new = playlist.map { it.id }
+
+        if (old == new) {
+            currentPlaylist = playlist
+        }
+    }
 
     fun showNotification() =
         playerNotificationManager.setPlayer(exoPlayer)
@@ -232,13 +253,13 @@ class Player(
     private fun switchTrack(lectureId: Long) {
         if (pendingPlaylist.any { it.id == lectureId }) {
             currentPlaylist = pendingPlaylist
-            resetTracks(currentPlaylist.lectures)
+            resetTracks(currentPlaylist)
         }
 
-        val index = currentPlaylist.lectures.indexOfFirst { it.id == lectureId }
-        if (index >= 0 && index < currentPlaylist.lectures.size) {
+        val index = currentPlaylist.indexOfFirst { it.id == lectureId }
+        if (index >= 0 && index < currentPlaylist.size) {
             try {
-                exoPlayer?.seekTo(index, repository.getSavedPosition(lectureId))
+                exoPlayer?.seekTo(index, tools.getPosition(lectureId))
             } catch (e: IllegalSeekPositionException) {
 
             }
@@ -295,14 +316,17 @@ class Player(
         }
     }
 
+    val totalDurationMillis
+        get() = currentPlaylist.sumOf { it.durationMillis }
+
     private fun Lecture.toMediaItem(): MediaItem {
         val metaData = MediaMetadata.Builder()
             .setDescription(displayedDescription)
-            .setTitle(displayedTitle)
+            .setTitle(title)
             .build()
 
         return MediaItem.Builder()
-            .setUri(fileInfo.mediaStreamUrl)
+            .setUri(fileUrl ?: remoteUrl)
             .setMediaId("$id")
             .setMediaMetadata(metaData)
             .build()
@@ -310,13 +334,18 @@ class Player(
 
     private val ExoPlayer.myPlaybackState
         get() = PlaybackState(
-            lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
-            title = mediaMetadata.title?.toString() ?: "",
-            description = mediaMetadata.description?.toString() ?: "",
+            lecture = currentPlaylist.firstOrNull {
+                it.id == currentMediaItem?.mediaId?.toLongOrNull() ?: 0L
+            } ?: Lecture(),
             isPlaying = isPlaying,
             hasNext = hasNextMediaItem(),
             hasPrevious = hasPreviousMediaItem(),
             timeMs = currentPosition,
             durationMs = duration
         )
+
+//    lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
+//    url = currentMediaItem?.localConfiguration?.uri?.toString() ?: "",
+//    title = mediaMetadata.title?.toString() ?: "",
+//    description = mediaMetadata.description?.toString() ?: "",
 }

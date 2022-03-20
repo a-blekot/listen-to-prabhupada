@@ -13,46 +13,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.Navigator
+import com.anadi.prabhupadalectures.android.download.DownloadService
+import com.anadi.prabhupadalectures.android.download.DownloadServiceAction
 import com.anadi.prabhupadalectures.android.player.PlaybackService
-import com.anadi.prabhupadalectures.android.ui.compose.*
-import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
-import com.anadi.prabhupadalectures.repository.Repository
+import com.anadi.prabhupadalectures.android.ui.compose.AppTheme
+import com.anadi.prabhupadalectures.android.ui.compose.MainScreen
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), ServiceConnection {
 
-    private val uiListener: (UIAction) -> Unit = { uiAction ->
-        when (uiAction) {
-            is Option -> {
-                lifecycleScope.launchWhenStarted {
-                    repository.updateQuery(uiAction.queryParam)
-                }
-            }
-            is Favorite -> {
-                if (uiAction.isFavorite) {
-                    repository.addFavorite(uiAction.lectureId)
-                } else {
-                    repository.removeFavorite(uiAction.lectureId)
-                }
-            }
-            else -> playbackService?.handleAction(uiAction)
-        }
-    }
-
-    private val serviceIntent
+    private val playbackServiceIntent
         get() = Intent(this, PlaybackService::class.java)
 
-    private var playbackService: PlaybackService? = null
+    private val downloadServiceIntent
+        get() = Intent(this, DownloadService::class.java)
 
-    @Inject
-    lateinit var repository: Repository
+    private var playbackService: PlaybackService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +52,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                             )
                         )
                     ) {
-                        Navigator(MainScreen(repository, uiListener))
+                        Navigator(MainScreen())
                     }
                 }
             }
@@ -81,17 +62,25 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     override fun onStart() {
         super.onStart()
         DebugLog.d("PlaybackService", "ACTIVITY startService")
-        startService(serviceIntent)
+        startService(playbackServiceIntent)
         lifecycleScope.launchWhenStarted {
-            delay(300L)
+            delay(500L)
             // TODO applicationContext.bindService ??
-            bindService(serviceIntent, this@MainActivity, Context.BIND_IMPORTANT)
+            applicationContext.bindService(playbackServiceIntent, this@MainActivity, Context.BIND_IMPORTANT)
         }
+
+        downloadServiceIntent
+            .apply { action = DownloadServiceAction.ON_ACTIVITY_START.name }
+            .let { intent -> startService(intent) }
     }
 
     override fun onStop() {
+        downloadServiceIntent
+            .apply { action = DownloadServiceAction.ON_ACTIVITY_STOP.name }
+            .let { intent -> startService(intent) }
+
         playbackService?.onActivityStopped()
-        unbindService(this)
+        applicationContext.unbindService(this)
         super.onStop()
     }
 

@@ -48,6 +48,9 @@ dependencies {
     implementation(project(":shared"))
 
 //    com.android.support:appcompat-v7
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha04")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-process:2.4.1")
 
     //desugar utils
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
@@ -69,12 +72,12 @@ dependencies {
     implementation("com.google.dagger:hilt-android:${findProperty("version.hilt")}")
     kapt("com.google.dagger:hilt-compiler:${findProperty("version.hilt")}")
     //Navigation
-    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta13")
+    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta16")
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
-    implementation("com.google.android.exoplayer:exoplayer-core:2.17.0")
-    implementation("com.google.android.exoplayer:exoplayer-ui:2.17.0")
+    implementation("com.google.android.exoplayer:exoplayer-core:2.17.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.17.1")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 }

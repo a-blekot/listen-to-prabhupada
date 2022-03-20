@@ -9,12 +9,14 @@ import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import com.anadi.prabhupadalectures.android.DebugLog
-import com.anadi.prabhupadalectures.android.ui.compose.UIAction
-import com.anadi.prabhupadalectures.repository.Repository
+import com.anadi.prabhupadalectures.android.util.cancelSafely
+import com.anadi.prabhupadalectures.repository.PlaybackRepository
+import com.anadi.prabhupadalectures.repository.ResultsRepository
+import com.anadi.prabhupadalectures.repository.ToolsRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.collect
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,7 +32,13 @@ class PlaybackService : Service(), Player.Listener {
     private var wakeLock: PowerManager.WakeLock? = null
 
     @Inject
-    lateinit var repository: Repository
+    lateinit var resultsRepository: ResultsRepository
+
+    @Inject
+    lateinit var playbackRepository: PlaybackRepository
+
+    @Inject
+    lateinit var tools: ToolsRepository
 
     private val playerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -66,13 +74,15 @@ class PlaybackService : Service(), Player.Listener {
     override fun onCreate() {
         super.onCreate()
         DebugLog.d("PlaybackService", "onCreate")
-        player = Player(this, repository, playerScope,this)
+        player = Player(this, playbackRepository, tools, playerScope, this)
 
         playerScope.launch {
-            repository.observeState().collect {
-                player?.setPlaylist(it.playlist)
-            }
+            resultsRepository.observeState()
+                .onEach { player?.setPlaylist(it.lectures) }
+                .collect()
         }
+
+        requireWakeLock()
     }
 
     override fun onDestroy() {
@@ -95,17 +105,14 @@ class PlaybackService : Service(), Player.Listener {
 //        TODO("Not yet implemented")
         DebugLog.d("PlaybackService", "onNotificationCancelled")
         stopForeground(true)
-        stopSelf()
+//        stopSelf()
     }
 
     override fun onPlaybackStarted(timeLeft: Long) {
 //        TODO("Not yet implemented")
     }
 
-    fun handleAction(uiAction: UIAction) =
-        player?.handleAction(uiAction)
-
-    private fun requireWakeLock(duration: Long) {
+    private fun requireWakeLock(duration: Long = player?.totalDurationMillis ?: 0L) {
         if (packageManager.checkPermission(WAKE_LOCK, packageName) == PERMISSION_GRANTED) {
             try {
                 val manager = getSystemService(POWER_SERVICE) as? PowerManager
@@ -124,14 +131,4 @@ class PlaybackService : Service(), Player.Listener {
             DebugLog.d("PlaybackService", "releaseWakeLock")
             if (isHeld) release()
         }
-
-    private fun CoroutineScope.cancelSafely(msg: String) {
-        try {
-            if (isActive) {
-                cancel(msg)
-            }
-        } catch (e: IllegalStateException) {
-
-        }
-    }
 }

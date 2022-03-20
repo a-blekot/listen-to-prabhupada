@@ -7,8 +7,8 @@ import com.anadi.prabhupadalectures.data.DatabaseDriverFactory
 import com.anadi.prabhupadalectures.data.DatabaseImpl
 import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
 import com.anadi.prabhupadalectures.network.api.createPrabhupadaApi
-import com.anadi.prabhupadalectures.repository.Repository
-import com.anadi.prabhupadalectures.repository.RepositoryImpl
+import com.anadi.prabhupadalectures.repository.*
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +36,18 @@ class MainModule {
         createPrabhupadaApi()
 
     @[Provides Singleton]
-    fun provideRepository(db: Database, api: PrabhupadaApi) : Repository =
-        RepositoryImpl(db, api, BuildConfig.DEBUG)
+    fun provideResultsRepository(db: Database, api: PrabhupadaApi) : ResultsRepository =
+        ResultsRepositoryImpl(db, api, BuildConfig.DEBUG)
+
+    @[Provides Singleton]
+    fun provideDownloadsRepository(db: Database, api: PrabhupadaApi) : DownloadsRepository =
+        DownloadsRepositoryImpl(db, api)
+
+    @[Provides Singleton]
+    fun providePlaybackRepository(): PlaybackRepository =
+        PlaybackRepositoryImpl()
+
+    @[Provides Singleton]
+    fun provideToolsRepository(db: Database) : ToolsRepository =
+        ToolsRepositoryImpl(db)
 }

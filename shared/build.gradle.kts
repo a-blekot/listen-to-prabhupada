@@ -53,6 +53,7 @@ kotlin {
                 implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
                 //Data Base
                 implementation("com.squareup.sqldelight:runtime:${findProperty("version.sql_delight")}")
+                implementation("com.squareup.sqldelight:coroutines-extensions:${findProperty("version.sql_delight")}")
             }
         }
 

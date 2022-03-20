@@ -15,41 +15,49 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anadi.prabhupadalectures.android.R
+import com.anadi.prabhupadalectures.android.ui.screens.FiltersViewModel
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
 import com.anadi.prabhupadalectures.datamodel.QueryParam
-import com.anadi.prabhupadalectures.repository.Repository
 
 @Composable
 fun FilterListItem(
     filter: Filter,
-    repository : Repository? = null,
-    uiListener: ((UIAction) -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    filtersViewModel: FiltersViewModel = viewModel()
 ) =
     Column(
         modifier = modifier.padding(all = 8.dp),
     ) {
 
-        var isExpanded by remember { mutableStateOf(repository?.isExpanded(filter.name) ?: true) }
+        var isExpanded by remember { mutableStateOf(filtersViewModel.isExpanded(filter.name) ?: true) }
 
         FilterTitle(filter, isExpanded) {
             isExpanded = it
-            repository?.saveExpanded(filter.name, it)
+            filtersViewModel.saveExpanded(filter.name, it)
         }
         if (isExpanded) {
             filter.options.forEach { option ->
                 OptionListItem(option) { isSelected ->
-                    uiListener?.invoke(
-                        Option(
-                            QueryParam(
-                                filterName = filter.name,
-                                selectedOption = option.value,
-                                isSelected = isSelected
-                            )
+
+                    filtersViewModel.updateQuery(
+                        QueryParam(
+                            filterName = filter.name,
+                            selectedOption = option.value,
+                            isSelected = isSelected
                         )
                     )
+//                    uiListener?.invoke(
+//                        Option(
+//                            QueryParam(
+//                                filterName = filter.name,
+//                                selectedOption = option.value,
+//                                isSelected = isSelected
+//                            )
+//                        )
+//                    )
                 }
             }
         }

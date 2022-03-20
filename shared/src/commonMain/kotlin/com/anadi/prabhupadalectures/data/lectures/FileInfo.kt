@@ -26,18 +26,21 @@ data class FileInfo(
                 return _durationMillis
             }
 
-            // 00:03:09.072000
-            try {
-                val arr = duration.split(":")
-                val hours = arr.getOrNull(0)?.toLong() ?: 0L
-                val minutes = arr.getOrNull(1)?.toLong() ?: 0L
-                val seconds = arr.getOrNull(2)?.toFloat() ?: 0F
-
-                _durationMillis = hours * 3_600_000 + minutes * 60_000 + (seconds * 1000).toLong()
-            } catch (e: NumberFormatException) {
-                Napier.e("failed to compute durationMillis", e)
-            }
-
+            _durationMillis = duration.parseDuration()
             return _durationMillis
         }
 }
+
+// 00:03:09.072000
+fun String.parseDuration() =
+    try {
+        val arr = split(":")
+        val hours = arr.getOrNull(0)?.toLong() ?: 0L
+        val minutes = arr.getOrNull(1)?.toLong() ?: 0L
+        val seconds = arr.getOrNull(2)?.toFloat() ?: 0F
+
+        hours * 3_600_000 + minutes * 60_000 + (seconds * 1000).toLong()
+    } catch (e: NumberFormatException) {
+        Napier.e("failed to compute durationMillis", e)
+        0L
+    }

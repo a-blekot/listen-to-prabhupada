@@ -1,8 +1,13 @@
 package com.anadi.prabhupadalectures.data
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
+import com.anadi.prabhupadalectures.data.lectures.LectureFullModel
+import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
 import com.anadi.prabhupadalectures.utils.toBoolean
 import com.anadi.prabhupadalectures.utils.toLong
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.flow.map
 
 class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
     private val database = AppDatabase(databaseDriverFactory.createDriver())
@@ -10,65 +15,102 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
 
     override fun clearDatabase() {
         dbQuery.transaction {
-            dbQuery.removeAllDownload()
-            dbQuery.removeAllFavorite()
-            dbQuery.removeAllSavedPosition()
+            dbQuery.deleteAllCachedLectures()
+            dbQuery.deleteAllSavedPositions()
+            dbQuery.deleteAllExpandedFilters()
         }
     }
 
-    override fun saveDownload(lecture: Lecture, fileUrl: String?) =
-        dbQuery.insertDownload(
-            id = lecture.id,
-            title = lecture.title,
-            description = lecture.description,
-            date = lecture.date,
-            place = lecture.place,
-            durationMillis = lecture.fileInfo.durationMillis,
-            fileUrl = fileUrl
-        )
+    override fun insertCachedLecture(lecture: Lecture) =
+        lecture.run {
+            dbQuery.insertCachedLecture(
+                id = id,
+                title = title,
+                description = description,
+                date = date,
+                place = place,
+                durationMillis = durationMillis,
+                fileUrl = fileUrl ?: "",
+                remoteUrl = remoteUrl,
+                isFavorite = isFavorite.toLong(),
+                downloadProgress = downloadProgress?.toLong(),
+            )
+        }
 
-    override fun isDownloaded(id: Long) =
-        dbQuery.selectDownload(id = id).executeAsList().isNotEmpty()
+    override fun selectCachedLecture(id: Long) =
+        dbQuery.selectCachedLecture(id = id)
+            .executeAsList()
+            .map { Lecture(it) }
+            .getOrNull(0)
 
-    override fun getAllDownloads() =
-        dbQuery.selectAllDownload().executeAsList()
+    override fun selectAllDownloads() =
+        dbQuery.selectAllDownloads()
+            .executeAsList()
+            .map { Lecture(it) }
 
-    override fun removeDownload(id: Long) =
-        dbQuery.removeDownload(id = id)
+    override fun selectAllFavorites() =
+        dbQuery.selectAllFavorites()
+            .executeAsList()
+            .map { Lecture(it) }
 
-    override fun removeAllDownloads() =
-        dbQuery.removeAllDownload()
+    override fun observeAllDownloads() =
+        dbQuery.selectAllDownloads()
+            .asFlow()
+            .mapToList()
+            .map { list -> list.map { Lecture(it) } }
 
-    override fun setFavorite(id: Long) =
-        dbQuery.insertFavorite(id = id)
+    override fun observeAllFavorites() =
+        dbQuery.selectAllFavorites()
+            .asFlow()
+            .mapToList()
+            .map { list -> list.map { Lecture(it) } }
 
-    override fun isFavorite(id: Long) =
-        dbQuery.selectFavorite(id = id).executeAsList().isNotEmpty()
+    override fun deleteCachedLecture(id: Long) =
+        dbQuery.deleteCachedLecture(id = id)
 
-    override fun getAllFavorites() =
-        dbQuery.selectAllFavorite().executeAsList()
+    override fun deleteFromDownloadsOnly(lecture: Lecture) =
+        if (selectCachedLecture(lecture.id)?.isFavorite == true) {
+            insertCachedLecture(
+                lecture.copy(fileUrl = null, downloadProgress = null)
+            )
+        } else {
+            deleteCachedLecture(lecture.id)
+        }
 
-    override fun removeFavorite(id: Long) =
-        dbQuery.removeFavorite(id = id)
+    override fun deleteFromFavoritesOnly(lecture: Lecture) =
+        selectCachedLecture(lecture.id)?.run {
+            if (isDownloaded) {
+                insertCachedLecture(lecture.copy(isFavorite = false))
+            } else {
+                deleteCachedLecture(lecture.id)
+            }
+        } ?: Unit
 
-    override fun removeAllFavorites() =
-        dbQuery.removeAllFavorite()
+    override fun deleteAllCachedLectures() =
+        dbQuery.deleteAllCachedLectures()
 
-    override fun savePosition(id: Long, pos: Long) =
+    override fun insertSavedPosition(id: Long, pos: Long) =
         dbQuery.insertSavedPosition(id = id, pos = pos)
 
-    override fun getSavedPosition(id: Long) =
-        dbQuery.selectSavedPosition(id = id).executeAsOneOrNull()?.pos ?: 0L
+    override fun selectSavedPosition(id: Long) =
+        dbQuery.selectSavedPosition(id = id)
+            .executeAsOneOrNull()
+            ?.pos ?: 0L
 
-    override fun removeSavedPosition(id: Long) =
-        dbQuery.removeSavedPosition(id = id)
+    override fun deleteSavedPosition(id: Long) =
+        dbQuery.deleteSavedPosition(id = id)
 
-    override fun removeAllSavedPosition() =
-        dbQuery.removeAllSavedPosition()
+    override fun deleteAllSavedPositions() =
+        dbQuery.deleteAllSavedPositions()
 
-    override fun isExpanded(filterName: String) =
-        dbQuery.selectExpandedFilter(id = filterName.toLong()).executeAsOneOrNull()?.expanded?.toBoolean() ?: true
+    override fun selectExpandedFilter(filterName: String) =
+        dbQuery.selectExpandedFilter(id = filterName.toLong())
+            .executeAsOneOrNull()
+            ?.expanded?.toBoolean() ?: true
 
-    override fun saveExpanded(filterName: String, isExpanded: Boolean) =
+    override fun insertExpandedFilter(filterName: String, isExpanded: Boolean) =
         dbQuery.insertExpandedFilter(id = filterName.toLong(), isExpanded.toLong())
+
+    override fun deleteAllExpandedFilters() =
+        dbQuery.deleteAllExpandedFilters()
 }

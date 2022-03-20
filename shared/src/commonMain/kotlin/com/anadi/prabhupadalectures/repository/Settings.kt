@@ -7,6 +7,9 @@ val settings = Settings()
 private const val FILTERS_SEPARATOR = ", "
 private const val KEY_VALUE_SEPARATOR = "::"
 private const val KEY_FILTERS = "KEY_FILTERS"
+private const val KEY_NOTIFICATION_ID = "KEY_NOTIFICATION_ID"
+
+const val DOWNLOAD_NOTIFICATION_ID = 16198
 
 fun Settings.saveFilters(filters: HashMap<String, Any>) {
     val result = filters.entries.joinToString(separator = FILTERS_SEPARATOR) {
@@ -26,4 +29,10 @@ fun Settings.getFilters(): HashMap<String, Any> {
         }
 
     return result
+}
+
+fun Settings.getNextNotificationId(): Int {
+    val notificationId = getIntOrNull(KEY_NOTIFICATION_ID) ?: DOWNLOAD_NOTIFICATION_ID + 1
+    putInt(KEY_NOTIFICATION_ID, notificationId + 1)
+    return notificationId
 }
