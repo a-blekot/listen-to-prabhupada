@@ -89,11 +89,11 @@ class ResultsViewModel @Inject constructor(
                 setState {
                     copy(results = results, playback = playback)
                 }
-                if (results.lectures.isEmpty() && !results.isLoading) {
-                    setEffect {
-                        ResultsEffect.Toast("There is no lectures for selected filters")
-                    }
-                }
+//                if (results != state.value.results && results.lectures.isEmpty() && !results.isLoading) {
+//                    setEffect {
+//                        ResultsEffect.Toast("There is no lectures for selected filters")
+//                    }
+//                }
             }
                 .collect()
         }
