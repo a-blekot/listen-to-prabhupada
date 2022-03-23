@@ -8,8 +8,6 @@ import com.anadi.prabhupadalectures.android.di.Route
 import com.anadi.prabhupadalectures.android.navigation.Router
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
 import com.anadi.prabhupadalectures.android.viewmodel.BaseViewModel
-import com.anadi.prabhupadalectures.network.api.Error
-import com.anadi.prabhupadalectures.network.api.Progress
 import com.anadi.prabhupadalectures.repository.*
 import com.anadi.prabhupadalectures.utils.ConnectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +15,6 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +34,6 @@ class ResultsViewModel @Inject constructor(
 
     init {
         observeState()
-        observeDownloads()
     }
 
     override fun setInitialState() = ResultsScreenState()
@@ -101,31 +97,4 @@ class ResultsViewModel @Inject constructor(
             }
                 .collect()
         }
-
-    private fun observeDownloads() =
-        viewModelScope.launch {
-            downloadsRepository.observeState()
-                .onEach {
-                    when (it) {
-                        is Progress -> {
-                            if (it.progress - p > 10) {
-                                setEffect {
-                                    ResultsEffect.Toast("Progress = ${it.progress}%")
-                                }
-                            }
-                            p = it.progress
-                        }
-                        is Error -> {
-                            setEffect {
-                                ResultsEffect.Toast("Error: ${it.t?.message}")
-                            }
-                        }
-                        else -> {
-                            /** do nothing **/
-                        }
-                    }
-                }
-                .collect()
-        }
-
 }

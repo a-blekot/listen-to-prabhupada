@@ -6,11 +6,8 @@ import com.anadi.prabhupadalectures.data.lectures.file
 import com.anadi.prabhupadalectures.network.api.*
 import com.anadi.prabhupadalectures.writeChannel
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicBoolean
@@ -20,7 +17,7 @@ interface DownloadsRepository {
 
     fun download(lecture: Lecture)
     fun checkPendingDownloads()
-    fun observeState(): StateFlow<DownloadState>
+    fun observeDownload(): SharedFlow<DownloadState>
 }
 
 class DownloadsRepositoryImpl(
@@ -28,7 +25,7 @@ class DownloadsRepositoryImpl(
     private val api: PrabhupadaApi
 ) : DownloadsRepository, Serializable {
 
-    private val downloadState = MutableStateFlow<DownloadState>(Idle)
+    private val downloadFlow = MutableSharedFlow<DownloadState>()
     private val isProcessingDownload = AtomicBoolean(false)
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val queue = ConcurrentLinkedQueue<Lecture>()
@@ -40,13 +37,20 @@ class DownloadsRepositoryImpl(
         val list = db.selectAllDownloads()
         queue.addAll(list.filter { it.downloadProgress != FULL_PROGRESS })
 
+        Napier.d("init", tag = "DownloadsRepository")
+        Napier.d(
+            "queue.addAll.count = ${list.filter { it.downloadProgress != FULL_PROGRESS }.size}",
+            tag = "DownloadsRepository"
+        )
         checkPendingDownloads()
     }
 
-    override fun observeState(): StateFlow<DownloadState> = downloadState.asStateFlow()
+    override fun observeDownload() = downloadFlow.asSharedFlow()
 
     override fun download(lecture: Lecture) =
         lecture.run {
+            Napier.d("download $lecture", tag = "DownloadsRepository")
+
             when {
                 remoteUrl.isBlank() -> return
                 queue.any { it.id == id } -> return
@@ -58,43 +62,49 @@ class DownloadsRepositoryImpl(
                 downloadProgress = ZERO_PROGRESS
             )
 
+            Napier.d("lecture is ok to download", tag = "DownloadsRepository")
+
             queue.add(temp)
             db.insertCachedLecture(temp)
             checkPendingDownloads()
         }
 
     override fun checkPendingDownloads() {
+        Napier.d("checkPendingDownloads", tag = "DownloadsRepository")
+        printQueue()
         if (!isProcessingDownload.get()) {
-            downloadState.value = Idle
+            ioScope.launch {
+                setDownloadsState(Idle)
+            }
             queue.peek()
                 ?.let { startDownloadingTask(it) }
-                ?: run {
-                    downloadState.value = AllDownloadsCompleted
-                }
         }
     }
 
     private fun startDownloadingTask(lecture: Lecture) =
         ioScope.launch {
+            Napier.d("startDownloadingTask $lecture", tag = "DownloadsRepository")
+            printQueue()
             api.downloadFile(lecture.writeChannel(), lecture.remoteUrl)
                 .collect { state ->
                     when (state) {
-                        is Success -> handleTaskCompleted(lecture, state)
-                        is Error -> {
-                            Napier.e("ERRROR", state.t, "startDownloadingTask ERROR")
+                        is Success -> {
                             handleTaskCompleted(lecture, state)
                         }
-                        is Progress -> db.insertCachedLecture(lecture.copy(downloadProgress = state.progress))
+                        is Error -> {
+                            Napier.e("DownloadError $lecture", state.t, "DownloadsRepository")
+                            handleTaskCompleted(lecture, state)
+                        }
                         else -> {
-                            /** do nothing **/
+                            setDownloadsState(state)
                         }
                     }
-
-                    downloadState.value = state.apply { this.lecture = lecture }
                 }
         }
 
-    private fun handleTaskCompleted(lecture: Lecture, state: DownloadState) {
+    private suspend fun handleTaskCompleted(lecture: Lecture, state: DownloadState) {
+        Napier.d("handleTaskCompleted $state", tag = "DownloadsRepository")
+
         when {
             state is Success && lecture.file.exists() -> {
                 db.insertCachedLecture(
@@ -107,6 +117,24 @@ class DownloadsRepositoryImpl(
         queue.poll()
         isProcessingDownload.set(false)
 
+        setDownloadsState(state.apply { this.lecture = lecture })
         checkPendingDownloads()
+    }
+
+    private suspend fun setDownloadsState(value: DownloadState) {
+        value.print("DownloadsRepository")
+        downloadFlow.emit(value)
+    }
+
+    private fun printQueue() {
+        Napier.d("Queue", tag = "DownloadsRepository")
+        Napier.d("isProcessingDownload = ${isProcessingDownload.get()}", tag = "DownloadsRepository")
+        if (queue.isEmpty()) {
+            Napier.d("Is empty!", tag = "DownloadsRepository")
+        }
+        queue.map { "id = ${it.id}, title = ${it.title}" }
+            .forEach {
+                Napier.d(it, tag = "DownloadsRepository")
+            }
     }
 }

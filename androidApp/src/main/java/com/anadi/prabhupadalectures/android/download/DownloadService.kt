@@ -16,12 +16,10 @@ import com.anadi.prabhupadalectures.repository.DOWNLOAD_NOTIFICATION_ID
 import com.anadi.prabhupadalectures.repository.DownloadsRepository
 import com.anadi.prabhupadalectures.repository.ToolsRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import io.github.aakira.napier.Napier
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val CHANNEL_ID = "DownloadService_CHANNEL_16108"
@@ -104,8 +102,8 @@ class DownloadService : Service() {
     }
 
     private fun onActivityStart() {
-        isForeground = false
         stopForeground(true)
+        isForeground = false
     }
 
     private fun onActivityStop() =
@@ -115,24 +113,20 @@ class DownloadService : Service() {
         } else {
             stopForeground(true)
             stopSelf()
+            isForeground = false
         }
 
     private fun observeDownloadState() =
         bgScope.launch {
-            downloadsRepository.observeState()
+            downloadsRepository.observeDownload()
                 .onEach {
-                    if (isForeground) {
-                        when (it) {
-                            is Error -> notifyError(it.lecture?.title ?: "")
-                            is Success -> notifySuccess(it.lecture?.title ?: "")
-                            is Progress -> notifyProgress(it.lecture?.title ?: "", it.progress)
-                            is AllDownloadsCompleted -> {
-                                stopForeground(true)
-                                stopSelf()
-                            }
-                            else -> {
-                                /** do nothing **/
-                            }
+                    it.print("DownloadService")
+                    when (it) {
+                        is Error -> notifyError(it.lecture?.title ?: "")
+                        is Success -> notifySuccess(it.lecture?.title ?: "")
+                        is Progress -> notifyProgress(it.lecture?.title ?: "", it.progress)
+                        else -> {
+                            /** do nothing **/
                         }
                     }
                 }
@@ -144,22 +138,61 @@ class DownloadService : Service() {
             .apply { setContentTitle(title) }
             .build()
             .let {
+                Napier.d("notifySuccess", tag = "DownloadService")
                 notificationManager?.notify(tools.getNextNotificationId(), it)
+                handleDownloadCompleted()
             }
 
     private fun notifyError(title: String) =
         errorNotificationBuilder
             .apply { setContentTitle(title) }
             .build()
-            .let { notificationManager?.notify(tools.getNextNotificationId(), it) }
+            .let {
+                Napier.d("notifyError", tag = "DownloadService")
+                notificationManager?.notify(tools.getNextNotificationId(), it)
+                handleDownloadCompleted()
+            }
 
     private fun notifyProgress(title: String, currentProgress: Int, maxProgress: Int = FULL_PROGRESS) =
         progressNotificationBuilder
             .apply {
+                setAutoCancel(currentProgress == maxProgress)
                 setProgress(maxProgress, currentProgress, false)
                 setContentTitle(title)
             }
             .build()
             .let { notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, it) }
+
+    private fun cancelProgressNotification() =
+        progressNotificationBuilder
+            .apply {
+                setAutoCancel(true)
+            }
+            .build()
+            .let {
+                Napier.d("cancelProgressNotification", tag = "DownloadService")
+                notificationManager?.run {
+                    notify(DOWNLOAD_NOTIFICATION_ID, it)
+                    cancel(DOWNLOAD_NOTIFICATION_ID)
+                }
+            }
+
+    private fun handleDownloadCompleted() {
+        cancelProgressNotification()
+        stopForegroundIfNoTasksRunning()
+    }
+
+    private fun stopForegroundIfNoTasksRunning(delayMs: Long = 5000L) {
+        bgScope.launch {
+            Napier.d("stopForegroundIfNoTasksRunning", tag = "DownloadService")
+            delay(delayMs)
+            if (!downloadsRepository.hasActiveDownloads && isForeground) {
+                Napier.d("stopForegroundIfNoTasksRunning invoke() !!!", tag = "DownloadService")
+                stopForeground(true)
+                stopSelf()
+                isForeground = false
+            }
+        }
+    }
 }
 

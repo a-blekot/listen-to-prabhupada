@@ -39,8 +39,9 @@ class PrabhupadaApiImpl(private val client: HttpClient) : PrabhupadaApi {
 
     override suspend fun downloadFile(writeChannel: ByteWriteChannel, url: String): Flow<DownloadState> {
         return flow {
-
             try {
+                Napier.d("downloadFile $url", tag = "PrabhupadaApi")
+
                 client.get<HttpStatement>(url) {
                     timeout {
                         requestTimeoutMillis = DOWNLOAD_HTTP_TIMEOUT
