@@ -99,7 +99,7 @@ fun ResultsView(
                             .fillMaxWidth(),
 //                        state = listState,
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 40.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+//                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         if (isNotEmpty) {
                             item { Header(modifier = Modifier.fillMaxWidth().align(Alignment.Center)) }
@@ -120,6 +120,14 @@ fun ResultsView(
                                     onEvent = onEvent
                                 )
                             }
+                        }
+
+                        item {
+                            SelectedFilters(
+                                filters = resultsState.filters,
+                                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                                onEvent = onEvent
+                            )
                         }
 
                         items(resultsState.filters, key = { it.name }) {

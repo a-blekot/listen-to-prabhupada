@@ -33,6 +33,7 @@ interface ResultsRepository {
     suspend fun init(): Unit?
     suspend fun updatePage(page: Int)
     suspend fun updateQuery(queryParam: QueryParam)
+    suspend fun clearAllFilters()
     fun capturePlayback()
 }
 
@@ -72,6 +73,9 @@ class ResultsRepositoryImpl(
 
     override suspend fun updateQuery(queryParam: QueryParam) =
         loadMore(queryParam)
+
+    override suspend fun clearAllFilters() =
+        loadMore(buildQueryParams(QueryParam(), emptyList(), FIRST_PAGE, db))
 
     override fun capturePlayback() =
         playbackRepository.updatePlaylist(state.value.lectures)

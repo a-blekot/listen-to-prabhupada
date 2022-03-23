@@ -77,6 +77,7 @@ class ResultsViewModel @Inject constructor(
             CommonUiEvent.ResultsEvent.OpenFavorites -> router.push(Route.Favorites)
             is CommonUiEvent.ResultsEvent.Expand -> toolsRepository.saveExpanded(event.filterName, event.isExpanded)
             is CommonUiEvent.ResultsEvent.Option -> resultsRepository.updateQuery(event.queryParam)
+            is CommonUiEvent.ResultsEvent.ClearAllFilters -> resultsRepository.clearAllFilters()
             is CommonUiEvent.ResultsEvent.Page -> resultsRepository.updatePage(event.page)
         }
     }

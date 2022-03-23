@@ -14,6 +14,7 @@ sealed class CommonUiEvent : UiEvent {
         object OpenDownloads : ResultsEvent()
         object OpenFavorites : ResultsEvent()
         object OpenHelpTranslation : ResultsEvent()
+        object ClearAllFilters : ResultsEvent()
 
         data class Expand(val filterName: String, val isExpanded: Boolean) : ResultsEvent()
         data class Option(val queryParam: QueryParam) : ResultsEvent()

@@ -10,9 +10,9 @@ import io.github.aakira.napier.Napier
 const val PAGE_QUERY_KEY = "page"
 
 data class QueryParam(
-    val filterName: String,
-    val selectedOption: String,
-    val isSelected: Boolean
+    val filterName: String = "",
+    val selectedOption: String = "",
+    val isSelected: Boolean = false
 )
 
 fun QueryParam?.unSelected(option: String) =

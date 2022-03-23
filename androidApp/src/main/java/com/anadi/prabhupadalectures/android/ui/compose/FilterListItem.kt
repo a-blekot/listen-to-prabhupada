@@ -31,7 +31,7 @@ fun FilterListItem(
     onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
 ) =
     Column(
-        modifier = modifier.padding(vertical = 8.dp),
+        modifier = modifier.padding(bottom = 8.dp),
     ) {
 
         var isExpanded by remember { mutableStateOf(filter.isExpanded) }
