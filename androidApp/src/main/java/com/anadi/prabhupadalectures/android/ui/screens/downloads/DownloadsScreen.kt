@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.ui.screens.results
+package com.anadi.prabhupadalectures.android.ui.screens.downloads
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -8,28 +8,27 @@ import cafe.adriel.voyager.androidx.AndroidScreen
 import com.anadi.prabhupadalectures.android.viewmodel.WithViewModel
 import io.github.aakira.napier.Napier
 
-class ResultsScreen : AndroidScreen() {
+class DownloadsScreen : AndroidScreen() {
 
     @Composable
     override fun Content() {
+//        val connection by connectivityState()
+
         val context = LocalContext.current
-
-        Napier.e("ResultsScreen - Composable")
-
-        WithViewModel<ResultsViewModel>(
+        WithViewModel<DownloadsViewModel>(
             onEffect = { effect ->
                 Napier.e("Composable - onEffect")
                 when (effect) {
-                    is ResultsEffect.Toast -> {
+                    is DownloadsEffect.Toast -> {
                         Napier.e("Composable - onEffect - Toast")
                         Toast.makeText(context, effect.message, Toast.LENGTH_LONG).show()
                     }
                 }
             },
             start = { viewModel, onEvent ->
-                Napier.e("ResultsView - start")
+                Napier.e("DownloadsView - start")
                 val state = viewModel.state.collectAsState().value
-                ResultsView(state.results, state.playback, state.isOnline, onEvent = onEvent)
+                DownloadsView(state.downloads, state.playback, onEvent = onEvent)
             }
         )
     }

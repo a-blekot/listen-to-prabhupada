@@ -2,6 +2,7 @@ package com.anadi.prabhupadalectures.android.di
 
 import android.content.Context
 import com.anadi.prabhupadalectures.android.BuildConfig
+import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.DatabaseDriverFactory
 import com.anadi.prabhupadalectures.data.DatabaseImpl
@@ -24,23 +25,30 @@ import javax.inject.Singleton
 class MainModule {
 
     @[Provides Singleton]
-    fun provideBackgroundScope() : CoroutineScope =
+    fun provideContext(): Context = app
+
+    @[Provides Singleton]
+    fun provideBackgroundScope(): CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     @[Provides Singleton]
-    fun provideDatabase(@ApplicationContext appContext: Context) : Database =
+    fun provideDatabase(@ApplicationContext appContext: Context): Database =
         DatabaseImpl(DatabaseDriverFactory(appContext))
 
     @[Provides Singleton]
-    fun provideApi() : PrabhupadaApi =
+    fun provideApi(): PrabhupadaApi =
         createPrabhupadaApi()
 
     @[Provides Singleton]
-    fun provideResultsRepository(db: Database, api: PrabhupadaApi) : ResultsRepository =
-        ResultsRepositoryImpl(db, api, BuildConfig.DEBUG)
+    fun provideResultsRepository(
+        db: Database,
+        api: PrabhupadaApi,
+        playbackRepository: PlaybackRepository
+    ): ResultsRepository =
+        ResultsRepositoryImpl(db, api, playbackRepository, BuildConfig.DEBUG)
 
     @[Provides Singleton]
-    fun provideDownloadsRepository(db: Database, api: PrabhupadaApi) : DownloadsRepository =
+    fun provideDownloadsRepository(db: Database, api: PrabhupadaApi): DownloadsRepository =
         DownloadsRepositoryImpl(db, api)
 
     @[Provides Singleton]
@@ -48,6 +56,6 @@ class MainModule {
         PlaybackRepositoryImpl()
 
     @[Provides Singleton]
-    fun provideToolsRepository(db: Database) : ToolsRepository =
+    fun provideToolsRepository(db: Database): ToolsRepository =
         ToolsRepositoryImpl(db)
 }

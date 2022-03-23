@@ -3,4 +3,8 @@
 
     <color name="notification">#603004</color>
     <color name="brown">#603004</color>
+
+    <color name="lecture_item_icons_color">#E8B07E</color>
+    <color name="lecture_menu_color">@color/brown</color>
+
 </resources>

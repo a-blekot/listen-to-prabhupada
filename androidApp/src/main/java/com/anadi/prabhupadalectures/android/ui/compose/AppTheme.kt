@@ -11,8 +11,10 @@ import androidx.compose.ui.graphics.Color
 private val BrownDark = Color(0xFF603004)
 private val BrownMed = Color(0xB2DE924D)
 private val BrownMedLight = Color(0xFFFEC795)
+private val BrownMedLight2 = Color(0xFFE8B07E)
 private val BrownLight = Color(0xB2FFECDB)
 private val BrownXLight = Color(0xFFFFFFFF)
+val AlphaDarkBg = Color(0x44000000)
 //private val BrownXLight = Color(0xFFE5E5E5)
 
 private val Orange = Color(0xFFB65D0D)

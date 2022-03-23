@@ -12,6 +12,7 @@ interface Database {
     fun selectAllFavorites(): List<Lecture>
     fun observeAllDownloads(): Flow<List<Lecture>>
     fun observeAllFavorites(): Flow<List<Lecture>>
+    fun observeCompleted(): Flow<List<Lecture>>
     fun deleteCachedLecture(id: Long)
     fun deleteFromDownloadsOnly(lecture: Lecture)
     fun deleteFromFavoritesOnly(lecture: Lecture)

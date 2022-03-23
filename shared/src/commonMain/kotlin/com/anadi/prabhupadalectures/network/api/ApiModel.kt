@@ -1,6 +1,7 @@
 package com.anadi.prabhupadalectures.network.api
 
 import com.anadi.prabhupadalectures.network.api.lectures.ResultsApiModel
+import com.anadi.prabhupadalectures.repository.FIRST_PAGE
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,8 +17,12 @@ data class ApiModel(
         get() = next?.pageNumber
 
     val prevPage
-        get() = prev?.pageNumber
+        get() = prev?.let { it.pageNumber ?: FIRST_PAGE }
 }
 
-private val String.pageNumber
-    get() = split("page=").getOrNull(1)?.toIntOrNull()
+val String.pageNumber
+    get() =
+        split("page=")
+            .getOrNull(1)?.let {
+                (it.split("&").getOrNull(0) ?: it).toIntOrNull()
+            }

@@ -3,10 +3,7 @@ package com.anadi.prabhupadalectures.android.ui.compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,15 +20,16 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anadi.prabhupadalectures.android.R
+import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
+import com.anadi.prabhupadalectures.android.ui.screens.downloads.DownloadsScreen
 
 @Composable
-fun OfflineComposable() =
+fun OfflineComposable(onEvent: (CommonUiEvent) -> Unit = {}) =
     Column(
         Modifier
+            .fillMaxSize()
             .background(color = MaterialTheme.colors.surface)
     ) {
-        val navigator = LocalNavigator.currentOrThrow
-
         Image(
             painter = painterResource(R.drawable.prabhupada_offline),
             contentScale = ContentScale.FillBounds,
@@ -66,6 +64,6 @@ fun OfflineComposable() =
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 30.dp)
-                .clickable { navigator.push(DownloadsScreen()) }
+                .clickable { onEvent(CommonUiEvent.ResultsEvent.OpenDownloads) }
         )
     }

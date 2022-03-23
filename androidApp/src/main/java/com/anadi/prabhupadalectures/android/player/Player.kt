@@ -13,9 +13,11 @@ import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.util.notificationColor
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.repository.*
+import com.anadi.prabhupadalectures.utils.toValidUrl
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -43,15 +45,25 @@ class Player(
         fun onTrackChanged(mediaItem: MediaItem?) {}
     }
 
+    private val Int.readablePlaybackState
+        get() = when (this) {
+            Player.STATE_IDLE -> "Player.STATE_IDLE"
+            Player.STATE_BUFFERING -> "Player.STATE_BUFFERING"
+            Player.STATE_READY -> "Player.STATE_READY"
+            Player.STATE_ENDED -> "Player.STATE_ENDED"
+            else -> "wrong state $this. Should be in range ${Player.STATE_IDLE}..${Player.STATE_ENDED}"
+        }
+
     private val playbackListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
+            Napier.d("onPlaybackStateChanged ${playbackState.readablePlaybackState}", tag = "AUDIO_PLAYER")
             when (playbackState) {
                 Player.STATE_ENDED -> {
-                    DebugLog.d("PlaybackService", "playbackState = STATE_ENDED")
                     stopUpdateJob()
                     listener.onFinished()
                 }
                 else -> {
+                    updatePlaybackState()
                     /** do nothing */
                 }
             }
@@ -74,6 +86,11 @@ class Player(
                 exoPlayer?.seekTo(tools.getPosition(lectureId))
             }
             launchUpdateJob()
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            Napier.e("onPlayerError", error, tag = "AUDIO_PLAYER")
+            Napier.e("current lecture = ${exoPlayer?.currentLecture}", tag = "AUDIO_PLAYER")
         }
     }
 
@@ -160,6 +177,12 @@ class Player(
                 .onEach { handleAction(it) }
                 .collect()
         }
+
+        playerScope.launch {
+            playbackRepository.observePlaylist()
+                .onEach { setPlaylist(it) }
+                .collect()
+        }
     }
 
     private fun updatePlaybackState(playbackState: PlaybackState = exoPlayer?.myPlaybackState ?: PlaybackState()) =
@@ -213,7 +236,7 @@ class Player(
     }
 
 
-    suspend fun setPlaylist(playlist: List<Lecture>) =
+    private suspend fun setPlaylist(playlist: List<Lecture>) =
         withContext(Dispatchers.Main) {
             pendingPlaylist = playlist
             maybeUpdateCurrentPlaylist(playlist)
@@ -226,13 +249,46 @@ class Player(
             return
         }
 
+        handleNewList(playlist)
+    }
+
+    private fun handleNewList(playlist: List<Lecture>) {
         val old = currentPlaylist.map { it.id }
         val new = playlist.map { it.id }
 
-        if (old == new) {
-            currentPlaylist = playlist
+        when {
+            old == new -> currentPlaylist = playlist
+            else -> checkRemovedItem(old, new)
         }
     }
+
+    private fun checkRemovedItem(old: List<Long>, new: List<Long>) {
+        if (old.isEmpty() || new.isEmpty()) return
+
+        val removedIds = old.minus(new)
+        if (removedIds.size == old.size) {
+            return
+        }
+        removedIds.firstOrNull()?.let { removeMediaItem(old.indexOf(it)) }
+    }
+
+    private fun removeMediaItem(index: Int) =
+        exoPlayer?.apply {
+            if (currentPlaylist.isEmpty()) {
+                return@apply
+            }
+
+            if (currentMediaItemIndex == index) {
+                playWhenReady = false
+            }
+
+            if (index in 0..currentPlaylist.lastIndex) {
+                currentPlaylist = currentPlaylist.filterIndexed {
+                    i, _ -> i != index
+                }
+                removeMediaItem(index)
+            }
+        }
 
     fun showNotification() =
         playerNotificationManager.setPlayer(exoPlayer)
@@ -334,7 +390,7 @@ class Player(
             .build()
 
         return MediaItem.Builder()
-            .setUri(fileUrl ?: remoteUrl)
+            .setUri(fileUrl?.ifEmpty { null } ?: remoteUrl.toValidUrl())
             .setMediaId("$id")
             .setMediaMetadata(metaData)
             .build()
@@ -344,6 +400,7 @@ class Player(
         get() = PlaybackState(
             lecture = currentLecture,
             isPlaying = isPlaying,
+            isBuffering = playbackState == Player.STATE_BUFFERING,
             hasNext = hasNextMediaItem(),
             hasPrevious = hasPreviousMediaItem(),
             timeMs = currentPosition,

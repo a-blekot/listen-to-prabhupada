@@ -76,12 +76,6 @@ class PlaybackService : Service(), Player.Listener {
         DebugLog.d("PlaybackService", "onCreate")
         player = Player(this, playbackRepository, tools, playerScope, this)
 
-        playerScope.launch {
-            resultsRepository.observeState()
-                .onEach { player?.setPlaylist(it.lectures) }
-                .collect()
-        }
-
         requireWakeLock()
     }
 

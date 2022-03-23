@@ -23,7 +23,6 @@ import java.io.Serializable
 
 data class ResultsState(
     val isLoading: Boolean = false,
-    val lecturesCount: Int = 0,
     val filters: List<Filter> = emptyList(),
     val lectures: List<Lecture> = emptyList(),
     val pagination: Pagination = Pagination(),
@@ -35,11 +34,13 @@ interface ResultsRepository {
     suspend fun init(): Unit?
     suspend fun updatePage(page: Int)
     suspend fun updateQuery(queryParam: QueryParam)
+    fun capturePlayback()
 }
 
 class ResultsRepositoryImpl(
     private val db: Database,
     private val api: PrabhupadaApi,
+    private val playbackRepository: PlaybackRepository,
     withLog: Boolean
 ) :
     CoroutineScope by CoroutineScope(Dispatchers.Main), ResultsRepository, Serializable {
@@ -53,6 +54,8 @@ class ResultsRepositoryImpl(
 
         observeDownloads()
         observeFavorites()
+        observeCompleted()
+        observeSelfState()
     }
 
     override fun observeState(): StateFlow<ResultsState> = state
@@ -71,13 +74,19 @@ class ResultsRepositoryImpl(
     override suspend fun updateQuery(queryParam: QueryParam) =
         loadMore(queryParam)
 
+    override fun capturePlayback() =
+        playbackRepository.updatePlaylist(state.value.lectures)
+
     private suspend fun loadMore(queryParam: QueryParam?) =
         loadMore(buildQueryParams(queryParam))
 
     private suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
-        updateLoading(true)
+        if (state.value.isLoading) {
+            Napier.d("loadMore canceled, isLoading = true!", tag = "ResultsRepository")
+            return@withContext
+        }
 
-        Napier.d("loadMore $queryParams", tag = "PAGE_DB")
+        updateLoading(true)
 
         val result = api.getResults(queryParams)
         if (result.isSuccess) {
@@ -93,7 +102,6 @@ class ResultsRepositoryImpl(
     private fun updateData(apiModel: ApiModel) {
         val newState = ResultsState(
             isLoading = false,
-            lecturesCount = apiModel.count,
             filters = ApiMapper.filters(apiModel).updateFiltersFromDB(),
             lectures = ApiMapper.lectures(apiModel).updateLecturesFromDB(),
             pagination = Pagination(apiModel),
@@ -137,7 +145,8 @@ class ResultsRepositoryImpl(
             val cachedLecture = db.selectCachedLecture(lecture.id)
             lecture.copy(
                 fileUrl = cachedLecture?.fileUrl ?: lecture.fileUrl,
-                isFavorite = cachedLecture?.isFavorite == true || lecture.isFavorite,
+                isFavorite = cachedLecture?.isFavorite ?: lecture.isFavorite,
+                isCompleted = cachedLecture?.isCompleted ?: lecture.isCompleted,
                 downloadProgress = cachedLecture?.downloadProgress ?: lecture.downloadProgress
             )
         }
@@ -161,6 +170,20 @@ class ResultsRepositoryImpl(
         launch {
             db.observeAllFavorites().collect {
                 updateFromDb()
+            }
+        }
+
+    private fun observeCompleted() =
+        launch {
+            db.observeCompleted().collect {
+                updateFromDb()
+            }
+        }
+
+    private fun observeSelfState() =
+        launch {
+            observeState().collect {
+                playbackRepository.updatePlaylist(it.lectures)
             }
         }
 }

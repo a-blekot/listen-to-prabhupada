@@ -47,6 +47,10 @@ selectAllFavorites:
 SELECT * FROM CachedLecture
 WHERE isFavorite = 1;
 
+selectAllCompleted:
+SELECT * FROM CachedLecture
+WHERE isCompleted = 1;
+
 deleteCachedLecture:
 DELETE FROM CachedLecture
 WHERE id = ?;

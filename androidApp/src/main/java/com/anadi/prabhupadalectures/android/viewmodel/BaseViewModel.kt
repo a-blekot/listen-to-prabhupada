@@ -1,9 +1,13 @@
 package com.anadi.prabhupadalectures.android.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
+import com.anadi.prabhupadalectures.utils.ConnectionState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -14,6 +18,7 @@ interface UiEvent
 interface UiEffect
 
 abstract class BaseViewModel<EVENT : UiEvent, STATE : UiState, EFFECT : UiEffect>(
+    context: Context,
     private val mainDispatcher: CoroutineDispatcher,
     private val ioDispatcher: CoroutineDispatcher,
     private val eventsDebounceMs: Long = 0L
@@ -31,6 +36,7 @@ abstract class BaseViewModel<EVENT : UiEvent, STATE : UiState, EFFECT : UiEffect
 
     init {
         subscribeToEvents()
+        observeConnection(context)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -55,6 +61,16 @@ abstract class BaseViewModel<EVENT : UiEvent, STATE : UiState, EFFECT : UiEffect
         }
     }
 
+    private fun observeConnection(context: Context) =
+        viewModelScope.launch {
+            delay(1000L)
+            context.observeConnectivityAsFlow()
+                .collect {
+                    onConnectivityStateChanged(it)
+                }
+        }
+
+    protected open fun onConnectivityStateChanged(connectionState: ConnectionState) {}
     abstract fun handleEvents(event: EVENT)
 
     protected fun setEffect(builder: () -> EFFECT) {

@@ -51,6 +51,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha04")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
     implementation("androidx.lifecycle:lifecycle-process:2.4.1")
+    testImplementation("junit:junit:4.12")
 
     //desugar utils
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
@@ -77,6 +78,7 @@ dependencies {
     implementation("cafe.adriel.voyager:voyager-transitions:${findProperty("version.voyager")}")
     implementation("cafe.adriel.voyager:voyager-androidx:${findProperty("version.voyager")}")
     implementation("cafe.adriel.voyager:voyager-hilt:${findProperty("version.voyager")}")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${findProperty("version.kotlin")}")
 
     //WorkManager
     implementation("androidx.work:work-runtime-ktx:2.7.1")
@@ -87,4 +89,8 @@ dependencies {
     implementation("com.google.android.exoplayer:exoplayer-ui:2.17.1")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }

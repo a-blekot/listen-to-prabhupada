@@ -8,6 +8,7 @@ import com.anadi.prabhupadalectures.utils.toBoolean
 import com.anadi.prabhupadalectures.utils.toLong
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
@@ -63,6 +64,12 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
 
     override fun observeAllFavorites() =
         dbQuery.selectAllFavorites()
+            .asFlow()
+            .mapToList()
+            .map { list -> list.map { Lecture(it) } }
+
+    override fun observeCompleted(): Flow<List<Lecture>> =
+        dbQuery.selectAllCompleted()
             .asFlow()
             .mapToList()
             .map { list -> list.map { Lecture(it) } }

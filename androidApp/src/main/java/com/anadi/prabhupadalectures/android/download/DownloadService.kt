@@ -3,7 +3,6 @@ package com.anadi.prabhupadalectures.android.download
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.NotificationCompat
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.download.DownloadServiceAction.ON_ACTIVITY_START
@@ -48,7 +47,7 @@ class DownloadService : Service() {
     private val progressNotificationBuilder by lazy {
         NotificationCompat.Builder(this, CHANNEL_ID)
             .setProgress(FULL_PROGRESS, ZERO_PROGRESS, false)
-            .setSmallIcon(R.drawable.ic_download_progress)
+            .setSmallIcon(R.drawable.ic_notification_download_progress)
             .setContentTitle(getString(R.string.loading))
             .setColor(notificationColor)
             .setOnlyAlertOnce(true)
@@ -58,7 +57,7 @@ class DownloadService : Service() {
 
     private val successNotificationBuilder by lazy {
         NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download_success)
+            .setSmallIcon(R.drawable.ic_notification_download_success)
             .setAutoCancel(true)
             .setColor(notificationColor)
             .setOnlyAlertOnce(true)
@@ -67,7 +66,7 @@ class DownloadService : Service() {
 
     private val errorNotificationBuilder by lazy {
         NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_download_error)
+            .setSmallIcon(R.drawable.ic_notification_download_error)
             .setAutoCancel(true)
             .setColor(notificationColor)
             .setOnlyAlertOnce(true)

@@ -2,10 +2,13 @@ package com.anadi.prabhupadalectures.repository
 
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import java.io.Serializable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface ToolsRepository {
     fun setCompleted(id: Long)
+    fun observeFavorites(): Flow<List<Lecture>>
+    fun observeDownloads(): Flow<List<Lecture>>
     fun setFavorite(lecture: Lecture, isFavorite: Boolean)
     fun savePosition(id: Long, timeMs: Long)
     fun getPosition(id: Long): Long
@@ -22,6 +25,12 @@ class ToolsRepositoryImpl(
         db.selectCachedLecture(id)?.let {
             db.insertCachedLecture(it.copy(isCompleted = true))
         } ?: Unit
+
+    override fun observeFavorites() =
+        db.observeAllFavorites()
+
+    override fun observeDownloads() =
+        db.observeAllDownloads()
 
     override fun setFavorite(lecture: Lecture, isFavorite: Boolean) =
         db.insertCachedLecture(lecture.copy(isFavorite = isFavorite))

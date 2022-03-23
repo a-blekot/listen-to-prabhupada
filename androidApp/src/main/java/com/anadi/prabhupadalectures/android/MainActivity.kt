@@ -47,12 +47,11 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                                 applyStart = true,
                                 applyTop = true,
                                 applyEnd = true,
-                                applyBottom = true
+                                applyBottom = false
                             )
                         )
                     ) {
                         NavigatorWrapper()
-//                        Navigator(MainScreen())
                     }
                 }
             }

@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anadi.prabhupadalectures.android.R
-import com.anadi.prabhupadalectures.android.ui.screens.results.ResultsEvent
+import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
 import com.anadi.prabhupadalectures.datamodel.QueryParam
@@ -28,23 +28,23 @@ import com.anadi.prabhupadalectures.datamodel.QueryParam
 fun FilterListItem(
     filter: Filter,
     modifier: Modifier = Modifier,
-    onEvent: (ResultsEvent) -> Unit = {}
+    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
 ) =
     Column(
-        modifier = modifier.padding(all = 8.dp),
+        modifier = modifier.padding(vertical = 8.dp),
     ) {
 
         var isExpanded by remember { mutableStateOf(filter.isExpanded) }
 
         FilterTitle(filter, isExpanded) {
             isExpanded = it
-            onEvent(ResultsEvent.Expand(filter.name, it))
+            onEvent(CommonUiEvent.ResultsEvent.Expand(filter.name, it))
         }
         if (isExpanded) {
             filter.options.forEach { option ->
                 OptionListItem(option) { isSelected ->
                     onEvent(
-                        ResultsEvent.Option(
+                        CommonUiEvent.ResultsEvent.Option(
                             QueryParam(
                                 filterName = filter.name,
                                 selectedOption = option.value,

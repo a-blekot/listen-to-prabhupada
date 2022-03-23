@@ -11,3 +11,8 @@ fun Boolean.toConnectionState() = if (this) ConnectionState.Online else Connecti
 fun String.toLong() = hashCode().toLong()
 
 fun Long.toBoolean() = this > 0L
+
+fun String.toValidUrl() = this
+//    this
+//        .replace("(", "%28")
+//        .replace(")", "%29")
