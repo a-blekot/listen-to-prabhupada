@@ -10,7 +10,6 @@ import com.anadi.prabhupadalectures.datamodel.buildQueryParams
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
 import com.anadi.prabhupadalectures.network.api.QueryParams
-import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +49,7 @@ class ResultsRepositoryImpl(
         get() = state.value.pagination.curr
 
     init {
-        if (withLog) Napier.base(DebugAntilog())
+//        if (withLog) Napier.base(DebugAntilog())
 
         observeDownloads()
         observeFavorites()

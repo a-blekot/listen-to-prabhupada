@@ -90,7 +90,9 @@ class PrabhupadaApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Napier.base(DebugAntilog())
+        if (BuildConfig.DEBUG) {
+            Napier.base(DebugAntilog())
+        }
 
         ScreenRegistry {
             screenModules.forEach { it() }

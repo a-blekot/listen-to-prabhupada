@@ -163,22 +163,9 @@ class DownloadService : Service() {
             .build()
             .let { notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, it) }
 
-    private fun cancelProgressNotification() =
-        progressNotificationBuilder
-            .apply {
-                setAutoCancel(true)
-            }
-            .build()
-            .let {
-                Napier.d("cancelProgressNotification", tag = "DownloadService")
-                notificationManager?.run {
-                    notify(DOWNLOAD_NOTIFICATION_ID, it)
-                    cancel(DOWNLOAD_NOTIFICATION_ID)
-                }
-            }
-
     private fun handleDownloadCompleted() {
-        cancelProgressNotification()
+        Napier.d("handleDownloadCompleted", tag = "DownloadService")
+        notificationManager?.cancel(DOWNLOAD_NOTIFICATION_ID)
         stopForegroundIfNoTasksRunning()
     }
 
