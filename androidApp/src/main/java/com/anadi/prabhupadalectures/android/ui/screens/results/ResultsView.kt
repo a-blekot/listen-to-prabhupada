@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -60,6 +61,9 @@ fun ResultsView(
                         scaffoldState.drawerState.toggle()
                     }
                 }
+            },
+            bottomBar = {
+                // PlayerListItem(playbackState, onEvent)
             }
         ) {
             Box(
@@ -93,46 +97,58 @@ fun ResultsView(
 //                        }
 //                    }
 
-                    LazyColumn(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth(),
+                val expandedList = resultsState.filters.map {
+                    remember { mutableStateOf(it.isExpanded) }
+                }
+
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth(),
 //                        state = listState,
-                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 40.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 40.dp),
 //                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        if (isNotEmpty) {
-                            item { Header(modifier = Modifier.fillMaxWidth().align(Alignment.Center)) }
+                ) {
+                    if (isNotEmpty) {
+                        item {
+                            Header(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.Center)
+                            )
+                        }
 
-                            items(resultsState.lectures, key = { it.id }) { lectureItem ->
-                                playbackState.run {
-                                    LectureListItem(
-                                        lecture = lectureItem,
-                                        isPlaying = lectureItem.id == lecture.id && isPlaying,
-                                        onEvent = onEvent
-                                    )
-                                }
-                            }
-
-                            item {
-                                PageControl(
-                                    resultsState.pagination,
+                        items(resultsState.lectures, key = { it.id }) { lectureItem ->
+                            playbackState.run {
+                                LectureListItem(
+                                    lecture = lectureItem,
+                                    isPlaying = lectureItem.id == lecture.id && isPlaying,
                                     onEvent = onEvent
                                 )
                             }
                         }
 
                         item {
-                            SelectedFilters(
-                                filters = resultsState.filters,
-                                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                            PageControl(
+                                resultsState.pagination,
                                 onEvent = onEvent
                             )
                         }
+                    }
 
-                        items(resultsState.filters, key = { it.name }) {
-                            FilterListItem(it, onEvent = onEvent)
-                        }
+                    item {
+                        SelectedFilters(
+                            filters = resultsState.filters,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp),
+                            onEvent = onEvent
+                        )
+                    }
+
+                    itemsIndexed(resultsState.filters, key = { _, item -> item.name }) { i, filter ->
+                        FilterListItem(filter, expandedList[i], onEvent = onEvent)
+                    }
 
                         item {
                             PlayerListItem(playbackState, onEvent)
@@ -155,7 +171,9 @@ private fun TopAppBar(onMenuClick: () -> Unit = {}) {
         actions = {
             IconButton(
                 onClick = { onMenuClick() },
-                modifier = Modifier.padding(horizontal = 8.dp).wrapContentWidth()
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .wrapContentWidth()
             ) {
                 Icon(
                     imageVector = Icons.Default.Menu,

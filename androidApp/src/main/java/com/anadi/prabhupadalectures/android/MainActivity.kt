@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                                 applyStart = true,
                                 applyTop = true,
                                 applyEnd = true,
-                                applyBottom = false
+                                applyBottom = true
                             )
                         )
                     ) {

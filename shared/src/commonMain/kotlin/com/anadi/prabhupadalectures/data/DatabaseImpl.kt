@@ -129,7 +129,7 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
     override fun selectExpandedFilter(filterName: String) =
         dbQuery.selectExpandedFilter(id = filterName.toLong())
             .executeAsOneOrNull()
-            ?.expanded?.toBoolean() ?: true
+            ?.expanded?.toBoolean() ?: false
 
     override fun insertExpandedFilter(filterName: String, isExpanded: Boolean) =
         dbQuery.insertExpandedFilter(id = filterName.toLong(), isExpanded.toLong())

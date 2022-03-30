@@ -27,20 +27,18 @@ import com.anadi.prabhupadalectures.datamodel.QueryParam
 @Composable
 fun FilterListItem(
     filter: Filter,
+    isExpanded: MutableState<Boolean> = remember { mutableStateOf(filter.isExpanded) },
     modifier: Modifier = Modifier,
     onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
 ) =
     Column(
         modifier = modifier.padding(bottom = 8.dp),
     ) {
-
-        var isExpanded by remember { mutableStateOf(filter.isExpanded) }
-
-        FilterTitle(filter, isExpanded) {
-            isExpanded = it
+        FilterTitle(filter, isExpanded.value) {
+            isExpanded.value = it
             onEvent(CommonUiEvent.ResultsEvent.Expand(filter.name, it))
         }
-        if (isExpanded) {
+        if (isExpanded.value) {
             filter.options.forEach { option ->
                 OptionListItem(option) { isSelected ->
                     onEvent(
