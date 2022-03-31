@@ -68,7 +68,7 @@ fun PlayerListItem(
             )
 
             Text(
-                text = playbackState.lecture.subTitle,
+                text = playbackState.lecture.displayedDescription,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = GrayLight,

@@ -61,7 +61,7 @@ data class Lecture(
         get() = "$date, $place"
 
     val displayedDescription
-        get() = description ?: "no description"
+        get() = description ?: subTitle
 
     val isDownloaded
         get() = fileUrl != null && downloadProgress == FULL_PROGRESS

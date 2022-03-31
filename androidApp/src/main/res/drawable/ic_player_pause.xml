@@ -9,13 +9,13 @@
         android:scaleX="0.85"
         android:scaleY="0.9">
         <path
-            android:fillColor="@color/brown"
+            android:fillColor="@color/notification"
             android:pathData="M165,0C74.019,0 0,74.019 0,165s74.019,165 165,165s165,-74.019 165,-165S255.981,0 165,0zM165,300c-74.439,0 -135,-60.561 -135,-135S90.561,30 165,30s135,60.561 135,135S239.439,300 165,300z" />
         <path
-            android:fillColor="@color/brown"
+            android:fillColor="@color/notification"
             android:pathData="M194.25,82.5c-8.284,0 -15,6.716 -15,15v135c0,8.284 6.716,15 15,15s15,-6.716 15,-15v-135C209.25,89.216 202.534,82.5 194.25,82.5z" />
         <path
-            android:fillColor="@color/brown"
+            android:fillColor="@color/notification"
             android:pathData="M135.75,82.5c-8.284,0 -15,6.716 -15,15v135c0,8.284 6.716,15 15,15s15,-6.716 15,-15v-135C150.75,89.216 144.034,82.5 135.75,82.5z" />
     </group>
 </vector>

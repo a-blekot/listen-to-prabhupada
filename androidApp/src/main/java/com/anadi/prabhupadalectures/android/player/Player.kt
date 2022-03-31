@@ -22,9 +22,11 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
+
 private const val UPDATE_PLAYBACK_STATE_INTERVAL_MS = 1000L
 private const val SAVE_POSITION_INTERVAL_SECONDS = UPDATE_PLAYBACK_STATE_INTERVAL_MS * 5 / 1000
 private const val CHANNEL_ID = "PlaybackService_CHANNEL_16108"
+
 const val NOTIFICATION_ID = 16108
 const val SEEK_INCREMENT_MS = 10_000L
 
@@ -37,12 +39,8 @@ class Player(
 ) {
 
     interface Listener {
-        fun onFinished() {}
         fun onNotificationPosted(notification: Notification) {}
         fun onNotificationCancelled() {}
-        fun onPlaybackStarted(timeLeft: Long) {}
-        fun onIsPlayingChanged(isPlaying: Boolean) {}
-        fun onTrackChanged(mediaItem: MediaItem?) {}
     }
 
     private val Int.readablePlaybackState
@@ -60,7 +58,6 @@ class Player(
             when (playbackState) {
                 Player.STATE_ENDED -> {
                     stopUpdateJob()
-                    listener.onFinished()
                 }
                 else -> {
                     updatePlaybackState()
@@ -77,11 +74,9 @@ class Player(
                 updatePlaybackState()
                 saveCurrentPosition()
             }
-            listener.onIsPlayingChanged(isPlaying)
         }
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-            listener.onTrackChanged(mediaItem)
             mediaItem?.mediaId?.toLongOrNull()?.let { lectureId ->
                 exoPlayer?.seekTo(tools.getPosition(lectureId))
             }
@@ -132,12 +127,12 @@ class Player(
     private val notificationListener by lazy {
         object : PlayerNotificationManager.NotificationListener {
             override fun onNotificationPosted(notificationId: Int, notification: Notification, onGoing: Boolean) {
-                DebugLog.d("PlaybackService", "onNotificationPosted = $notificationId")
+                Napier.d( "onNotificationPosted = $notificationId", tag = "AUDIO_PLAYER")
                 listener.onNotificationPosted(notification)
             }
 
             override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
-                DebugLog.d("PlaybackService", "onNotificationCancelled")
+                Napier.d("onNotificationCancelled", tag = "AUDIO_PLAYER")
                 listener.onNotificationCancelled()
             }
         }
@@ -146,6 +141,7 @@ class Player(
     private val playerNotificationManager by lazy {
         PlayerNotificationManager.Builder(context, NOTIFICATION_ID, CHANNEL_ID)
             .setSmallIconResourceId(R.drawable.ic_logo)
+            .setStopActionIconResourceId(R.drawable.ic_player_close)
             .setPlayActionIconResourceId(R.drawable.ic_player_play)
             .setPauseActionIconResourceId(R.drawable.ic_player_pause)
             .setNextActionIconResourceId(R.drawable.ic_player_next)
@@ -156,12 +152,14 @@ class Player(
             .setMediaDescriptionAdapter(mediaDescriptionAdapter)
             .setNotificationListener(notificationListener)
             .build().apply {
-//                setMediaSessionToken()
+                setUseStopAction(true)
                 setUsePlayPauseActions(true)
                 setUseNextAction(true)
-                setUsePreviousAction(true)
+                setUsePreviousAction(false)
                 setUseFastForwardAction(true)
                 setUseRewindAction(true)
+                setUseFastForwardActionInCompactView(true)
+                setUseRewindActionInCompactView(true)
                 setUseChronometer(true)
                 setColorized(true)
                 setColor(notificationColor)
@@ -218,7 +216,7 @@ class Player(
     }
 
     private fun handleAction(playerAction: PlayerAction) {
-        DebugLog.d("PlaybackService", "handleAction $playerAction")
+        Napier.d("handleAction $playerAction", tag = "AUDIO_PLAYER")
 
         when (playerAction) {
             is Play -> play(playerAction.lectureId)
@@ -256,8 +254,8 @@ class Player(
         val old = currentPlaylist.map { it.id }
         val new = playlist.map { it.id }
 
-        when {
-            old == new -> currentPlaylist = playlist
+        when (old) {
+            new -> currentPlaylist = playlist
             else -> checkRemovedItem(old, new)
         }
     }
@@ -283,18 +281,22 @@ class Player(
             }
 
             if (index in 0..currentPlaylist.lastIndex) {
-                currentPlaylist = currentPlaylist.filterIndexed {
-                    i, _ -> i != index
+                currentPlaylist = currentPlaylist.filterIndexed { i, _ ->
+                    i != index
                 }
                 removeMediaItem(index)
             }
         }
 
-    fun showNotification() =
+    fun showNotification() {
+        Napier.d("showNotification", tag = "AUDIO_PLAYER")
         playerNotificationManager.setPlayer(exoPlayer)
+    }
 
-    fun hideNotification() =
+    fun hideNotification() {
+        Napier.d("hideNotification", tag = "AUDIO_PLAYER")
         playerNotificationManager.setPlayer(null)
+    }
 
     private fun resetTracks(lectures: List<Lecture>) =
         exoPlayer?.apply {

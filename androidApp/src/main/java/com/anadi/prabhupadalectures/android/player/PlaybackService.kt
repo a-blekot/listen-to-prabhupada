@@ -8,15 +8,15 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
-import com.anadi.prabhupadalectures.android.DebugLog
 import com.anadi.prabhupadalectures.android.util.cancelSafely
 import com.anadi.prabhupadalectures.repository.PlaybackRepository
 import com.anadi.prabhupadalectures.repository.ResultsRepository
 import com.anadi.prabhupadalectures.repository.ToolsRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.collect
+import io.github.aakira.napier.Napier
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,67 +43,67 @@ class PlaybackService : Service(), Player.Listener {
     private val playerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     fun onActivityStarted() {
+        Napier.d("onActivityStarted", tag = "PlaybackService")
         stopForeground(true)
+        Napier.d("stopForeground", tag = "PlaybackService")
         player?.hideNotification()
     }
 
     fun onActivityStopped() =
         player?.run {
-            DebugLog.d("PlaybackService", "onActivityStopped")
-            DebugLog.d("PlaybackService", "isPlaying = $isPlaying")
+            Napier.d("onActivityStopped", tag = "PlaybackService")
+            Napier.d("isPlaying = $isPlaying", tag = "PlaybackService")
 
             if (isPlaying) {
                 showNotification()
-                DebugLog.d("PlaybackService", "showNotification")
             } else {
-                stopForeground(true)
-                stopSelf()
+                stop()
             }
         }
 
     override fun onBind(intent: Intent): IBinder {
-        DebugLog.d("PlaybackService", "onBind")
+        Napier.d("onBind", tag = "PlaybackService")
         return binder
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        DebugLog.d("PlaybackService", "onStartCommand")
+        Napier.d("onStartCommand", tag = "PlaybackService")
         return START_STICKY
     }
 
     override fun onCreate() {
         super.onCreate()
-        DebugLog.d("PlaybackService", "onCreate")
+        Napier.d("onCreate", tag = "PlaybackService")
         player = Player(this, playbackRepository, tools, playerScope, this)
 
         requireWakeLock()
     }
 
     override fun onDestroy() {
-        DebugLog.d("PlaybackService", "onDestroy")
+        Napier.d("onDestroy", tag = "PlaybackService")
         releaseWakeLock()
         playerScope.cancelSafely("Service.onDestroy")
         super.onDestroy()
     }
 
-    override fun onFinished() {
-//        TODO("Not yet implemented")
-    }
-
     override fun onNotificationPosted(notification: Notification) {
-        DebugLog.d("PlaybackService", "startForeground notification = $notification")
+        Napier.d("startForeground notification = $notification", tag = "PlaybackService")
         startForeground(NOTIFICATION_ID, notification)
     }
 
     override fun onNotificationCancelled() {
-//        TODO("Not yet implemented")
-        DebugLog.d("PlaybackService", "onNotificationCancelled")
-        stopForeground(true)
-//        stopSelf()
+        Napier.d("onNotificationCancelled", tag = "PlaybackService")
+        stop()
     }
 
-    override fun onPlaybackStarted(timeLeft: Long) {
-//        TODO("Not yet implemented")
+    private fun stop() {
+        Napier.d("stop", tag = "PlaybackService")
+        stopForeground(true)
+        Napier.d("stopForeground", tag = "PlaybackService")
+        if (player?.isPlaying == false) {
+            stopSelf()
+            Napier.d("stopSelf", tag = "PlaybackService")
+        }
     }
 
     private fun requireWakeLock(duration: Long = player?.totalDurationMillis ?: 0L) {
@@ -112,9 +112,9 @@ class PlaybackService : Service(), Player.Listener {
                 val manager = getSystemService(POWER_SERVICE) as? PowerManager
                 wakeLock = manager?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, application.packageName)
                 wakeLock?.acquire(duration)
-                DebugLog.d("PlaybackService", "requireWakeLock")
+                Napier.d("acquireWakeLock", tag = "PlaybackService")
             } catch (e: Throwable) {
-                DebugLog.e("PlaybackService", "requireWakeLock error", e)
+                Napier.e("acquireWakeLock error", e, tag = "PlaybackService")
                 /** do nothing */
             }
         }
@@ -122,7 +122,7 @@ class PlaybackService : Service(), Player.Listener {
 
     private fun releaseWakeLock() =
         wakeLock?.apply {
-            DebugLog.d("PlaybackService", "releaseWakeLock")
+            Napier.d("releaseWakeLock", tag = "PlaybackService")
             if (isHeld) release()
         }
 }
