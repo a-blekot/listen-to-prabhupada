@@ -1,7 +1,7 @@
 package com.anadi.prabhupadalectures.android.di
 
-import com.anadi.prabhupadalectures.android.navigation.Router
-import com.anadi.prabhupadalectures.android.navigation.RouterImpl
+import com.anadi.prabhupadalectures.android.base.navigation.Router
+import com.anadi.prabhupadalectures.android.base.navigation.RouterImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

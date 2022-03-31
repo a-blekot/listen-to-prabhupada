@@ -2,7 +2,7 @@ package com.anadi.prabhupadalectures.android.di
 
 import cafe.adriel.voyager.core.registry.ScreenProvider
 import cafe.adriel.voyager.core.registry.screenModule
-import com.anadi.prabhupadalectures.android.navigation.ScreenModule
+import com.anadi.prabhupadalectures.android.base.navigation.ScreenModule
 import com.anadi.prabhupadalectures.android.ui.screens.downloads.DownloadsScreen
 import com.anadi.prabhupadalectures.android.ui.screens.favorites.FavoritesScreen
 import com.anadi.prabhupadalectures.android.ui.screens.results.ResultsScreen

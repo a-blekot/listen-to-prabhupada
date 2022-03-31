@@ -1,11 +1,13 @@
 package com.anadi.prabhupadalectures.data.lectures
 
 import com.anadi.prabhupadalectures.data.CachedLecture
+import com.anadi.prabhupadalectures.fileSystem
 import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
 import com.anadi.prabhupadalectures.utils.DOWNLOADS_DIR
 import com.anadi.prabhupadalectures.utils.FILE_EXTENSION
 import com.anadi.prabhupadalectures.utils.toBoolean
-import java.io.File
+import okio.Path.Companion.DIRECTORY_SEPARATOR
+import okio.Path.Companion.toPath
 
 const val LECTURE_KEY_ID = "LECTURE_KEY_ID"
 const val LECTURE_KEY_TITLE = "LECTURE_KEY_TITLE"
@@ -65,8 +67,11 @@ data class Lecture(
         get() = fileUrl != null && downloadProgress == FULL_PROGRESS
 }
 
-val Lecture.file: File
-    get() = File(DOWNLOADS_DIR, fileName)
+fun Lecture.exists() =
+    fileSystem.exists(filePath)
 
-private val Lecture.fileName
+val Lecture.filePath
+    get() = "$DOWNLOADS_DIR$DIRECTORY_SEPARATOR$fileName".toPath()
+
+val Lecture.fileName
     get() = "$title.$FILE_EXTENSION"

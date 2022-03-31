@@ -1,8 +1,6 @@
 package com.anadi.prabhupadalectures.data
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.data.lectures.LectureFullModel
-import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
 import com.anadi.prabhupadalectures.repository.FIRST_PAGE
 import com.anadi.prabhupadalectures.utils.toBoolean
 import com.anadi.prabhupadalectures.utils.toLong

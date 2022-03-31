@@ -1,7 +1,6 @@
-package com.anadi.prabhupadalectures.android.navigation
+package com.anadi.prabhupadalectures.android.base.navigation
 
 import androidx.lifecycle.ViewModel
-import com.anadi.prabhupadalectures.android.navigation.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

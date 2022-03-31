@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.navigation
+package com.anadi.prabhupadalectures.android.base.navigation
 
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.channels.Channel

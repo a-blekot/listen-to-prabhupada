@@ -1,12 +1,10 @@
 package com.anadi.prabhupadalectures.android.ui.screens.results
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,13 +12,11 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.ui.compose.*
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
-import com.anadi.prabhupadalectures.network.api.Progress
+import com.anadi.prabhupadalectures.data.filters.filtersHeader
 import com.anadi.prabhupadalectures.repository.PlaybackState
 import com.anadi.prabhupadalectures.repository.ResultsState
 import kotlinx.coroutines.launch
@@ -28,11 +24,17 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun ResultsView(
-    resultsState: ResultsState = ResultsState(),
-    playbackState: PlaybackState = PlaybackState(),
-    isOnline: Boolean = true,
+    resultsScreenState: ResultsScreenState = ResultsScreenState(),
+    isFiltersHeaderExpanded: Boolean = true,
     onEvent: (CommonUiEvent) -> Unit = {}
 ) {
+
+    val resultsState = resultsScreenState.results
+    val playbackState = resultsScreenState.playback
+    val isOnline = resultsScreenState.isOnline
+
+    val isFiltersHeaderExpandedRemember = remember { mutableStateOf(isFiltersHeaderExpanded) }
+
     if (isOnline) {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val coroutineScope = rememberCoroutineScope()
@@ -146,14 +148,23 @@ fun ResultsView(
                         )
                     }
 
-                    itemsIndexed(resultsState.filters, key = { _, item -> item.name }) { i, filter ->
-                        FilterListItem(filter, expandedList[i], onEvent = onEvent)
-                    }
-
-                        item {
-                            PlayerListItem(playbackState, onEvent)
+                    item {
+                        FilterTitle(filtersHeader, isFiltersHeaderExpandedRemember.value) {
+                            isFiltersHeaderExpandedRemember.value = it
+                            onEvent(CommonUiEvent.ResultsEvent.Expand(filtersHeader.name, it))
                         }
                     }
+
+                    if (isFiltersHeaderExpandedRemember.value) {
+                        itemsIndexed(resultsState.filters, key = { _, item -> item.name }) { i, filter ->
+                            FilterListItem(filter, expandedList[i], onEvent = onEvent)
+                        }
+                    }
+
+                    item {
+                        PlayerListItem(playbackState, onEvent)
+                    }
+                }
 
                 if (resultsState.isLoading) {
                     LoadingBar()

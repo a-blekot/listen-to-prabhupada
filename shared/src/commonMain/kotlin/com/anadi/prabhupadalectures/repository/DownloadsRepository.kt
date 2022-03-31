@@ -1,16 +1,21 @@
 package com.anadi.prabhupadalectures.repository
 
+import co.touchlab.stately.collections.IsoArrayDeque
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.data.lectures.file
+import com.anadi.prabhupadalectures.data.lectures.exists
+import com.anadi.prabhupadalectures.data.lectures.filePath
 import com.anadi.prabhupadalectures.network.api.*
 import com.anadi.prabhupadalectures.writeChannel
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import java.io.Serializable
-import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 interface DownloadsRepository {
     val hasActiveDownloads: Boolean
@@ -20,18 +25,18 @@ interface DownloadsRepository {
     fun observeDownload(): SharedFlow<DownloadState>
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 class DownloadsRepositoryImpl(
     private val db: Database,
     private val api: PrabhupadaApi
-) : DownloadsRepository, Serializable {
+) : DownloadsRepository {
 
     private val downloadFlow = MutableSharedFlow<DownloadState>()
-    private val isProcessingDownload = AtomicBoolean(false)
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val queue = ConcurrentLinkedQueue<Lecture>()
+    private val queue = IsoArrayDeque<Lecture>()
 
     override val hasActiveDownloads
-        get() = isProcessingDownload.get() || !queue.isEmpty()
+        get() = !queue.isEmpty()
 
     init {
         val list = db.selectAllDownloads()
@@ -58,7 +63,7 @@ class DownloadsRepositoryImpl(
             }
 
             val temp = copy(
-                fileUrl = lecture.file.path,
+                fileUrl = lecture.filePath.toString(),
                 downloadProgress = ZERO_PROGRESS
             )
 
@@ -72,11 +77,11 @@ class DownloadsRepositoryImpl(
     override fun checkPendingDownloads() {
         Napier.d("checkPendingDownloads", tag = "DownloadsRepository")
         printQueue()
-        if (!isProcessingDownload.get()) {
+        if (!queue.isEmpty()) {
             ioScope.launch {
                 setDownloadsState(Idle)
             }
-            queue.peek()
+            queue.firstOrNull()
                 ?.let { startDownloadingTask(it) }
         }
     }
@@ -106,7 +111,7 @@ class DownloadsRepositoryImpl(
         Napier.d("handleTaskCompleted $state", tag = "DownloadsRepository")
 
         when {
-            state is Success && lecture.file.exists() -> {
+            state is Success && lecture.exists() -> {
                 db.insertCachedLecture(
                     lecture.copy(downloadProgress = FULL_PROGRESS)
                 )
@@ -114,8 +119,7 @@ class DownloadsRepositoryImpl(
             else -> db.deleteFromDownloadsOnly(lecture)
         }
 
-        queue.poll()
-        isProcessingDownload.set(false)
+        queue.removeFirstOrNull()
 
         setDownloadsState(state.apply { this.lecture = lecture })
         checkPendingDownloads()
@@ -128,7 +132,6 @@ class DownloadsRepositoryImpl(
 
     private fun printQueue() {
         Napier.d("Queue", tag = "DownloadsRepository")
-        Napier.d("isProcessingDownload = ${isProcessingDownload.get()}", tag = "DownloadsRepository")
         if (queue.isEmpty()) {
             Napier.d("Is empty!", tag = "DownloadsRepository")
         }

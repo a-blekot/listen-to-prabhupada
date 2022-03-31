@@ -14,14 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.anadi.prabhupadalectures.android.download.DownloadService
 import com.anadi.prabhupadalectures.android.download.DownloadServiceAction
-import com.anadi.prabhupadalectures.android.navigation.NavigatorWrapper
+import com.anadi.prabhupadalectures.android.base.navigation.NavigatorWrapper
 import com.anadi.prabhupadalectures.android.player.PlaybackService
 import com.anadi.prabhupadalectures.android.ui.compose.AppTheme
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import dagger.hilt.android.AndroidEntryPoint
+import io.ktor.util.cio.*
 import kotlinx.coroutines.delay
+import java.io.File
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), ServiceConnection {
@@ -63,6 +65,8 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         DebugLog.d("PlaybackService", "ACTIVITY startService")
         startService(playbackServiceIntent)
         lifecycleScope.launchWhenStarted {
+            val file = File("")
+            file.writeChannel()
             delay(500L)
             // TODO applicationContext.bindService ??
             applicationContext.bindService(playbackServiceIntent, this@MainActivity, Context.BIND_IMPORTANT)

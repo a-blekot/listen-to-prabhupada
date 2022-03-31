@@ -2,7 +2,6 @@ package com.anadi.prabhupadalectures.repository
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import kotlinx.coroutines.flow.*
-import java.io.Serializable
 
 data class PlaybackState(
     val lecture: Lecture = Lecture(),
@@ -27,7 +26,7 @@ interface PlaybackRepository {
     suspend fun handleAction(playerAction: PlayerAction)
 }
 
-class PlaybackRepositoryImpl : PlaybackRepository, Serializable {
+class PlaybackRepositoryImpl : PlaybackRepository {
 
     private val playlistFlow = MutableStateFlow(emptyList<Lecture>())
     private val playbackFlow = MutableStateFlow(PlaybackState())

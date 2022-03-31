@@ -9,8 +9,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +21,7 @@ import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
-import com.anadi.prabhupadalectures.datamodel.QueryParam
+import com.anadi.prabhupadalectures.data.QueryParam
 
 @Composable
 fun SelectedFilters(

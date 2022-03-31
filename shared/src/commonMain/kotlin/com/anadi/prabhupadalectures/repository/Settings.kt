@@ -1,6 +1,6 @@
 package com.anadi.prabhupadalectures.repository
 
-import com.anadi.prabhupadalectures.datamodel.PAGE_QUERY_KEY
+import com.anadi.prabhupadalectures.data.PAGE_QUERY_KEY
 import com.russhwolf.settings.Settings
 
 val settings = Settings()

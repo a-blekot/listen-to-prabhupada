@@ -54,6 +54,16 @@ kotlin {
                 //Data Base
                 implementation("com.squareup.sqldelight:runtime:${findProperty("version.sql_delight")}")
                 implementation("com.squareup.sqldelight:coroutines-extensions:${findProperty("version.sql_delight")}")
+
+
+                // File IO - okio
+                implementation("com.squareup.okio:okio:${findProperty("version.okio")}")
+
+                // Stately
+                implementation("co.touchlab:stately-common:${findProperty("version.stately")}")
+                implementation("co.touchlab:stately-concurrency:${findProperty("version.stately")}")
+                implementation("co.touchlab:stately-isolate:${findProperty("version.stately")}")
+                implementation("co.touchlab:stately-iso-collections:${findProperty("version.stately")}")
             }
         }
 

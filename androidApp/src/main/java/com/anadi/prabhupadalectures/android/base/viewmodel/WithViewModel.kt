@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.viewmodel
+package com.anadi.prabhupadalectures.android.base.viewmodel
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen

@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.navigation
+package com.anadi.prabhupadalectures.android.base.navigation
 
 sealed class RouterEvent {
     object Pop : RouterEvent()

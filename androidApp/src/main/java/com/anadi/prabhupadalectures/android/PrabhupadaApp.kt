@@ -8,7 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import cafe.adriel.voyager.core.registry.ScreenRegistry
-import com.anadi.prabhupadalectures.android.navigation.ScreenModules
+import com.anadi.prabhupadalectures.android.base.navigation.ScreenModules
 import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.repository.ResultsRepository

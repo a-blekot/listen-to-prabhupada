@@ -3,10 +3,10 @@ package com.anadi.prabhupadalectures.repository
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.datamodel.ApiMapper
-import com.anadi.prabhupadalectures.datamodel.Pagination
-import com.anadi.prabhupadalectures.datamodel.QueryParam
-import com.anadi.prabhupadalectures.datamodel.buildQueryParams
+import com.anadi.prabhupadalectures.data.ApiMapper
+import com.anadi.prabhupadalectures.data.Pagination
+import com.anadi.prabhupadalectures.data.QueryParam
+import com.anadi.prabhupadalectures.data.buildQueryParams
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
 import com.anadi.prabhupadalectures.network.api.QueryParams
@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.Serializable
 
 data class ResultsState(
     val isLoading: Boolean = false,
@@ -43,7 +42,7 @@ class ResultsRepositoryImpl(
     private val playbackRepository: PlaybackRepository,
     withLog: Boolean
 ) :
-    CoroutineScope by CoroutineScope(Dispatchers.Main), ResultsRepository, Serializable {
+    CoroutineScope by CoroutineScope(Dispatchers.Main), ResultsRepository {
 
     private val state = MutableStateFlow(ResultsState())
     private val currentPage

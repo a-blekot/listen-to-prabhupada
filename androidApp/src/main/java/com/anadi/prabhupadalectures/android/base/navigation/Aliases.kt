@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.navigation
+package com.anadi.prabhupadalectures.android.base.navigation
 
 import cafe.adriel.voyager.core.registry.ScreenProvider
 import cafe.adriel.voyager.core.registry.ScreenRegistry

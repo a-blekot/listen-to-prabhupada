@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.coroutines.di
+package com.anadi.prabhupadalectures.android.di
 
 import dagger.Module
 import dagger.Provides

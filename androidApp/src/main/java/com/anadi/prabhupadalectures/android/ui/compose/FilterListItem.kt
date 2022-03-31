@@ -1,5 +1,6 @@
 package com.anadi.prabhupadalectures.android.ui.compose
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +23,7 @@ import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
-import com.anadi.prabhupadalectures.datamodel.QueryParam
+import com.anadi.prabhupadalectures.data.QueryParam
 
 @Composable
 fun FilterListItem(
@@ -127,7 +128,13 @@ fun OptionListItem(
     }
 
 
-@Preview
+
+@Preview(name = "Light mode")
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    name = "Dark Mode"
+)
 @Composable
 fun PreviewFilterListItem() {
     AppTheme {

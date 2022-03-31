@@ -1,10 +1,8 @@
-package com.anadi.prabhupadalectures.datamodel
+package com.anadi.prabhupadalectures.data
 
-import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.repository.FIRST_PAGE
 import com.anadi.prabhupadalectures.repository.toDatabaseIdentifier
-import com.anadi.prabhupadalectures.repository.toQueryParamsStringWithoutPage
 import io.github.aakira.napier.Napier
 
 const val PAGE_QUERY_KEY = "page"

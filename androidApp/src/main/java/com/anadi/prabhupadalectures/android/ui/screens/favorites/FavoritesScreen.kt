@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.androidx.AndroidScreen
-import com.anadi.prabhupadalectures.android.viewmodel.WithViewModel
+import com.anadi.prabhupadalectures.android.base.viewmodel.WithViewModel
 import io.github.aakira.napier.Napier
 
 class FavoritesScreen : AndroidScreen() {

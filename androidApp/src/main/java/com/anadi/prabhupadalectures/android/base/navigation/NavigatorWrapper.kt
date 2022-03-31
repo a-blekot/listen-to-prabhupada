@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.navigation
+package com.anadi.prabhupadalectures.android.base.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
@@ -11,8 +11,8 @@ import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
-import com.anadi.prabhupadalectures.android.navigation.RouterEvent.Pop
-import com.anadi.prabhupadalectures.android.navigation.RouterEvent.Push
+import com.anadi.prabhupadalectures.android.base.navigation.RouterEvent.Pop
+import com.anadi.prabhupadalectures.android.base.navigation.RouterEvent.Push
 import com.anadi.prabhupadalectures.android.di.Route.RMainScreen
 import io.github.aakira.napier.Napier
 import kotlin.reflect.KClass

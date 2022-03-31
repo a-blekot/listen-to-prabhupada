@@ -3,13 +3,11 @@ package com.anadi.prabhupadalectures.android.ui.compose
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
-import com.anadi.prabhupadalectures.datamodel.Pagination
+import com.anadi.prabhupadalectures.data.Pagination
 import com.anadi.prabhupadalectures.repository.FIRST_PAGE
 
 private const val WEIGHT_BUTTON = 1f

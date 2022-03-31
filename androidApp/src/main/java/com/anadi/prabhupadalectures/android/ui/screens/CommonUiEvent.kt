@@ -1,8 +1,8 @@
 package com.anadi.prabhupadalectures.android.ui.screens
 
-import com.anadi.prabhupadalectures.android.viewmodel.UiEvent
+import com.anadi.prabhupadalectures.android.base.viewmodel.UiEvent
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.datamodel.QueryParam
+import com.anadi.prabhupadalectures.data.QueryParam
 import com.anadi.prabhupadalectures.repository.PlayerAction
 
 sealed class CommonUiEvent : UiEvent {

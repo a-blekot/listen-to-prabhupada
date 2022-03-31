@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.android.viewmodel
+package com.anadi.prabhupadalectures.android.base.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

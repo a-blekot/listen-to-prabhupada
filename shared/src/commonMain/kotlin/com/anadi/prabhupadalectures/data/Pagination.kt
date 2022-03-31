@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.datamodel
+package com.anadi.prabhupadalectures.data
 
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.repository.FIRST_PAGE

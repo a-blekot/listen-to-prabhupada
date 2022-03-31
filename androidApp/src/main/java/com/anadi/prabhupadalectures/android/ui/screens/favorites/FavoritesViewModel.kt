@@ -2,11 +2,11 @@ package com.anadi.prabhupadalectures.android.ui.screens.favorites
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.anadi.prabhupadalectures.android.coroutines.di.IODispatcher
-import com.anadi.prabhupadalectures.android.coroutines.di.MainDispatcher
-import com.anadi.prabhupadalectures.android.navigation.Router
+import com.anadi.prabhupadalectures.android.di.IODispatcher
+import com.anadi.prabhupadalectures.android.di.MainDispatcher
+import com.anadi.prabhupadalectures.android.base.navigation.Router
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
-import com.anadi.prabhupadalectures.android.viewmodel.BaseViewModel
+import com.anadi.prabhupadalectures.android.base.viewmodel.BaseViewModel
 import com.anadi.prabhupadalectures.repository.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.aakira.napier.Napier

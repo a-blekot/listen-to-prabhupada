@@ -3,7 +3,6 @@ package com.anadi.prabhupadalectures.repository
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 
 interface ToolsRepository {
     fun setCompleted(id: Long)

@@ -1,9 +1,10 @@
 package com.anadi.prabhupadalectures
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.data.lectures.file
+import com.anadi.prabhupadalectures.data.lectures.filePath
 import io.ktor.util.cio.*
 import io.ktor.utils.io.*
+import okio.FileSystem
 import java.io.File
 
 actual class Platform actual constructor() {
@@ -11,4 +12,7 @@ actual class Platform actual constructor() {
 }
 
 actual fun Lecture.writeChannel(): ByteWriteChannel =
-    file.writeChannel()
+    File(filePath.toString()).writeChannel()
+
+actual val Lecture.fileSystem: FileSystem
+    get() = FileSystem.SYSTEM

@@ -2,12 +2,14 @@ package com.anadi.prabhupadalectures.android.ui.screens.results
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.anadi.prabhupadalectures.android.coroutines.di.IODispatcher
-import com.anadi.prabhupadalectures.android.coroutines.di.MainDispatcher
+import com.anadi.prabhupadalectures.android.di.IODispatcher
+import com.anadi.prabhupadalectures.android.di.MainDispatcher
 import com.anadi.prabhupadalectures.android.di.Route
-import com.anadi.prabhupadalectures.android.navigation.Router
+import com.anadi.prabhupadalectures.android.base.navigation.Router
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
-import com.anadi.prabhupadalectures.android.viewmodel.BaseViewModel
+import com.anadi.prabhupadalectures.android.base.viewmodel.BaseViewModel
+import com.anadi.prabhupadalectures.data.Database
+import com.anadi.prabhupadalectures.data.filters.filtersHeader
 import com.anadi.prabhupadalectures.repository.*
 import com.anadi.prabhupadalectures.utils.ConnectionState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,10 +29,9 @@ class ResultsViewModel @Inject constructor(
     private val playbackRepository: PlaybackRepository,
     private val downloadsRepository: DownloadsRepository,
     private val toolsRepository: ToolsRepository,
+    private val db: Database,
     private val router: Router,
 ) : BaseViewModel<CommonUiEvent, ResultsScreenState, ResultsEffect>(context, mainDispatcher, ioDispatcher) {
-
-    private var p = 0
 
     init {
         observeState()
@@ -70,6 +71,9 @@ class ResultsViewModel @Inject constructor(
             }
         }
     }
+
+    fun isFiltersHeaderExpanded() =
+        db.selectExpandedFilter(filtersHeader.name)
 
     private suspend fun handleResultsEvent(event: CommonUiEvent.ResultsEvent) {
         when (event) {

@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.datamodel
+package com.anadi.prabhupadalectures.data
 
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.filters.Option
