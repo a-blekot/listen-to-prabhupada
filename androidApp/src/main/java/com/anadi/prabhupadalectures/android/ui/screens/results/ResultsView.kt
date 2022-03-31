@@ -58,11 +58,11 @@ fun ResultsView(
                 }
             },
             topBar = {
-                TopAppBar {
-                    coroutineScope.launch {
-                        scaffoldState.drawerState.toggle()
-                    }
-                }
+//                TopAppBar {
+//                    coroutineScope.launch {
+//                        scaffoldState.drawerState.toggle()
+//                    }
+//                }
             },
             bottomBar = {
                 // PlayerListItem(playbackState, onEvent)
@@ -114,6 +114,12 @@ fun ResultsView(
                     if (isNotEmpty) {
                         item {
                             Header(
+                                onEvent = onEvent,
+                                onMenuClick = {
+                                    coroutineScope.launch {
+                                        scaffoldState.drawerState.toggle()
+                                    }
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .align(Alignment.Center)

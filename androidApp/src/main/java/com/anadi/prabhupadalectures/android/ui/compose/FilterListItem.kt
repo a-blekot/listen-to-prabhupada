@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
 import com.anadi.prabhupadalectures.data.filters.Filter
@@ -67,7 +68,8 @@ fun FilterTitle(filter: Filter, isExpanded: Boolean, onExpandedChanged: (Boolean
                 color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(4.dp)
             )
-            .padding(all = 12.dp)
+            .clickable { onExpandedChanged(!isExpanded) }
+            .padding(all = 8.dp)
     ) {
         Image(
             painter = painterResource(if (isExpanded) R.drawable.ic_minus else R.drawable.ic_plus),
@@ -76,13 +78,13 @@ fun FilterTitle(filter: Filter, isExpanded: Boolean, onExpandedChanged: (Boolean
             modifier =
             Modifier
                 .align(Alignment.CenterStart)
-                .size(30.dp)
-                .clickable { onExpandedChanged(!isExpanded) }
+                .size(24.dp)
         )
 
         Text(
             text = filter.title,
             color = MaterialTheme.colors.onPrimary,
+            fontSize = 18.sp,
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.Center)
@@ -104,6 +106,7 @@ fun OptionListItem(
                 color = MaterialTheme.colors.secondary,
                 shape = RoundedCornerShape(4.dp)
             )
+            .clickable { onOptionSelected?.invoke(!option.isSelected) }
             .padding(all = 4.dp)
 
     ) {
@@ -111,6 +114,7 @@ fun OptionListItem(
         Text(
             text = option.text,
             color = MaterialTheme.colors.onSecondary,
+            fontSize = 18.sp,
             style = MaterialTheme.typography.h6,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -118,7 +122,7 @@ fun OptionListItem(
         )
         Checkbox(
             checked = option.isSelected,
-            onCheckedChange = { onOptionSelected?.invoke(it) },
+            onCheckedChange = null, // { onOptionSelected?.invoke(it) },
             colors = CheckboxDefaults.colors(
                 checkedColor = MaterialTheme.colors.onSecondary,
                 checkmarkColor = MaterialTheme.colors.secondary,
@@ -126,8 +130,6 @@ fun OptionListItem(
         )
         Spacer(modifier = Modifier.width(16.dp))
     }
-
-
 
 @Preview(name = "Light mode")
 @Preview(

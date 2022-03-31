@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.player.SEEK_INCREMENT_MS
 import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
@@ -57,17 +58,17 @@ fun PlayerListItem(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
+            MarqueeText(
                 text = playbackState.lecture.title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+//                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colors.onPrimary,
+                fontSize = 18.sp,
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = playbackState.lecture.displayedDescription,
+                text = playbackState.lecture.subTitle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = GrayLight,
