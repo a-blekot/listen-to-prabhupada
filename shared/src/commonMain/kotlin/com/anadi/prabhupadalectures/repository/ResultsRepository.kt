@@ -1,23 +1,17 @@
 package com.anadi.prabhupadalectures.repository
 
-import com.anadi.prabhupadalectures.data.Database
+import com.anadi.prabhupadalectures.data.*
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.lectures.Lecture
-import com.anadi.prabhupadalectures.data.ApiMapper
-import com.anadi.prabhupadalectures.data.Pagination
-import com.anadi.prabhupadalectures.data.QueryParam
-import com.anadi.prabhupadalectures.data.buildQueryParams
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
 import com.anadi.prabhupadalectures.network.api.QueryParams
+import com.anadi.prabhupadalectures.utils.ShareAction
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 data class ResultsState(
     val isLoading: Boolean = false,
@@ -29,11 +23,12 @@ data class ResultsState(
 interface ResultsRepository {
     fun observeState(): StateFlow<ResultsState>
 
-    suspend fun init(): Unit?
+    suspend fun init(shareAction: ShareAction?): Unit?
     suspend fun updatePage(page: Int)
     suspend fun updateQuery(queryParam: QueryParam)
     suspend fun clearAllFilters()
     fun capturePlayback()
+    fun queryParams(): String?
 }
 
 class ResultsRepositoryImpl(
@@ -44,6 +39,7 @@ class ResultsRepositoryImpl(
 ) :
     CoroutineScope by CoroutineScope(Dispatchers.Main), ResultsRepository {
 
+    private var shareAction: ShareAction? = null
     private val state = MutableStateFlow(ResultsState())
     private val currentPage
         get() = state.value.pagination.curr
@@ -59,12 +55,18 @@ class ResultsRepositoryImpl(
 
     override fun observeState(): StateFlow<ResultsState> = state
 
-    override suspend fun init() {
-        loadMore(
-            settings
-                .getQueryParams()
-                .addPage(settings.getPage())
-        )
+    override suspend fun init(shareAction: ShareAction?) {
+        this.shareAction = shareAction
+
+        delay (3_000)
+
+        val queryParams =
+            shareAction?.run { queryParams.toQueryParamsMap() }
+                ?: settings
+                    .getQueryParams()
+                    .addPage(settings.getPage())
+
+        loadMore(queryParams)
     }
 
     override suspend fun updatePage(page: Int) =
@@ -78,6 +80,14 @@ class ResultsRepositoryImpl(
 
     override fun capturePlayback() =
         playbackRepository.updatePlaylist(state.value.lectures)
+
+    override fun queryParams(): String? {
+        val list = mutableListOf<String>()
+        if (currentPage > 1) list += "$PAGE_QUERY_KEY$LATEST_KEY_VALUE_SEPARATOR$currentPage"
+        settings.getQueryParamsAsString()?.let { list += it }
+
+        return list.joinToString(separator = LATEST_FILTERS_SEPARATOR) { it }.ifEmpty { null }
+    }
 
     private suspend fun loadMore(queryParam: QueryParam?) =
         loadMore(buildQueryParams(queryParam))
@@ -113,12 +123,9 @@ class ResultsRepositoryImpl(
 
         val queryParams = buildQueryParams().toQueryParamsStringWithoutPage()
 
-        Napier.d("loadMore $queryParams", tag = "PAGE_DB")
-
         settings.saveQueryParams(queryParams)
         settings.savePage(currentPage)
 
-        Napier.d("save: id=${queryParams.hashCode().toLong()}, page=${currentPage}", tag = "PAGE_DB")
         db.insertPage(queryParams.hashCode().toLong(), currentPage)
     }
 
@@ -186,6 +193,18 @@ class ResultsRepositoryImpl(
         launch {
             observeState().collect {
                 playbackRepository.updatePlaylist(it.lectures)
+                shareAction?.run {
+                    playbackRepository.run {
+                        delay(200L)
+                        handleAction(Play(lectureId))
+                        if (timeMs != null) {
+                            delay(200L)
+                            handleAction(SeekTo(timeMs))
+                            handleAction(SliderReleased)
+                        }
+                    }
+                }
+                shareAction = null
             }
         }
 }

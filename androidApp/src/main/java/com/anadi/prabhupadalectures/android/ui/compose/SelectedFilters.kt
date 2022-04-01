@@ -94,9 +94,7 @@ fun ClearAllFiltersChip(
 fun ClearImage() =
     Image(
         imageVector = Icons.Default.Clear, // Close, Clear,
-        colorFilter = ColorFilter.tint(
-            color = MaterialTheme.colors.onSurface
-        ),
+        colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
         contentDescription = "delete filter chip",
         modifier = Modifier.wrapContentWidth()
     )

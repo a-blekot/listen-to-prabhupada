@@ -2,6 +2,7 @@ package com.anadi.prabhupadalectures.android.ui.screens.results
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
 import com.anadi.prabhupadalectures.android.di.IODispatcher
 import com.anadi.prabhupadalectures.android.di.MainDispatcher
 import com.anadi.prabhupadalectures.android.di.Route
@@ -12,6 +13,7 @@ import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.filters.filtersHeader
 import com.anadi.prabhupadalectures.repository.*
 import com.anadi.prabhupadalectures.utils.ConnectionState
+import com.anadi.prabhupadalectures.utils.ShareAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
@@ -46,6 +48,7 @@ class ResultsViewModel @Inject constructor(
                 is CommonUiEvent.ResultsEvent -> handleResultsEvent(event)
 
                 CommonUiEvent.TappedBack -> router.pop()
+                is CommonUiEvent.Share -> share(event.lectureId)
                 is CommonUiEvent.Favorite -> toolsRepository.setFavorite(event.lecture, event.isFavorite)
                 is CommonUiEvent.Player -> {
                     when (event.action) {
@@ -62,7 +65,7 @@ class ResultsViewModel @Inject constructor(
             ConnectionState.Online -> {
                 setState { copy(isOnline = true) }
                 viewModelScope.launch {
-                    resultsRepository.init()
+                    resultsRepository.init(app.shareAction)
 //                    setEffect { ResultsEffect.Toast("Results are loaded.") }
                 }
             }
@@ -102,4 +105,15 @@ class ResultsViewModel @Inject constructor(
             }
                 .collect()
         }
+
+    private fun share(lectureId: Long) {
+        val queryParams = resultsRepository.queryParams()
+        val timeMs = playbackRepository.currentState().run {
+            if (lectureId == lecture.id) timeMs else null
+        }
+
+        ShareAction(lectureId, queryParams, timeMs).let {
+            setEffect { ResultsEffect.Share(it) }
+        }
+    }
 }

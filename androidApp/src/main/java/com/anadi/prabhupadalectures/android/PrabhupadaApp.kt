@@ -2,6 +2,7 @@ package com.anadi.prabhupadalectures.android
 
 import android.app.Activity
 import android.app.Application
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import androidx.lifecycle.Lifecycle
@@ -9,17 +10,15 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import com.anadi.prabhupadalectures.android.base.navigation.ScreenModules
-import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
 import com.anadi.prabhupadalectures.data.Database
+import com.anadi.prabhupadalectures.deepLink
 import com.anadi.prabhupadalectures.repository.ResultsRepository
-import com.anadi.prabhupadalectures.utils.ConnectionState
 import com.anadi.prabhupadalectures.utils.DOWNLOADS_DIR
+import com.anadi.prabhupadalectures.utils.ShareAction
 import dagger.hilt.android.HiltAndroidApp
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
@@ -29,6 +28,8 @@ class PrabhupadaApp : Application() {
     companion object {
         lateinit var app: PrabhupadaApp
     }
+
+    var shareAction: ShareAction? = null
 
     private val lifecycleEventObserver = LifecycleEventObserver { _, event ->
         when (event) {
@@ -72,8 +73,13 @@ class PrabhupadaApp : Application() {
 
         override fun onActivityResumed(activity: Activity) {
             DebugLog.d("_LIFECYCLE", "onActivityResumed")
+            currentActivity = activity
         }
     }
+
+    @Volatile
+    var currentActivity: Activity? = null
+        private set
 
     @Inject
     lateinit var db: Database
@@ -107,16 +113,17 @@ class PrabhupadaApp : Application() {
         DOWNLOADS_DIR = app.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: ""
 
         checkDownloadedFiles()
+    }
 
-        backgroundScope.launch {
-            delay(200L)
-
-            observeConnectivityAsFlow().collect {
-                if (it == ConnectionState.Online) {
-                    resultsRepository.init()
-                }
-            }
+    fun share(shareAction: ShareAction) {
+        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/html"
+            putExtra(Intent.EXTRA_TEXT, shareAction.deepLink)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        currentActivity?.startActivity(shareIntent)
     }
 
     private fun checkDownloadedFiles() {

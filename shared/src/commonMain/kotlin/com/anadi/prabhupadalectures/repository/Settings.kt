@@ -2,11 +2,16 @@ package com.anadi.prabhupadalectures.repository
 
 import com.anadi.prabhupadalectures.data.PAGE_QUERY_KEY
 import com.russhwolf.settings.Settings
+import io.github.aakira.napier.Napier
 
 val settings = Settings()
 
-private const val FILTERS_SEPARATOR = ", "
-private const val KEY_VALUE_SEPARATOR = "::"
+const val FILTERS_SEPARATOR_V1 = ", "
+const val FILTERS_SEPARATOR_V2 = "&"
+const val LATEST_FILTERS_SEPARATOR = FILTERS_SEPARATOR_V2
+const val KEY_VALUE_SEPARATOR_V1 = "::"
+const val KEY_VALUE_SEPARATOR_V2 = "="
+const val LATEST_KEY_VALUE_SEPARATOR = KEY_VALUE_SEPARATOR_V2
 private const val KEY_QUERY_PARAMS = "KEY_QUERY_PARAMS"
 private const val KEY_PAGE = "KEY_PAGE"
 private const val KEY_NOTIFICATION_ID = "KEY_NOTIFICATION_ID"
@@ -29,6 +34,9 @@ fun Settings.saveQueryParams(queryParams: String) =
 fun Settings.getQueryParams() =
     getStringOrNull(KEY_QUERY_PARAMS)?.ifEmpty { null }.toQueryParamsMap()
 
+fun Settings.getQueryParamsAsString() =
+    getStringOrNull(KEY_QUERY_PARAMS)?.ifEmpty { null }
+
 fun Settings.getNextNotificationId(): Int {
     val notificationId = getIntOrNull(KEY_NOTIFICATION_ID) ?: DOWNLOAD_NOTIFICATION_ID + 1
     putInt(KEY_NOTIFICATION_ID, notificationId + 1)
@@ -43,21 +51,40 @@ fun HashMap<String, Any>.addPage(page: Int) =
 fun HashMap<String, Any>.toDatabaseIdentifier() =
     toQueryParamsStringWithoutPage().hashCode().toLong()
 
+fun HashMap<String, Any>.toQueryParamsString() =
+    entries
+        .joinToString(separator = LATEST_FILTERS_SEPARATOR) {
+            "${it.key}$LATEST_KEY_VALUE_SEPARATOR${it.value}"
+        }
+
 fun HashMap<String, Any>.toQueryParamsStringWithoutPage() =
     entries
         .filter { it.key != PAGE_QUERY_KEY }
-        .joinToString(separator = FILTERS_SEPARATOR) {
-            "${it.key}$KEY_VALUE_SEPARATOR${it.value}"
+        .joinToString(separator = LATEST_FILTERS_SEPARATOR) {
+            "${it.key}$LATEST_KEY_VALUE_SEPARATOR${it.value}"
         }
 
-private fun String?.toQueryParamsMap(): HashMap<String, Any> {
+fun String?.toQueryParamsMap(): HashMap<String, Any> {
     val result = HashMap<String, Any>()
 
-    this?.split(FILTERS_SEPARATOR)
+    val (filtersSeparator, keyValueSeparator) = separatorsForString(this) ?: return result
+
+    Napier.d("toQueryParamsMap $this", tag = "Settings")
+    this?.split(filtersSeparator)
         ?.forEach { filter ->
-            val (name, value) = filter.split(KEY_VALUE_SEPARATOR)
-            result[name] = value
+            val list = filter.split(keyValueSeparator)
+            if (list.size == 2) {
+                result[list[0]] = list[1]
+            }
         }
 
     return result
 }
+
+fun separatorsForString(s: String?): Pair<String, String>? =
+    when {
+        s == null -> null
+        s.contains(KEY_VALUE_SEPARATOR_V2) -> Pair(FILTERS_SEPARATOR_V2, KEY_VALUE_SEPARATOR_V2)
+        s.contains(KEY_VALUE_SEPARATOR_V1) -> Pair(FILTERS_SEPARATOR_V1, KEY_VALUE_SEPARATOR_V1)
+        else -> null
+    }

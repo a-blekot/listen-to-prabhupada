@@ -12,18 +12,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
+import com.anadi.prabhupadalectures.android.PrabhupadaApp.Companion.app
+import com.anadi.prabhupadalectures.android.base.navigation.NavigatorWrapper
 import com.anadi.prabhupadalectures.android.download.DownloadService
 import com.anadi.prabhupadalectures.android.download.DownloadServiceAction
-import com.anadi.prabhupadalectures.android.base.navigation.NavigatorWrapper
 import com.anadi.prabhupadalectures.android.player.PlaybackService
 import com.anadi.prabhupadalectures.android.ui.compose.AppTheme
+import com.anadi.prabhupadalectures.android.util.parseShareAction
+import com.anadi.prabhupadalectures.repository.ResultsRepository
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import dagger.hilt.android.AndroidEntryPoint
-import io.ktor.util.cio.*
 import kotlinx.coroutines.delay
-import java.io.File
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), ServiceConnection {
@@ -38,6 +40,9 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        app.shareAction = parseShareAction(intent.data)
+        intent.data = null
 
         setContent {
             AppTheme {
@@ -60,15 +65,25 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         }
     }
 
+    @Inject
+    lateinit var resultsRepository: ResultsRepository
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        lifecycleScope.launchWhenCreated {
+            parseShareAction(intent?.data).let {
+                resultsRepository.init(it)
+            }
+        }
+        setIntent(null)
+    }
+
     override fun onStart() {
         super.onStart()
         DebugLog.d("PlaybackService", "ACTIVITY startService")
         startService(playbackServiceIntent)
         lifecycleScope.launchWhenStarted {
-            val file = File("")
-            file.writeChannel()
             delay(500L)
-            // TODO applicationContext.bindService ??
             applicationContext.bindService(playbackServiceIntent, this@MainActivity, Context.BIND_IMPORTANT)
         }
 

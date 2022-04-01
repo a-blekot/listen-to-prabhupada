@@ -9,6 +9,7 @@ sealed class CommonUiEvent : UiEvent {
     object TappedBack : CommonUiEvent()
     data class Favorite(val lecture: Lecture, val isFavorite: Boolean) : CommonUiEvent()
     data class Player(val action: PlayerAction) : CommonUiEvent()
+    data class Share(val lectureId: Long) : CommonUiEvent()
 
     sealed class ResultsEvent : CommonUiEvent() {
         object OpenDownloads : ResultsEvent()

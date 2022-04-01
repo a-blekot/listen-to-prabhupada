@@ -2,6 +2,9 @@ package com.anadi.prabhupadalectures
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.data.lectures.filePath
+import com.anadi.prabhupadalectures.utils.DEEP_LINK_SCHEME
+import com.anadi.prabhupadalectures.utils.HOST_LECTURE
+import com.anadi.prabhupadalectures.utils.ShareAction
 import io.ktor.util.cio.*
 import io.ktor.utils.io.*
 import okio.FileSystem
@@ -16,3 +19,23 @@ actual fun Lecture.writeChannel(): ByteWriteChannel =
 
 actual val Lecture.fileSystem: FileSystem
     get() = FileSystem.SYSTEM
+
+actual val ShareAction.deepLink: String
+    get() {
+        var result = "$DEEP_LINK_SCHEME://$HOST_LECTURE/$lectureId"
+
+        if (queryParams != null) {
+            result += "?$queryParams"
+        }
+
+        if (timeMs != null) {
+            result += "#$timeMs"
+        }
+
+        return result
+    }
+
+
+
+
+

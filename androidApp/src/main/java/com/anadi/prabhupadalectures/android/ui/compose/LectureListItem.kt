@@ -133,7 +133,7 @@ fun LectureListItem(
                 .weight(5f)
                 .background(Color(130, 0, 255, testBgAlpha))
                 .aspectRatio(0.4f)
-                .clickable { }
+                .clickable { onEvent(CommonUiEvent.Share(lecture.id)) }
         )
     }
 
