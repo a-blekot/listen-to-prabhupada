@@ -1,30 +1,28 @@
 package com.anadi.prabhupadalectures.network
 
 import com.anadi.prabhupadalectures.network.api.DEFAULT_HTTP_TIMEOUT
+import io.github.aakira.napier.Napier
 import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.util.*
+import io.ktor.serialization.kotlinx.json.*
 
 actual class KtorClientFactory {
     actual fun build() =
-        HttpClient(Android) {
-            install(JsonFeature) {
-                serializer = KotlinxSerializer(
-                    kotlinx.serialization.json.Json {
-                        ignoreUnknownKeys = true
-//                        coerceInputValues = true
-                    }
-                )
+        HttpClient(OkHttp) {
+            install(ContentNegotiation) {
+                json()
             }
             install(Logging) {
-                logger = Logger.ANDROID
                 level = LogLevel.ALL
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        Napier.v(tag = "AndroidHttpClient", message = message)
+                    }
+                }
             }
             install(HttpTimeout) {
                 requestTimeoutMillis = DEFAULT_HTTP_TIMEOUT
@@ -40,30 +38,30 @@ actual class KtorClientFactory {
             }
         }
 }
-
-class CustomHeadersFeature(private val appId: String) {
-    class Config(var appId: String = "")
-
-    companion object Feature : HttpClientFeature<Config, CustomHeadersFeature> {
-        override val key: AttributeKey<CustomHeadersFeature> =
-            AttributeKey("CustomHeadersFeature")
-
-        override fun install(feature: CustomHeadersFeature, scope: HttpClient) {
-            scope.feature(HttpSend)?.intercept { call, _ ->
-                if (call.response.status == HttpStatusCode.Unauthorized){
-                    val request = HttpRequestBuilder().apply {
-                        header("app-id", feature.appId)
-                    }
-                    execute(request)
-                } else {
-                    call
-                }
-            }
-        }
-
-        override fun prepare(block: Config.() -> Unit): CustomHeadersFeature {
-            val config = Config().apply(block)
-            return CustomHeadersFeature(appId = config.appId)
-        }
-    }
-}
+//
+//class CustomHeadersFeature(private val appId: String) {
+//    class Config(var appId: String = "")
+//
+//    companion object Feature : HttpClientFeature<Config, CustomHeadersFeature> {
+//        override val key: AttributeKey<CustomHeadersFeature> =
+//            AttributeKey("CustomHeadersFeature")
+//
+//        override fun install(feature: CustomHeadersFeature, scope: HttpClient) {
+//            scope.feature(HttpSend)?.intercept { call, _ ->
+//                if (call.response.status == HttpStatusCode.Unauthorized) {
+//                    val request = HttpRequestBuilder().apply {
+//                        header("app-id", feature.appId)
+//                    }
+//                    execute(request)
+//                } else {
+//                    call
+//                }
+//            }
+//        }
+//
+//        override fun prepare(block: Config.() -> Unit): CustomHeadersFeature {
+//            val config = Config().apply(block)
+//            return CustomHeadersFeature(appId = config.appId)
+//        }
+//    }
+//}

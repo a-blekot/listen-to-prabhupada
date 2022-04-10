@@ -9,6 +9,9 @@ import com.anadi.prabhupadalectures.network.api.filters.FilterApiModel
 import com.anadi.prabhupadalectures.network.api.filters.OptionApiModel
 import com.anadi.prabhupadalectures.network.api.lectures.*
 
+fun ApiModel.toLect() =
+    ApiMapper.lectures(this)
+
 object ApiMapper {
     fun pagination(apiModel: ApiModel) =
         Pagination(apiModel)

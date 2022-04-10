@@ -29,6 +29,8 @@ interface ResultsRepository {
     suspend fun clearAllFilters()
     fun capturePlayback()
     fun queryParams(): String?
+
+    suspend fun getResults(page: Int): ApiModel
 }
 
 class ResultsRepositoryImpl(
@@ -57,8 +59,6 @@ class ResultsRepositoryImpl(
 
     override suspend fun init(shareAction: ShareAction?) {
         this.shareAction = shareAction
-
-        delay (3_000)
 
         val queryParams =
             shareAction?.run { queryParams.toQueryParamsMap() }
@@ -91,6 +91,9 @@ class ResultsRepositoryImpl(
 
     private suspend fun loadMore(queryParam: QueryParam?) =
         loadMore(buildQueryParams(queryParam))
+
+    override suspend fun getResults(page: Int): ApiModel =
+        api.getResults(page)
 
     private suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
         if (state.value.isLoading) {

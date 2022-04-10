@@ -1,13 +1,13 @@
 package com.anadi.prabhupadalectures.network.api
 
+import com.anadi.prabhupadalectures.data.PAGE_QUERY_KEY
 import com.anadi.prabhupadalectures.network.KtorClientFactory
 import com.anadi.prabhupadalectures.network.Routes
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.*
@@ -24,6 +24,7 @@ const val DOWNLOAD_HTTP_TIMEOUT = 300_000L
 
 interface PrabhupadaApi {
     suspend fun getResults(params: QueryParams): Result<ApiModel>
+    suspend fun getResults(page: Int): ApiModel
     suspend fun downloadFile(writeChannel: ByteWriteChannel, url: String): Flow<DownloadState>
 }
 
@@ -34,15 +35,20 @@ class PrabhupadaApiImpl(private val client: HttpClient) : PrabhupadaApi {
                 params.forEach {
                     parameter(it.key, it.value)
                 }
-            }
+            }.body()
         }
+
+    override suspend fun getResults(page: Int): ApiModel =
+        client.get(Routes.FILE) {
+            parameter(PAGE_QUERY_KEY, page)
+        }.body()
 
     override suspend fun downloadFile(writeChannel: ByteWriteChannel, url: String): Flow<DownloadState> {
         return flow {
             try {
                 Napier.d("downloadFile $url", tag = "PrabhupadaApi")
 
-                client.get<HttpStatement>(url) {
+                client.prepareGet(url) {
                     timeout {
                         requestTimeoutMillis = DOWNLOAD_HTTP_TIMEOUT
                         socketTimeoutMillis = DOWNLOAD_HTTP_TIMEOUT
@@ -50,33 +56,33 @@ class PrabhupadaApiImpl(private val client: HttpClient) : PrabhupadaApi {
                     }
                 }
                     .execute { httpResponse ->
-                    emit(Progress(ZERO_PROGRESS))
+                        emit(Progress(ZERO_PROGRESS))
 
-                    val contentLength = httpResponse.contentLength()
-                        ?: run {
-                            emit(Error("httpResponse.contentLength() is null"))
-                            return@execute
+                        val contentLength = httpResponse.contentLength()
+                            ?: run {
+                                emit(Error("httpResponse.contentLength() is null"))
+                                return@execute
+                            }
+
+                        val channel: ByteReadChannel = httpResponse.body()
+                        while (!channel.isClosedForRead) {
+                            val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE)
+                            while (!packet.isEmpty) {
+                                val bytes = packet.readBytes()
+                                writeChannel.writeAvailable(bytes)
+
+                                val totalReceived = writeChannel.totalBytesWritten
+                                emit(Progress((totalReceived * 100f / contentLength).roundToInt()))
+
+                                println("Received $totalReceived bytes from $contentLength")
+                            }
                         }
 
-                    val channel: ByteReadChannel = httpResponse.receive()
-                    while (!channel.isClosedForRead) {
-                        val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE)
-                        while (!packet.isEmpty) {
-                            val bytes = packet.readBytes()
-                            writeChannel.writeAvailable(bytes)
-
-                            val totalReceived = writeChannel.totalBytesWritten
-                            emit(Progress((totalReceived * 100f / contentLength).roundToInt()))
-
-                            println("Received $totalReceived bytes from $contentLength")
-                        }
+                        if (httpResponse.status.isSuccess())
+                            emit(Success)
+                        else
+                            emit(Error("httpResponse.status = ${httpResponse.status.value}, ${httpResponse.status.description}"))
                     }
-
-                    if (httpResponse.status.isSuccess())
-                        emit(Success)
-                    else
-                        emit(Error("httpResponse.status = ${httpResponse.status.value}, ${httpResponse.status.description}"))
-                }
             } catch (t: Throwable) {
                 emit(Error("error while downloading file", t))
             }

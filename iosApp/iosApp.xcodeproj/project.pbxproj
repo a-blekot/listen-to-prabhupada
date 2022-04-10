@@ -11,6 +11,8 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
+		C6A7C4DE2802D5C2001116EE /* LectureListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureListItem.swift */; };
+		C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DF2802D6DD001116EE /* PlayButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +35,8 @@
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C6A7C4DD2802D5C2001116EE /* LectureListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListItem.swift; sourceTree = "<group>"; };
+		C6A7C4DF2802D6DD001116EE /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				C6A7C4DD2802D5C2001116EE /* LectureListItem.swift */,
+				C6A7C4DF2802D6DD001116EE /* PlayButton.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -183,7 +189,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
+				C6A7C4DE2802D5C2001116EE /* LectureListItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
