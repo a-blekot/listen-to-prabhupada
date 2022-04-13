@@ -3,6 +3,8 @@ package com.anadi.prabhupadalectures.android.base.viewmodel
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getViewModel
+import com.anadi.prabhupadalectures.events.UiEffect
+import com.anadi.prabhupadalectures.events.UiEvent
 import io.github.aakira.napier.Napier
 
 @Suppress("MoveLambdaOutsideParentheses")

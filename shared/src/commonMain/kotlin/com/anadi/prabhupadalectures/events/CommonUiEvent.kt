@@ -1,9 +1,13 @@
-package com.anadi.prabhupadalectures.android.ui.screens
+package com.anadi.prabhupadalectures.events
 
-import com.anadi.prabhupadalectures.android.base.viewmodel.UiEvent
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.data.QueryParam
-import com.anadi.prabhupadalectures.repository.PlayerAction
+
+interface UiState
+
+interface UiEvent
+
+interface UiEffect
 
 sealed class CommonUiEvent : UiEvent {
     object TappedBack : CommonUiEvent()

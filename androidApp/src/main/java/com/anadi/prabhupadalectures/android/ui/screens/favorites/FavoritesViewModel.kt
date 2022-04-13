@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.anadi.prabhupadalectures.android.di.IODispatcher
 import com.anadi.prabhupadalectures.android.di.MainDispatcher
 import com.anadi.prabhupadalectures.android.base.navigation.Router
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
+import com.anadi.prabhupadalectures.events.CommonUiEvent
 import com.anadi.prabhupadalectures.android.base.viewmodel.BaseViewModel
+import com.anadi.prabhupadalectures.events.Download
 import com.anadi.prabhupadalectures.repository.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.aakira.napier.Napier
@@ -45,13 +46,18 @@ class FavoritesViewModel @Inject constructor(
         Napier.e("handleEvents")
         viewModelScope.launch {
             when (event) {
-                CommonUiEvent.TappedBack -> { router.pop() }
+                CommonUiEvent.TappedBack -> {
+                    router.pop()
+                }
                 is CommonUiEvent.Favorite -> toolsRepository.setFavorite(event.lecture, event.isFavorite)
                 is CommonUiEvent.Player -> {
                     when (event.action) {
-                        is Download -> downloadsRepository.download(event.action.lecture)
+                        is Download -> downloadsRepository.download((event.action as Download).lecture)
                         else -> playbackRepository.handleAction(event.action)
                     }
+                }
+                else -> {
+                    /** do nothing**/
                 }
             }
         }

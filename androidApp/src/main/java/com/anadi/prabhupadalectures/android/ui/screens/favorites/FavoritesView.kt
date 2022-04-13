@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anadi.prabhupadalectures.android.ui.compose.LectureListItem
 import com.anadi.prabhupadalectures.android.ui.compose.PlayerListItem
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
+import com.anadi.prabhupadalectures.events.CommonUiEvent
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 import com.anadi.prabhupadalectures.repository.PlaybackState
 

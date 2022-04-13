@@ -1,17 +1,23 @@
 package com.anadi.prabhupadalectures.repository
 
+import co.touchlab.stately.freeze
 import com.anadi.prabhupadalectures.data.*
 import com.anadi.prabhupadalectures.data.filters.Filter
 import com.anadi.prabhupadalectures.data.lectures.Lecture
+import com.anadi.prabhupadalectures.events.Play
+import com.anadi.prabhupadalectures.events.SeekTo
+import com.anadi.prabhupadalectures.events.SliderReleased
 import com.anadi.prabhupadalectures.network.api.ApiModel
 import com.anadi.prabhupadalectures.network.api.PrabhupadaApi
 import com.anadi.prabhupadalectures.network.api.QueryParams
+import com.anadi.prabhupadalectures.utils.CommonFlow
 import com.anadi.prabhupadalectures.utils.ShareAction
+import com.anadi.prabhupadalectures.utils.asCommonFlow
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.asStateFlow
 
 data class ResultsState(
     val isLoading: Boolean = false,
@@ -21,7 +27,7 @@ data class ResultsState(
 )
 
 interface ResultsRepository {
-    fun observeState(): StateFlow<ResultsState>
+    fun observeState(): CommonFlow<ResultsState>
 
     suspend fun init(shareAction: ShareAction?): Unit?
     suspend fun updatePage(page: Int)
@@ -39,7 +45,7 @@ class ResultsRepositoryImpl(
     private val playbackRepository: PlaybackRepository,
     withLog: Boolean
 ) :
-    CoroutineScope by CoroutineScope(Dispatchers.Main), ResultsRepository {
+    CoroutineScope by CoroutineScope(Dispatchers.Default), ResultsRepository {
 
     private var shareAction: ShareAction? = null
     private val state = MutableStateFlow(ResultsState())
@@ -49,13 +55,13 @@ class ResultsRepositoryImpl(
     init {
 //        if (withLog) Napier.base(DebugAntilog())
 
-        observeDownloads()
-        observeFavorites()
-        observeCompleted()
-        observeSelfState()
+//        observeDownloads()
+//        observeFavorites()
+//        observeCompleted()
+//        observeSelfState()
     }
 
-    override fun observeState(): StateFlow<ResultsState> = state
+    override fun observeState(): CommonFlow<ResultsState> = state.asStateFlow().asCommonFlow()
 
     override suspend fun init(shareAction: ShareAction?) {
         this.shareAction = shareAction
@@ -95,10 +101,10 @@ class ResultsRepositoryImpl(
     override suspend fun getResults(page: Int): ApiModel =
         api.getResults(page)
 
-    private suspend fun loadMore(queryParams: QueryParams) = withContext(Dispatchers.Default) {
+    private suspend fun loadMore(queryParams: QueryParams) {
         if (state.value.isLoading) {
             Napier.d("loadMore canceled, isLoading = true!", tag = "ResultsRepository")
-            return@withContext
+            return
         }
 
         updateLoading(true)
@@ -118,11 +124,11 @@ class ResultsRepositoryImpl(
         val newState = ResultsState(
             isLoading = false,
             filters = ApiMapper.filters(apiModel).updateFiltersFromDB(),
-            lectures = ApiMapper.lectures(apiModel).updateLecturesFromDB(),
+            lectures = state.value.lectures + ApiMapper.lectures(apiModel).updateLecturesFromDB(),
             pagination = Pagination(apiModel),
         )
 
-        state.value = newState
+        state.value = newState.freeze()
 
         val queryParams = buildQueryParams().toQueryParamsStringWithoutPage()
 

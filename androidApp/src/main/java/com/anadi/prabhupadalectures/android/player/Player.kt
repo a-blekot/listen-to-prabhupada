@@ -7,11 +7,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import com.anadi.prabhupadalectures.android.DebugLog
 import com.anadi.prabhupadalectures.android.MainActivity
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.util.notificationColor
 import com.anadi.prabhupadalectures.data.lectures.Lecture
+import com.anadi.prabhupadalectures.events.*
 import com.anadi.prabhupadalectures.repository.*
 import com.anadi.prabhupadalectures.utils.toValidUrl
 import com.google.android.exoplayer2.*

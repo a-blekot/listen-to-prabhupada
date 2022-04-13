@@ -9,104 +9,71 @@
 import SwiftUI
 import shared
 
+struct CustomCenter: AlignmentID {
+  static func defaultValue(in context: ViewDimensions) -> CGFloat {
+      context[HorizontalAlignment.leading]
+  }
+}
+
+extension HorizontalAlignment {
+  static let customLeading: HorizontalAlignment = .init(CustomCenter.self)
+}
+
 struct LectureListItem: View {
     var lecture: Lecture
+    var isPlaying: Bool
+    var onEvent : (CommonUiEvent) -> ()
     
     var body: some View {
-        HStack() {
-            VStack() {
+        HStack(alignment: .center, spacing: 2.0) {
+            
+            PlayButton(lecture, isPlaying, onEvent: onEvent)
+                .padding(.trailing, 10)
+            
+            VStack(alignment: .leading, spacing: 4.0) {
                 Text(lecture.title)
+                //                    .font(.system(.title, design: .rounded))
+                //                    .font(.system(size: 20))
+                //                    .font(.custom("Nunito", size: 25))
+                //.font(.headline)
+                    .font(.system(size: 16))
+                    .allowsTightening(true)
+                    .lineLimit(3)
+                    .truncationMode(.tail)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.orange)
+                    .onTapGesture {
+                        let action = isPlaying ? Pause() : Play(lectureId: lecture.id)
+                        onEvent(CommonUiEvent.Player(action: action))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text(lecture.subTitle)
+                    .font(.system(size: 12))
+                    .lineLimit(3)
+                    .truncationMode(.tail)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Spacer()
+            
+            FavoriteButton(lecture: lecture, onEvent: onEvent)
+            ContextMenuButton(onEvent: onEvent)
         }
-        .padding(.top, 8.0)
+        .padding(.horizontal, -10)
+        .buttonStyle(.plain)
     }
 }
 
 struct LectureListItem_Previews: PreviewProvider {
     static var previews: some View {
         LectureListItem(
-            lecture:
-                getLecture(
-                    title: "Бхагавад-Гита. Вступление. Беседа на утренней прогулке",
-                    date: "1970-08-02",
-                    place: "Лос-Анджелес, США"
-                )
+            lecture: mockLecture(),
+            isPlaying: false,
+            onEvent: { _ in}
         )
     }
 }
 
-func getLecture(title: String, date: String, place: String) -> Lecture {
-    return Lecture(
-        id: 1000,
-        title: title,
-        description: nil,
-        date: date,
-        place: place,
-        durationMillis: 1000,
-        fileUrl: nil,
-        remoteUrl: "",
-        isFavorite: false,
-        isCompleted: false,
-        downloadProgress: nil
-    )
-}
-
-
-//
-//
-//    Row(
-//        modifier = Modifier.padding(top = 8.dp),
-//    ) {
-//
-//        val testBgAlpha = 0
-//
-//        val playResId =
-//            when {
-//                isPlaying -> R.drawable.ic_pause2
-//                lecture.isCompleted -> R.drawable.ic_heard_mark
-//                else -> R.drawable.ic_play
-//            }
-//
-//        Image(
-//            painter = painterResource(playResId),
-//            contentScale = ContentScale.FillBounds,
-//            contentDescription = "play image",
-//            modifier =
-//            Modifier
-//                .align(CenterVertically)
-//                .weight(15f)
-//                .aspectRatio(1f)
-//                .background(Color(130, 0, 255, testBgAlpha))
-//                .clickable { onEvent(CommonUiEvent.Player(if (isPlaying) Pause else Play(lecture.id))) }
-//        )
-//
-//        Spacer(modifier = Modifier.weight(4f))
-//
-//        // We toggle the isExpanded variable when we click on this Column
-//        Column(
-//            modifier = Modifier
-//                .weight(110f)
-//                .background(Color(130, 0, 255, testBgAlpha))
-//        ) {
-//            Text(
-//                text = lecture.title,
-//                fontSize = 17.sp,
-//                maxLines = 3,
-//                overflow = TextOverflow.Ellipsis,
-//                color = MaterialTheme.colors.onBackground,
-//                style = MaterialTheme.typography.h6,
-//                modifier = Modifier.clickable { onEvent(CommonUiEvent.Player(if (isPlaying) Pause else Play(lecture.id))) }
-//            )
-//            Spacer(modifier = Modifier.height(4.dp))
-//            Text(
-//                text = lecture.subTitle,
-//                maxLines = 3,
-//                overflow = TextOverflow.Ellipsis,
-//                color = GrayLight,
-//                style = MaterialTheme.typography.body1
-//            )
-//        }
 //
 //        Spacer(modifier = Modifier.weight(2f))
 //

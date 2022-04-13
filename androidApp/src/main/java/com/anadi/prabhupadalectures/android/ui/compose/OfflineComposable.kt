@@ -17,11 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anadi.prabhupadalectures.android.R
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
-import com.anadi.prabhupadalectures.android.ui.screens.downloads.DownloadsScreen
+import com.anadi.prabhupadalectures.events.CommonUiEvent
 
 @Composable
 fun OfflineComposable(onEvent: (CommonUiEvent) -> Unit = {}) =

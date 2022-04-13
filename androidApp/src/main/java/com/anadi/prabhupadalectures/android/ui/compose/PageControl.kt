@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anadi.prabhupadalectures.android.R
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
+import com.anadi.prabhupadalectures.events.CommonUiEvent
 import com.anadi.prabhupadalectures.data.Pagination
 import com.anadi.prabhupadalectures.repository.FIRST_PAGE
 

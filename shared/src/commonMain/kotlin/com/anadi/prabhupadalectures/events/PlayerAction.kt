@@ -1,4 +1,4 @@
-package com.anadi.prabhupadalectures.repository
+package com.anadi.prabhupadalectures.events
 
 import com.anadi.prabhupadalectures.data.lectures.Lecture
 

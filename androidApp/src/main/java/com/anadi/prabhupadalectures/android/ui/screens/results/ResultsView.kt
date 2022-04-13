@@ -15,10 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anadi.prabhupadalectures.android.ui.compose.*
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
+import com.anadi.prabhupadalectures.events.CommonUiEvent
 import com.anadi.prabhupadalectures.data.filters.filtersHeader
-import com.anadi.prabhupadalectures.repository.PlaybackState
-import com.anadi.prabhupadalectures.repository.ResultsState
 import kotlinx.coroutines.launch
 
 @Preview

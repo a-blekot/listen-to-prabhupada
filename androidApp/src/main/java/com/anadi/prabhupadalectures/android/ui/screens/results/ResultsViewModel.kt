@@ -7,10 +7,11 @@ import com.anadi.prabhupadalectures.android.di.IODispatcher
 import com.anadi.prabhupadalectures.android.di.MainDispatcher
 import com.anadi.prabhupadalectures.android.di.Route
 import com.anadi.prabhupadalectures.android.base.navigation.Router
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
+import com.anadi.prabhupadalectures.events.CommonUiEvent
 import com.anadi.prabhupadalectures.android.base.viewmodel.BaseViewModel
 import com.anadi.prabhupadalectures.data.Database
 import com.anadi.prabhupadalectures.data.filters.filtersHeader
+import com.anadi.prabhupadalectures.events.Download
 import com.anadi.prabhupadalectures.repository.*
 import com.anadi.prabhupadalectures.utils.ConnectionState
 import com.anadi.prabhupadalectures.utils.ShareAction
@@ -52,7 +53,7 @@ class ResultsViewModel @Inject constructor(
                 is CommonUiEvent.Favorite -> toolsRepository.setFavorite(event.lecture, event.isFavorite)
                 is CommonUiEvent.Player -> {
                     when (event.action) {
-                        is Download -> downloadsRepository.download(event.action.lecture)
+                        is Download -> downloadsRepository.download((event.action as Download).lecture)
                         else -> playbackRepository.handleAction(event.action)
                     }
                 }

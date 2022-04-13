@@ -4,18 +4,15 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anadi.prabhupadalectures.android.util.observeConnectivityAsFlow
+import com.anadi.prabhupadalectures.events.UiEffect
+import com.anadi.prabhupadalectures.events.UiEvent
+import com.anadi.prabhupadalectures.events.UiState
 import com.anadi.prabhupadalectures.utils.ConnectionState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-
-interface UiState
-
-interface UiEvent
-
-interface UiEffect
 
 abstract class BaseViewModel<EVENT : UiEvent, STATE : UiState, EFFECT : UiEffect>(
     context: Context,

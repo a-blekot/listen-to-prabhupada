@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anadi.prabhupadalectures.android.R
 import com.anadi.prabhupadalectures.android.player.SEEK_INCREMENT_MS
-import com.anadi.prabhupadalectures.android.ui.screens.CommonUiEvent
 import com.anadi.prabhupadalectures.android.ui.screens.results.LoadingBar
 import com.anadi.prabhupadalectures.android.util.ONE_DAY_MS
 import com.anadi.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
+import com.anadi.prabhupadalectures.events.*
 import com.anadi.prabhupadalectures.network.api.FULL_PROGRESS
 import com.anadi.prabhupadalectures.repository.*
 
