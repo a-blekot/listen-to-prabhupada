@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -5,8 +7,6 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
-
-val composeVersion = findProperty("version.compose") as String
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
@@ -25,7 +25,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 
@@ -40,57 +39,57 @@ android {
         freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 }
 
 dependencies {
     implementation(project(":shared"))
-
-//    com.android.support:appcompat-v7
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha04")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-process:2.4.1")
-    testImplementation("junit:junit:4.12")
-
-    //desugar utils
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-    //Compose
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
+
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.process)
     //Compose Utils
-    implementation("io.coil-kt:coil-compose:1.4.0")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("com.google.accompanist:accompanist-insets:0.23.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.23.0")
+    implementation(libs.bundles.androidx.compose)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.accompanist.insets)
+    implementation(libs.accompanist.swiperefresh)
     //Coroutines
-    val coroutinesVersion = findProperty("version.kotlinx.coroutines")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
     //DI
-    implementation("com.google.dagger:hilt-android:${findProperty("version.hilt")}")
-    kapt("com.google.dagger:hilt-compiler:${findProperty("version.hilt")}")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
     //Navigation
-    implementation("cafe.adriel.voyager:voyager-navigator:${findProperty("version.voyager")}")
-    implementation("cafe.adriel.voyager:voyager-transitions:${findProperty("version.voyager")}")
-    implementation("cafe.adriel.voyager:voyager-androidx:${findProperty("version.voyager")}")
-    implementation("cafe.adriel.voyager:voyager-hilt:${findProperty("version.voyager")}")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${findProperty("version.kotlin")}")
-
-    //WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
+    implementation(libs.voyager.androidx)
+    implementation(libs.voyager.hilt)
+    implementation(libs.kotlin.reflect)
     //Logger
-    implementation("io.github.aakira:napier-android-debug:2.4.0")
+    implementation(libs.napier.android)
+    implementation(libs.exoplayer.core)
+    implementation(libs.exoplayer.ui)
+}
 
-    implementation("com.google.android.exoplayer:exoplayer-core:2.17.1")
-    implementation("com.google.android.exoplayer:exoplayer-ui:2.17.1")
+detekt {
+    version = "1.0.0"
+    reports {
+        xml {
+            destination = file("$project.buildDir/reports/detekt/detekt.xml")
+        }
+    }
+}
 
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+ktlint {
+    android.set(true)
+    version.set("0.41.0")
+    ignoreFailures.set(false)
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+    }
+    outputToConsole.set(true)
 }

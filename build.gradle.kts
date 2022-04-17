@@ -1,23 +1,29 @@
 buildscript {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        maven("https://plugins.gradle.org/m2/")
     }
+
     dependencies {
-        classpath("com.android.tools.build:gradle:${findProperty("version.androidGradlePlugin")}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${findProperty("version.kotlin")}")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:${findProperty("version.kotlin")}")
-        classpath("com.squareup.sqldelight:gradle-plugin:${findProperty("version.sql_delight")}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${findProperty("version.hilt")}")
+        classpath(libs.android.gradlePlgn)
+        classpath(libs.kotlin.gradlePlgn)
+        classpath(libs.kotlin.serialization.gradlePlgn)
+        classpath(libs.sqlDelight.gradlePlgn)
+        classpath(libs.hilt.gradlePlgn)
+
+        classpath(libs.versionsPlgn)
+        classpath(libs.detektPlgn)
+        classpath(libs.ktlintPlgn)
+        classpath(libs.canidropjetifierPlgn)
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+subprojects {
+    apply(plugin ="com.github.ben-manes.versions")
+    apply(plugin ="io.gitlab.arturbosch.detekt")
+    apply(plugin ="org.jlleitschuh.gradle.ktlint")
+    apply(plugin ="com.github.plnice.canidropjetifier")
 }
 
 tasks.register("clean", Delete::class) {

@@ -21,32 +21,17 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                //Network
-                implementation("io.ktor:ktor-client-core:${findProperty("version.ktor")}")
-                implementation("io.ktor:ktor-client-content-negotiation:${findProperty("version.ktor")}")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:${findProperty("version.ktor")}")
-                implementation("io.ktor:ktor-client-logging:${findProperty("version.ktor")}")
-                //Coroutines
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${findProperty("version.kotlinx.coroutines")}")
-                //Logger
-                implementation("io.github.aakira:napier:${findProperty("version.napier")}")
-                //JSON
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${findProperty("version.kotlinx.serialization")}")
-                //Key-Value storage
-                implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
-                //Data Base
-                implementation("com.squareup.sqldelight:runtime:${findProperty("version.sql_delight")}")
-                implementation("com.squareup.sqldelight:coroutines-extensions:${findProperty("version.sql_delight")}")
-
-
-                // File IO - okio
-                implementation("com.squareup.okio:okio:${findProperty("version.okio")}")
-
-                // Stately
-                implementation("co.touchlab:stately-common:${findProperty("version.stately")}")
-                implementation("co.touchlab:stately-concurrency:${findProperty("version.stately")}")
-                implementation("co.touchlab:stately-isolate:${findProperty("version.stately")}")
-                implementation("co.touchlab:stately-iso-collections:${findProperty("version.stately")}")
+                implementation(libs.decompose)
+                implementation(libs.bundles.mvikotlin.bndl)
+                implementation(libs.bundles.ktor.common.bndl)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.napier)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.settings)
+                implementation(libs.sqlDelight.runtime)
+                implementation(libs.sqlDelight.coroutines.extensions)
+                implementation(libs.okio)
+                implementation(libs.bundles.stately.bndl)
             }
         }
 
@@ -58,11 +43,9 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                //Network
-                implementation("io.ktor:ktor-client-okhttp:${findProperty("version.ktor")}")
-                implementation("com.squareup.sqldelight:android-driver:${findProperty("version.sql_delight")}")
-                //Logger
-//                implementation("io.github.aakira:napier-android:${findProperty("version.napier")}")
+                implementation(libs.decompose.ext)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.sqlDelight.android.driver)
             }
         }
         val androidTest by getting {
@@ -82,11 +65,8 @@ kotlin {
 
             dependencies {
                 //Network
-//                implementation("io.ktor:ktor-client-ios:${findProperty("version.ktor")}")
-                implementation("io.ktor:ktor-client-darwin:${findProperty("version.ktor")}")
-                implementation("com.squareup.sqldelight:native-driver:${findProperty("version.sql_delight")}")
-                //Logger
-//                implementation("io.github.aakira:napier-ios:${findProperty("version.napier")}")
+                implementation(libs.ktor.client.darwin)
+                implementation(libs.sqlDelight.native.driver)
             }
         }
         val iosX64Test by getting
