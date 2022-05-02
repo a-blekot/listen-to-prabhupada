@@ -1,19 +1,20 @@
 [versions]
 accompanist = "0.23.0"
-androidBuildTools = "7.2.0-beta04"
+#android-gradlePlgn = "7.2.0-beta04"
+android-gradlePlgn = "7.3.0-alpha09"
 androidx-activity = "1.4.0"
+#androidx-activity = "1.6.0-alpha03"
 androidx-appcompat = "1.4.0-alpha01"
 androidx-core = "1.6.0-beta01"
 androidx-lifecycle-ext = "2.4.1"
 androidx-lifecycle-runtime = "2.5.0-alpha06"
 canidropjetifier = "0.5"
-compose = "1.2.0-alpha05"
+compose = "1.2.0-alpha08"
 decompose = "0.6.0"
 detekt = "1.17.0"
+essenty = "0.2.2"
 exoplayer = "2.17.1"
-hilt = "2.39.1"
-hilt-nav-compose = "1.0.0"
-kotlin = "1.6.10"
+kotlin = "1.6.20"
 kotlinx_coroutines = "1.6.1-native-mt"
 kotlinx_serialization = "1.3.2"
 ktlint = "10.2.1"
@@ -26,10 +27,9 @@ settings = "0.8.1"
 sql_delight = "1.5.3"
 stately = "1.2.0"
 versions = "0.38.0"
-voyager = "1.0.0-beta16"
 
 [libraries]
-android-gradlePlgn = { module = "com.android.tools.build:gradle", version.ref = "androidBuildTools"}
+android-gradlePlgn = { module = "com.android.tools.build:gradle", version.ref = "android-gradlePlgn"}
 canidropjetifierPlgn = { module = "com.github.plnice:canidropjetifier", version.ref = "canidropjetifier" }
 detektPlgn = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 kotlin-serialization-gradlePlgn = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
@@ -39,28 +39,25 @@ versionsPlgn = { module = "com.github.ben-manes:gradle-versions-plugin", version
 
 accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist"}
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist"}
-androidx-activity-compose = { module = "androidx.activity:activity.compose", version.ref = "androidx-activity"}
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity"}
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat"}
-androidx-composeFoundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-androidx-composeMaterial = { module = "androidx.compose.material:material", version.ref = "compose" }
-androidx-composeUi = { module = "androidx.compose.ui:ui", version.ref = "compose"}
-androidx-composeUiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle-ext"}
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-runtime"}
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-ext"}
-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-decompose-ext = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
+
+decompose-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-extCompose = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
 exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayer" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-gradlePlgn = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-nav-compose"}
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx_coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization" }
+
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
@@ -68,30 +65,42 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 material = { module = "com.google.android.material:material", version.ref = "material"}
-mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
+
+mvikotlin-mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
 mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvikotlin" }
 mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvikotlin" }
+mvikotlin-rx = { module = "com.arkivanov.mvikotlin:rx", version.ref = "mvikotlin" }
+
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 napier-android = { module = "io.github.aakira:napier-android-debug", version.ref = "napier" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "settings" }
+
 sqlDelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sql_delight" }
 sqlDelight-coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sql_delight" }
 sqlDelight-gradlePlgn = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sql_delight" }
+sqlDelight-sqlite-driver = { module = "com.squareup.sqldelight:sqlite-driver", version.ref = "sql_delight" }
+sqlDelight-sqljs-driver = { module = "com.squareup.sqldelight:sqljs-driver", version.ref = "sql_delight" }
 sqlDelight-native-driver = { module = "com.squareup.sqldelight:native-driver", version.ref = "sql_delight" }
 sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sql_delight" }
+
 stately-common = { module = "co.touchlab:stately-common", version.ref = "stately" }
 stately-concurrency = { module = "co.touchlab:stately-concurrency", version.ref = "stately" }
 stately-iso-collections = { module = "co.touchlab:stately-iso-collections", version.ref = "stately" }
 stately-isolate = { module = "co.touchlab:stately-isolate", version.ref = "stately" }
-voyager-androidx = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
-voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
-voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
-voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
+
+test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
+test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
+
+androidx-composeFoundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+androidx-composeMaterial = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-composeUi = { module = "androidx.compose.ui:ui", version.ref = "compose"}
+androidx-composeUiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 
 [bundles]
 androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx-composeUiTooling", "androidx-composeFoundation" ]
 ktor-common-bndl = [ "ktor-client-core", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json" ]
-mvikotlin-bndl= [ "mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-extensions-coroutines" ]
+mvikotlin-bndl= [ "mvikotlin-mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-extensions-coroutines" ]
 stately-bndl = [ "stately-common", "stately-concurrency", "stately-isolate", "stately-iso-collections" ]

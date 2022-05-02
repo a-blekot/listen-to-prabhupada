@@ -10,7 +10,6 @@ buildscript {
         classpath(libs.kotlin.gradlePlgn)
         classpath(libs.kotlin.serialization.gradlePlgn)
         classpath(libs.sqlDelight.gradlePlgn)
-        classpath(libs.hilt.gradlePlgn)
 
         classpath(libs.versionsPlgn)
         classpath(libs.detektPlgn)

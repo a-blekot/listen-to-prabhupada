@@ -1,0 +1,100 @@
+CREATE TABLE LectureEntity (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    date TEXT NOT NULL,
+    place TEXT NOT NULL,
+    durationMillis INTEGER NOT NULL,
+    fileUrl TEXT,
+    remoteUrl TEXT NOT NULL,
+    isFavorite INTEGER AS Boolean NOT NULL DEFAULT 0,
+    isCompleted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    downloadProgress INTEGER
+);
+
+CREATE TABLE Page (
+    id INTEGER NOT NULL PRIMARY KEY,
+    page INTEGER NOT NULL
+);
+
+CREATE TABLE SavedPosition (
+    id INTEGER NOT NULL PRIMARY KEY,
+    pos INTEGER NOT NULL
+);
+
+CREATE TABLE ExpandedFilter (
+    id INTEGER NOT NULL PRIMARY KEY,
+    expanded INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+insertLecture:
+INSERT OR REPLACE INTO LectureEntity(id, title, description, date, place, durationMillis, fileUrl, remoteUrl, isFavorite, isCompleted, downloadProgress)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectLecture:
+SELECT * FROM LectureEntity
+WHERE id = ?
+LIMIT 1;
+
+selectAllLectures:
+SELECT * FROM LectureEntity;
+
+selectAllDownloads:
+SELECT * FROM LectureEntity
+WHERE downloadProgress = 100;
+
+selectAllFavorites:
+SELECT * FROM LectureEntity
+WHERE isFavorite = 1;
+
+selectAllCompleted:
+SELECT * FROM LectureEntity
+WHERE isCompleted = 1;
+
+deleteLecture:
+DELETE FROM LectureEntity
+WHERE id = ?;
+
+deleteAllLectures:
+DELETE FROM LectureEntity;
+
+insertPage:
+INSERT OR REPLACE INTO Page(id, page)
+VALUES(?, ?);
+
+selectPage:
+SELECT * FROM Page
+WHERE id = ?;
+
+deletePage:
+DELETE FROM Page
+WHERE id = ?;
+
+deleteAllPages:
+DELETE FROM Page;
+
+insertSavedPosition:
+INSERT OR REPLACE INTO SavedPosition(id, pos)
+VALUES(?, ?);
+
+selectSavedPosition:
+SELECT * FROM SavedPosition
+WHERE id = ?;
+
+deleteSavedPosition:
+DELETE FROM SavedPosition
+WHERE id = ?;
+
+deleteAllSavedPositions:
+DELETE FROM SavedPosition;
+
+insertExpandedFilter:
+INSERT OR REPLACE INTO ExpandedFilter(id, expanded)
+VALUES(?, ?);
+
+selectExpandedFilter:
+SELECT * FROM ExpandedFilter
+WHERE id = ?;
+
+deleteAllExpandedFilters:
+DELETE FROM ExpandedFilter;
