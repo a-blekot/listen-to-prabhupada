@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.player.SEEK_INCREMENT_MS
-import com.prabhupadalectures.android.ui.screens.results.LoadingBar
+import com.prabhupadalectures.android.ui.LoadingBar
 import com.prabhupadalectures.android.util.ONE_DAY_MS
 import com.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
 import com.prabhupadalectures.android.ui.screens.helpers.AppTheme

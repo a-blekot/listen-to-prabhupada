@@ -23,12 +23,12 @@ import com.prabhupadalectures.android.PrabhupadaApp.Companion.app
 import com.prabhupadalectures.android.download.DownloadService
 import com.prabhupadalectures.android.download.DownloadServiceAction
 import com.prabhupadalectures.android.player.PlaybackService
+import com.prabhupadalectures.android.ui.screens.MainContent
 import com.prabhupadalectures.android.ui.screens.helpers.AppTheme
 import com.prabhupadalectures.android.util.parseShareAction
-import com.prabhupadalectures.android.ui.screens.MainContent
+import com.prabhupadalectures.common.root.Root
+import com.prabhupadalectures.common.root.RootComponent
 import com.prabhupadalectures.lectures.mvi.Dependencies
-import com.prabhupadalectures.lectures.mvi.root.Root
-import com.prabhupadalectures.lectures.mvi.root.RootComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
@@ -75,19 +75,25 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         RootComponent(
             componentContext = componentContext,
             storeFactory = LoggingStoreFactory(DefaultStoreFactory()),
-            deps = Dependencies(
+            depsResults = Dependencies(
                 db = app.db,
                 api = app.api
             ),
+            depsFilters = com.prabhupadalectures.common.filters.Dependencies(
+                db = app.db,
+                api = app.api,
+                ioContext = Dispatchers.IO,
+                mainContext = Dispatchers.Main,
+            )
         )
 
-    private val resultsRepository = app.resultsRepository
+//    private val resultsRepository = app.resultsRepository
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         lifecycleScope.launchWhenCreated {
             parseShareAction(intent?.data).let {
-                resultsRepository.init(it)
+//                resultsRepository.init(it)
             }
         }
         setIntent(null)

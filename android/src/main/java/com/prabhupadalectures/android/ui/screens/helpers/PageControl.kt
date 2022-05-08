@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.lectures.events.CommonUiEvent
 import com.prabhupadalectures.lectures.data.Pagination
-import com.prabhupadalectures.lectures.repository.FIRST_PAGE
+import com.prabhupadalectures.common.settings.FIRST_PAGE
 
 private const val WEIGHT_BUTTON = 1f
 
@@ -149,14 +149,14 @@ fun RowScope.PageImageButton(
 
 fun Pagination.canAdd(buttonType: ButtonType) =
     when (buttonType) {
-        ButtonType.FIRST -> curr > FIRST_PAGE
+        ButtonType.FIRST -> curr > com.prabhupadalectures.common.settings.FIRST_PAGE
         ButtonType.LAST -> curr < total
         else -> canAdd(buttonType.pagesDiff)
     }
 
 private fun Pagination.nextPage(buttonType: ButtonType) =
     when (buttonType) {
-        ButtonType.FIRST -> FIRST_PAGE
+        ButtonType.FIRST -> com.prabhupadalectures.common.settings.FIRST_PAGE
         ButtonType.LAST -> total
         else -> add(buttonType.pagesDiff)
     }

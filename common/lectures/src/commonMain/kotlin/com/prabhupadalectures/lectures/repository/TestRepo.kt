@@ -2,7 +2,7 @@ package com.prabhupadalectures.lectures.repository
 
 import com.prabhupadalectures.common.network_api.ApiModel
 import com.prabhupadalectures.common.network_api.PrabhupadaApi
-import com.prabhupadalectures.lectures.data.ApiMapper
+import com.prabhupadalectures.lectures.data.lectures
 import com.prabhupadalectures.lectures.data.lectures.Lecture
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +46,7 @@ class TestRepoImpl(private val api: PrabhupadaApi) :
     private fun updateData(apiModel: ApiModel) {
         val newState = TestState(
             isLoading = false,
-            lectures = state.value.lectures + ApiMapper.lectures(apiModel),
+            lectures = state.value.lectures + lectures(apiModel),
         )
 
         state.value = newState

@@ -1,7 +1,6 @@
 package com.prabhupadalectures.lectures.events
 
 import com.prabhupadalectures.lectures.data.lectures.Lecture
-import com.prabhupadalectures.lectures.data.QueryParam
 
 interface UiState
 
@@ -22,7 +21,7 @@ sealed class CommonUiEvent : UiEvent {
         object ClearAllFilters : ResultsEvent()
 
         data class Expand(val filterName: String, val isExpanded: Boolean) : ResultsEvent()
-        data class Option(val queryParam: QueryParam) : ResultsEvent()
+//        data class Option(val queryParam: QueryParam) : ResultsEvent()
         data class Page(val page: Int) : ResultsEvent()
     }
 

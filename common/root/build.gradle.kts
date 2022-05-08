@@ -5,14 +5,19 @@ plugins {
 }
 
 kotlin {
+
+//    targets.getByName<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>("iosX64").compilations.forEach {
+//        it.kotlinOptions.freeCompilerArgs += arrayOf("-linker-options", "-lsqlite3")
+//    }
+
     ios {
         binaries {
             framework {
                 baseName = "Prabhupada"
                 linkerOpts.add("-lsqlite3")
                 export(project(":common:database"))
-                export(project(":common:main"))
-                export(project(":common:edit"))
+                export(project(":common:lectures"))
+                export(project(":common:filters"))
                 export(libs.decompose.decompose)
                 export(libs.mvikotlin.main)
                 export(libs.essenty.lifecycle)
@@ -21,12 +26,12 @@ kotlin {
     }
 
     sourceSets {
-        named("commonMain") {
+        commonMain {
             dependencies {
                 implementation(project(":common:utils"))
                 implementation(project(":common:database"))
-                implementation(project(":common:main"))
-                implementation(project(":common:edit"))
+                implementation(project(":common:lectures"))
+                implementation(project(":common:filters"))
                 implementation(libs.mvikotlin.mvikotlin)
                 implementation(libs.decompose.decompose)
             }
@@ -34,11 +39,11 @@ kotlin {
     }
 
     sourceSets {
-        named("iosMain") {
+        iosMain {
             dependencies {
                 api(project(":common:database"))
-                api(project(":common:main"))
-                api(project(":common:edit"))
+                api(project(":common:lectures"))
+                api(project(":common:filters"))
                 api(libs.decompose.decompose)
                 api(libs.mvikotlin.main)
             }

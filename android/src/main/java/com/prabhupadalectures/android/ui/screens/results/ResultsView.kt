@@ -4,20 +4,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.prabhupadalectures.android.ui.compose.*
-import com.prabhupadalectures.android.ui.screens.helpers.*
-import com.prabhupadalectures.lectures.data.filters.filtersHeader
+import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.prabhupadalectures.android.ui.LoadingBar
+import com.prabhupadalectures.android.ui.compose.OfflineComposable
+import com.prabhupadalectures.android.ui.screens.helpers.DrawerContent
+import com.prabhupadalectures.android.ui.screens.helpers.Header
+import com.prabhupadalectures.android.ui.screens.helpers.LectureListItem
+import com.prabhupadalectures.android.ui.screens.helpers.PageControl
 import com.prabhupadalectures.lectures.events.CommonUiEvent
 import com.prabhupadalectures.lectures.mvi.lectures.Results
 import kotlinx.coroutines.launch
@@ -33,14 +37,13 @@ fun ResultsView(
 
     val isFiltersHeaderExpandedRemember = remember { mutableStateOf(isFiltersHeaderExpanded) }
 
-
     val onEvent: (CommonUiEvent) -> Unit = {
         when (it) {
             is CommonUiEvent.ResultsEvent.Page ->
                 component.onPage(it.page)
 
-            is CommonUiEvent.ResultsEvent.Option ->
-                component.onQueryParam(it.queryParam)
+//            is CommonUiEvent.ResultsEvent.Option ->
+//                component.onQueryParam(it.queryParam)
 
             else -> {}
         }
@@ -71,11 +74,11 @@ fun ResultsView(
                 }
             },
             topBar = {
-//                TopAppBar {
-//                    coroutineScope.launch {
-//                        scaffoldState.drawerState.toggle()
-//                    }
-//                }
+                TopAppBar(component = component) {
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.toggle()
+                    }
+                }
             },
             bottomBar = {
                 // PlayerListItem(playbackState, onEvent)
@@ -114,9 +117,9 @@ fun ResultsView(
 //                        }
 //                    }
 
-                val expandedList = resultsState.filters.map {
-                    remember { mutableStateOf(it.isExpanded) }
-                }
+//                val expandedList = resultsState.filters.map {
+//                    remember { mutableStateOf(it.isExpanded) }
+//                }
 
                 LazyColumn(
                     modifier = Modifier
@@ -159,28 +162,28 @@ fun ResultsView(
                         }
                     }
 
-                    item {
-                        SelectedFilters(
-                            filters = resultsState.filters,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 12.dp),
-                            onEvent = onEvent
-                        )
-                    }
+//                    item {
+//                        SelectedFilters(
+//                            filters = resultsState,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(top = 12.dp),
+//                            onEvent = onEvent
+//                        )
+//                    }
 
-                    item {
-                        FilterTitle(filtersHeader, isFiltersHeaderExpandedRemember.value) {
-                            isFiltersHeaderExpandedRemember.value = it
-                            onEvent(CommonUiEvent.ResultsEvent.Expand(filtersHeader.name, it))
-                        }
-                    }
-
-                    if (isFiltersHeaderExpandedRemember.value) {
-                        itemsIndexed(resultsState.filters, key = { _, item -> item.name }) { i, filter ->
-                            FilterListItem(filter, expandedList[i], onEvent = onEvent)
-                        }
-                    }
+//                    item {
+//                        FilterTitle(filtersHeader, isFiltersHeaderExpandedRemember.value) {
+//                            isFiltersHeaderExpandedRemember.value = it
+//                            onEvent(CommonUiEvent.ResultsEvent.Expand(filtersHeader.name, it))
+//                        }
+//                    }
+//
+//                    if (isFiltersHeaderExpandedRemember.value) {
+//                        itemsIndexed(resultsState.filters, key = { _, item -> item.name }) { i, filter ->
+//                            FilterListItem(filter, expandedList[i], onEvent = onEvent)
+//                        }
+//                    }
 
 //                    item {
 //                        PlayerListItem(playbackState, onEvent)
@@ -198,9 +201,22 @@ fun ResultsView(
 }
 
 @Composable
-private fun TopAppBar(onMenuClick: () -> Unit = {}) {
+private fun TopAppBar(component: Results, onMenuClick: () -> Unit = {}) {
     TopAppBar(
         actions = {
+            IconButton(
+                onClick = { component.onEditFilters() },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .wrapContentWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.List,
+//                    modifier = Modifier.padding(horizontal = 8.dp),
+                    contentDescription = "Filter icon"
+                )
+            }
+
             IconButton(
                 onClick = { onMenuClick() },
                 modifier = Modifier
@@ -218,25 +234,6 @@ private fun TopAppBar(onMenuClick: () -> Unit = {}) {
         backgroundColor = MaterialTheme.colors.background
     )
 }
-
-@Preview
-@Composable
-fun PreviewLoadingBar() =
-    LoadingBar()
-
-@Composable
-fun LoadingBar(modifier: Modifier = Modifier) =
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                color = AlphaDarkBg,
-                shape = RoundedCornerShape(4.dp)
-            )
-    ) {
-        CircularProgressIndicator()
-    }
 
 private suspend fun DrawerState.toggle() =
     if (isOpen) close() else open()

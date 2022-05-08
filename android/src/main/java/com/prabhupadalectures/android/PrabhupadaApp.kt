@@ -89,7 +89,6 @@ class PrabhupadaApp : Application() {
     lateinit var playbackRepository: PlaybackRepository
     lateinit var toolsRepository: ToolsRepository
     lateinit var downloadsRepository: DownloadsRepository
-    lateinit var resultsRepository: ResultsRepository
 
     override fun onCreate() {
         super.onCreate()
@@ -109,7 +108,6 @@ class PrabhupadaApp : Application() {
         playbackRepository = PlaybackRepositoryImpl()
         toolsRepository = ToolsRepositoryImpl(db)
         downloadsRepository = DownloadsRepositoryImpl(db, api)
-        resultsRepository = ResultsRepositoryImpl(db, api, playbackRepository, BuildConfig.DEBUG)
 
         checkDownloadedFiles()
     }

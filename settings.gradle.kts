@@ -2,15 +2,15 @@ rootProject.name = "Prabhupada_Lectures"
 
 includeBuild("build-logic")
 include(
-    ":common:utils",
+    ":android",
     ":common:database",
+    ":common:filters",
+    ":common:lectures",
     ":common:network-api",
     ":common:network-impl",
-    ":common:main",
-    ":common:edit",
-    ":common:lectures",
     ":common:root",
-    ":android"
+    ":common:settings",
+    ":common:utils"
 )
 
 enableFeaturePreview("VERSION_CATALOGS")

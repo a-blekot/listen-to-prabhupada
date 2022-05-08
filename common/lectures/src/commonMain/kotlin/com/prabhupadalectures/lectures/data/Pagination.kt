@@ -1,7 +1,7 @@
 package com.prabhupadalectures.lectures.data
 
 import com.prabhupadalectures.common.network_api.ApiModel
-import com.prabhupadalectures.lectures.repository.FIRST_PAGE
+import com.prabhupadalectures.common.settings.FIRST_PAGE
 
 const val LECTURES_PER_PAGE = 6
 

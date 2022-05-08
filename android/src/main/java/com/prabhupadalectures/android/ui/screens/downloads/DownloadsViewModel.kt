@@ -7,7 +7,6 @@ import com.prabhupadalectures.lectures.events.CommonUiEvent
 import com.prabhupadalectures.lectures.events.Download
 import com.prabhupadalectures.lectures.repository.DownloadsRepository
 import com.prabhupadalectures.lectures.repository.PlaybackRepository
-import com.prabhupadalectures.lectures.repository.ResultsRepository
 import com.prabhupadalectures.lectures.repository.ToolsRepository
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,7 +18,7 @@ class DownloadsViewModel(
     context: Context,
     mainDispatcher: CoroutineDispatcher,
     ioDispatcher: CoroutineDispatcher,
-    private val resultsRepository: ResultsRepository,
+//    private val resultsRepository: ResultsRepository,
     private val playbackRepository: PlaybackRepository,
     private val downloadsRepository: DownloadsRepository,
     private val toolsRepository: ToolsRepository,
@@ -31,7 +30,7 @@ class DownloadsViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        resultsRepository.capturePlayback()
+//        resultsRepository.capturePlayback()
     }
 
     override fun setInitialState() = DownloadsScreenState()

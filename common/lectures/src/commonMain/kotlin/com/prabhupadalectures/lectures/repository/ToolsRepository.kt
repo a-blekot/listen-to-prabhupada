@@ -1,11 +1,11 @@
 package com.prabhupadalectures.lectures.repository
 
 import com.prabhupadalectures.common.database.Database
+import com.prabhupadalectures.common.settings.getNextNotificationId
 import com.prabhupadalectures.lectures.data.lectures.Lecture
 import com.prabhupadalectures.lectures.data.lectures.dbEntity
 import com.prabhupadalectures.lectures.data.lectures.mapped
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 interface ToolsRepository {
     fun setCompleted(id: Long)
@@ -50,5 +50,5 @@ class ToolsRepositoryImpl(
         db.insertExpandedFilter(filterName, isExpanded)
 
     override fun getNextNotificationId() =
-        settings.getNextNotificationId()
+        com.prabhupadalectures.common.settings.settings.getNextNotificationId()
 }

@@ -15,11 +15,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":common:utils"))
+    implementation(project(":common:database"))
+    implementation(project(":common:filters"))
+    implementation(project(":common:lectures"))
+    implementation(project(":common:root"))
     implementation(project(":common:network-api"))
     implementation(project(":common:network-impl"))
-    implementation(project(":common:lectures"))
-    implementation(project(":common:database"))
+    implementation(project(":common:settings"))
+    implementation(project(":common:utils"))
 
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

@@ -21,36 +21,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.value.MutableValue
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.lectures.data.QueryParam
-import com.prabhupadalectures.lectures.data.filters.Filter
-import com.prabhupadalectures.lectures.data.filters.Option
-import com.prabhupadalectures.lectures.events.CommonUiEvent
+import com.prabhupadalectures.common.filters.Filters
+import com.prabhupadalectures.common.filters.data.Filter
+import com.prabhupadalectures.common.filters.data.Option
+import com.prabhupadalectures.common.filters.data.QueryParam
 
 @Composable
 fun FilterListItem(
+    component: Filters,
     filter: Filter,
     isExpanded: MutableState<Boolean> = remember { mutableStateOf(filter.isExpanded) },
     modifier: Modifier = Modifier,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
 ) =
     Column(
-        modifier = modifier.padding(bottom = 8.dp),
+        modifier = modifier.padding(top = 8.dp),
     ) {
         FilterTitle(filter, isExpanded.value) {
             isExpanded.value = it
-            onEvent(CommonUiEvent.ResultsEvent.Expand(filter.name, it))
+            component.onFilterExpanded(filter.name, it)
         }
         if (isExpanded.value) {
             filter.options.forEach { option ->
                 OptionListItem(option) { isSelected ->
-                    onEvent(
-                        CommonUiEvent.ResultsEvent.Option(
-                            QueryParam(
-                                filterName = filter.name,
-                                selectedOption = option.value,
-                                isSelected = isSelected
-                            )
+                    component.onQueryParam(
+                        QueryParam(
+                            filterName = filter.name,
+                            selectedOption = option.value,
+                            isSelected = isSelected
                         )
                     )
                 }
@@ -136,6 +135,16 @@ fun OptionListItem(
 fun PreviewFilterListItem() {
     AppTheme {
         FilterListItem(
+            component = object: Filters {
+                override val models = MutableValue(
+                    Filters.Model(
+                        isLoading = false,
+                        filters = emptyList(),
+                        totalLecturesCount = 0,
+                        pagesCount = 0
+                    )
+                )
+            },
             getFilter(
                 title = "Категория",
                 options = listOf(

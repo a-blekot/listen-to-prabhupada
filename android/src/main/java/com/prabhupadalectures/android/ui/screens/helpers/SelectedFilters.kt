@@ -18,16 +18,16 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.lectures.events.CommonUiEvent
-import com.prabhupadalectures.lectures.data.filters.Filter
-import com.prabhupadalectures.lectures.data.filters.Option
-import com.prabhupadalectures.lectures.data.QueryParam
+import com.prabhupadalectures.common.filters.Filters
+import com.prabhupadalectures.common.filters.data.Filter
+import com.prabhupadalectures.common.filters.data.Option
+import com.prabhupadalectures.common.filters.data.QueryParam
 
 @Composable
 fun SelectedFilters(
+    component: Filters,
     filters: List<Filter>,
     modifier: Modifier = Modifier,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
 ) =
     FlowLayout(
         modifier = modifier,
@@ -43,13 +43,14 @@ fun SelectedFilters(
                     FilterChip(
                         filterName = filter.name,
                         option = option,
-                        onEvent = onEvent
-                    )
+                    ) {
+                        component.onQueryParam(it)
+                    }
                 }
             }
 
         if (hasSelectedFilters) {
-            ClearAllFiltersChip(onEvent)
+            ClearAllFiltersChip { component.onClearAll() }
         }
     }
 
@@ -58,17 +59,15 @@ fun SelectedFilters(
 fun FilterChip(
     filterName: String,
     option: Option,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
+    onClick: (QueryParam) -> Unit = {}
 ) =
     Chip(
         onClick = {
-            onEvent(
-                CommonUiEvent.ResultsEvent.Option(
-                    QueryParam(
-                        filterName = filterName,
-                        selectedOption = option.value,
-                        isSelected = false
-                    )
+            onClick(
+                QueryParam(
+                    filterName = filterName,
+                    selectedOption = option.value,
+                    isSelected = false
                 )
             )
         },
@@ -80,11 +79,9 @@ fun FilterChip(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ClearAllFiltersChip(
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
-) =
+fun ClearAllFiltersChip(onClick: () -> Unit = {}) =
     Chip(
-        onClick = { onEvent(CommonUiEvent.ResultsEvent.ClearAllFilters) },
+        onClick = onClick,
         leadingIcon = { ClearImage() }
     ) {
         Text(text = stringResource(R.string.clear_all))
