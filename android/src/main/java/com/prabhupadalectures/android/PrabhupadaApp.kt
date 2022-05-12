@@ -13,10 +13,12 @@ import com.prabhupadalectures.common.database.DatabaseDriverFactory
 import com.prabhupadalectures.common.database.DatabaseImpl
 import com.prabhupadalectures.common.network.createPrabhupadaApi
 import com.prabhupadalectures.common.utils.Strings
-import com.prabhupadalectures.lectures.deepLink
-import com.prabhupadalectures.lectures.repository.*
-import com.prabhupadalectures.lectures.utils.DOWNLOADS_DIR
-import com.prabhupadalectures.lectures.utils.ShareAction
+import com.prabhupadalectures.common.lectures_impl.deepLink
+import com.prabhupadalectures.common.lectures_impl.repository.*
+import com.prabhupadalectures.common.lectures_impl.utils.DOWNLOADS_DIR
+import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
+import com.prabhupadalectures.common.player_api.PlayerBus
+import com.prabhupadalectures.common.player_impl.PlayerBusImpl
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
@@ -86,9 +88,11 @@ class PrabhupadaApp : Application() {
     val bgScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     val api = createPrabhupadaApi(Dispatchers.IO)
     lateinit var db: Database
-    lateinit var playbackRepository: PlaybackRepository
+    lateinit var playerBus: PlayerBus
     lateinit var toolsRepository: ToolsRepository
     lateinit var downloadsRepository: DownloadsRepository
+
+    val mainScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate() {
         super.onCreate()
@@ -105,7 +109,7 @@ class PrabhupadaApp : Application() {
         DOWNLOADS_DIR = app.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: ""
 
         db = DatabaseImpl(DatabaseDriverFactory(this))
-        playbackRepository = PlaybackRepositoryImpl()
+        playerBus = PlayerBusImpl(mainScope)
         toolsRepository = ToolsRepositoryImpl(db)
         downloadsRepository = DownloadsRepositoryImpl(db, api)
 

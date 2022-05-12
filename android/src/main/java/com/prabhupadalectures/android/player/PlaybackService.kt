@@ -26,7 +26,7 @@ class PlaybackService : Service(), Player.Listener {
     private var player: Player? = null
     private var wakeLock: PowerManager.WakeLock? = null
 
-    private val playbackRepository = app.playbackRepository
+    private val playerBus = app.playerBus
     private val tools = app.toolsRepository
 
     private val playerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -63,7 +63,7 @@ class PlaybackService : Service(), Player.Listener {
     override fun onCreate() {
         super.onCreate()
         Napier.d("onCreate", tag = "PlaybackService")
-        player = Player(this, playbackRepository, tools, playerScope, this)
+        player = Player(this, playerBus, tools, playerScope, this)
 
         requireWakeLock()
     }

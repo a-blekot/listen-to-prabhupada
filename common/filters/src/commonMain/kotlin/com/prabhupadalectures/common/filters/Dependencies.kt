@@ -1,7 +1,6 @@
 package com.prabhupadalectures.common.filters
 
 import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.filters.Filters.Output
 import com.prabhupadalectures.common.network_api.PrabhupadaApi
 import kotlin.coroutines.CoroutineContext
 

@@ -14,21 +14,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prabhupadalectures.android.R
+import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.lectures_api.LecturesComponent
 import com.prabhupadalectures.common.network_api.FULL_PROGRESS
-import com.prabhupadalectures.lectures.events.CommonUiEvent
-import com.prabhupadalectures.lectures.data.lectures.Lecture
-import com.prabhupadalectures.lectures.events.Pause
-import com.prabhupadalectures.lectures.events.Play
 
 @Composable
 fun LectureListItem(
+    component: LecturesComponent,
     lecture: Lecture,
-    isPlaying: Boolean,
-    onEvent: (CommonUiEvent) -> Unit = {},
 ) =
     Row(
         modifier = Modifier.padding(top = 8.dp),
@@ -38,7 +34,7 @@ fun LectureListItem(
 
         val playResId =
             when {
-                isPlaying -> R.drawable.ic_pause2
+                lecture.isPlaying -> R.drawable.ic_pause2
                 lecture.isCompleted -> R.drawable.ic_heard_mark
                 else -> R.drawable.ic_play
             }
@@ -53,7 +49,13 @@ fun LectureListItem(
                 .weight(15f)
                 .aspectRatio(1f)
                 .background(Color(130, 0, 255, testBgAlpha))
-                .clickable { onEvent(CommonUiEvent.Player(if (isPlaying) Pause else Play(lecture.id))) }
+                .clickable {
+                    if (lecture.isPlaying) {
+                        component.onPause()
+                    } else {
+                        component.onPlay(lecture.id)
+                    }
+                }
         )
 
         Spacer(modifier = Modifier.weight(4f))
@@ -71,7 +73,13 @@ fun LectureListItem(
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.h6,
-                modifier = Modifier.clickable { onEvent(CommonUiEvent.Player(if (isPlaying) Pause else Play(lecture.id))) }
+                modifier = Modifier.clickable {
+                    if (lecture.isPlaying) {
+                        component.onPause()
+                    } else {
+                        component.onPlay(lecture.id)
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -101,7 +109,7 @@ fun LectureListItem(
                 Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .clickable { onEvent(CommonUiEvent.Favorite(lecture, !lecture.isFavorite)) }
+                    .clickable { component.onFavorite(lecture.id, !lecture.isFavorite) }
             )
 
             if (lecture.downloadProgress == FULL_PROGRESS) {
@@ -129,24 +137,25 @@ fun LectureListItem(
                 .weight(5f)
                 .background(Color(130, 0, 255, testBgAlpha))
                 .aspectRatio(0.4f)
-                .clickable { onEvent(CommonUiEvent.Share(lecture.id)) }
+                .clickable { /** onEvent(CommonUiEvent.Share(lecture.id)) **/ }
         )
     }
 
-@Preview(widthDp = 360, heightDp = 40)
-@Composable
-fun PreviewLectureListItem() {
-    AppTheme {
-        LectureListItem(
-            getLecture(
-                title = "Бхагавад-Гита. Вступление. Беседа на утренней прогулке",
-                date = "1970-08-02",
-                place = "Лос-Анджелес, США"
-            ),
-            isPlaying = false
-        )
-    }
-}
+//@Preview(widthDp = 360, heightDp = 40)
+//@Composable
+//fun PreviewLectureListItem() {
+//    AppTheme {
+//        LectureListItem(
+//
+//            getLecture(
+//                title = "Бхагавад-Гита. Вступление. Беседа на утренней прогулке",
+//                date = "1970-08-02",
+//                place = "Лос-Анджелес, США"
+//            ),
+//            isPlaying = false
+//        )
+//    }
+//}
 
 fun getLecture(title: String, date: String, place: String) =
     Lecture(

@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.compose
+package com.prabhupadalectures.android.ui.screens.helpers
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.*
@@ -7,12 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
-import androidx.compose.material.SliderDefaults
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,22 +21,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.player.SEEK_INCREMENT_MS
 import com.prabhupadalectures.android.ui.LoadingBar
 import com.prabhupadalectures.android.util.ONE_DAY_MS
 import com.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
-import com.prabhupadalectures.android.ui.screens.helpers.AppTheme
-import com.prabhupadalectures.android.ui.screens.helpers.GrayLight
 import com.prabhupadalectures.common.network_api.FULL_PROGRESS
-import com.prabhupadalectures.lectures.events.*
-import com.prabhupadalectures.lectures.repository.*
+import com.prabhupadalectures.common.player_api.PlayerComponent
+import com.prabhupadalectures.common.player_api.PlayerState
 
 @Composable
-fun PlayerListItem(
-    playbackState: PlaybackState = PlaybackState(),
-    onEvent: (CommonUiEvent) -> Unit = {},
-) =
+fun PlayerListItem(playerComponent: PlayerComponent) {
+    val playbackState = playerComponent.flow.subscribeAsState()
+
     Box(
         modifier = Modifier
             .padding(top = 12.dp)
@@ -55,13 +51,13 @@ fun PlayerListItem(
         ) {
 
             SliderComposable(
-                playbackState,
-                onEvent
+                playbackState.value,
+                playerComponent
             )
 
             Spacer(modifier = Modifier.height(20.dp))
             MarqueeText(
-                text = playbackState.lecture.title,
+                text = playbackState.value.lecture.title,
 //                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = 18.sp,
@@ -70,7 +66,7 @@ fun PlayerListItem(
             )
 
             Text(
-                text = playbackState.lecture.displayedDescription,
+                text = playbackState.value.lecture.displayedDescription,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = GrayLight,
@@ -89,7 +85,9 @@ fun PlayerListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.weight(0.15f))
-                PlayerActionIcon(R.drawable.ic_player_prev, "previous", onEvent, Prev, ratio = 1.4f)
+                PlayerActionIcon(R.drawable.ic_player_prev, "previous", 1.4f) {
+                    playerComponent.onPrev()
+                }
                 Spacer(modifier = Modifier.weight(0.1f))
 
                 Box(
@@ -97,26 +95,21 @@ fun PlayerListItem(
                         .weight(0.1f)
                         .aspectRatio(1.1f)
                 ) {
-                    PlayerActionIcon(
-                        R.drawable.ic_player_seek_backward,
-                        "seek back",
-                        onEvent,
-                        SeekBack,
-                        ratio = 1.1f
-                    )
+                    PlayerActionIcon(R.drawable.ic_player_seek_backward, "seek back", 1.1f) {
+                        playerComponent.onSeekBack()
+                    }
                     SeekText(Modifier.padding(start = 4.dp))
                 }
                 Spacer(modifier = Modifier.weight(0.1f))
 
                 val playIconId =
-                    if (playbackState.isPlaying) R.drawable.ic_player_pause else R.drawable.ic_player_play
-                PlayerActionIcon(
-                    playIconId,
-                    "play/pause",
-                    onEvent,
-                    if (playbackState.isPlaying) Pause else Play(playbackState.lecture.id),
-                    ratio = 0.9f
-                )
+                    if (playbackState.value.isPlaying) R.drawable.ic_player_pause else R.drawable.ic_player_play
+                PlayerActionIcon(playIconId, "play/pause", 0.9f) {
+                    when (playbackState.value.isPlaying) {
+                        true -> playerComponent.onPause()
+                        else -> playerComponent.onPlay(playbackState.value.lecture.id)
+                    }
+                }
                 Spacer(modifier = Modifier.weight(0.1f))
 
                 Box(
@@ -124,24 +117,24 @@ fun PlayerListItem(
                         .weight(0.1f)
                         .aspectRatio(1.1f)
                 ) {
-                    PlayerActionIcon(
-                        R.drawable.ic_player_seek_forward,
-                        "seek forward",
-                        onEvent,
-                        SeekForward,
-                        ratio = 1.1f
-                    )
+                    PlayerActionIcon(R.drawable.ic_player_seek_forward, "seek forward", 1.1f) {
+                        playerComponent.onSeekForward()
+                    }
                     SeekText(Modifier.padding(end = 4.dp))
                 }
                 Spacer(modifier = Modifier.weight(0.1f))
 
-                PlayerActionIcon(R.drawable.ic_player_next, "next", onEvent, Next, ratio = 1.4f)
+                PlayerActionIcon(R.drawable.ic_player_next, "next", 1.4f) {
+                    playerComponent.onNext()
+                }
                 Spacer(modifier = Modifier.weight(0.15f))
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            when (playbackState.lecture.downloadProgress) {
+            var expanded by remember { mutableStateOf(false) }
+
+            when (playbackState.value.lecture.downloadProgress) {
                 null ->
                     Text(
                         text = stringResource(R.string.download_lecture),
@@ -150,7 +143,10 @@ fun PlayerListItem(
                         color = MaterialTheme.colors.onPrimary,
                         style = MaterialTheme.typography.body1,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.clickable { onEvent(CommonUiEvent.Player(Download(playbackState.lecture))) }
+                        modifier = Modifier.clickable {
+                            expanded = !expanded
+                            playerComponent.onDownload(playbackState.value.lecture)
+                        }
                     )
 
                 FULL_PROGRESS ->
@@ -164,7 +160,7 @@ fun PlayerListItem(
                 else ->
                     Row {
                         Text(
-                            text = "${playbackState.lecture.downloadProgress}%",
+                            text = "${playbackState.value.lecture.downloadProgress}%",
                             maxLines = 1,
                             color = MaterialTheme.colors.onPrimary,
                             style = MaterialTheme.typography.body1,
@@ -193,19 +189,47 @@ fun PlayerListItem(
                         )
                     }
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                list.forEach {
+                    DropdownMenuItem(
+                        onClick = {
+                            expanded = false
+                            playerComponent.onSpeed(it.speed)
+                        }
+                    ) {
+                        Text(text = it.title)
+                    }
+                }
+            }
         }
-        if (playbackState.isBuffering) {
+        if (playbackState.value.isBuffering) {
             LoadingBar()
         }
     }
+}
+
+private val list = listOf(
+    Speedy("0,50", 0.50f),
+    Speedy("0,75", 0.75f),
+    Speedy("1,00", 1.00f),
+    Speedy("1,25", 1.25f),
+    Speedy("1,50", 1.50f),
+    Speedy("1,75", 1.75f),
+    Speedy("2,00", 2.00f),
+)
+
+private class Speedy(val title: String, val speed: Float)
 
 @Composable
 fun RowScope.PlayerActionIcon(
     @DrawableRes id: Int,
     description: String,
-    onEvent: (CommonUiEvent) -> Unit = {},
-    playerAction: PlayerAction,
-    ratio: Float = 1f
+    ratio: Float = 1f,
+    onClick: () -> Unit
 ) =
     Image(
         painter = painterResource(id),
@@ -215,16 +239,15 @@ fun RowScope.PlayerActionIcon(
         Modifier
             .aspectRatio(ratio)
             .weight(0.1f)
-            .clickable { onEvent(CommonUiEvent.Player(playerAction)) }
+            .clickable { onClick() }
     )
 
 @Composable
 fun BoxScope.PlayerActionIcon(
     @DrawableRes id: Int,
     description: String,
-    onEvent: (CommonUiEvent) -> Unit = {},
-    playerAction: PlayerAction,
-    ratio: Float = 1f
+    ratio: Float = 1f,
+    onClick: () -> Unit
 ) =
     Image(
         painter = painterResource(id),
@@ -233,7 +256,7 @@ fun BoxScope.PlayerActionIcon(
         modifier =
         Modifier
             .aspectRatio(ratio)
-            .clickable { onEvent(CommonUiEvent.Player(playerAction)) }
+            .clickable { onClick() }
     )
 
 @Composable
@@ -248,14 +271,14 @@ fun BoxScope.SeekText(modifier: Modifier = Modifier) =
     )
 
 @Composable
-fun SliderComposable(playbackState: PlaybackState, onEvent: (CommonUiEvent) -> Unit = {}) {
+fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponent) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Slider(
             value = playbackState.timeMs.toFloat(),
             valueRange = 0f..playbackState.durationMs.coerceIn(1000L, ONE_DAY_MS).toFloat(),
-            onValueChange = { onEvent(CommonUiEvent.Player(SeekTo(it.toLong()))) },
-            onValueChangeFinished = { onEvent(CommonUiEvent.Player(SliderReleased)) },
+            onValueChange = { playerComponent.onSeekTo(it.toLong()) },
+            onValueChangeFinished = { playerComponent.onSliderReleased() },
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colors.onSurface,
                 activeTrackColor = MaterialTheme.colors.primaryVariant
@@ -274,7 +297,7 @@ fun SliderComposable(playbackState: PlaybackState, onEvent: (CommonUiEvent) -> U
     }
 }
 
-val PlaybackState.displayedTime
+val PlayerState.displayedTime
     get() = "${formatTimeAdaptiveHoursMax(timeMs)} / ${formatTimeAdaptiveHoursMax(durationMs)}"
 
 @Preview
@@ -282,6 +305,9 @@ val PlaybackState.displayedTime
 fun PreviewPlayerListItem() {
     AppTheme {
         PlayerListItem(
+            object : PlayerComponent {
+                override val flow: Value<PlayerState> = MutableValue(PlayerState())
+            }
         )
     }
 }

@@ -1,9 +1,9 @@
 package com.prabhupadalectures.android.util
 
 import android.net.Uri
-import com.prabhupadalectures.lectures.utils.DEEP_LINK_SCHEME
-import com.prabhupadalectures.lectures.utils.HOST_LECTURE
-import com.prabhupadalectures.lectures.utils.ShareAction
+import com.prabhupadalectures.common.lectures_impl.utils.DEEP_LINK_SCHEME
+import com.prabhupadalectures.common.lectures_impl.utils.HOST_LECTURE
+import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
 
 //  listenprabhupada://lecture/{lectureId}?page=2&category=1#1233412
 //  uri.lastPathSegment {lectureId}

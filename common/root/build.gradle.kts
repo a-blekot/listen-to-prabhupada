@@ -16,7 +16,7 @@ kotlin {
                 baseName = "Prabhupada"
                 linkerOpts.add("-lsqlite3")
                 export(project(":common:database"))
-                export(project(":common:lectures"))
+                export(project(":common:lectures-api"))
                 export(project(":common:filters"))
                 export(libs.decompose.decompose)
                 export(libs.mvikotlin.main)
@@ -30,7 +30,10 @@ kotlin {
             dependencies {
                 implementation(project(":common:utils"))
                 implementation(project(":common:database"))
-                implementation(project(":common:lectures"))
+                implementation(project(":common:network-api"))
+                implementation(project(":common:player-api"))
+                implementation(project(":common:feature-results-api"))
+                implementation(project(":common:feature-results-impl"))
                 implementation(project(":common:filters"))
                 implementation(libs.mvikotlin.mvikotlin)
                 implementation(libs.decompose.decompose)
@@ -42,7 +45,7 @@ kotlin {
         iosMain {
             dependencies {
                 api(project(":common:database"))
-                api(project(":common:lectures"))
+                api(project(":common:lectures-api"))
                 api(project(":common:filters"))
                 api(libs.decompose.decompose)
                 api(libs.mvikotlin.main)

@@ -28,7 +28,7 @@ import com.prabhupadalectures.android.ui.screens.helpers.AppTheme
 import com.prabhupadalectures.android.util.parseShareAction
 import com.prabhupadalectures.common.root.Root
 import com.prabhupadalectures.common.root.RootComponent
-import com.prabhupadalectures.lectures.mvi.Dependencies
+import com.prabhupadalectures.common.root.RootDeps
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
@@ -75,19 +75,14 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         RootComponent(
             componentContext = componentContext,
             storeFactory = LoggingStoreFactory(DefaultStoreFactory()),
-            depsResults = Dependencies(
-                db = app.db,
-                api = app.api
-            ),
-            depsFilters = com.prabhupadalectures.common.filters.Dependencies(
+            deps = RootDeps(
                 db = app.db,
                 api = app.api,
+                playerBus = app.playerBus,
                 ioContext = Dispatchers.IO,
                 mainContext = Dispatchers.Main,
             )
         )
-
-//    private val resultsRepository = app.resultsRepository
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)

@@ -16,11 +16,15 @@ android {
 
 dependencies {
     implementation(project(":common:database"))
+    implementation(project(":common:feature-results-api"))
     implementation(project(":common:filters"))
-    implementation(project(":common:lectures"))
-    implementation(project(":common:root"))
+    implementation(project(":common:lectures-api"))
+    implementation(project(":common:lectures-impl"))
     implementation(project(":common:network-api"))
     implementation(project(":common:network-impl"))
+    implementation(project(":common:player-api"))
+    implementation(project(":common:player-impl"))
+    implementation(project(":common:root"))
     implementation(project(":common:settings"))
     implementation(project(":common:utils"))
 

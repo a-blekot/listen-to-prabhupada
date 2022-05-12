@@ -9,46 +9,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.prabhupadalectures.android.ui.LoadingBar
-import com.prabhupadalectures.android.ui.compose.OfflineComposable
-import com.prabhupadalectures.android.ui.screens.helpers.DrawerContent
-import com.prabhupadalectures.android.ui.screens.helpers.Header
-import com.prabhupadalectures.android.ui.screens.helpers.LectureListItem
-import com.prabhupadalectures.android.ui.screens.helpers.PageControl
-import com.prabhupadalectures.lectures.events.CommonUiEvent
-import com.prabhupadalectures.lectures.mvi.lectures.Results
+import com.prabhupadalectures.android.ui.screens.helpers.*
+import com.prabhupadalectures.common.feature_results_api.ResultsComponent
 import kotlinx.coroutines.launch
 
 @Composable
 fun ResultsView(
-    component: Results,
-    isFiltersHeaderExpanded: Boolean = true,
+    component: ResultsComponent,
 ) {
-
-    val state = component.models.subscribeAsState()
-    val resultsState = state.value
-
-    val isFiltersHeaderExpandedRemember = remember { mutableStateOf(isFiltersHeaderExpanded) }
-
-    val onEvent: (CommonUiEvent) -> Unit = {
-        when (it) {
-            is CommonUiEvent.ResultsEvent.Page ->
-                component.onPage(it.page)
-
-//            is CommonUiEvent.ResultsEvent.Option ->
-//                component.onQueryParam(it.queryParam)
-
-            else -> {}
-        }
-    }
-
+    val lecturesState = component.lecturesComponent.flow.subscribeAsState()
 
     if (true) { // isOnline
         val scaffoldState: ScaffoldState = rememberScaffoldState()
@@ -57,21 +32,10 @@ fun ResultsView(
         Scaffold(
             scaffoldState = scaffoldState,
             drawerContent = {
-                DrawerContent {
-                    when (it) {
-                        CommonUiEvent.ResultsEvent.OpenFavorites,
-                        CommonUiEvent.ResultsEvent.OpenDownloads -> {
-                            coroutineScope.launch {
-                                scaffoldState.drawerState.close()
-                            }
-                        }
-                        else -> {
-                            /** do nothing **/
-                            /** do nothing **/
-                        }
-                    }
-                    onEvent(it)
-                }
+                DrawerContent(component)
+//                    coroutineScope.launch {
+//                        scaffoldState.drawerState.close()
+//                    }
             },
             topBar = {
                 TopAppBar(component = component) {
@@ -90,8 +54,6 @@ fun ResultsView(
                 Modifier
                     .background(color = MaterialTheme.colors.surface)
             ) {
-                val isNotEmpty = resultsState.lectures.isNotEmpty()
-
                 // Remember our own LazyListState
 //                val listState = rememberLazyListState()
 //                val coroutineScope = rememberCoroutineScope()
@@ -129,79 +91,45 @@ fun ResultsView(
                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 40.dp),
 //                        verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    if (isNotEmpty) {
                         item {
                             Header(
-                                onEvent = onEvent,
-                                onMenuClick = {
-                                    coroutineScope.launch {
-                                        scaffoldState.drawerState.toggle()
-                                    }
-                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .align(Alignment.Center)
                             )
                         }
 
-                        items(resultsState.lectures, key = { it.id }) { lectureItem ->
-//                            playbackState.run {
-                                LectureListItem(
-                                    lecture = lectureItem,
-                                    isPlaying = false, //lectureItem.id == lecture.id && isPlaying,
-                                    onEvent = onEvent
-                                )
-//                            }
+                        items(lecturesState.value.lectures, key = { it.id }) { lectureItem ->
+                            LectureListItem(
+                                lecture = lectureItem,
+                                component = component.lecturesComponent,
+                            )
                         }
 
                         item {
                             PageControl(
-                                resultsState.pagination,
-                                onEvent = onEvent
+                                component.lecturesComponent,
+                                lecturesState.value.pagination,
                             )
                         }
+
+                    item {
+                        PlayerListItem(playerComponent = component.playerComponent)
                     }
-
-//                    item {
-//                        SelectedFilters(
-//                            filters = resultsState,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(top = 12.dp),
-//                            onEvent = onEvent
-//                        )
-//                    }
-
-//                    item {
-//                        FilterTitle(filtersHeader, isFiltersHeaderExpandedRemember.value) {
-//                            isFiltersHeaderExpandedRemember.value = it
-//                            onEvent(CommonUiEvent.ResultsEvent.Expand(filtersHeader.name, it))
-//                        }
-//                    }
-//
-//                    if (isFiltersHeaderExpandedRemember.value) {
-//                        itemsIndexed(resultsState.filters, key = { _, item -> item.name }) { i, filter ->
-//                            FilterListItem(filter, expandedList[i], onEvent = onEvent)
-//                        }
-//                    }
-
-//                    item {
-//                        PlayerListItem(playbackState, onEvent)
-//                    }
                 }
 
-                if (resultsState.isLoading) {
+                if (lecturesState.value.isLoading) {
                     LoadingBar()
                 }
             }
         }
     } else {
-        OfflineComposable(onEvent)
+        OfflineComposable()
     }
 }
 
 @Composable
-private fun TopAppBar(component: Results, onMenuClick: () -> Unit = {}) {
+private fun TopAppBar(component: ResultsComponent, onMenuClick: () -> Unit = {}) {
     TopAppBar(
         actions = {
             IconButton(

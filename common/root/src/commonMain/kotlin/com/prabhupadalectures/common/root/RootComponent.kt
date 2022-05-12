@@ -6,32 +6,34 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.prabhupadalectures.common.feature_results_api.ResultsComponent
+import com.prabhupadalectures.common.feature_results_api.ResultsOutput
+import com.prabhupadalectures.common.feature_results_impl.ResultsComponentImpl
+import com.prabhupadalectures.common.feature_results_impl.ResultsDeps
+import com.prabhupadalectures.common.filters.Dependencies
 import com.prabhupadalectures.common.filters.Filters
 import com.prabhupadalectures.common.filters.FiltersComponent
 import com.prabhupadalectures.common.root.Root.Child.ChildFilters
 import com.prabhupadalectures.common.root.Root.Child.ChildResults
 import com.prabhupadalectures.common.utils.Consumer
-import com.prabhupadalectures.lectures.mvi.lectures.Results
-import com.prabhupadalectures.lectures.mvi.lectures.ResultsComponent
 
 class RootComponent internal constructor(
     componentContext: ComponentContext,
-    private val results: (ComponentContext, Consumer<Results.Output>) -> Results,
+    private val results: (ComponentContext, Consumer<ResultsOutput>) -> ResultsComponent,
     private val filters: (ComponentContext, Consumer<Filters.Output>) -> Filters
 ) : Root, ComponentContext by componentContext {
 
     constructor(
         componentContext: ComponentContext,
-        depsResults: com.prabhupadalectures.lectures.mvi.Dependencies,
-        depsFilters: com.prabhupadalectures.common.filters.Dependencies,
         storeFactory: StoreFactory,
+        deps: RootDeps,
     ) : this(
         componentContext = componentContext,
         results = { childContext, output ->
-            ResultsComponent(
+            ResultsComponentImpl(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                deps = depsResults,
+                deps = deps.run { ResultsDeps(db, api, playerBus, ioContext, mainContext) },
                 output = output
             )
         },
@@ -39,7 +41,7 @@ class RootComponent internal constructor(
             FiltersComponent(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                deps = depsFilters,
+                deps = deps.run { Dependencies(db, api, ioContext, mainContext) },
                 output = output
             )
         }
@@ -60,9 +62,10 @@ class RootComponent internal constructor(
             is Configuration.Filters -> ChildFilters(filters(componentContext, Consumer(::onFiltersOutput)))
         }
 
-    private fun onResultsOutput(output: Results.Output): Unit =
+    private fun onResultsOutput(output: ResultsOutput): Unit =
         when (output) {
-            is Results.Output.EditFilters -> router.push(Configuration.Filters)
+            is ResultsOutput.EditFilters -> router.push(Configuration.Filters)
+            else -> { /** TODO **/}
         }
 
     private fun onFiltersOutput(output: Filters.Output): Unit =

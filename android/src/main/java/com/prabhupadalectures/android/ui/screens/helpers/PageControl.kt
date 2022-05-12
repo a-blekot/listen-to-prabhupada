@@ -3,23 +3,22 @@ package com.prabhupadalectures.android.ui.screens.helpers
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.lectures.events.CommonUiEvent
-import com.prabhupadalectures.lectures.data.Pagination
-import com.prabhupadalectures.common.settings.FIRST_PAGE
+import com.prabhupadalectures.common.lectures_api.LecturesComponent
+import com.prabhupadalectures.common.lectures_api.Pagination
 
 private const val WEIGHT_BUTTON = 1f
 
@@ -36,9 +35,9 @@ enum class ButtonType(val pagesDiff: Int, @StringRes val textRes: Int) {
 
 @Composable
 fun PageControl(
+    component: LecturesComponent,
     pagination: Pagination,
     modifier: Modifier = Modifier,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
 ) =
     Row(
         modifier = modifier,
@@ -48,25 +47,25 @@ fun PageControl(
         PageImageButton(
             ButtonType.FIRST,
             pagination,
-            onEvent,
+            component,
         )
 
         PageButton(
             ButtonType.PREV_20,
             pagination,
-            onEvent,
+            component,
         )
 
         PageButton(
             ButtonType.PREV_5,
             pagination,
-            onEvent,
+            component,
         )
 
         PageButton(
             ButtonType.PREV_1,
             pagination,
-            onEvent,
+            component,
         )
 
         Text(
@@ -80,25 +79,25 @@ fun PageControl(
         PageButton(
             ButtonType.NEXT_1,
             pagination,
-            onEvent,
+            component,
         )
 
         PageButton(
             ButtonType.NEXT_5,
             pagination,
-            onEvent,
+            component,
         )
 
         PageButton(
             ButtonType.NEXT_20,
             pagination,
-            onEvent,
+            component,
         )
 
         PageImageButton(
             ButtonType.LAST,
             pagination,
-            onEvent,
+            component,
         )
     }
 
@@ -106,12 +105,12 @@ fun PageControl(
 fun RowScope.PageButton(
     buttonType: ButtonType,
     pagination: Pagination,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit,
+    component: LecturesComponent
 ) =
     Button(
         modifier = Modifier.weight(WEIGHT_BUTTON).padding(horizontal = 1.dp),
         enabled = pagination.canAdd(buttonType),
-        onClick = { onEvent(CommonUiEvent.ResultsEvent.Page(pagination.nextPage(buttonType))) },
+        onClick = { component.onPage(pagination.nextPage(buttonType)) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.primaryVariant,
         ),
@@ -129,12 +128,12 @@ fun RowScope.PageButton(
 fun RowScope.PageImageButton(
     buttonType: ButtonType,
     pagination: Pagination,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit,
+    component: LecturesComponent,
 ) =
     Button(
         modifier = Modifier.weight(WEIGHT_BUTTON).padding(horizontal = 1.dp),
         enabled = pagination.canAdd(buttonType),
-        onClick = { onEvent(CommonUiEvent.ResultsEvent.Page(pagination.nextPage(buttonType))) },
+        onClick = { component.onPage(pagination.nextPage(buttonType)) },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.primaryVariant,
         ),
@@ -161,28 +160,7 @@ private fun Pagination.nextPage(buttonType: ButtonType) =
         else -> add(buttonType.pagesDiff)
     }
 
-@Composable
-fun PageInput(
-    page: Int,
-    total: Int,
-    modifier: Modifier = Modifier,
-    onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}
-) {
-    var text by remember { mutableStateOf(TextFieldValue("$page")) }
-    TextField(
-        value = text,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        onValueChange = {
-            val page = (it.text.toIntOrNull() ?: 1).coerceIn(1, total)
-            onEvent(CommonUiEvent.ResultsEvent.Page(page))
-            text = it.copy(text = "$page")
-        },
-        singleLine = true,
-        modifier = modifier
-    )
-}
-
-@Preview
-@Composable
-fun PageControlPreview() =
-    PageControl(Pagination(prev = 121, curr = 122, next = 123, total = 180))
+//@Preview
+//@Composable
+//fun PageControlPreview() =
+//    PageControl(Pagination(prev = 121, curr = 122, next = 123, total = 180))

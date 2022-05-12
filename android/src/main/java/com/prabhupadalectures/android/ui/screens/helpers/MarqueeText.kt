@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.compose
+package com.prabhupadalectures.android.ui.screens.helpers
 
 import android.graphics.fonts.FontFamily
 import android.graphics.fonts.FontStyle

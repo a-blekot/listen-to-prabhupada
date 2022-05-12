@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.compose
+package com.prabhupadalectures.android.ui.screens.helpers
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,10 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.lectures.events.CommonUiEvent
 
 @Composable
-fun OfflineComposable(onEvent: (CommonUiEvent) -> Unit = {}) =
+fun OfflineComposable(onShowDownloads: () -> Unit = {}) =
     Column(
         Modifier
             .fillMaxSize()
@@ -61,6 +60,6 @@ fun OfflineComposable(onEvent: (CommonUiEvent) -> Unit = {}) =
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 30.dp)
-                .clickable { onEvent(CommonUiEvent.ResultsEvent.OpenDownloads) }
+                .clickable { onShowDownloads() }
         )
     }

@@ -15,10 +15,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.lectures.events.CommonUiEvent
+import com.prabhupadalectures.common.feature_results_api.ResultsComponent
 
 @Composable
-fun DrawerContent(onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}) {
+fun DrawerContent(component: ResultsComponent) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +35,7 @@ fun DrawerContent(onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}) {
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .align(Alignment.Start)
-                .clickable { onEvent(CommonUiEvent.ResultsEvent.OpenFavorites) }
+                .clickable { component.onShowFavorites() }
         )
 
         Text(
@@ -48,7 +48,7 @@ fun DrawerContent(onEvent: (CommonUiEvent.ResultsEvent) -> Unit = {}) {
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(top = 20.dp)
-                .clickable { onEvent(CommonUiEvent.ResultsEvent.OpenDownloads) }
+                .clickable { component.onShowDownloads() }
         )
     }
 }

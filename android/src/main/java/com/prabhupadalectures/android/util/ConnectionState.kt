@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.platform.LocalContext
-import com.prabhupadalectures.lectures.utils.ConnectionState
-import com.prabhupadalectures.lectures.utils.toConnectionState
+import com.prabhupadalectures.common.lectures_impl.utils.ConnectionState
+import com.prabhupadalectures.common.lectures_impl.utils.toConnectionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose

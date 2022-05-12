@@ -4,10 +4,15 @@ includeBuild("build-logic")
 include(
     ":android",
     ":common:database",
+    ":common:feature-results-api",
+    ":common:feature-results-impl",
     ":common:filters",
-    ":common:lectures",
+    ":common:lectures-api",
+    ":common:lectures-impl",
     ":common:network-api",
     ":common:network-impl",
+    ":common:player-api",
+    ":common:player-impl",
     ":common:root",
     ":common:settings",
     ":common:utils"
@@ -27,16 +32,4 @@ pluginManagement {
         google()
         mavenCentral()
     }
-
-//    resolutionStrategy {
-//        eachPlugin {
-//            val pluginId = requested.id.id
-//            if (pluginId.startsWith("org.jetbrains.kotlin")) {
-//                useVersion("1.6.20")
-//            } else if (pluginId.startsWith("com.android.tools.build")) {
-////                useModule("com.android.tools.build:gradle:7.2.0-beta04")
-//                useModule("com.android.tools.build:gradle:7.3.0-alpha09")
-//            }
-//        }
-//    }
 }

@@ -10,17 +10,18 @@ import android.os.Build
 import com.prabhupadalectures.android.MainActivity
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.util.notificationColor
-import com.prabhupadalectures.lectures.data.lectures.Lecture
-import com.prabhupadalectures.lectures.events.*
-import com.prabhupadalectures.lectures.repository.*
-import com.prabhupadalectures.lectures.utils.toValidUrl
+import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.lectures_impl.repository.*
+import com.prabhupadalectures.common.lectures_impl.utils.toValidUrl
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.prabhupadalectures.common.player_api.PlayerAction
+import com.prabhupadalectures.common.player_api.PlayerAction.*
+import com.prabhupadalectures.common.player_api.PlayerBus
+import com.prabhupadalectures.common.player_api.PlayerState
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 
 
 private const val UPDATE_PLAYBACK_STATE_INTERVAL_MS = 1000L
@@ -32,7 +33,7 @@ const val SEEK_INCREMENT_MS = 10_000L
 
 class Player(
     context: Context,
-    private val playbackRepository: PlaybackRepository,
+    private val playerBus: PlayerBus,
     private val tools: ToolsRepository,
     private val playerScope: CoroutineScope,
     private val listener: Listener
@@ -170,21 +171,12 @@ class Player(
     private var pendingPlaylist: List<Lecture> = emptyList()
 
     init {
-        playerScope.launch {
-            playbackRepository.observePlayerActions()
-                .onEach { handleAction(it) }
-                .collect()
-        }
-
-        playerScope.launch {
-            playbackRepository.observePlaylist()
-                .onEach { setPlaylist(it) }
-                .collect()
-        }
+        playerBus.observeActions(playerScope, ::handleAction)
+        playerBus.observePlaylist(playerScope, ::setPlaylist)
     }
 
-    private fun updatePlaybackState(playbackState: PlaybackState = exoPlayer?.myPlaybackState ?: PlaybackState()) =
-        playbackRepository.updateState(playbackState)
+    private fun updatePlaybackState(playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState()) =
+        playerBus.update(playbackState)
 
     private fun saveCurrentPosition() =
         exoPlayer?.run {
@@ -221,6 +213,7 @@ class Player(
         when (playerAction) {
             is Play -> play(playerAction.lectureId)
             is SeekTo -> seekTo(playerAction.timeMs)
+            is Speed -> setSpeed(playerAction.speed)
             Pause -> exoPlayer?.playWhenReady = false
             Next -> exoPlayer?.seekToNextMediaItem()
             Prev -> exoPlayer?.seekToPreviousMediaItem()
@@ -333,7 +326,7 @@ class Player(
     }
 
     private var playOnSliderRelease: Boolean? = null
-    private var seekState: PlaybackState? = null
+    private var seekState: PlayerState? = null
     private fun seekTo(timeMs: Long) =
         exoPlayer?.run {
             if (playOnSliderRelease == null) {
@@ -353,6 +346,9 @@ class Player(
 
             }
         }
+
+    private fun setSpeed(speed: Float) =
+        exoPlayer?.setPlaybackSpeed(speed.coerceAtLeast(0.25f))
 
     private fun onSliderReleased() {
         playOnSliderRelease?.let { exoPlayer?.playWhenReady = it }
@@ -399,7 +395,7 @@ class Player(
     }
 
     private val ExoPlayer.myPlaybackState
-        get() = PlaybackState(
+        get() = PlayerState(
             lecture = currentLecture,
             isPlaying = isPlaying,
             isBuffering = playbackState == Player.STATE_BUFFERING,

@@ -11,6 +11,7 @@ kotlin {
                 implementation(libs.mvikotlin.mvikotlin)
                 implementation(libs.mvikotlin.rx)
                 implementation(libs.mvikotlin.extensions.coroutines)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
     }
