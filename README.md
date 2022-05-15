@@ -31,15 +31,15 @@ No DI framework used for now... had a hard time trying to use Koin ))
 - Pagination control
 - Audio player
 
-![results](./screenshots/lectures.ong)
+![results](./screenshots/lectures.png)
 
-![player](./screenshots/notification.ong)
+![player](./screenshots/player.png)
 
-![notification](./screenshots/notification.ong)
+![notification](./screenshots/notification.png)
 
 ## Filters screen
 
-![filters](./screenshots/lectures.ong)
+![filters](./screenshots/lectures.png)
 
 ## Favorites screen (TODO)
 
