@@ -4,14 +4,17 @@ import com.prabhupadalectures.common.lectures_api.Lecture
 import com.prabhupadalectures.common.player_api.PlayerAction
 import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_api.PlayerState
+import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
 class PlayerBusImpl(
-    private val scope: CoroutineScope
+    private val dispatchers: DispatcherProvider
 ) : PlayerBus {
+
+    private val scope = CoroutineScope(dispatchers.main)
 
     private val playbackFlow = MutableStateFlow(PlayerState())
     private val playlistFlow = MutableStateFlow(emptyList<Lecture>())

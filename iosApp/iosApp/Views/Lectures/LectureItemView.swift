@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import shared
+import Prabhupada
 
 struct CustomCenter: AlignmentID {
   static func defaultValue(in context: ViewDimensions) -> CGFloat {
@@ -20,14 +20,13 @@ extension HorizontalAlignment {
 }
 
 struct LectureListItem: View {
-    var lecture: Lecture
-    var isPlaying: Bool
-    var onEvent : (CommonUiEvent) -> ()
+    let lecture: Lecture
+    let component : LecturesComponent
     
     var body: some View {
         HStack(alignment: .center, spacing: 2.0) {
             
-            PlayButton(lecture, isPlaying, onEvent: onEvent)
+            PlayButton(lecture: lecture, component: component)
                 .padding(.trailing, 10)
             
             VStack(alignment: .leading, spacing: 4.0) {
@@ -43,8 +42,7 @@ struct LectureListItem: View {
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.orange)
                     .onTapGesture {
-                        let action = isPlaying ? Pause() : Play(lectureId: lecture.id)
-                        onEvent(CommonUiEvent.Player(action: action))
+                        lecture.isPlaying ? component.onPause() : component.onPlay(id: lecture.id)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -56,23 +54,23 @@ struct LectureListItem: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             
-            FavoriteButton(lecture: lecture, onEvent: onEvent)
-            ContextMenuButton(onEvent: onEvent)
+            FavoriteButton(lecture: lecture, onClick: { isFavorite in component.onFavorite(id: lecture.id, isFavorite: isFavorite) })
+            // ContextMenuButton(onEvent: onEvent)
         }
         .padding(.horizontal, -10)
         .buttonStyle(.plain)
     }
 }
 
-struct LectureListItem_Previews: PreviewProvider {
-    static var previews: some View {
-        LectureListItem(
-            lecture: mockLecture(),
-            isPlaying: false,
-            onEvent: { _ in}
-        )
-    }
-}
+//struct LectureListItem_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LectureListItem(
+//            lecture: mockLecture(),
+//            isPlaying: false,
+//            onEvent: { _ in}
+//        )
+//    }
+//}
 
 //
 //        Spacer(modifier = Modifier.weight(2f))

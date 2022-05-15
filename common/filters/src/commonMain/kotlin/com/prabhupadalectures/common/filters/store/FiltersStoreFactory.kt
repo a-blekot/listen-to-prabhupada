@@ -5,7 +5,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.prabhupadalectures.common.filters.Dependencies
+import com.prabhupadalectures.common.filters.FiltersDeps
+import com.prabhupadalectures.common.filters.FiltersState
 import com.prabhupadalectures.common.filters.data.*
 import com.prabhupadalectures.common.filters.store.FiltersStore.*
 import com.prabhupadalectures.common.filters.store.FiltersStoreFactory.Action.InitialLoad
@@ -19,13 +20,13 @@ import kotlinx.coroutines.withContext
 
 internal class FiltersStoreFactory(
     private val storeFactory: StoreFactory,
-    private val deps: Dependencies,
+    private val deps: FiltersDeps,
 ) {
 
     fun create(): FiltersStore =
-        object : FiltersStore, Store<Intent, State, Label> by storeFactory.create(
+        object : FiltersStore, Store<Intent, FiltersState, Label> by storeFactory.create(
             name = "FiltersStore",
-            initialState = State(),
+            initialState = FiltersState(),
             bootstrapper = BootstrapperImpl(),
             executorFactory = ::ExecutorImpl,
             reducer = ReducerImpl
@@ -33,19 +34,19 @@ internal class FiltersStoreFactory(
 
     private sealed interface Action {
         object NeedInitialLoad: Action
-        data class InitialLoad(val state: State) : Action
+        data class InitialLoad(val state: FiltersState) : Action
     }
 
     private sealed interface Msg {
         object StartLoading : Msg
-        data class LoadingComplete(val state: State = State(isLoading = false)) : Msg
+        data class LoadingComplete(val state: FiltersState = FiltersState(isLoading = false)) : Msg
     }
 
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
         override fun invoke() {
             scope.launch {
-               val state = withContext(deps.ioContext) {
-                   State(
+               val state = withContext(deps.dispatchers.io) {
+                   FiltersState(
                        filters = settings.getFilterOptions().decodeFiltersList().updateFromDB(),
                        totalLecturesCount = settings.getTotalLecturesCount(),
                        pagesCount = settings.getPagesCount(),
@@ -61,14 +62,14 @@ internal class FiltersStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
-        override fun executeAction(action: Action, getState: () -> State) =
+    private inner class ExecutorImpl : CoroutineExecutor<Intent, Action, FiltersState, Msg, Label>() {
+        override fun executeAction(action: Action, getState: () -> FiltersState) =
             when (action) {
                 is NeedInitialLoad -> load(buildQueryParams())
                 is InitialLoad -> dispatch(Msg.LoadingComplete(action.state))
             }
 
-        override fun executeIntent(intent: Intent, getState: () -> State) {
+        override fun executeIntent(intent: Intent, getState: () -> FiltersState) {
             if (getState().isLoading) {
                 Napier.d("executeIntent canceled, isLoading = true!", tag = "FiltersStoreExecutor")
                 return
@@ -98,14 +99,14 @@ internal class FiltersStoreFactory(
         }
 
         private fun state(apiModel: ApiModel) =
-            State(
+            FiltersState(
                 isLoading = false,
                 filters = filters(apiModel).updateFromDB(),
                 totalLecturesCount = totalLecturesCount(apiModel),
                 pagesCount = pagesCount(apiModel),
             )
 
-        private fun applyChanges(state: State) {
+        private fun applyChanges(state: FiltersState) {
             settings.run {
                 state.run {
                     saveFilterOptions(filters.encodeToString())
@@ -123,8 +124,8 @@ internal class FiltersStoreFactory(
             filter.copy(isExpanded = deps.db.selectExpandedFilter(filter.name))
         }
 
-    private object ReducerImpl : Reducer<State, Msg> {
-        override fun State.reduce(msg: Msg): State =
+    private object ReducerImpl : Reducer<FiltersState, Msg> {
+        override fun FiltersState.reduce(msg: Msg): FiltersState =
             when (msg) {
                 Msg.StartLoading -> copy(isLoading = true)
                 is Msg.LoadingComplete -> msg.state

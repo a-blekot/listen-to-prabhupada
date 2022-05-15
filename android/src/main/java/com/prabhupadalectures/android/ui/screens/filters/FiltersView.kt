@@ -17,10 +17,10 @@ import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.prabhupadalectures.android.ui.LoadingBar
 import com.prabhupadalectures.android.ui.screens.helpers.FilterListItem
 import com.prabhupadalectures.android.ui.screens.helpers.SelectedFilters
-import com.prabhupadalectures.common.filters.Filters
+import com.prabhupadalectures.common.filters.FiltersComponent
 
 @Composable
-fun FiltersView(component: Filters) {
+fun FiltersView(component: FiltersComponent) {
     val state = component.models.subscribeAsState()
 
     val expandedList = state.value.filters.map {

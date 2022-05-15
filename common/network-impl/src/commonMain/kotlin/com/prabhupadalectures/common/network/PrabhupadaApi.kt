@@ -1,6 +1,7 @@
 package com.prabhupadalectures.common.network
 
 import com.prabhupadalectures.common.network_api.*
+import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -12,7 +13,6 @@ import io.ktor.utils.io.core.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
 private const val DEFAULT_BUFFER_SIZE = 4088L
@@ -22,10 +22,10 @@ const val DOWNLOAD_HTTP_TIMEOUT = 300_000L
 
 class PrabhupadaApiImpl(
     private val client: HttpClient,
-    private val ioContext: CoroutineContext
+    private val dispatchers: DispatcherProvider
 ) : PrabhupadaApi {
     override suspend fun getResults(params: QueryParams): Result<ApiModel> =
-        withContext(ioContext) {
+        withContext(dispatchers.io) {
             result {
                 client.get(Routes.FILE) {
                     params.forEach {
@@ -36,7 +36,7 @@ class PrabhupadaApiImpl(
         }
 
     override suspend fun getResults(page: Int): ApiModel =
-        withContext(ioContext) {
+        withContext(dispatchers.io) {
             client.get(Routes.FILE) {
                 parameter(PAGE_QUERY_KEY, page)
             }.body()
@@ -44,7 +44,7 @@ class PrabhupadaApiImpl(
 
     override suspend fun downloadFile(writeChannel: ByteWriteChannel, url: String): Flow<DownloadState> {
         return flow {
-            withContext(ioContext) {
+            withContext(dispatchers.io) {
                 try {
                     Napier.d("downloadFile $url", tag = "PrabhupadaApi")
 
@@ -91,8 +91,8 @@ class PrabhupadaApiImpl(
     }
 }
 
-fun createPrabhupadaApi(ioContext: CoroutineContext): PrabhupadaApi =
-    PrabhupadaApiImpl(KtorClientFactory().build(), ioContext)
+fun createPrabhupadaApi(dispatchers: DispatcherProvider): PrabhupadaApi =
+    PrabhupadaApiImpl(KtorClientFactory().build(), dispatchers)
 
 private inline fun <T> result(block: () -> T) =
     try {

@@ -37,7 +37,7 @@ class LecturesComponentImpl(
             ).create()
         }
 
-    private val scope: CoroutineScope = lifecycleCoroutineScope(deps.mainContext)
+    private val scope: CoroutineScope = lifecycleCoroutineScope(deps.dispatchers.main)
 
     init {
         store.labels

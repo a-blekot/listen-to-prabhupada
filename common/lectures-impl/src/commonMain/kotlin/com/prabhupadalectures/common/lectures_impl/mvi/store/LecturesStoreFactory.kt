@@ -104,7 +104,7 @@ internal class LecturesStoreFactory(
 
         private fun setFavorite(id: Long, isFavorite: Boolean, state: LecturesState) {
             scope.launch {
-                withContext(deps.ioContext) {
+                withContext(deps.dispatchers.io) {
                     state.lectures.find { it.id == id }?.let {
                         deps.db.insertLecture(it.copy(isFavorite = isFavorite).dbEntity())
                     }

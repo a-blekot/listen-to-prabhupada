@@ -7,14 +7,14 @@
 //
 
 import SwiftUI
-import shared
+import Prabhupada
 
 struct ContextMenuButton: View {
-    var onEvent : (CommonUiEvent) -> ()
+    var onClick : () -> ()
     
     var body: some View {
         Button {
-            onEvent(CommonUiEvent.FavoritesEvent())
+            onClick()
         } label: {
             Image(systemName: "list.bullet")
                 .resizable(resizingMode: .stretch)
@@ -26,6 +26,6 @@ struct ContextMenuButton: View {
 
 struct ContextMenuButton_Previews: PreviewProvider {
     static var previews: some View {
-        ContextMenuButton(onEvent: { _ in })
+        ContextMenuButton(onClick: {})
     }
 }

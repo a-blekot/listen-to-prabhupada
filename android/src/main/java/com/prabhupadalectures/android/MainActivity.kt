@@ -26,9 +26,10 @@ import com.prabhupadalectures.android.player.PlaybackService
 import com.prabhupadalectures.android.ui.screens.MainContent
 import com.prabhupadalectures.android.ui.screens.helpers.AppTheme
 import com.prabhupadalectures.android.util.parseShareAction
-import com.prabhupadalectures.common.root.Root
 import com.prabhupadalectures.common.root.RootComponent
+import com.prabhupadalectures.common.root.RootComponentImpl
 import com.prabhupadalectures.common.root.RootDeps
+import com.prabhupadalectures.common.utils.dispatchers.dispatchers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
@@ -71,16 +72,15 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         }
     }
 
-    private fun root(componentContext: ComponentContext): Root =
-        RootComponent(
+    private fun root(componentContext: ComponentContext): RootComponent =
+        RootComponentImpl(
             componentContext = componentContext,
             storeFactory = LoggingStoreFactory(DefaultStoreFactory()),
             deps = RootDeps(
                 db = app.db,
                 api = app.api,
                 playerBus = app.playerBus,
-                ioContext = Dispatchers.IO,
-                mainContext = Dispatchers.Main,
+                dispatchers = dispatchers()
             )
         )
 

@@ -7,15 +7,15 @@
 //
 
 import SwiftUI
-import shared
+import Prabhupada
 
 struct FavoriteButton: View {
     let lecture: Lecture
-    let onEvent : (CommonUiEvent) -> ()
+    let onClick : (Bool) -> ()
     
     var body: some View {
         Button {
-            onEvent(CommonUiEvent.Favorite(lecture: lecture, isFavorite: !lecture.isFavorite))
+            onClick(!lecture.isFavorite)
         } label: {
             
             Image(systemName: lecture.isFavorite ? "heart.fill" : "heart")
@@ -29,6 +29,6 @@ struct FavoriteButton: View {
 
 struct FavoriteButton_Previews: PreviewProvider {
     static var previews: some View {
-        FavoriteButton(lecture: mockLecture(), onEvent: { _ in })
+        FavoriteButton(lecture: mockLecture(1), onClick: { _ in })
     }
 }

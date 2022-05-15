@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.io.File
+import com.prabhupadalectures.common.utils.dispatchers.dispatchers
 
 class PrabhupadaApp : Application() {
 
@@ -86,7 +87,7 @@ class PrabhupadaApp : Application() {
         private set
 
     val bgScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    val api = createPrabhupadaApi(Dispatchers.IO)
+    val api = createPrabhupadaApi(dispatchers())
     lateinit var db: Database
     lateinit var playerBus: PlayerBus
     lateinit var toolsRepository: ToolsRepository
@@ -109,7 +110,7 @@ class PrabhupadaApp : Application() {
         DOWNLOADS_DIR = app.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: ""
 
         db = DatabaseImpl(DatabaseDriverFactory(this))
-        playerBus = PlayerBusImpl(mainScope)
+        playerBus = PlayerBusImpl(dispatchers())
         toolsRepository = ToolsRepositoryImpl(db)
         downloadsRepository = DownloadsRepositoryImpl(db, api)
 

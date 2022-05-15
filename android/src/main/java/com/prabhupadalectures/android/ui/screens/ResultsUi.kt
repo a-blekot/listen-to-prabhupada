@@ -8,14 +8,14 @@ import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.plus
 import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.scale
 import com.prabhupadalectures.android.ui.screens.filters.FiltersView
 import com.prabhupadalectures.android.ui.screens.results.ResultsView
-import com.prabhupadalectures.common.root.Root
+import com.prabhupadalectures.common.root.RootComponent
 
 @Composable
-fun MainContent(component: Root) {
+fun MainContent(component: RootComponent) {
     Children(routerState = component.routerState, animation = childAnimation(fade() + scale())) {
         when (val child = it.instance) {
-            is Root.Child.ChildResults -> ResultsView(child.component)
-            is Root.Child.ChildFilters -> FiltersView(child.component)
+            is RootComponent.Child.Results -> ResultsView(child.component)
+            is RootComponent.Child.Filters -> FiltersView(child.component)
         }
     }
 }

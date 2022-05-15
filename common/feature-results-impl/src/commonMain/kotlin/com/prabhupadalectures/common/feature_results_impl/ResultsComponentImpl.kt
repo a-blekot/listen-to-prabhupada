@@ -27,7 +27,7 @@ class ResultsComponentImpl(
         LecturesComponentImpl(
             componentContext = componentContext,
             storeFactory = storeFactory,
-            deps = LecturesDeps(deps.db, deps.api, deps.mainContext, deps.ioContext),
+            deps = LecturesDeps(deps.db, deps.api, deps.dispatchers),
             output = Consumer(::onLecturesOutput)
         )
 
@@ -35,10 +35,10 @@ class ResultsComponentImpl(
         PlayerComponentImpl(
             componentContext = componentContext,
             playerBus = deps.playerBus,
-            scope = CoroutineScope(deps.mainContext)
+            scope = CoroutineScope(deps.dispatchers.main)
         )
 
-    private val mainScope = CoroutineScope(deps.mainContext)
+    private val mainScope = CoroutineScope(deps.dispatchers.main)
 
     init {
         deps.playerBus.observeState(mainScope) {

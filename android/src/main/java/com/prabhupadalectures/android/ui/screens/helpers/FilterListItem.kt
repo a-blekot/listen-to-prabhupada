@@ -23,14 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.value.MutableValue
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.common.filters.Filters
+import com.prabhupadalectures.common.filters.FiltersComponent
+import com.prabhupadalectures.common.filters.FiltersState
 import com.prabhupadalectures.common.filters.data.Filter
 import com.prabhupadalectures.common.filters.data.Option
 import com.prabhupadalectures.common.filters.data.QueryParam
 
 @Composable
 fun FilterListItem(
-    component: Filters,
+    component: FiltersComponent,
     filter: Filter,
     isExpanded: MutableState<Boolean> = remember { mutableStateOf(filter.isExpanded) },
     modifier: Modifier = Modifier,
@@ -135,9 +136,9 @@ fun OptionListItem(
 fun PreviewFilterListItem() {
     AppTheme {
         FilterListItem(
-            component = object: Filters {
+            component = object: FiltersComponent {
                 override val models = MutableValue(
-                    Filters.Model(
+                    FiltersState(
                         isLoading = false,
                         filters = emptyList(),
                         totalLecturesCount = 0,

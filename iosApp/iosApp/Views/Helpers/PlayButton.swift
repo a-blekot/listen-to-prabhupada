@@ -7,22 +7,15 @@
 //
 
 import SwiftUI
-import shared
+import Prabhupada
 
 struct PlayButton: View {
     let lecture: Lecture
-    @State var isPlaying: Bool
-    let onEvent : (CommonUiEvent) -> ()
-    
-    init(_ lecture: Lecture, _ isPlaying: Bool, onEvent : @escaping (CommonUiEvent) -> ()) {
-        self.lecture = lecture
-        self.isPlaying = isPlaying
-        self.onEvent = onEvent
-    }
+    let component: LecturesComponent
     
     var image: String {
         switch true {
-        case isPlaying: return "pause.circle"
+        case lecture.isPlaying: return "pause.circle"
         case lecture.isCompleted: return "checkmark.circle"
         default: return "play.circle"
         }
@@ -30,9 +23,7 @@ struct PlayButton: View {
     
     var body: some View {
         Button {
-            let action = isPlaying ? Pause() : Play(lectureId: lecture.id)
-            onEvent(CommonUiEvent.Player(action: action))
-            isPlaying.toggle()
+            lecture.isPlaying ? component.onPause() : component.onPlay(id: lecture.id)
         } label: {
             
             Image(systemName: image)
@@ -44,11 +35,11 @@ struct PlayButton: View {
     }
 }
 
-struct PlayButton_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayButton(mockLecture(), true, onEvent: { _ in })
-    }
-}
+//struct PlayButton_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PlayButton(mockLecture(), true, onEvent: { _ in })
+//    }
+//}
 
 //class PlayAudio: AVAudioPlayerDelegate  {
 //    var audioPlayer:AVAudioPlayer!

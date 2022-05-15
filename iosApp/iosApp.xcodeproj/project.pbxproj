@@ -11,15 +11,25 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
-		C6A7C4DE2802D5C2001116EE /* LectureListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureListItem.swift */; };
+		C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */; };
 		C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DF2802D6DD001116EE /* PlayButton.swift */; };
 		C6DB1DFC2806C7E1000F2BD1 /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */; };
 		C6DB1DFE2806C886000F2BD1 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1DFD2806C886000F2BD1 /* Sizes.swift */; };
 		C6DB1E002806CF6E000F2BD1 /* ContextMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1DFF2806CF6E000F2BD1 /* ContextMenuButton.swift */; };
 		C6DB1E022806D6CA000F2BD1 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1E012806D6CA000F2BD1 /* Mocks.swift */; };
-		C6DB1E042806D901000F2BD1 /* LectureList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1E032806D901000F2BD1 /* LectureList.swift */; };
-		C6DB1E062806D9D0000F2BD1 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1E052806D9D0000F2BD1 /* ModelData.swift */; };
+		C6DB1E042806D901000F2BD1 /* LecturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1E032806D901000F2BD1 /* LecturesView.swift */; };
+		C6DB1E062806D9D0000F2BD1 /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1E052806D9D0000F2BD1 /* ObservableValue.swift */; };
 		C6DB1E082806E754000F2BD1 /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1E072806E754000F2BD1 /* BookmarkButton.swift */; };
+		C6FA8ACB282FE827003BBCB5 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ACA282FE827003BBCB5 /* Player.swift */; };
+		C6FA8ACD282FEA4A003BBCB5 /* ComponentHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ACC282FEA4A003BBCB5 /* ComponentHolder.swift */; };
+		C6FA8ACF282FEDA3003BBCB5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ACE282FEDA3003BBCB5 /* RootView.swift */; };
+		C6FA8AD1282FEEDF003BBCB5 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8AD0282FEEDF003BBCB5 /* ResultsView.swift */; };
+		C6FA8AD3282FEEEE003BBCB5 /* FiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8AD2282FEEEE003BBCB5 /* FiltersView.swift */; };
+		C6FA8AD5282FF24E003BBCB5 /* FilterItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8AD4282FF24E003BBCB5 /* FilterItemView.swift */; };
+		C6FA8ADA282FFD84003BBCB5 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8AD9282FFD84003BBCB5 /* PlayerView.swift */; };
+		C6FA8ADD283001BE003BBCB5 /* PageControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */; };
+		C6FA8ADF283008DF003BBCB5 /* PageButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */; };
+		C6FA8AE128301DAC003BBCB5 /* SimpleRouterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8AE028301DAC003BBCB5 /* SimpleRouterState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,15 +52,25 @@
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C6A7C4DD2802D5C2001116EE /* LectureListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListItem.swift; sourceTree = "<group>"; };
+		C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
 		C6A7C4DF2802D6DD001116EE /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		C6DB1DFD2806C886000F2BD1 /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
 		C6DB1DFF2806CF6E000F2BD1 /* ContextMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuButton.swift; sourceTree = "<group>"; };
 		C6DB1E012806D6CA000F2BD1 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
-		C6DB1E032806D901000F2BD1 /* LectureList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureList.swift; sourceTree = "<group>"; };
-		C6DB1E052806D9D0000F2BD1 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		C6DB1E032806D901000F2BD1 /* LecturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LecturesView.swift; sourceTree = "<group>"; };
+		C6DB1E052806D9D0000F2BD1 /* ObservableValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		C6DB1E072806E754000F2BD1 /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
+		C6FA8ACA282FE827003BBCB5 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		C6FA8ACC282FEA4A003BBCB5 /* ComponentHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentHolder.swift; sourceTree = "<group>"; };
+		C6FA8ACE282FEDA3003BBCB5 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		C6FA8AD0282FEEDF003BBCB5 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
+		C6FA8AD2282FEEEE003BBCB5 /* FiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersView.swift; sourceTree = "<group>"; };
+		C6FA8AD4282FF24E003BBCB5 /* FilterItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemView.swift; sourceTree = "<group>"; };
+		C6FA8AD9282FFD84003BBCB5 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControlView.swift; sourceTree = "<group>"; };
+		C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageButtonView.swift; sourceTree = "<group>"; };
+		C6FA8AE028301DAC003BBCB5 /* SimpleRouterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRouterState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,12 +112,15 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				058557BA273AAA24004C7B11 /* Assets.xcassets */,
-				C6DB1DF92806AC57000F2BD1 /* Views */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
+				C6DB1E012806D6CA000F2BD1 /* Mocks.swift */,
+				C6DB1E052806D9D0000F2BD1 /* ObservableValue.swift */,
+				C6FA8ACA282FE827003BBCB5 /* Player.swift */,
+				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				C6DB1E052806D9D0000F2BD1 /* ModelData.swift */,
+				C6DB1DF92806AC57000F2BD1 /* Views */,
+				C6FA8AE028301DAC003BBCB5 /* SimpleRouterState.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -112,9 +135,14 @@
 		C6DB1DF92806AC57000F2BD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6FA8ACC282FEA4A003BBCB5 /* ComponentHolder.swift */,
 				7555FF82242A565900829871 /* ContentView.swift */,
+				C6FA8ACE282FEDA3003BBCB5 /* RootView.swift */,
+				C6FA8AD6282FF2E4003BBCB5 /* Filter */,
 				C6DB1DFA2806AC62000F2BD1 /* Helpers */,
-				C6DB1E032806D901000F2BD1 /* LectureList.swift */,
+				C6FA8AD7282FFBC1003BBCB5 /* Lectures */,
+				C6FA8AD8282FFD78003BBCB5 /* Player */,
+				C6FA8ADB282FFFB9003BBCB5 /* Results */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -122,15 +150,49 @@
 		C6DB1DFA2806AC62000F2BD1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C6A7C4DD2802D5C2001116EE /* LectureListItem.swift */,
 				C6A7C4DF2802D6DD001116EE /* PlayButton.swift */,
 				C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */,
 				C6DB1DFD2806C886000F2BD1 /* Sizes.swift */,
 				C6DB1DFF2806CF6E000F2BD1 /* ContextMenuButton.swift */,
-				C6DB1E012806D6CA000F2BD1 /* Mocks.swift */,
 				C6DB1E072806E754000F2BD1 /* BookmarkButton.swift */,
+				C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */,
+				C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C6FA8AD6282FF2E4003BBCB5 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				C6FA8AD4282FF24E003BBCB5 /* FilterItemView.swift */,
+				C6FA8AD2282FEEEE003BBCB5 /* FiltersView.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		C6FA8AD7282FFBC1003BBCB5 /* Lectures */ = {
+			isa = PBXGroup;
+			children = (
+				C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */,
+				C6DB1E032806D901000F2BD1 /* LecturesView.swift */,
+			);
+			path = Lectures;
+			sourceTree = "<group>";
+		};
+		C6FA8AD8282FFD78003BBCB5 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				C6FA8AD9282FFD84003BBCB5 /* PlayerView.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		C6FA8ADB282FFFB9003BBCB5 /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				C6FA8AD0282FEEDF003BBCB5 /* ResultsView.swift */,
+			);
+			path = Results;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,7 +278,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :common:root:embedAndSignAppleFrameworkForXcode\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -225,17 +287,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6FA8AD3282FEEEE003BBCB5 /* FiltersView.swift in Sources */,
 				C6DB1DFE2806C886000F2BD1 /* Sizes.swift in Sources */,
+				C6FA8ACD282FEA4A003BBCB5 /* ComponentHolder.swift in Sources */,
 				C6DB1E082806E754000F2BD1 /* BookmarkButton.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				C6FA8ACF282FEDA3003BBCB5 /* RootView.swift in Sources */,
 				C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */,
+				C6FA8ADF283008DF003BBCB5 /* PageButtonView.swift in Sources */,
+				C6FA8ACB282FE827003BBCB5 /* Player.swift in Sources */,
 				C6DB1E022806D6CA000F2BD1 /* Mocks.swift in Sources */,
-				C6DB1E042806D901000F2BD1 /* LectureList.swift in Sources */,
+				C6FA8ADA282FFD84003BBCB5 /* PlayerView.swift in Sources */,
+				C6DB1E042806D901000F2BD1 /* LecturesView.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				C6DB1DFC2806C7E1000F2BD1 /* FavoriteButton.swift in Sources */,
-				C6DB1E062806D9D0000F2BD1 /* ModelData.swift in Sources */,
+				C6FA8ADD283001BE003BBCB5 /* PageControlView.swift in Sources */,
+				C6DB1E062806D9D0000F2BD1 /* ObservableValue.swift in Sources */,
+				C6FA8AE128301DAC003BBCB5 /* SimpleRouterState.swift in Sources */,
 				C6DB1E002806CF6E000F2BD1 /* ContextMenuButton.swift in Sources */,
-				C6A7C4DE2802D5C2001116EE /* LectureListItem.swift in Sources */,
+				C6FA8AD1282FEEDF003BBCB5 /* ResultsView.swift in Sources */,
+				C6FA8AD5282FF24E003BBCB5 /* FilterItemView.swift in Sources */,
+				C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,8 +436,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
+				DEVELOPMENT_TEAM = HAPVA897UF;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../common/root/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = iosApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -374,9 +447,9 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					shared,
+					Prabhupada,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
+				PRODUCT_BUNDLE_IDENTIFIER = PrabhupadaLectures.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -389,8 +462,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
+				DEVELOPMENT_TEAM = HAPVA897UF;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../common/root/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = iosApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -399,9 +473,9 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					shared,
+					Prabhupada,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
+				PRODUCT_BUNDLE_IDENTIFIER = PrabhupadaLectures.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
