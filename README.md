@@ -39,7 +39,7 @@ No DI framework used for now... had a hard time trying to use Koin ))
 
 ## Filters screen
 
-![filters](./screenshots/lectures.png)
+![filters](./screenshots/filters.png)
 
 ## Favorites screen (TODO)
 
