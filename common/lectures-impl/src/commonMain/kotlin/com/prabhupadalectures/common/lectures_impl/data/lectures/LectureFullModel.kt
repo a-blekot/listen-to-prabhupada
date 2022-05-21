@@ -18,7 +18,7 @@ data class LectureFullModel(
     val tags: List<Tag> = emptyList(),
     val event: Event? = null,
     val period: Period? = null,
-    val resolution: String? = null,
+//    val resolution: String? = null,
     val isFavorite: Boolean = false
 ) {
     val displayedTitle

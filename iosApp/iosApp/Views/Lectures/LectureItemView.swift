@@ -69,6 +69,7 @@ struct LectureListItem: View {
 //            isPlaying: false,
 //            onEvent: { _ in}
 //        )
+//    .environmentObject(themes[0])
 //    }
 //}
 

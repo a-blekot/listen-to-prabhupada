@@ -19,14 +19,15 @@ import com.prabhupadalectures.common.lectures_impl.utils.DOWNLOADS_DIR
 import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
 import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_impl.PlayerBusImpl
-import io.github.aakira.napier.DebugAntilog
-import io.github.aakira.napier.Napier
+import com.prabhupadalectures.common.utils.debugBuild
+import com.prabhupadalectures.common.utils.LogTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.io.File
 import com.prabhupadalectures.common.utils.dispatchers.dispatchers
+import io.github.aakira.napier.Napier
 
 class PrabhupadaApp : Application() {
 
@@ -38,14 +39,13 @@ class PrabhupadaApp : Application() {
 
     private val lifecycleEventObserver = LifecycleEventObserver { _, event ->
         when (event) {
-            Lifecycle.Event.ON_CREATE -> DebugLog.d("_LIFECYCLE", "APPLICATION ON_CREATE")
-            Lifecycle.Event.ON_START -> DebugLog.d("_LIFECYCLE", "APPLICATION ON_START")
-            Lifecycle.Event.ON_RESUME -> DebugLog.d("_LIFECYCLE", "APPLICATION ON_RESUME")
-            Lifecycle.Event.ON_PAUSE -> DebugLog.d("_LIFECYCLE", "APPLICATION ON_PAUSE")
-            Lifecycle.Event.ON_STOP -> DebugLog.d("_LIFECYCLE", "APPLICATION ON_STOP")
-            Lifecycle.Event.ON_DESTROY -> DebugLog.d("_LIFECYCLE", "APPLICATION ON_DESTROY")
+            Lifecycle.Event.ON_CREATE -> Napier.d( "APPLICATION ON_CREATE", tag = LogTag.lifecycleApp)
+            Lifecycle.Event.ON_START -> Napier.d( "APPLICATION ON_START", tag = LogTag.lifecycleApp)
+            Lifecycle.Event.ON_RESUME -> Napier.d( "APPLICATION ON_RESUME", tag = LogTag.lifecycleApp)
+            Lifecycle.Event.ON_PAUSE -> Napier.d( "APPLICATION ON_PAUSE", tag = LogTag.lifecycleApp)
+            Lifecycle.Event.ON_STOP -> Napier.d( "APPLICATION ON_STOP", tag = LogTag.lifecycleApp)
+            Lifecycle.Event.ON_DESTROY -> Napier.d( "APPLICATION ON_DESTROY", tag = LogTag.lifecycleApp)
             else -> {
-                /** do nothing **/
                 /** do nothing **/
             }
         }
@@ -53,31 +53,31 @@ class PrabhupadaApp : Application() {
 
     private val activityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
         override fun onActivityPaused(activity: Activity) {
-            DebugLog.d("_LIFECYCLE", "onActivityPaused")
+            Napier.d( "onActivityPaused", tag = LogTag.lifecycleActivity)
         }
 
         override fun onActivityStarted(activity: Activity) {
-            DebugLog.d("_LIFECYCLE", "onActivityStarted")
+            Napier.d( "onActivityStarted", tag = LogTag.lifecycleActivity)
         }
 
         override fun onActivityDestroyed(activity: Activity) {
-            DebugLog.d("_LIFECYCLE", "onActivityDestroyed")
+            Napier.d( "onActivityDestroyed", tag = LogTag.lifecycleActivity)
         }
 
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-            DebugLog.d("_LIFECYCLE", "onActivitySaveInstanceState")
+            Napier.d( "onActivitySaveInstanceState", tag = LogTag.lifecycleActivity)
         }
 
         override fun onActivityStopped(activity: Activity) {
-            DebugLog.d("_LIFECYCLE", "onActivityStopped")
+            Napier.d( "onActivityStopped", tag = LogTag.lifecycleActivity)
         }
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            DebugLog.d("_LIFECYCLE", "onActivityCreated")
+            Napier.d( "onActivityCreated", tag = LogTag.lifecycleActivity)
         }
 
         override fun onActivityResumed(activity: Activity) {
-            DebugLog.d("_LIFECYCLE", "onActivityResumed")
+            Napier.d( "onActivityResumed", tag = LogTag.lifecycleActivity)
             currentActivity = activity
         }
     }
@@ -87,7 +87,7 @@ class PrabhupadaApp : Application() {
         private set
 
     val bgScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    val api = createPrabhupadaApi(dispatchers())
+    val api = createPrabhupadaApi()
     lateinit var db: Database
     lateinit var playerBus: PlayerBus
     lateinit var toolsRepository: ToolsRepository
@@ -99,7 +99,7 @@ class PrabhupadaApp : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-            Napier.base(DebugAntilog())
+            debugBuild()
         }
 
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)

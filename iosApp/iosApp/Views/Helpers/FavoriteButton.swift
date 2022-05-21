@@ -30,5 +30,6 @@ struct FavoriteButton: View {
 struct FavoriteButton_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteButton(lecture: mockLecture(1), onClick: { _ in })
+            .environmentObject(themes[0])
     }
 }

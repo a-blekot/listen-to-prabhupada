@@ -29,5 +29,6 @@ struct BookmarkButton: View {
 struct BookmarkButton_Previews: PreviewProvider {
     static var previews: some View {
         BookmarkButton()
+            .environmentObject(themes[0])
     }
 }

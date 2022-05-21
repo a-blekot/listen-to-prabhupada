@@ -1,5 +1,8 @@
 package com.prabhupadalectures.common.lectures_impl.utils
 
+import kotlin.native.concurrent.SharedImmutable
+
+@SharedImmutable
 const val FILE_EXTENSION = "mp3"
 
 lateinit var DOWNLOADS_DIR: String

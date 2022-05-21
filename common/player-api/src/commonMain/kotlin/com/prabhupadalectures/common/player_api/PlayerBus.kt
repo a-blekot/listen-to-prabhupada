@@ -9,7 +9,7 @@ interface PlayerBus {
     fun update(action: PlayerAction)
 
     fun currentState(): PlayerState
-    fun observeState(scope: CoroutineScope, onEach: (PlayerState) -> Unit)
-    fun observePlaylist(scope: CoroutineScope, onEach: suspend (List<Lecture>) -> Unit)
-    fun observeActions(scope: CoroutineScope, onEach: (PlayerAction) -> Unit)
+    fun observeState(onEach: (PlayerState) -> Unit)
+    fun observePlaylist(onEach: (List<Lecture>) -> Unit)
+    fun observeActions(onEach: (PlayerAction) -> Unit)
 }

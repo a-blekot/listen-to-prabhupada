@@ -30,5 +30,6 @@ struct PlayerView: View {
 //struct PlayerView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        PlayerView()
+//    .environmentObject(themes[0])
 //    }
 //}

@@ -1,33 +1,58 @@
 import SwiftUI
 import Combine
 import Prabhupada
+import AVFoundation
 
 struct ContentView: View {
     
+    @EnvironmentObject var theme: Theme
+    
     @State
-    private var componentHolder =
-        ComponentHolder<RootComponentImpl> {
-            RootComponentImpl(
-                componentContext: $0,
-                storeFactory: DefaultStoreFactory(),
-                deps: RootDeps(
-                    db: DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory()),
-                    api: PrabhupadaApiImpl(client: KtorClientFactory().build(), dispatchers: DispatcherProviderImplKt.dispatchers()),
-                    playerBus: PlayerBusImpl(dispatchers: DispatcherProviderImplKt.dispatchers()),
-                    dispatchers: DispatcherProviderImplKt.dispatchers()
-                )
-            )
-        }
+    private var componentHolder: ComponentHolder<RootComponentImpl>
+    
+    private var player: Player
+    
+    init(_ player: Player) {
+        self.player = player
         
-    var body: some View {
-        RootView(componentHolder.component)
-            .onAppear { LifecycleRegistryExtKt.resume(self.componentHolder.lifecycle) }
-            .onDisappear { LifecycleRegistryExtKt.stop(self.componentHolder.lifecycle) }
+        _componentHolder = State(
+            initialValue: ComponentHolder<RootComponentImpl> {
+                RootComponentImpl(
+                    componentContext: $0,
+                    storeFactory: DefaultStoreFactory(),
+                    deps: RootDeps(
+                        db: DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory()),
+                        api: PrabhupadaApiKt.createPrabhupadaApi(),
+                        playerBus: player.playerBus,
+                        dispatchers: DispatcherProviderImplKt.dispatchers()
+                    )
+                )
+            }
+        )
     }
+    
+    var body: some View {
+        RootView(componentHolder.component, player)
+            .onAppear {
+                LifecycleRegistryExtKt.resume(self.componentHolder.lifecycle)
+                
+                UIApplication.shared.beginReceivingRemoteControlEvents()
+                //                self.becomeFirstResponder()
+            }
+            .onDisappear {
+                LifecycleRegistryExtKt.stop(self.componentHolder.lifecycle)
+                
+                UIApplication.shared.endReceivingRemoteControlEvents()
+            }
+            .environmentObject(theme)
+    }
+    
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(StubPlayer())
+            .environmentObject(themes[0])
     }
 }

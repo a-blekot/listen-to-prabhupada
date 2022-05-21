@@ -22,7 +22,7 @@ kotlin {
             }
         }
 
-        iosMain {
+        findByName("iosMain")?.run {
             dependencies {
                 implementation(libs.ktor.client.darwin)
             }

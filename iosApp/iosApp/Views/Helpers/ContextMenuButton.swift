@@ -27,5 +27,6 @@ struct ContextMenuButton: View {
 struct ContextMenuButton_Previews: PreviewProvider {
     static var previews: some View {
         ContextMenuButton(onClick: {})
+            .environmentObject(themes[0])
     }
 }

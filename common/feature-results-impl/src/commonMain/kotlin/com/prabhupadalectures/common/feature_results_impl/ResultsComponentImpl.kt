@@ -34,14 +34,11 @@ class ResultsComponentImpl(
     override val playerComponent: PlayerComponent =
         PlayerComponentImpl(
             componentContext = componentContext,
-            playerBus = deps.playerBus,
-            scope = CoroutineScope(deps.dispatchers.main)
+            playerBus = deps.playerBus
         )
 
-    private val mainScope = CoroutineScope(deps.dispatchers.main)
-
     init {
-        deps.playerBus.observeState(mainScope) {
+        deps.playerBus.observeState {
             lecturesComponent.onCurrentLecture(it.lecture.id, it.isPlaying)
         }
     }

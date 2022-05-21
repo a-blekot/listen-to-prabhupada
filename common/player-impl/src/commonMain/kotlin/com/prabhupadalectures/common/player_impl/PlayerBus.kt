@@ -6,15 +6,17 @@ import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_api.PlayerState
 import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 
 class PlayerBusImpl(
-    private val dispatchers: DispatcherProvider
+    dispatchers: DispatcherProvider
 ) : PlayerBus {
 
-    private val scope = CoroutineScope(dispatchers.main)
+    private val scope = CoroutineScope(dispatchers.main) + SupervisorJob()
 
     private val playbackFlow = MutableStateFlow(PlayerState())
     private val playlistFlow = MutableStateFlow(emptyList<Lecture>())
@@ -32,19 +34,19 @@ class PlayerBusImpl(
 
     override fun currentState() = playbackFlow.value
 
-    override fun observeState(scope: CoroutineScope, onEach: (PlayerState) -> Unit) {
+    override fun observeState(onEach: (PlayerState) -> Unit) {
         playbackFlow
             .onEach { onEach(it) }
             .launchIn(scope)
     }
 
-    override fun observePlaylist(scope: CoroutineScope, onEach: suspend (List<Lecture>) -> Unit) {
+    override fun observePlaylist(onEach: (List<Lecture>) -> Unit) {
         playlistFlow
             .onEach { onEach(it) }
             .launchIn(scope)
     }
 
-    override fun observeActions(scope: CoroutineScope, onEach: (PlayerAction) -> Unit) {
+    override fun observeActions(onEach: (PlayerAction) -> Unit) {
         playerActionFlow
             .onEach { onEach(it) }
             .launchIn(scope)

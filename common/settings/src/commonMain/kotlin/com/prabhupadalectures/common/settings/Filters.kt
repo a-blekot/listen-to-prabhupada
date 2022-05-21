@@ -1,9 +1,13 @@
 package com.prabhupadalectures.common.settings
 
 import com.russhwolf.settings.Settings
+import kotlin.native.concurrent.SharedImmutable
 
+@SharedImmutable
 private const val KEY_ALL_FILTER_OPTIONS = "KEY_ALL_FILTER_OPTIONS"
+@SharedImmutable
 private const val KEY_PAGES_COUNT = "KEY_PAGES_COUNT"
+@SharedImmutable
 private const val KEY_TOTAL_LECTURES_COUNT = "KEY_TOTAL_LECTURES_COUNT"
 
 fun HashMap<String, Any>.toDatabaseIdentifier() =

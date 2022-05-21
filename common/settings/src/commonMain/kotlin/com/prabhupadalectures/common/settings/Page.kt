@@ -1,7 +1,9 @@
 package com.prabhupadalectures.common.settings
 
 import com.russhwolf.settings.Settings
+import kotlin.native.concurrent.SharedImmutable
 
+@SharedImmutable
 private const val KEY_PAGE = "KEY_PAGE"
 
 fun Settings.savePage(page: Int) =

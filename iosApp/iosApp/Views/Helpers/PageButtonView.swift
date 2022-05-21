@@ -64,6 +64,7 @@ extension Pagination {
 struct PageButtonView_Previews: PreviewProvider {
     static var previews: some View {
         PageButtonView(.next_5, mockPagination(5, 100), StubLecturesComponent())
+            .environmentObject(themes[0])
     }
     
     class StubLecturesComponent : LecturesComponent {

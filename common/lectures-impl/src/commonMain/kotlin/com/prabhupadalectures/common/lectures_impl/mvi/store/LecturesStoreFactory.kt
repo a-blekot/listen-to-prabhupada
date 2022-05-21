@@ -61,12 +61,15 @@ internal class LecturesStoreFactory(
     private inner class ExecutorImpl : CoroutineExecutor<LecturesStore.Intent, Action, LecturesState, Msg, Label>() {
         override fun executeAction(action: Action, getState: () -> LecturesState) =
             when (action) {
-                is InitialLoad -> load(action.queryParams)
+                is InitialLoad -> {
+                    Napier.d("InitialLoad action.queryParams = ${action.queryParams}", tag = "LecturesStoreExecutor")
+                    load(action.queryParams)
+                }
             }
 
         override fun executeIntent(intent: LecturesStore.Intent, getState: () -> LecturesState) {
             if (getState().isLoading) {
-                Napier.d("executeIntent canceled, isLoading = true!", tag = "ResultsStoreExecutor")
+                Napier.d("executeIntent canceled, isLoading = true!", tag = "LecturesStoreExecutor")
                 return
             }
 
@@ -96,7 +99,7 @@ internal class LecturesStoreFactory(
                         publish(Label.LecturesLoaded(newState.lectures))
                     }
                 } else {
-                    Napier.e(message = "api.getResults isFailure", throwable = result.exceptionOrNull())
+                    Napier.e(message = "api.getResults isFailure ${result.exceptionOrNull()?.message}", throwable = result.exceptionOrNull(), tag = "LecturesStore")
                     dispatch(Msg.LoadingComplete())
                 }
             }

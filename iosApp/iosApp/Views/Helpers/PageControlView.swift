@@ -36,68 +36,6 @@ struct PageControlView: View {
 struct PageControlView_Previews: PreviewProvider {
     static var previews: some View {
         PageControlView(pagination: mockPagination(10, 100), component: StubLecturesComponent())
-    }
-    
-    class StubLecturesComponent: LecturesComponent {
-        func onCurrentLecture(id: Int64, isPlaying: Bool) {
-            
-        }
-        
-        func onDownload(id: Int64) {
-            
-        }
-        
-        func onFavorite(id: Int64, isFavorite: Bool) {
-            
-        }
-        
-        func onNext() {
-        
-        }
-        
-        func onPage(page: Int32) {
-            
-        }
-        
-        func onPause() {
-            
-        }
-        
-        func onPlay(id: Int64) {
-            
-        }
-        
-        func onPrev() {
-            
-        }
-        
-        func onSeekBack() {
-            
-        }
-        
-        func onSeekForward() {
-            
-        }
-        
-        func onSeekTo(timeMs: Int64) {
-            
-        }
-        
-        func onSliderReleased() {
-            
-        }
-        
-        func onUpdateFilters() {
-            
-        }
-        
-        let flow: Value<LecturesState> =
-            valueOf(
-                LecturesState(
-                    isLoading: false,
-                    lectures: [mockLecture(1)],
-                    pagination: mockPagination(10, 100)
-                )
-            )
+            .environmentObject(themes[0])
     }
 }

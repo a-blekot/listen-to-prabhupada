@@ -45,13 +45,13 @@ internal class FiltersStoreFactory(
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
         override fun invoke() {
             scope.launch {
-               val state = withContext(deps.dispatchers.io) {
+               val state = // withContext(deps.dispatchers.io) {
                    FiltersState(
                        filters = settings.getFilterOptions().decodeFiltersList().updateFromDB(),
                        totalLecturesCount = settings.getTotalLecturesCount(),
                        pagesCount = settings.getPagesCount(),
                    )
-                }
+                // }
 
                 if (state.filters.isNotEmpty()) {
                     dispatch(InitialLoad(state))

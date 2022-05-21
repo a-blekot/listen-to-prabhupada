@@ -2,7 +2,9 @@ package com.prabhupadalectures.common.settings
 
 import com.russhwolf.settings.Settings
 import io.github.aakira.napier.Napier
+import kotlin.native.concurrent.SharedImmutable
 
+@SharedImmutable
 private const val KEY_FILTERS = "KEY_FILTERS"
 
 fun Settings.saveFilters(queryParams: HashMap<String, Any>) =

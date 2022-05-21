@@ -7,21 +7,24 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.prabhupadalectures.android.MainActivity
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.util.notificationColor
 import com.prabhupadalectures.common.lectures_api.Lecture
-import com.prabhupadalectures.common.lectures_impl.repository.*
+import com.prabhupadalectures.common.lectures_impl.repository.ToolsRepository
 import com.prabhupadalectures.common.lectures_impl.utils.toValidUrl
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.prabhupadalectures.common.player_api.PlayerAction
 import com.prabhupadalectures.common.player_api.PlayerAction.*
 import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_api.PlayerState
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 private const val UPDATE_PLAYBACK_STATE_INTERVAL_MS = 1000L
@@ -128,7 +131,7 @@ class Player(
     private val notificationListener by lazy {
         object : PlayerNotificationManager.NotificationListener {
             override fun onNotificationPosted(notificationId: Int, notification: Notification, onGoing: Boolean) {
-                Napier.d( "onNotificationPosted = $notificationId", tag = "AUDIO_PLAYER")
+                Napier.d("onNotificationPosted = $notificationId", tag = "AUDIO_PLAYER")
                 listener.onNotificationPosted(notification)
             }
 
@@ -171,8 +174,8 @@ class Player(
     private var pendingPlaylist: List<Lecture> = emptyList()
 
     init {
-        playerBus.observeActions(playerScope, ::handleAction)
-        playerBus.observePlaylist(playerScope, ::setPlaylist)
+        playerBus.observeActions(::handleAction)
+        playerBus.observePlaylist(::setPlaylist)
     }
 
     private fun updatePlaybackState(playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState()) =
@@ -227,11 +230,10 @@ class Player(
     }
 
 
-    private suspend fun setPlaylist(playlist: List<Lecture>) =
-        withContext(Dispatchers.Main) {
-            pendingPlaylist = playlist
-            maybeUpdateCurrentPlaylist(playlist)
-        }
+    private fun setPlaylist(playlist: List<Lecture>) {
+        pendingPlaylist = playlist
+        maybeUpdateCurrentPlaylist(playlist)
+    }
 
     private fun maybeUpdateCurrentPlaylist(playlist: List<Lecture>) {
         if (currentPlaylist.isEmpty()) {

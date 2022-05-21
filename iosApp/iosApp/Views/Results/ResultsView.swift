@@ -14,21 +14,36 @@ struct ResultsView: View {
     let component: ResultsComponent
     
     var body: some View {
-        
-        VStack {
-            LecturesView(component.lecturesComponent)
-        
-            PlayerView(component.playerComponent)
+        NavigationView {
+            VStack {
+                LecturesView(component.lecturesComponent)
+            
+                PlayerView(component.playerComponent)
+            }
+            .navigationTitle("Results")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                Button("Filters") {
+                    component.onEditFilters()
+                }
+            }
         }
+        
+        //    .navigationBarItems(
+        //        trailing: Button(
+        //            "Reload",
+        //            action: {
+        //                incPage()
+        //                self.viewModel.loadLectures(page: pager.page)
+        //            })
+        //    )
+        
     }
 }
 
-//struct ResultsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ResultsView()
-//    }
-//    
-//    class StubResultsComponent: ResultsComponent {
-//        
-//    }
-//}
+struct ResultsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ResultsView(component: StubResultsComponent())
+            .environmentObject(themes[0])
+    }
+}

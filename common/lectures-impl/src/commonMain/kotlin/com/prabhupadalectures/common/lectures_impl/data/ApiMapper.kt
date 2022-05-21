@@ -56,7 +56,7 @@ fun lectureFullModel(apiModel: LectureApiModel) =
         tags = apiModel.tags.map { tag(it) },
         event = apiModel.event?.let { event(it) },
         period = apiModel.period?.let { period(it) },
-        resolution = apiModel.resolution
+//        resolution = apiModel.resolution
     )
 
 private fun quote(apiModel: QuoteApiModel) =

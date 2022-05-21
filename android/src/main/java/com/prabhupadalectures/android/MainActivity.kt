@@ -30,7 +30,8 @@ import com.prabhupadalectures.common.root.RootComponent
 import com.prabhupadalectures.common.root.RootComponentImpl
 import com.prabhupadalectures.common.root.RootDeps
 import com.prabhupadalectures.common.utils.dispatchers.dispatchers
-import kotlinx.coroutines.Dispatchers
+import com.prabhupadalectures.common.utils.LogTag
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity(), ServiceConnection {
@@ -96,7 +97,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
     override fun onStart() {
         super.onStart()
-        DebugLog.d("PlaybackService", "ACTIVITY startService")
+        Napier.d( "ACTIVITY startService", tag = LogTag.playbackService)
         startService(playbackServiceIntent)
         lifecycleScope.launchWhenStarted {
             delay(500L)
@@ -119,20 +120,20 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     }
 
     override fun onDestroy() {
-        DebugLog.d("PlaybackService", "ACTIVITY onDestroy")
+        Napier.d( "ACTIVITY onDestroy", tag = LogTag.playbackService)
         super.onDestroy()
     }
 
     override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
         playbackService = (binder as? PlaybackService.PlaybackBinder)?.service
         playbackService?.onActivityStarted()
-        DebugLog.d("PlaybackService", "ACTIVITY onServiceConnected")
-        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
+        Napier.d( "ACTIVITY onServiceConnected", tag = LogTag.playbackService)
+        Napier.d( "ACTIVITY boundService = $playbackService", tag = LogTag.playbackService)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
         playbackService = null
-        DebugLog.d("PlaybackService", "ACTIVITY onServiceDisconnected")
-        DebugLog.d("PlaybackService", "ACTIVITY boundService = $playbackService")
+        Napier.d( "ACTIVITY onServiceDisconnected", tag = LogTag.playbackService)
+        Napier.d( "ACTIVITY boundService = $playbackService", tag = LogTag.playbackService)
     }
 }

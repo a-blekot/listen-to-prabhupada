@@ -12,6 +12,7 @@ import Prabhupada
 struct FiltersView: View {
     private let component: FiltersComponent
     
+    @EnvironmentObject var theme: Theme
     @ObservedObject
     private var models: ObservableValue<FiltersState>
     
@@ -23,22 +24,44 @@ struct FiltersView: View {
     var body: some View {
         let model = models.value
         
-        return List(model.filters) { filter in
-            FilterItemView(filter: filter, component: component)
-                .frame( maxWidth: .infinity)
+        NavigationView {
+            VStack(alignment: .center) {
+                List(model.filters) { filter in
+                    FilterItemView(filter: filter, component: component)
+                        .animation(.spring())
+                }
+                .edgesIgnoringSafeArea(.bottom)
+                .edgesIgnoringSafeArea(.horizontal)
+                .listStyle(.plain)
+                .navigationTitle("Фильтры")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    Button("Применить") {
+                        component.onApplyChanges()
+                    }
+                    .foregroundColor(theme.bodyTextColor)
+                }
+                
+                Spacer()
+                
+                Text("Найдено \(model.totalLecturesCount) лекций")
+                    .font(theme.buttonFont)
+                    .foregroundColor(theme.bodyTextColor)
+                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .background(theme.buttonMidBacground)
+                    .contentShape(Rectangle())
+                    .onTapGesture { component.onApplyChanges() }
             }
-            .frame(maxWidth: .infinity)
-            .padding(-10)
-            .edgesIgnoringSafeArea(.horizontal)
-            .edgesIgnoringSafeArea(.bottom)
+        }
     }
 }
 
 
 extension Filter: Identifiable {}
 
-//struct FiltersView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FiltersView()
-//    }
-//}
+struct FiltersView_Previews: PreviewProvider {
+    static var previews: some View {
+        FiltersView(StubFiltersComponent())
+            .environmentObject(themes[0])
+    }
+}

@@ -10,16 +10,53 @@ import SwiftUI
 import Prabhupada
 
 struct FilterItemView: View {
+    @EnvironmentObject var theme: Theme
+    @State private var isExpanded: Bool
+    
     let filter: Filter
     let component: FiltersComponent
+    
+    init(filter: Filter, component: FiltersComponent) {
+        self.filter = filter
+        self.component = component
+        _isExpanded = State(initialValue: filter.isExpanded)
+    }
 
     var body: some View {
-        Text(filter.title)
+        
+        VStack {
+            FilterTitleView(
+                filter: filter,
+                isExpanded: isExpanded,
+                onExpandedChanged: { isExpanded in
+                    self.isExpanded = isExpanded
+                    component.onFilterExpanded(filterName: filter.name, isExpanded: isExpanded)
+                }
+            )
+            if isExpanded {
+                ForEach(filter.options) { option in
+                    OptionView(option: option, onOptionSelected: { isSelected in
+                        component.onQueryParam(
+                            queryParam: QueryParam(
+                                filterName: filter.name,
+                                selectedOption: option.value,
+                                isSelected: isSelected
+                            )
+                        )
+                    })
+                }
+            }
+        }
     }
 }
 
-//struct FilterItemView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FilterItemView()
-//    }
-//}
+extension Option: Identifiable {}
+
+struct FilterItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        FilterItemView(filter: mockFilter("City"), component: StubFiltersComponent())
+            .previewLayout(PreviewLayout.fixed(width: 500, height: 50))
+            .previewDisplayName("Filter preview")
+            .environmentObject(themes[0])
+    }
+}

@@ -1,8 +1,12 @@
 package com.prabhupadalectures.common.network_api
 
 import io.github.aakira.napier.Napier
+import kotlin.native.concurrent.SharedImmutable
 
+@SharedImmutable
 const val ZERO_PROGRESS = 0
+
+@SharedImmutable
 const val FULL_PROGRESS = 100
 
 sealed class DownloadState(var title: String = "")

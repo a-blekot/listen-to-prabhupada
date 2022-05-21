@@ -12,14 +12,13 @@ import kotlinx.coroutines.CoroutineScope
 
 class PlayerComponentImpl(
     componentContext: ComponentContext,
-    private val playerBus: PlayerBus,
-    scope: CoroutineScope
+    private val playerBus: PlayerBus
 ) : PlayerComponent, ComponentContext by componentContext {
 
     private val mutableState = MutableValue(PlayerState())
 
     init {
-        playerBus.observeState(scope) {
+        playerBus.observeState {
             mutableState.value = it
         }
     }

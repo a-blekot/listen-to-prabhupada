@@ -28,7 +28,7 @@ kotlin {
             }
         }
 
-        iosMain {
+        findByName("iosMain")?.run {
             dependencies {
                 implementation(libs.sqlDelight.native.driver)
             }

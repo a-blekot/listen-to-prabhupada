@@ -25,43 +25,21 @@ struct LecturesView: View {
         
         List(model.lectures){ lecture in
             LectureListItem(lecture: lecture, component: component)
-                .listRowInsets(EdgeInsets())
+                //.listRowInsets(EdgeInsets())
         }
-        .padding(-10)
+        //    .frame(maxWidth: .infinity)
         .edgesIgnoringSafeArea(.bottom)
-//        .listStyle(.plain)
-        .ignoresSafeArea(edges: .top)
+        .edgesIgnoringSafeArea(.horizontal)
+        .listStyle(.plain)
+//        .ignoresSafeArea(edges: .top)
     }
 }
 
 extension Lecture: Identifiable {}
 
-//struct LectureListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LectureListView(onEvent: {_ in})
-//            .environmentObject(ModelData())
-//    }
-//}
-
-//
-//listView()
-//    .navigationBarTitle("Lectures")
-//    .navigationBarItems(
-//        trailing: Button(
-//            "Reload",
-//            action: {
-//                incPage()
-//                self.viewModel.loadLectures(page: pager.page)
-//            })
-//    )
-//    .onAppear(perform: { self.viewModel.startObserving() } )
-//
-//List(lectures) { lecture in
-//    LectureListItem(lecture: lecture, isPlaying: false, onEvent: {e in viewModel.onEvent(e)})
-//        .frame( maxWidth: .infinity)
-//}
-//    .frame(maxWidth: .infinity)
-//    .padding(-10)
-//    .edgesIgnoringSafeArea(.horizontal)
-//    .edgesIgnoringSafeArea(.bottom)
-//}
+struct LecturesView_Previews: PreviewProvider {
+    static var previews: some View {
+        LecturesView(StubLecturesComponent())
+            .environmentObject(themes[0])
+    }
+}

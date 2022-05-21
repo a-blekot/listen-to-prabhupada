@@ -7,12 +7,13 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 
 actual class KtorClientFactory {
     actual fun build() =
         HttpClient(OkHttp) {
             install(ContentNegotiation) {
-                json()
+                json(Json{ ignoreUnknownKeys = true })
             }
             install(Logging) {
                 level = LogLevel.ALL

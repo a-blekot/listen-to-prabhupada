@@ -41,5 +41,5 @@ data class LectureApiModel(
     val tags: List<TagApiModel>,
     val event: EventApiModel?,
     val period: PeriodApiModel?,
-    val resolution: String?
+//    val resolution: String?
 )

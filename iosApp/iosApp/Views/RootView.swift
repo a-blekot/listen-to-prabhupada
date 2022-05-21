@@ -8,13 +8,22 @@
 
 import SwiftUI
 import Prabhupada
+import AVFoundation
 
 struct RootView: View {
+    
+    @EnvironmentObject var theme: Theme
+    
     @ObservedObject
     private var routerStates: ObservableValue<RouterState<AnyObject, RootComponentChild>>
     
-    init(_ component: RootComponent) {
+    var player: Player
+    
+    init(_ component: RootComponent, _ player: Player) {
         self.routerStates = ObservableValue(component.routerState)
+        self.player = player
+        
+        NapierProxyKt.debugBuild()
     }
     
     var body: some View {
@@ -39,13 +48,14 @@ struct RootView: View {
     }
 }
 
-//struct RootView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RootView(StubRoot())
-//    }
-//
-//    class StubRoot : RootComponent {
-//        let routerState: Value<RouterState<AnyObject, RootComponentChild>> =
-//            simpleRouterState(RootChild.Results(component: ResultsView_Previews.StubResults()))
-//    }
-//}
+struct RootView_Previews: PreviewProvider {
+    static var previews: some View {
+        RootView(StubRoot(), StubPlayer())
+            .environmentObject(themes[0])
+    }
+
+    class StubRoot : RootComponent {
+        let routerState: Value<RouterState<AnyObject, RootComponentChild>> =
+            simpleRouterState(RootComponentChildResults(component: StubResultsComponent()))
+    }
+}

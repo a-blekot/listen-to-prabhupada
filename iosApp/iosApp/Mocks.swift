@@ -42,3 +42,38 @@ func getLecture(id: Int64, title: String, date: String, place: String) -> Lectur
         downloadProgress: nil
     )
 }
+
+func mockFilter(_ title: String, isExpanded: Bool = false) -> Filter {
+    return Filter(
+        name: title,
+        title: title,
+        parent: "",
+        options: [
+            mockOption("Option 1"),
+            mockOption("Option 2", isSelected: true),
+            mockOption("Option 3"),
+            mockOption("Option 4"),
+        ],
+        isExpanded: isExpanded
+    )
+}
+
+func mockOption(_ name: String, isSelected: Bool = false) -> Option {
+    return Option(
+        value: name,
+        text: name,
+        isSelected: isSelected
+    )
+}
+
+func mockPlayerState() -> PlayerState {
+    return PlayerState(
+        lecture: mockLecture(121),
+        isPlaying: false,
+        isBuffering: false,
+        hasNext: true,
+        hasPrevious: true,
+        timeMs: 100000,
+        durationMs: 1000
+    )
+}
