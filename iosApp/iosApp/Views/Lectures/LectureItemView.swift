@@ -20,6 +20,9 @@ extension HorizontalAlignment {
 }
 
 struct LectureListItem: View {
+    
+    @EnvironmentObject var theme: Theme
+    
     let lecture: Lecture
     let component : LecturesComponent
     
@@ -62,16 +65,12 @@ struct LectureListItem: View {
     }
 }
 
-//struct LectureListItem_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LectureListItem(
-//            lecture: mockLecture(),
-//            isPlaying: false,
-//            onEvent: { _ in}
-//        )
-//    .environmentObject(themes[0])
-//    }
-//}
+struct LectureListItem_Previews: PreviewProvider {
+    static var previews: some View {
+        LectureListItem(lecture: mockLecture(12), component: StubLecturesComponent())
+            .environmentObject(themes[0])
+    }
+}
 
 //
 //        Spacer(modifier = Modifier.weight(2f))
@@ -123,29 +122,4 @@ struct LectureListItem: View {
 //                .clickable { onEvent(CommonUiEvent.Share(lecture.id)) }
 //        )
 //    }
-//
-//@Preview(widthDp = 360, heightDp = 40)
-//@Composable
-//fun PreviewLectureListItem() {
-//    AppTheme {
-//        LectureListItem(
-//            getLecture(
-//                title = "Бхагавад-Гита. Вступление. Беседа на утренней прогулке",
-//                date = "1970-08-02",
-//                place = "Лос-Анджелес, США"
-//            ),
-//            isPlaying = false
-//        )
-//    }
-//}
-//
-//fun getLecture(title: String, date: String, place: String) =
-//    Lecture(
-//        title = title,
-//        date = date,
-//        place = place,
-//        durationMillis = 85_000,
-//        isFavorite = true,
-//        isCompleted = false,
-//        downloadProgress = FULL_PROGRESS
-//    )
+

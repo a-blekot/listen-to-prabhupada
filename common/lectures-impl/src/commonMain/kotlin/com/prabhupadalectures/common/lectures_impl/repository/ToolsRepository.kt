@@ -24,11 +24,6 @@ class ToolsRepositoryImpl(
     private val db: Database
 ) : ToolsRepository {
 
-    override fun setCompleted(id: Long) =
-        db.selectLecture(id)?.let {
-            db.insertLecture(it.copy(isCompleted = true))
-        } ?: Unit
-
     override fun observeFavorites() =
         db.observeAllFavorites().mapped()
 
@@ -37,7 +32,10 @@ class ToolsRepositoryImpl(
 
     override fun setFavorite(lecture: Lecture, isFavorite: Boolean) =
         db.insertLecture(lecture.copy(isFavorite = isFavorite).dbEntity())
-    
+
+    override fun setCompleted(id: Long) =
+        db.setCompleted(id)
+
     override fun savePosition(id: Long, timeMs: Long) =
         db.insertSavedPosition(id, timeMs)
 

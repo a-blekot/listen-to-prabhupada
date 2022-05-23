@@ -18,6 +18,7 @@ enum Fonts{
     case headlineFont
     case mainTitleFont
     case bodyFont
+    case descriptionFont
     case buttonFont
     case warningFont
 }
@@ -29,6 +30,7 @@ class Theme:ObservableObject {
     @Published var secondaryColor: Color
     @Published var shadowColor: Color
     @Published var bodyTextColor: Color
+    @Published var descriptionTextColor: Color
     
     @Published var buttonLightBacground: Color
     @Published var buttonMidBacground: Color
@@ -37,6 +39,7 @@ class Theme:ObservableObject {
     @Published var headlineFont:Font
     @Published var mainTitleFont:Font
     @Published var bodyFont:Font
+    @Published var descriptionFont:Font
     @Published var buttonFont:Font
     @Published var warningFont:Font
     
@@ -51,6 +54,7 @@ class Theme:ObservableObject {
         secondaryColor:Color,
         shadowColor:Color,
         bodyTextColor:Color,
+        descriptionTextColor: Color,
         
         buttonLightBacground: Color,
         buttonMidBacground: Color,
@@ -59,6 +63,7 @@ class Theme:ObservableObject {
         headlineFont:Font,
         mainTitleFont:Font,
         bodyFont:Font,
+        descriptionFont: Font,
         buttonFont:Font,
         warningFont:Font,
         largeSpacing:CGFloat,
@@ -70,6 +75,7 @@ class Theme:ObservableObject {
             self.secondaryColor = secondaryColor
             self.shadowColor = shadowColor
             self.bodyTextColor = bodyTextColor
+            self.descriptionTextColor = descriptionTextColor
             self.buttonLightBacground = buttonLightBacground
             self.buttonMidBacground = buttonMidBacground
             self.buttonDarkBacground = buttonDarkBacground
@@ -77,6 +83,7 @@ class Theme:ObservableObject {
             self.headlineFont = headlineFont
             self.mainTitleFont = mainTitleFont
             self.bodyFont = bodyFont
+            self.descriptionFont = descriptionFont
             self.buttonFont = buttonFont
             self.warningFont = warningFont
             self.largeSpacing = largeSpacing
@@ -100,9 +107,10 @@ func getFont(name:Fonts) -> Font{
     case .headlineFont: return Font.custom("Arial", size: 30)
     case .mainTitleFont: return Font.system(size: 30)
     case .bodyFont: return Font.system(size: 12)
+    case .descriptionFont: return Font.system(size: 12)
     case .buttonFont: return Font.custom("Arial", size:16)
     case .warningFont: return Font.system(size: 8)
-    default: return Font.custom("SanFrancisco", size: 20)
+    // default: return Font.custom("SanFrancisco", size: 20)
     }
 }
 
@@ -127,6 +135,7 @@ var themes: [Theme] = [
           secondaryColor: Color(hex: 0x26ba2d),
           shadowColor: Color(hex: 0x336688),
           bodyTextColor: Color(hex: 0x603004),
+          descriptionTextColor: Color(hex: 0xB0B0B0),
           
           buttonLightBacground: Color(hex: 0xFFF7EF),
           buttonMidBacground: Color(hex: 0xFFE7D1),
@@ -135,6 +144,7 @@ var themes: [Theme] = [
           headlineFont: getFont(name: .headlineFont),
           mainTitleFont:getFont(name: .mainTitleFont),
           bodyFont: getFont(name: .bodyFont),
+          descriptionFont: getFont(name: .descriptionFont),
           buttonFont: getFont(name: .buttonFont),
           warningFont: getFont(name: .warningFont),
           
@@ -151,6 +161,7 @@ var themes: [Theme] = [
           secondaryColor: Color(hex: 0x4f2ba1),
           shadowColor: Color(hex: 0x336688),
           bodyTextColor: Color(hex: 0x603004),
+          descriptionTextColor: Color(hex: 0xB0B0B0),
           
           buttonLightBacground: Color(hex: 0xFFF7EF),
           buttonMidBacground: Color(hex: 0xFFE7D1),
@@ -159,6 +170,7 @@ var themes: [Theme] = [
           headlineFont: getFont(name: .headlineFont),
           mainTitleFont: getFont(name: .mainTitleFont),
           bodyFont: getFont(name: .bodyFont),
+          descriptionFont: getFont(name: .descriptionFont),
           buttonFont: getFont(name: .buttonFont),
           warningFont: getFont(name: .warningFont),
           

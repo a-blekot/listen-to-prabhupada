@@ -18,16 +18,33 @@ func mockPagination(_ page: Int32, _ total: Int32) -> Pagination {
 }
 
 func mockLecture(_ id: Int64) -> Lecture {
-    return getLecture(
+    getLecture(
         id: id,
-        title: "Бхагавад-Гита. Вступление. Беседа на утренней прогулке",
+        title: "Бхагавад-Гита. Вступление. Беседа на утренней прогулке. Лекция прочитана в Бомбее куча учеников Его Божественной Милости",
         date: "1970-08-02",
         place: "Лос-Анджелес, США"
     )
 }
 
+func emptyLecture() -> Lecture {
+    Lecture(
+        id: 0,
+        title: "",
+        description: nil,
+        date: "",
+        place: "",
+        durationMillis: 0,
+        fileUrl: nil,
+        remoteUrl: "",
+        isFavorite: false,
+        isCompleted: false,
+        isPlaying: false,
+        downloadProgress: nil
+    )
+}
+
 func getLecture(id: Int64, title: String, date: String, place: String) -> Lecture {
-    return Lecture(
+    Lecture(
         id: id,
         title: title,
         description: nil,
@@ -44,7 +61,7 @@ func getLecture(id: Int64, title: String, date: String, place: String) -> Lectur
 }
 
 func mockFilter(_ title: String, isExpanded: Bool = false) -> Filter {
-    return Filter(
+    Filter(
         name: title,
         title: title,
         parent: "",
@@ -59,7 +76,7 @@ func mockFilter(_ title: String, isExpanded: Bool = false) -> Filter {
 }
 
 func mockOption(_ name: String, isSelected: Bool = false) -> Option {
-    return Option(
+    Option(
         value: name,
         text: name,
         isSelected: isSelected
@@ -67,7 +84,7 @@ func mockOption(_ name: String, isSelected: Bool = false) -> Option {
 }
 
 func mockPlayerState() -> PlayerState {
-    return PlayerState(
+    PlayerState(
         lecture: mockLecture(121),
         isPlaying: false,
         isBuffering: false,

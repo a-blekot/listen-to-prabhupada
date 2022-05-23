@@ -10,10 +10,12 @@ import SwiftUI
 import Prabhupada
 
 struct LecturesView: View {
-    private let component: LecturesComponent
+    @EnvironmentObject var theme: Theme
     
     @ObservedObject
     private var models: ObservableValue<LecturesState>
+    
+    private let component: LecturesComponent
     
     init(_ component: LecturesComponent) {
         self.component = component
@@ -22,9 +24,10 @@ struct LecturesView: View {
     
     var body: some View {
         let model = models.value
-        
+
         List(model.lectures){ lecture in
             LectureListItem(lecture: lecture, component: component)
+                .environmentObject(theme)
                 //.listRowInsets(EdgeInsets())
         }
         //    .frame(maxWidth: .infinity)

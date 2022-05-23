@@ -11,14 +11,18 @@ import Prabhupada
 
 struct ResultsView: View {
     
+    @EnvironmentObject var theme: Theme
+    
     let component: ResultsComponent
     
     var body: some View {
         NavigationView {
             VStack {
                 LecturesView(component.lecturesComponent)
+                    .environmentObject(theme)
             
                 PlayerView(component.playerComponent)
+                    .environmentObject(theme)
             }
             .navigationTitle("Results")
             .navigationBarTitleDisplayMode(.inline)

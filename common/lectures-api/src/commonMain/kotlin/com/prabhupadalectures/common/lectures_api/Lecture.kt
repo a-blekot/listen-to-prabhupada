@@ -1,5 +1,7 @@
 package com.prabhupadalectures.common.lectures_api
 
+import com.prabhupadalectures.common.database.LectureEntity
+
 data class Lecture(
     val id: Long = 0L,
     val title: String = "",

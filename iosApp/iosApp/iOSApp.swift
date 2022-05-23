@@ -9,12 +9,23 @@ struct iOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     private var theme = themes[0]
+    
+    private let db: Database
+    private let player: Player
+    private let playerBus: PlayerBus
+    
+    init() {
+        let db = DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory())
+        let playerBus = PlayerBusImpl(dispatchers: DispatcherProviderImplKt.dispatchers())
         
-    private var player: Player = PlayerImpl(PlayerBusImpl(dispatchers: DispatcherProviderImplKt.dispatchers()))
+        self.db = db
+        self.playerBus = playerBus
+        self.player = Player(playerBus, SavedPositionProvider(db: db))
+    }
     
     var body: some Scene {
         WindowGroup {
-            ContentView(player)
+            ContentView(playerBus, db)
                 .environmentObject(theme)
         }
     }

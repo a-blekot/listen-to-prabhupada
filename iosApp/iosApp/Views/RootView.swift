@@ -17,11 +17,8 @@ struct RootView: View {
     @ObservedObject
     private var routerStates: ObservableValue<RouterState<AnyObject, RootComponentChild>>
     
-    var player: Player
-    
-    init(_ component: RootComponent, _ player: Player) {
+    init(_ component: RootComponent) {
         self.routerStates = ObservableValue(component.routerState)
-        self.player = player
         
         NapierProxyKt.debugBuild()
     }
@@ -50,7 +47,7 @@ struct RootView: View {
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
-        RootView(StubRoot(), StubPlayer())
+        RootView(StubRoot())
             .environmentObject(themes[0])
     }
 

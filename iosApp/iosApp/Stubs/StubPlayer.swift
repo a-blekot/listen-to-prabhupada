@@ -8,10 +8,6 @@
 
 import Prabhupada
 
-class StubPlayer: Player {
-    var playerBus: PlayerBus = StubPlayerBus()
-}
-
 class StubPlayerBus: PlayerBus {
     
     func currentState() -> PlayerState {

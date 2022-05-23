@@ -10,20 +10,16 @@ struct ContentView: View {
     @State
     private var componentHolder: ComponentHolder<RootComponentImpl>
     
-    private var player: Player
-    
-    init(_ player: Player) {
-        self.player = player
-        
+    init(_ playerBus: PlayerBus, _ db: Database?) {
         _componentHolder = State(
             initialValue: ComponentHolder<RootComponentImpl> {
                 RootComponentImpl(
                     componentContext: $0,
                     storeFactory: DefaultStoreFactory(),
                     deps: RootDeps(
-                        db: DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory()),
+                        db: db!,
                         api: PrabhupadaApiKt.createPrabhupadaApi(),
-                        playerBus: player.playerBus,
+                        playerBus: playerBus,
                         dispatchers: DispatcherProviderImplKt.dispatchers()
                     )
                 )
@@ -32,7 +28,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        RootView(componentHolder.component, player)
+        RootView(componentHolder.component)
             .onAppear {
                 LifecycleRegistryExtKt.resume(self.componentHolder.lifecycle)
                 
@@ -52,7 +48,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(StubPlayer())
+        ContentView(StubPlayerBus(), nil)
             .environmentObject(themes[0])
     }
 }

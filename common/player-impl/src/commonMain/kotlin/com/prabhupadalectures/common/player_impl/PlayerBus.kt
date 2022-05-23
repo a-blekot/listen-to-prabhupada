@@ -5,6 +5,7 @@ import com.prabhupadalectures.common.player_api.PlayerAction
 import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_api.PlayerState
 import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
@@ -22,8 +23,10 @@ class PlayerBusImpl(
     private val playlistFlow = MutableStateFlow(emptyList<Lecture>())
     private val playerActionFlow = MutableSharedFlow<PlayerAction>()
 
-    override fun update(state: PlayerState) =
+    override fun update(state: PlayerState) {
+        // Napier.d("update PlayerState = $state", tag = "PlayerBus" )
         playbackFlow.update { state }
+    }
 
     override fun update(playlist: List<Lecture>) =
         playlistFlow.update { playlist }

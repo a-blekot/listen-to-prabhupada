@@ -112,6 +112,11 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
             .executeAsOneOrNull()
             ?.pos ?: 0L
 
+    override fun setCompleted(id: Long) =
+        selectLecture(id)?.let {
+            insertLecture(it.copy(isCompleted = true))
+        } ?: Unit
+
     override fun deleteSavedPosition(id: Long) =
         dbQuery.deleteSavedPosition(id = id)
 

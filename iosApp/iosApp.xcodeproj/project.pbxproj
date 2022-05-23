@@ -18,6 +18,18 @@
 		C61DE2C32837DB930074C85C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2C22837DB930074C85C /* Theme.swift */; };
 		C61DE2C52837DEA30074C85C /* FilterTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2C42837DEA30074C85C /* FilterTitleView.swift */; };
 		C61DE2C72837E64A0074C85C /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2C62837E64A0074C85C /* OptionView.swift */; };
+		C61DE2C92838E75F0074C85C /* MarqueeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2C82838E75F0074C85C /* MarqueeText.swift */; };
+		C61DE2CF28392D300074C85C /* ScopeFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2CE28392D300074C85C /* ScopeFunc.swift */; };
+		C61DE2D1283931650074C85C /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2D0283931650074C85C /* NotificationsHandler.swift */; };
+		C61DE2D52839415B0074C85C /* PlayerItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2D42839415B0074C85C /* PlayerItemInfo.swift */; };
+		C61DE2D7283941E00074C85C /* PlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2D6283941E00074C85C /* PlayerItem.swift */; };
+		C61DE2D9283942F80074C85C /* PlayerStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2D8283942F80074C85C /* PlayerStatus.swift */; };
+		C61DE2DB283945270074C85C /* AQPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2DA283945270074C85C /* AQPlayerManager.swift */; };
+		C61DE2DE283945650074C85C /* AQQueuePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2DD283945650074C85C /* AQQueuePlayer.swift */; };
+		C61DE2E228394D6F0074C85C /* RemoteControlMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E128394D6F0074C85C /* RemoteControlMode.swift */; };
+		C61DE2E428394DA80074C85C /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E328394DA80074C85C /* Defaults.swift */; };
+		C61DE2E6283953590074C85C /* PeriodicTimeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */; };
+		C61DE2E8283953B30074C85C /* RemoteControlHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */; };
 		C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */; };
 		C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DF2802D6DD001116EE /* PlayButton.swift */; };
 		C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */; };
@@ -38,6 +50,7 @@
 		C6FA8ADD283001BE003BBCB5 /* PageControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */; };
 		C6FA8ADF283008DF003BBCB5 /* PageButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */; };
 		C6FA8AE128301DAC003BBCB5 /* SimpleRouterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FA8AE028301DAC003BBCB5 /* SimpleRouterState.swift */; };
+		C6FF6252283BB795007D67A7 /* SavedPositionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FF6251283BB795007D67A7 /* SavedPositionProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +80,18 @@
 		C61DE2C22837DB930074C85C /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		C61DE2C42837DEA30074C85C /* FilterTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTitleView.swift; sourceTree = "<group>"; };
 		C61DE2C62837E64A0074C85C /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
+		C61DE2C82838E75F0074C85C /* MarqueeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeText.swift; sourceTree = "<group>"; };
+		C61DE2CE28392D300074C85C /* ScopeFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeFunc.swift; sourceTree = "<group>"; };
+		C61DE2D0283931650074C85C /* NotificationsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
+		C61DE2D42839415B0074C85C /* PlayerItemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerItemInfo.swift; sourceTree = "<group>"; };
+		C61DE2D6283941E00074C85C /* PlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerItem.swift; sourceTree = "<group>"; };
+		C61DE2D8283942F80074C85C /* PlayerStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStatus.swift; sourceTree = "<group>"; };
+		C61DE2DA283945270074C85C /* AQPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AQPlayerManager.swift; sourceTree = "<group>"; };
+		C61DE2DD283945650074C85C /* AQQueuePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AQQueuePlayer.swift; sourceTree = "<group>"; };
+		C61DE2E128394D6F0074C85C /* RemoteControlMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlMode.swift; sourceTree = "<group>"; };
+		C61DE2E328394DA80074C85C /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTimeObserver.swift; sourceTree = "<group>"; };
+		C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlHandler.swift; sourceTree = "<group>"; };
 		C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
 		C6A7C4DF2802D6DD001116EE /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayer.swift; sourceTree = "<group>"; };
@@ -87,6 +112,7 @@
 		C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControlView.swift; sourceTree = "<group>"; };
 		C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageButtonView.swift; sourceTree = "<group>"; };
 		C6FA8AE028301DAC003BBCB5 /* SimpleRouterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRouterState.swift; sourceTree = "<group>"; };
+		C6FF6251283BB795007D67A7 /* SavedPositionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPositionProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,12 +154,13 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				C61DE2CD28392D220074C85C /* Utils */,
+				C61DE2CA28392B8A0074C85C /* Player */,
 				C61DE2C12837DB860074C85C /* Theme */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				C6DB1E012806D6CA000F2BD1 /* Mocks.swift */,
 				C6DB1E052806D9D0000F2BD1 /* ObservableValue.swift */,
-				C6FA8ACA282FE827003BBCB5 /* Player.swift */,
 				C6FA8AE028301DAC003BBCB5 /* SimpleRouterState.swift */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
@@ -170,6 +197,41 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		C61DE2CA28392B8A0074C85C /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				C61DE2DC283945510074C85C /* AQPLayer */,
+				C61DE2E328394DA80074C85C /* Defaults.swift */,
+				C61DE2D0283931650074C85C /* NotificationsHandler.swift */,
+				C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */,
+				C6FA8ACA282FE827003BBCB5 /* Player.swift */,
+				C61DE2D6283941E00074C85C /* PlayerItem.swift */,
+				C61DE2D42839415B0074C85C /* PlayerItemInfo.swift */,
+				C61DE2D8283942F80074C85C /* PlayerStatus.swift */,
+				C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */,
+				C61DE2E128394D6F0074C85C /* RemoteControlMode.swift */,
+				C6FF6251283BB795007D67A7 /* SavedPositionProvider.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		C61DE2CD28392D220074C85C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C61DE2CE28392D300074C85C /* ScopeFunc.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C61DE2DC283945510074C85C /* AQPLayer */ = {
+			isa = PBXGroup;
+			children = (
+				C61DE2DA283945270074C85C /* AQPlayerManager.swift */,
+				C61DE2DD283945650074C85C /* AQQueuePlayer.swift */,
+			);
+			path = AQPLayer;
+			sourceTree = "<group>";
+		};
 		C6DB1DF92806AC57000F2BD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +257,7 @@
 				C6DB1E072806E754000F2BD1 /* BookmarkButton.swift */,
 				C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */,
 				C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */,
+				C61DE2C82838E75F0074C85C /* MarqueeText.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -329,32 +392,45 @@
 			files = (
 				C61DE2C32837DB930074C85C /* Theme.swift in Sources */,
 				C6FA8AD3282FEEEE003BBCB5 /* FiltersView.swift in Sources */,
+				C61DE2D9283942F80074C85C /* PlayerStatus.swift in Sources */,
 				C6DB1DFE2806C886000F2BD1 /* Sizes.swift in Sources */,
 				C61B531728324EA300AE862D /* StubLecturesComponent.swift in Sources */,
 				C6FA8ACD282FEA4A003BBCB5 /* ComponentHolder.swift in Sources */,
 				C6DB1E082806E754000F2BD1 /* BookmarkButton.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				C61DE2C92838E75F0074C85C /* MarqueeText.swift in Sources */,
 				C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */,
 				C61B531928324EDC00AE862D /* StubResultsComponent.swift in Sources */,
+				C61DE2E6283953590074C85C /* PeriodicTimeObserver.swift in Sources */,
+				C61DE2E8283953B30074C85C /* RemoteControlHandler.swift in Sources */,
+				C61DE2D7283941E00074C85C /* PlayerItem.swift in Sources */,
 				C6FA8ACF282FEDA3003BBCB5 /* RootView.swift in Sources */,
 				C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */,
 				C6FA8ADF283008DF003BBCB5 /* PageButtonView.swift in Sources */,
 				C61B531D283254EB00AE862D /* StubFiltersComponent.swift in Sources */,
 				C6FA8ACB282FE827003BBCB5 /* Player.swift in Sources */,
 				C6DB1E022806D6CA000F2BD1 /* Mocks.swift in Sources */,
+				C61DE2CF28392D300074C85C /* ScopeFunc.swift in Sources */,
 				C6FA8ADA282FFD84003BBCB5 /* PlayerView.swift in Sources */,
 				C6DB1E042806D901000F2BD1 /* LecturesView.swift in Sources */,
+				C61DE2D52839415B0074C85C /* PlayerItemInfo.swift in Sources */,
+				C61DE2E228394D6F0074C85C /* RemoteControlMode.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				C61DE2C72837E64A0074C85C /* OptionView.swift in Sources */,
 				C6DB1DFC2806C7E1000F2BD1 /* FavoriteButton.swift in Sources */,
 				C61DE2C52837DEA30074C85C /* FilterTitleView.swift in Sources */,
+				C6FF6252283BB795007D67A7 /* SavedPositionProvider.swift in Sources */,
+				C61DE2E428394DA80074C85C /* Defaults.swift in Sources */,
+				C61DE2DB283945270074C85C /* AQPlayerManager.swift in Sources */,
 				C6FA8ADD283001BE003BBCB5 /* PageControlView.swift in Sources */,
 				C6DB1E062806D9D0000F2BD1 /* ObservableValue.swift in Sources */,
+				C61DE2D1283931650074C85C /* NotificationsHandler.swift in Sources */,
 				C61B531B28324F0300AE862D /* StubPlayerComponent.swift in Sources */,
 				C6FA8AE128301DAC003BBCB5 /* SimpleRouterState.swift in Sources */,
 				C6DB1E002806CF6E000F2BD1 /* ContextMenuButton.swift in Sources */,
 				C6FA8AD1282FEEDF003BBCB5 /* ResultsView.swift in Sources */,
 				C6FA8AD5282FF24E003BBCB5 /* FilterItemView.swift in Sources */,
+				C61DE2DE283945650074C85C /* AQQueuePlayer.swift in Sources */,
 				C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

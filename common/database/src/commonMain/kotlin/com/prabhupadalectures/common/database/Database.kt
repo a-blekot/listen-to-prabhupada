@@ -24,6 +24,7 @@ interface Database {
 
     fun insertSavedPosition(id: Long, pos: Long)
     fun selectSavedPosition(id: Long): Long
+    fun setCompleted(id: Long)
     fun deleteSavedPosition(id: Long)
     fun deleteAllSavedPositions()
 
