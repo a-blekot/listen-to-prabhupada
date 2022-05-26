@@ -18,11 +18,5 @@ class PlayerItem: AVPlayerItem {
         self.itemInfo = itemInfo
         
         super.init(asset: asset, automaticallyLoadedAssetKeys: ["playable"])
-//        super.seek(
-//            to: CMTime(value: itemInfo.startAt, timescale: 1),
-//            toleranceBefore: CMTime.zero,
-//            toleranceAfter: CMTime.zero,
-//            completionHandler: nil
-//        )
     }
 }

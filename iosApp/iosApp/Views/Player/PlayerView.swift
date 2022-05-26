@@ -38,6 +38,12 @@ struct PlayerView: View {
                 .lineLimit(1)
                 .padding(2)
             
+            Text(model.displayedTime)
+                .font(theme.buttonFont)
+                .foregroundColor(theme.descriptionTextColor)
+                .lineLimit(1)
+                .padding(2)
+            
             HStack(alignment: .center) {
                 Spacer()
                 
@@ -84,7 +90,6 @@ struct PlayerView: View {
         .padding(4)
     }
 }
-
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {

@@ -28,7 +28,8 @@ import kotlinx.coroutines.launch
 
 
 private const val UPDATE_PLAYBACK_STATE_INTERVAL_MS = 1000L
-private const val SAVE_POSITION_INTERVAL_SECONDS = UPDATE_PLAYBACK_STATE_INTERVAL_MS * 5 / 1000
+private const val SAVE_POSITION_INTERVAL_MS = UPDATE_PLAYBACK_STATE_INTERVAL_MS * 5
+private const val SAVE_POSITION_INTERVAL_SECONDS = SAVE_POSITION_INTERVAL_MS / 1000
 private const val CHANNEL_ID = "PlaybackService_CHANNEL_16108"
 
 const val NOTIFICATION_ID = 16108
@@ -183,18 +184,15 @@ class Player(
 
     private fun saveCurrentPosition() =
         exoPlayer?.run {
-            if (duration < SAVE_POSITION_INTERVAL_SECONDS) {
+            if (duration < SAVE_POSITION_INTERVAL_MS) {
                 return@run
             }
 
-            val timeMs = if (trackIsAlmostCompleted) {
+            if (trackIsAlmostCompleted) {
                 tools.setCompleted(currentId)
-                0L
             } else {
-                currentPosition
+                tools.savePosition(id = currentId, timeMs = currentPosition)
             }
-
-            tools.savePosition(id = currentId, timeMs = timeMs)
         }
 
     private var updateCounter = 0L
@@ -414,7 +412,7 @@ class Player(
         get() = currentPlaylist.firstOrNull { it.id == currentId } ?: Lecture()
 
     private val ExoPlayer.trackIsAlmostCompleted
-        get() = duration - currentPosition < SAVE_POSITION_INTERVAL_SECONDS * 1000L
+        get() = duration - currentPosition < SAVE_POSITION_INTERVAL_MS
 
 //    lectureId = currentMediaItem?.mediaId?.toLongOrNull() ?: 0L,
 //    url = currentMediaItem?.localConfiguration?.uri?.toString() ?: "",

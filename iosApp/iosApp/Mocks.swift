@@ -90,7 +90,7 @@ func mockPlayerState() -> PlayerState {
         isBuffering: false,
         hasNext: true,
         hasPrevious: true,
-        timeMs: 100000,
-        durationMs: 1000
+        timeMs: 1231000,
+        durationMs: 1800000
     )
 }

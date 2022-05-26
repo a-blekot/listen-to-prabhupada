@@ -30,6 +30,7 @@
 		C61DE2E428394DA80074C85C /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E328394DA80074C85C /* Defaults.swift */; };
 		C61DE2E6283953590074C85C /* PeriodicTimeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */; };
 		C61DE2E8283953B30074C85C /* RemoteControlHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */; };
+		C685A038283FE8720052A2A8 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C685A037283FE8720052A2A8 /* TimeUtils.swift */; };
 		C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */; };
 		C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DF2802D6DD001116EE /* PlayButton.swift */; };
 		C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */; };
@@ -92,6 +93,7 @@
 		C61DE2E328394DA80074C85C /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTimeObserver.swift; sourceTree = "<group>"; };
 		C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlHandler.swift; sourceTree = "<group>"; };
+		C685A037283FE8720052A2A8 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
 		C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
 		C6A7C4DF2802D6DD001116EE /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayer.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				C61DE2CE28392D300074C85C /* ScopeFunc.swift */,
+				C685A037283FE8720052A2A8 /* TimeUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				C6DB1DFC2806C7E1000F2BD1 /* FavoriteButton.swift in Sources */,
 				C61DE2C52837DEA30074C85C /* FilterTitleView.swift in Sources */,
 				C6FF6252283BB795007D67A7 /* SavedPositionProvider.swift in Sources */,
+				C685A038283FE8720052A2A8 /* TimeUtils.swift in Sources */,
 				C61DE2E428394DA80074C85C /* Defaults.swift in Sources */,
 				C61DE2DB283945270074C85C /* AQPlayerManager.swift in Sources */,
 				C6FA8ADD283001BE003BBCB5 /* PageControlView.swift in Sources */,

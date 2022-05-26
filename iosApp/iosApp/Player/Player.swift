@@ -91,6 +91,8 @@ class Player: ObservableObject {
         case is PlayerActionPause: pause()
         case is PlayerActionNext: next()
         case is PlayerActionPrev: prev()
+        case is PlayerActionSeekForward: seekForward()
+        case is PlayerActionSeekBack: seekBack()
         default: debugPrint("default")
         }
     }
@@ -98,8 +100,6 @@ class Player: ObservableObject {
 
 //  is SeekTo -> seekTo(playerAction.timeMs)
 //  is Speed -> setSpeed(playerA
-//  SeekForward -> exoPlayer?.seekForward()
-//  SeekBack -> exoPlayer?.seekBack()
 //  SliderReleased -> onSliderReleased()
     
     private func observePlaylist(_ lectures: [Lecture]) {
@@ -124,15 +124,8 @@ class Player: ObservableObject {
         for i in fromIndex..<items.count {
             let item = items[i]
             if player.canInsert(item, after: nil) {
-                
-                let id = item.itemInfo.id
-                let duration = item.itemInfo.duration
-                let timeMs = savedPositionProvider.getPosition(id: id)
-                
-                debugPrint("id = \(id), \(timeMs) of \(duration)")
-                
                 item.seek(
-                    to: CMTime(value: savedPositionProvider.getPosition(id: item.itemInfo.id), timescale: 1),
+                    to: CMTime(value: savedPositionProvider.getPosition(id: item.itemInfo.id), timescale: 1000),
                     toleranceBefore: CMTime.zero,
                     toleranceAfter: CMTime.zero,
                     completionHandler: nil
@@ -204,9 +197,21 @@ class Player: ObservableObject {
         pendingPlaylist.forEach { debugPrint("id = \($0.itemInfo.id)")}
     }
     
-    func seekTo(seconds: Int64) {
-        let time = CMTime(value: seconds, timescale: 1)
-        player.seek(to: time)
+    func seekForward() {
+        debugPrint("IOs seekForward -> ")
+        let time = player.currentTime() + SEEK_TIME
+        player.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+    }
+    
+    func seekBack() {
+        debugPrint("IOs seekBack -> ")
+        let time = player.currentTime() - SEEK_TIME
+        player.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+    }
+    
+    func seekTo(timeMs: Int64) {
+        let time = CMTime(value: timeMs, timescale: MS_IN_SECOND)
+        player.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
     }
     
     private func setupNowPlaying() {
@@ -341,8 +346,21 @@ extension Player {
     
     func saveCurrentPosition(timeMs: Int64) {
         if (currentId != -1 && isPlaying) {
-            savedPositionProvider.savePosition(id: currentId, timeMs: timeMs)
+            
+            if (currentItem?.itemInfo.duration ?? 0 < SAVE_POSITION_INTERVAL_MS) {
+                return
+            }
+
+            if (currentTrackIsAlmostCompleted(timeMs)) {
+                savedPositionProvider.setCompleted(id: currentId)
+            } else {
+                savedPositionProvider.savePosition(id: currentId, timeMs: timeMs)
+            }
         }
+    }
+            
+    func currentTrackIsAlmostCompleted(_ timeMs: Int64) -> Bool {
+        (currentItem?.itemInfo.duration ?? 0) - timeMs < SAVE_POSITION_INTERVAL_MS
     }
     
     func currentState(timeMs: Int64) -> PlayerState {

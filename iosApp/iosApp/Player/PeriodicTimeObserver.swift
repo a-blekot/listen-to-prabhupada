@@ -11,7 +11,8 @@ import AVFoundation
 import Prabhupada
 
 private let ONE_SECOND = CMTime(value: 1, timescale: 1)
-private let SAVE_POSITION_INTERVAL_SECONDS = 5
+let SAVE_POSITION_INTERVAL_SECONDS = 5
+let SAVE_POSITION_INTERVAL_MS = SAVE_POSITION_INTERVAL_SECONDS * 1000
 
 class PeriodicTimeObserver {
     
@@ -49,7 +50,7 @@ class PeriodicTimeObserver {
         print("IOs addPeriodicTimeObserver -> ")
         timeObserverToken = avQueuePlayer.addPeriodicTimeObserver(forInterval: ONE_SECOND, queue: .main) { [weak self] time in
             guard let strongSelf = self else {return}
-            strongSelf.update(timeMs: Int64(CMTimeGetSeconds(time)) * 1000)
+            strongSelf.update(timeMs: Int64(CMTimeGetSeconds(time)) * MS_IN_SECOND_64)
         }
     }
 
@@ -59,11 +60,4 @@ class PeriodicTimeObserver {
             self.timeObserverToken = nil
         }
     }
-
-                    
-
-
-//
-//    private val ExoPlayer.trackIsAlmostCompleted
-//        get() = duration - currentPosition < SAVE_POSITION_INTERVAL_SECONDS * 1000L
 }

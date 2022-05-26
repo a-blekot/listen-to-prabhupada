@@ -33,8 +33,10 @@ class ToolsRepositoryImpl(
     override fun setFavorite(lecture: Lecture, isFavorite: Boolean) =
         db.insertLecture(lecture.copy(isFavorite = isFavorite).dbEntity())
 
-    override fun setCompleted(id: Long) =
+    override fun setCompleted(id: Long) {
         db.setCompleted(id)
+        db.insertSavedPosition(id, 0)
+    }
 
     override fun savePosition(id: Long, timeMs: Long) =
         db.insertSavedPosition(id, timeMs)
