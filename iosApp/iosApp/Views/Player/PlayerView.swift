@@ -22,16 +22,49 @@ struct PlayerView: View {
         self.models = ObservableValue(component.flow)
     }
     
-    @State var scrollText: Bool = false
+    @State private var scrollText: Bool = false
     
     var body: some View {
         let model = models.value
-
+        
         VStack(alignment: .center) {
+            
+            GeometryReader { geo in
+                
+                ZStack(alignment: .leading) {
+                    
+                    let screenWidth = geo.size.width
+                    let width = screenWidth * model.progress
+                    
+                    Capsule()
+                        .fill(Color.black.opacity(0.38))
+                        .frame(width: screenWidth, height: 8)
+                    
+                    Capsule()
+                        .fill(Color.orange)
+                        .frame(width: width, height: 8)
+                    
+                    Circle()
+                        .fill(Color.orange.opacity(0.8))
+                        .position(x: width, y: 8)
+                        .frame(width: 16, height: 16)
+                        .gesture(DragGesture()
+                                    .onChanged({ (value) in
+                            let x = value.location.x - geo.frame(in: .global).minX
+                            let progress = x / screenWidth
+                            component.onSeekTo(timeMs: model.timeMs(progress: progress))
+                        }).onEnded({ _ in
+                            component.onSliderReleased()
+                        }))
+                }
+                
+            }
+            .frame(height: 16, alignment: .center)
+            .padding(.horizontal, 8)
             
             MarqueeText(text: model.lecture.title, color: theme.bodyTextColor)
                 .padding(2)
-            
+
             Text(model.lecture.displayedDescription)
                 .font(theme.descriptionFont)
                 .foregroundColor(theme.descriptionTextColor)
@@ -62,6 +95,7 @@ struct PlayerView: View {
         .padding(4)
         .background(theme.buttonLightBacground)
         .cornerRadius(8)
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     private func playPauseButton(isPlaying: Bool, id: Int64, _ component: PlayerComponent) -> some View {

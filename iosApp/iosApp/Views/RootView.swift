@@ -32,13 +32,7 @@ struct RootView: View {
 
         case let filters as RootComponentChildFilters:
             FiltersView(filters.component)
-                .transition(
-                    .asymmetric(
-                        insertion: AnyTransition.move(edge: .trailing),
-                        removal: AnyTransition.move(edge: .trailing)
-                    )
-                )
-                .animation(.easeInOut)
+                .transition(.move(edge: .trailing))
 
         default: EmptyView() // fatalError("Unexpected router state \(child)")
         }

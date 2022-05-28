@@ -26,7 +26,7 @@ struct FilterTitleView: View {
     var body: some View {
         HStack {
             Button {
-                withAnimation(.spring()) {
+                withAnimation(.easeOut(duration: 0.3)) {
                     onExpandedChanged(!isExpanded)
                 }
             } label: {
@@ -38,7 +38,6 @@ struct FilterTitleView: View {
                     .foregroundColor(theme.bodyTextColor)
                     .padding()
             }
-            .alignmentGuide(HorizontalAlignment.leading, computeValue: {_ in 0})
             
             Spacer()
             

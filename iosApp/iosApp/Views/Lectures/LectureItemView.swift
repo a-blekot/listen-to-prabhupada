@@ -34,10 +34,6 @@ struct LectureListItem: View {
             
             VStack(alignment: .leading, spacing: 4.0) {
                 Text(lecture.title)
-                //                    .font(.system(.title, design: .rounded))
-                //                    .font(.system(size: 20))
-                //                    .font(.custom("Nunito", size: 25))
-                //.font(.headline)
                     .font(.system(size: 16))
                     .allowsTightening(true)
                     .lineLimit(3)
@@ -60,7 +56,6 @@ struct LectureListItem: View {
             FavoriteButton(lecture: lecture, onClick: { isFavorite in component.onFavorite(id: lecture.id, isFavorite: isFavorite) })
             // ContextMenuButton(onEvent: onEvent)
         }
-        .padding(.horizontal, -10)
         .buttonStyle(.plain)
     }
 }
@@ -71,55 +66,3 @@ struct LectureListItem_Previews: PreviewProvider {
             .environmentObject(themes[0])
     }
 }
-
-//
-//        Spacer(modifier = Modifier.weight(2f))
-//
-//        Column(
-//            modifier = Modifier
-//                .weight(8f)
-//                .background(Color(130, 0, 255, testBgAlpha))
-//                .align(Top)
-//        ) {
-//
-//            val favoriteResId = if (lecture.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border
-//            Image(
-//                painter = painterResource(favoriteResId),
-//                contentScale = ContentScale.FillBounds,
-//                contentDescription = "favorite image",
-//                modifier =
-//                Modifier
-//                    .fillMaxWidth()
-//                    .aspectRatio(1f)
-//                    .clickable { onEvent(CommonUiEvent.Favorite(lecture, !lecture.isFavorite)) }
-//            )
-//
-//            if (lecture.downloadProgress == FULL_PROGRESS) {
-//                Image(
-//                    painter = painterResource(R.drawable.ic_download_mark),
-//                    contentScale = ContentScale.FillBounds,
-//                    contentDescription = "download success",
-//                    modifier = Modifier
-//                        .padding(top = 8.dp)
-//                        .fillMaxWidth()
-//                        .aspectRatio(1f)
-//                )
-//            }
-//        }
-//
-//        Spacer(modifier = Modifier.weight(2f))
-//
-//        Image(
-//            painter = painterResource(R.drawable.ic_context_menu),
-//            contentScale = ContentScale.FillBounds,
-//            contentDescription = "menu image",
-//            modifier =
-//            Modifier
-//                .align(CenterVertically)
-//                .weight(5f)
-//                .background(Color(130, 0, 255, testBgAlpha))
-//                .aspectRatio(0.4f)
-//                .clickable { onEvent(CommonUiEvent.Share(lecture.id)) }
-//        )
-//    }
-

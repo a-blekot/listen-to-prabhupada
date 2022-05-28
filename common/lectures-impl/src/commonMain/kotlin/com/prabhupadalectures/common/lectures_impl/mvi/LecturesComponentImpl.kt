@@ -1,5 +1,6 @@
 package com.prabhupadalectures.common.lectures_impl.mvi
 
+import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
@@ -39,13 +40,15 @@ class LecturesComponentImpl(
 
     private val scope: CoroutineScope = lifecycleCoroutineScope(deps.dispatchers.main)
 
+    override val flow: Value<LecturesState> = store.asValue()
+
     init {
         store.labels
             .onEach(::handleLabel)
             .launchIn(scope)
-    }
 
-    override val flow: Value<LecturesState> = store.asValue()
+        flow.ensureNeverFrozen()
+    }
 
     override fun onPage(page: Int) = store.accept(UpdatePage(page))
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))

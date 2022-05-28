@@ -76,6 +76,15 @@ class StubLecturesComponent: LecturesComponent {
                     mockLecture(7),
                     mockLecture(8),
                     mockLecture(9),
+                    mockLecture(11),
+                    mockLecture(12),
+                    mockLecture(13),
+                    mockLecture(14),
+                    mockLecture(15),
+                    mockLecture(16),
+                    mockLecture(17),
+                    mockLecture(18),
+                    mockLecture(19),
                 ],
                 pagination: mockPagination(10, 100)
             )

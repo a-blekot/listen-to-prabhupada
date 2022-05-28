@@ -28,9 +28,9 @@ private fun totalPages(totalLectures: Int) =
 fun lectures(apiModel: ApiModel): List<Lecture> =
     apiModel.results.files.map { lecture(it) }
 
-private fun lecture(apiModel: LectureApiModel) =
+private fun lecture(apiModel: LectureApiModel, idExtra: Long = 0) =
     Lecture(
-        id = apiModel.id,
+        id = apiModel.id + idExtra,
         title = apiModel.title,
         description = apiModel.description,
         date = apiModel.date,

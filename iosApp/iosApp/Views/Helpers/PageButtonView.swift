@@ -35,9 +35,26 @@ struct PageButtonView: View {
         Button {
             component.onPage(page: pagination.nextPage(buttonType))
         } label: {
-            Text(String(buttonType.rawValue))
+            Image(systemName: icon(for: buttonType))
+                .resizable(resizingMode: .tile)
+                .frame(width: SIZE_FAVORITE_BUTTON, height: SIZE_FAVORITE_BUTTON)
+                .fixedSize()
+                .foregroundColor(.orange)
         }
-            .disabled(!pagination.canAdd(buttonType))
+        .disabled(!pagination.canAdd(buttonType))
+    }
+    
+    private func icon(for buttonType: ButtonType) -> String {
+        switch buttonType {
+        case .first: return "backward.end"
+        case .prev_20: return "chevron.backward.square"
+        case .prev_5: return "chevron.backward.2"
+        case .prev_1: return "chevron.backward"
+        case .next_1: return "chevron.forward"
+        case .next_5: return "chevron.forward.2"
+        case .next_20: return "chevron.forward.square"
+        case .last: return "forward.end"
+        }
     }
 }
 
@@ -59,74 +76,9 @@ extension Pagination {
     }
 }
 
-    
-
 struct PageButtonView_Previews: PreviewProvider {
     static var previews: some View {
         PageButtonView(.next_5, mockPagination(5, 100), StubLecturesComponent())
             .environmentObject(themes[0])
-    }
-    
-    class StubLecturesComponent : LecturesComponent {
-        func onCurrentLecture(id: Int64, isPlaying: Bool) {
-            
-        }
-        
-        func onDownload(id: Int64) {
-            
-        }
-        
-        func onFavorite(id: Int64, isFavorite: Bool) {
-            
-        }
-        
-        func onNext() {
-            
-        }
-        
-        func onPage(page: Int32) {
-            
-        }
-        
-        func onPause() {
-            
-        }
-        
-        func onPlay(id: Int64) {
-            
-        }
-        
-        func onPrev() {
-            
-        }
-        
-        func onSeekBack() {
-            
-        }
-        
-        func onSeekForward() {
-            
-        }
-        
-        func onSeekTo(timeMs: Int64) {
-            
-        }
-        
-        func onSliderReleased() {
-            
-        }
-        
-        func onUpdateFilters() {
-            
-        }
-        
-        var flow: Value<LecturesState> =
-            valueOf(
-                LecturesState(
-                    isLoading: false,
-                    lectures: [mockLecture(1)],
-                    pagination: mockPagination(5, 100)
-                )
-            )
     }
 }

@@ -28,11 +28,11 @@ struct FiltersView: View {
             VStack(alignment: .center) {
                 List(model.filters) { filter in
                     FilterItemView(filter: filter, component: component)
-                        .animation(.spring())
                 }
                 .edgesIgnoringSafeArea(.bottom)
                 .edgesIgnoringSafeArea(.horizontal)
                 .listStyle(.plain)
+                .animation(.easeOut(duration: 0.5))
                 .navigationTitle("Фильтры")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

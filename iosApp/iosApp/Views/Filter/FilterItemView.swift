@@ -34,17 +34,23 @@ struct FilterItemView: View {
                 }
             )
             if isExpanded {
-                ForEach(filter.options) { option in
-                    OptionView(option: option, onOptionSelected: { isSelected in
-                        component.onQueryParam(
-                            queryParam: QueryParam(
-                                filterName: filter.name,
-                                selectedOption: option.value,
-                                isSelected: isSelected
+                VStack(alignment: .leading) {
+                    ForEach(filter.options) { option in
+                        OptionView(option: option, onOptionSelected: { isSelected in
+                            component.onQueryParam(
+                                queryParam: QueryParam(
+                                    filterName: filter.name,
+                                    selectedOption: option.value,
+                                    isSelected: isSelected
+                                )
                             )
-                        )
-                    })
+                        })
+                    }
                 }
+                .transition(
+                    .move(edge: .top)
+                        .combined(with: .scale(scale: 0.1, anchor: .top))
+                )
             }
         }
     }

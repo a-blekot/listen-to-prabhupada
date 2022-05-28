@@ -22,6 +22,7 @@ class Player: ObservableObject {
     private var remoteControlHandler: RemoteControlHandler? = nil
     private var notificationsHandler: NotificationsHandler? = nil
     private var periodicTimeObserver: PeriodicTimeObserver? = nil
+    private var playOnSliderRelease: Bool? = nil
     
     private let playerBus: PlayerBus
     private let savedPositionProvider: SavedPositionProvider
@@ -93,12 +94,13 @@ class Player: ObservableObject {
         case is PlayerActionPrev: prev()
         case is PlayerActionSeekForward: seekForward()
         case is PlayerActionSeekBack: seekBack()
+        case is PlayerActionSeekTo: seekTo(timeMs: (action as! PlayerActionSeekTo).timeMs)
+        case is PlayerActionSliderReleased: onSliderReleased()
         default: debugPrint("default")
         }
     }
     
 
-//  is SeekTo -> seekTo(playerAction.timeMs)
 //  is Speed -> setSpeed(playerA
 //  SliderReleased -> onSliderReleased()
     
@@ -209,9 +211,27 @@ class Player: ObservableObject {
         player.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
     }
     
-    func seekTo(timeMs: Int64) {
+    private func seekTo(timeMs: Int64) {
+        if (playOnSliderRelease == nil) {
+            playOnSliderRelease = isPlaying
+            pause()
+        }
+        
+        playerBus.update(
+            state: currentState(timeMs: timeMs)
+        )
+        
         let time = CMTime(value: timeMs, timescale: MS_IN_SECOND)
         player.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+    }
+    
+    private func onSliderReleased() {
+        guard let playOnSliderRelease = playOnSliderRelease else { return }
+        
+        if (playOnSliderRelease) {
+            play()
+        }
+        self.playOnSliderRelease = nil
     }
     
     private func setupNowPlaying() {
