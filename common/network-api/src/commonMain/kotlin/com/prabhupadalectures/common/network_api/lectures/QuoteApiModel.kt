@@ -9,6 +9,6 @@ data class QuoteApiModel(
     val scripture: ScriptureApiModel,
     @SerialName("book")
     val canto: CantoApiModel?,
-    val chapter: Int,
-    val verse: Int
+    val chapter: Int?,
+    val verse: Int?
 )

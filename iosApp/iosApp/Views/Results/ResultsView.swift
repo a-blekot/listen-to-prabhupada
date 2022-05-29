@@ -24,13 +24,6 @@ struct ResultsView: View {
                 let topArea: CGFloat = 20
                 let bottomArea: CGFloat = 550
                 
-                //
-                //                let t = UIScreen.main.focusedView?.safeAreaInsets.top
-                //                let b = UIScreen.main.focusedView?.safeAreaInsets.bottom
-                //
-                //                let _ = print("top \(t), bottom \(b)")
-                
-                
                 
                 LecturesView(component.lecturesComponent, $hideTopBar, $hideBottomBar, topArea, bottomArea)
                     .environmentObject(theme)

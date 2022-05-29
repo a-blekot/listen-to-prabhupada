@@ -18,6 +18,10 @@ class Data: CustomStringConvertible {
     public var description: String { return "Data: \(last), \(offset), \(prevDiff)" }
 }
 
+class ObservablePage: ObservableObject {
+    @Published var value: Double = 0.0
+}
+
 struct LecturesView: View {
     @EnvironmentObject var theme: Theme
     
@@ -26,6 +30,7 @@ struct LecturesView: View {
     @Binding private var hideTopBar: Bool
     @Binding private var hideBottomBar: Bool
     @State private var hidePages: Bool = false
+    private let page = ObservablePage()
     
     private let topArea: CGFloat
     private let bottomArea: CGFloat
@@ -35,6 +40,8 @@ struct LecturesView: View {
     private let data = Data()
     private let delta: CGFloat = 50
     private let D: CGFloat = 150
+    
+    let shoulPrint = true
     
     
     init(
@@ -52,25 +59,41 @@ struct LecturesView: View {
         self.bottomArea = bottomArea
     }
     
+    func updateCurrentPage(_ page: Int32) {
+        self.page.value = Double(page)
+    }
+    
     var body: some View {
         let model = models.value
+        
+        let _ = updateCurrentPage(model.pagination.curr)
         
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .center, spacing: 1) {
                 
                 if !hidePages {
-                    PageControlView(pagination: model.pagination, component: component)
-                        .padding(.bottom, 4)
-                        .transition(
-                            .move(edge: .top)
-                                .combined(with: .scale(scale: 0.1, anchor: .top))
-                        )
+                    if model.pagination.total > 1 {
+                        PageControlSliderView(page, model.pagination, component)
+                            .transition(
+                                .move(edge: .top)
+                                    .combined(with: .scale(scale: 0.1, anchor: .top))
+                            )
+                            .padding(.bottom, 4)
+                    }
                 }
                 
-                ForEach(model.lectures) { lecture in
-                    LectureListItem(lecture: lecture, component: component)
-                        .environmentObject(theme)
+                if !model.lectures.isEmpty {
+                    ForEach(model.lectures) { lecture in
+                        LectureItemView(lecture: lecture, component: component)
+                            .environmentObject(theme)
+                    }
+                } else {
+                    ForEach(0...8, id: \.self) { _ in
+                        LectureShimmerView()
+                    }
+                    .animation(.easeInOut(duration: 2).repeatForever())
                 }
+                
             }
             .overlay(
                 GeometryReader { geo -> Color in
@@ -87,18 +110,18 @@ struct LecturesView: View {
                     let diff = minY - data.offset
                     
                     if (data.prevDiff <= 0 && diff > 0) || (data.prevDiff > 0 && diff <= 0) {
-                        print("minY = \(minY)")
-                        print("diff = \(diff)")
-                        print(data)
+                        ifprint("minY = \(minY)")
+                        ifprint("diff = \(diff)")
+                        //ifprint(data)
                         data.last = minY
-                        print("========================================= CHANGE DIRECTION ")
+                        ifprint("========================================= CHANGE DIRECTION ")
                     }
                     
                     data.prevDiff = diff
                     data.offset = minY
                     
                     if abs(minY - data.last) < D {
-                        print("too small \(abs(minY - data.last)) < \(D)")
+                        ifprint("too small \(abs(minY - data.last)) < \(D)")
                         return Color.clear
                     }
                     
@@ -107,7 +130,7 @@ struct LecturesView: View {
                         if diff < 0 {
                             print("up")
                             if hideBottomBar {
-                                print("show bottomBar")
+                                ifprint("show bottomBar")
                                 withAnimation(.easeInOut(duration: 0.7)) {
                                     hideBottomBar = false
                                 }
@@ -121,7 +144,7 @@ struct LecturesView: View {
                                 //                                        data.last = minY
                                 //                                    } else
                                 if !hideTopBar {
-                                    print("hide topBar")
+                                    ifprint("hide topBar")
                                     hideTopBar = true
                                     data.last = minY
                                 }
@@ -129,19 +152,19 @@ struct LecturesView: View {
                         }
                         
                         if diff > 0 {
-                            print("down")
+                            ifprint("down")
                             
                             //                                if hidePages {
                             //                                    print("show pages")
                             //                                    hidePages = false
                             //                                } else
                             if hideTopBar {
-                                print("show topBar")
+                                ifprint("show topBar")
                                 hideTopBar = false
                             }
                             
                             if (maxY > bottomArea + delta && !hideBottomBar) {
-                                print("hide bottomBar")
+                                ifprint("hide bottomBar")
                                 withAnimation(.easeInOut(duration: 0.7)) {
                                     hideBottomBar = true
                                 }
@@ -153,22 +176,20 @@ struct LecturesView: View {
                     return Color.clear
                 }
             )
-            .gesture(DragGesture()
-                        .onChanged({ (value) in
-                let y1 = value.startLocation.y
-                let y2 = value.location.y
-                
-                print("dy = \(y2 - y1)")
-                
-            }).onEnded({ _ in
-                
-            }))
         }
         .coordinateSpace(name: "SCROLL")
         .padding(.horizontal, 8)
         .padding(.vertical, 0.1)
     }
+    
+    private func ifprint(_ text: String) {
+        if (shoulPrint) {
+            print(text)
+        }
+    }
 }
+
+
 
 extension Lecture: Identifiable {}
 

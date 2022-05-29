@@ -19,7 +19,7 @@ extension HorizontalAlignment {
   static let customLeading: HorizontalAlignment = .init(CustomCenter.self)
 }
 
-struct LectureListItem: View {
+struct LectureItemView: View {
     
     @EnvironmentObject var theme: Theme
     
@@ -49,20 +49,38 @@ struct LectureListItem: View {
                     .font(.system(size: 12))
                     .lineLimit(3)
                     .truncationMode(.tail)
+                    .foregroundColor(theme.descriptionTextColor)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             
-            FavoriteButton(lecture: lecture, onClick: { isFavorite in component.onFavorite(id: lecture.id, isFavorite: isFavorite) })
-            // ContextMenuButton(onEvent: onEvent)
+            FavoriteButton(lecture) { isFavorite in
+                component.onFavorite(id: lecture.id, isFavorite: isFavorite)
+            }
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button {
+                component.onFavorite(id: lecture.id, isFavorite: !lecture.isFavorite)
+            } label: {
+                let text = lecture.isFavorite ? "Удалить из избранного" : "Добавить в избранное"
+                let icon = lecture.isFavorite ? "heart.fill" : "heart"
+                
+                Label(text, systemImage: icon)
+            }
+
+            Button {
+                print("Enable geolocation")
+            } label: {
+                Label("Detect Location", systemImage: "location.circle")
+            }
+        }
     }
 }
 
 struct LectureListItem_Previews: PreviewProvider {
     static var previews: some View {
-        LectureListItem(lecture: mockLecture(12), component: StubLecturesComponent())
+        LectureItemView(lecture: mockLecture(12), component: StubLecturesComponent())
             .environmentObject(themes[0])
     }
 }

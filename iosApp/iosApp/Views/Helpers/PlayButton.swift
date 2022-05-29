@@ -27,7 +27,7 @@ struct PlayButton: View {
         } label: {
             
             Image(systemName: image)
-                .resizable(resizingMode: .tile)
+                .resizable()
                 .frame(width: SIZE_PLAY_BUTTON, height: SIZE_PLAY_BUTTON)
                 .fixedSize()
                 .foregroundColor(.orange)

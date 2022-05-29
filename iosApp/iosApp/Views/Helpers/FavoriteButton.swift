@@ -13,23 +13,30 @@ struct FavoriteButton: View {
     let lecture: Lecture
     let onClick : (Bool) -> ()
     
+    init(_ lecture: Lecture, _ onClick: @escaping (Bool) -> ()) {
+        self.lecture = lecture
+        self.onClick = onClick
+    }
+    
     var body: some View {
         Button {
             onClick(!lecture.isFavorite)
         } label: {
             
             Image(systemName: lecture.isFavorite ? "heart.fill" : "heart")
-                .resizable(resizingMode: .tile)
+                .resizable()
                 .frame(width: SIZE_FAVORITE_BUTTON, height: SIZE_FAVORITE_BUTTON)
                 .fixedSize()
                 .foregroundColor(.orange)
+                .contentShape(Rectangle())
         }
+        .contentShape(Rectangle())
     }
 }
 
 struct FavoriteButton_Previews: PreviewProvider {
     static var previews: some View {
-        FavoriteButton(lecture: mockLecture(1), onClick: { _ in })
+        FavoriteButton(mockLecture(1)) { _ in }
             .environmentObject(themes[0])
     }
 }

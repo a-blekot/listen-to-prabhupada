@@ -9,8 +9,8 @@ data class QueryParam(
     val isSelected: Boolean = false
 )
 
-fun QueryParam?.unSelected(option: String) =
-    this != null && !isSelected && selectedOption == option
+fun QueryParam?.unSelected(filterName: String, optionValue: String) =
+    this != null && !isSelected && this.filterName == filterName && selectedOption == optionValue
 
 fun buildQueryParams(
     filters: List<Filter> = emptyList(),
@@ -20,7 +20,9 @@ fun buildQueryParams(
     val params = HashMap<String, Any>()
 
     filters.sortedBy { it.name }.forEach { filter ->
-        filter.options.firstOrNull { it.isSelected && !queryParam.unSelected(it.value) }?.let { option ->
+        filter.options.firstOrNull { option ->
+            option.isSelected && !queryParam.unSelected(filter.name, option.value)
+        }?.let { option ->
             params[filter.name] = option.value
         }
     }

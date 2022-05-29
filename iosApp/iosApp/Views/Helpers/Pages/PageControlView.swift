@@ -12,31 +12,29 @@ import Prabhupada
 struct PageControlView: View {
     
     @EnvironmentObject var theme: Theme
+    let page: Int
     let pagination: Pagination
     let component : LecturesComponent
     
     var body: some View {
-        HStack(alignment: .center, spacing: 20) {
+        HStack(alignment: .center, spacing: 6) {
             button(.first)
             button(.prev_20)
             button(.prev_5)
             button(.prev_1)
             
-            Text("\(pagination.curr) из \(pagination.total)")
+            Text("\(page) из \(pagination.total)")
                 .font(theme.bodyFont)
                 .foregroundColor(theme.bodyTextColor)
                 .lineLimit(1)
                 .padding(.horizontal, 2)
-                .frame(width: 80)
+                .frame(width: 75)
             
             button(.next_1)
             button(.next_5)
             button(.next_20)
             button(.last)
         }
-        .padding(10)
-        .frame(maxWidth: .infinity, minHeight: 40)
-        .border(.orange, width: 2)
     }
     
     private func button(_ buttonType: ButtonType) -> PageButtonView {
@@ -46,7 +44,7 @@ struct PageControlView: View {
 
 struct PageControlView_Previews: PreviewProvider {
     static var previews: some View {
-        PageControlView(pagination: mockPagination(10, 100), component: StubLecturesComponent())
+        PageControlView(page: 1, pagination: mockPagination(100, 100), component: StubLecturesComponent())
             .environmentObject(themes[0])
     }
 }

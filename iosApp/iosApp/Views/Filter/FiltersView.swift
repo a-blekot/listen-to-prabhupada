@@ -26,11 +26,20 @@ struct FiltersView: View {
         
         NavigationView {
             VStack(alignment: .center) {
+                
+                var chips = chips(model.filters)
+                
+                if !chips.isEmpty {
+                    let _ = chips.append(ChipData(title: "Очистить все", clearAll: true))
+                    SelectedFilters(chips: chips, component: component)
+                }
+                
                 List(model.filters) { filter in
                     FilterItemView(filter: filter, component: component)
                 }
                 .edgesIgnoringSafeArea(.bottom)
                 .edgesIgnoringSafeArea(.horizontal)
+                //.listRowSeparator(Visibility.hidden)
                 .listStyle(.plain)
                 .animation(.easeOut(duration: 0.5))
                 .navigationTitle("Фильтры")
@@ -53,6 +62,10 @@ struct FiltersView: View {
                     .onTapGesture { component.onApplyChanges() }
             }
         }
+    }
+    
+    private func chips(_ filters: [Filter]) -> [ChipData] {
+        filters.map { ChipData(filter: $0) }.compactMap{ $0 }
     }
 }
 

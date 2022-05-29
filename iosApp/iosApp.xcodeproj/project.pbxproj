@@ -31,8 +31,13 @@
 		C61DE2E6283953590074C85C /* PeriodicTimeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */; };
 		C61DE2E8283953B30074C85C /* RemoteControlHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */; };
 		C685A038283FE8720052A2A8 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C685A037283FE8720052A2A8 /* TimeUtils.swift */; };
+		C685A03D284358470052A2A8 /* LectureShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C685A03C284358470052A2A8 /* LectureShimmerView.swift */; };
+		C685A03F284376EF0052A2A8 /* PageControlSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C685A03E284376EF0052A2A8 /* PageControlSliderView.swift */; };
+		C685A04328439C9C0052A2A8 /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = C685A04228439C9C0052A2A8 /* Chips.swift */; };
 		C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */; };
 		C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DF2802D6DD001116EE /* PlayButton.swift */; };
+		C6CA2E4A2843A3E8007C5C6B /* SelectedFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA2E492843A3E8007C5C6B /* SelectedFilters.swift */; };
+		C6CA2E4C2843B122007C5C6B /* ChipData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA2E4B2843B122007C5C6B /* ChipData.swift */; };
 		C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */; };
 		C6DB1DFC2806C7E1000F2BD1 /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */; };
 		C6DB1DFE2806C886000F2BD1 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DB1DFD2806C886000F2BD1 /* Sizes.swift */; };
@@ -94,8 +99,13 @@
 		C61DE2E5283953590074C85C /* PeriodicTimeObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTimeObserver.swift; sourceTree = "<group>"; };
 		C61DE2E7283953B30074C85C /* RemoteControlHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlHandler.swift; sourceTree = "<group>"; };
 		C685A037283FE8720052A2A8 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
+		C685A03C284358470052A2A8 /* LectureShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureShimmerView.swift; sourceTree = "<group>"; };
+		C685A03E284376EF0052A2A8 /* PageControlSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControlSliderView.swift; sourceTree = "<group>"; };
+		C685A04228439C9C0052A2A8 /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
 		C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
 		C6A7C4DF2802D6DD001116EE /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
+		C6CA2E492843A3E8007C5C6B /* SelectedFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedFilters.swift; sourceTree = "<group>"; };
+		C6CA2E4B2843B122007C5C6B /* ChipData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipData.swift; sourceTree = "<group>"; };
 		C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayer.swift; sourceTree = "<group>"; };
 		C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		C6DB1DFD2806C886000F2BD1 /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
@@ -235,6 +245,26 @@
 			path = AQPLayer;
 			sourceTree = "<group>";
 		};
+		C685A04028439C860052A2A8 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */,
+				C685A03E284376EF0052A2A8 /* PageControlSliderView.swift */,
+				C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		C685A04128439C8F0052A2A8 /* Chips */ = {
+			isa = PBXGroup;
+			children = (
+				C685A04228439C9C0052A2A8 /* Chips.swift */,
+				C6CA2E492843A3E8007C5C6B /* SelectedFilters.swift */,
+				C6CA2E4B2843B122007C5C6B /* ChipData.swift */,
+			);
+			path = Chips;
+			sourceTree = "<group>";
+		};
 		C6DB1DF92806AC57000F2BD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -253,14 +283,14 @@
 		C6DB1DFA2806AC62000F2BD1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C6A7C4DF2802D6DD001116EE /* PlayButton.swift */,
-				C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */,
-				C6DB1DFD2806C886000F2BD1 /* Sizes.swift */,
-				C6DB1DFF2806CF6E000F2BD1 /* ContextMenuButton.swift */,
+				C685A04128439C8F0052A2A8 /* Chips */,
 				C6DB1E072806E754000F2BD1 /* BookmarkButton.swift */,
-				C6FA8ADC283001BE003BBCB5 /* PageControlView.swift */,
-				C6FA8ADE283008DF003BBCB5 /* PageButtonView.swift */,
+				C6DB1DFF2806CF6E000F2BD1 /* ContextMenuButton.swift */,
+				C6DB1DFB2806C7E1000F2BD1 /* FavoriteButton.swift */,
 				C61DE2C82838E75F0074C85C /* MarqueeText.swift */,
+				C685A04028439C860052A2A8 /* Pages */,
+				C6A7C4DF2802D6DD001116EE /* PlayButton.swift */,
+				C6DB1DFD2806C886000F2BD1 /* Sizes.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -281,6 +311,7 @@
 			children = (
 				C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */,
 				C6DB1E032806D901000F2BD1 /* LecturesView.swift */,
+				C685A03C284358470052A2A8 /* LectureShimmerView.swift */,
 			);
 			path = Lectures;
 			sourceTree = "<group>";
@@ -400,7 +431,9 @@
 				C61B531728324EA300AE862D /* StubLecturesComponent.swift in Sources */,
 				C6FA8ACD282FEA4A003BBCB5 /* ComponentHolder.swift in Sources */,
 				C6DB1E082806E754000F2BD1 /* BookmarkButton.swift in Sources */,
+				C685A03D284358470052A2A8 /* LectureShimmerView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				C685A04328439C9C0052A2A8 /* Chips.swift in Sources */,
 				C61DE2C92838E75F0074C85C /* MarqueeText.swift in Sources */,
 				C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */,
 				C61B531928324EDC00AE862D /* StubResultsComponent.swift in Sources */,
@@ -414,6 +447,7 @@
 				C6FA8ACB282FE827003BBCB5 /* Player.swift in Sources */,
 				C6DB1E022806D6CA000F2BD1 /* Mocks.swift in Sources */,
 				C61DE2CF28392D300074C85C /* ScopeFunc.swift in Sources */,
+				C6CA2E4C2843B122007C5C6B /* ChipData.swift in Sources */,
 				C6FA8ADA282FFD84003BBCB5 /* PlayerView.swift in Sources */,
 				C6DB1E042806D901000F2BD1 /* LecturesView.swift in Sources */,
 				C61DE2D52839415B0074C85C /* PlayerItemInfo.swift in Sources */,
@@ -425,12 +459,14 @@
 				C6FF6252283BB795007D67A7 /* SavedPositionProvider.swift in Sources */,
 				C685A038283FE8720052A2A8 /* TimeUtils.swift in Sources */,
 				C61DE2E428394DA80074C85C /* Defaults.swift in Sources */,
+				C6CA2E4A2843A3E8007C5C6B /* SelectedFilters.swift in Sources */,
 				C61DE2DB283945270074C85C /* AQPlayerManager.swift in Sources */,
 				C6FA8ADD283001BE003BBCB5 /* PageControlView.swift in Sources */,
 				C6DB1E062806D9D0000F2BD1 /* ObservableValue.swift in Sources */,
 				C61DE2D1283931650074C85C /* NotificationsHandler.swift in Sources */,
 				C61B531B28324F0300AE862D /* StubPlayerComponent.swift in Sources */,
 				C6FA8AE128301DAC003BBCB5 /* SimpleRouterState.swift in Sources */,
+				C685A03F284376EF0052A2A8 /* PageControlSliderView.swift in Sources */,
 				C6DB1E002806CF6E000F2BD1 /* ContextMenuButton.swift in Sources */,
 				C6FA8AD1282FEEDF003BBCB5 /* ResultsView.swift in Sources */,
 				C6FA8AD5282FF24E003BBCB5 /* FilterItemView.swift in Sources */,

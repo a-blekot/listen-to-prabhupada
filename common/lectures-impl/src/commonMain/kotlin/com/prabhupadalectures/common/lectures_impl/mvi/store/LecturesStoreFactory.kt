@@ -15,13 +15,17 @@ import com.prabhupadalectures.common.lectures_impl.mvi.LecturesDeps
 import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Intent.*
 import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Label
 import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStoreFactory.Action.InitialLoad
+import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStoreFactory.Action.UpdateFromDB
 import com.prabhupadalectures.common.network_api.ApiModel
+import com.prabhupadalectures.common.network_api.PAGE_QUERY_KEY
 import com.prabhupadalectures.common.network_api.QueryParams
 import com.prabhupadalectures.common.settings.addPage
 import com.prabhupadalectures.common.settings.getFilters
 import com.prabhupadalectures.common.settings.settings
 import com.prabhupadalectures.common.settings.toDatabaseIdentifier
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -40,11 +44,13 @@ internal class LecturesStoreFactory(
         ) {}
 
     private sealed interface Action {
+        object UpdateFromDB : Action
         class InitialLoad(val queryParams: QueryParams) : Action
     }
 
     private sealed interface Msg {
         object StartLoading : Msg
+        data class UpdateFromDB(val lectures: List<Lecture>) : Msg
         data class LoadingComplete(val state: LecturesState = LecturesState(isLoading = false)) : Msg
         data class FavoriteChanged(val id: Long, val isFavorite: Boolean) : Msg
         data class CurrentChanged(val id: Long, val isPlaying: Boolean) : Msg
@@ -55,17 +61,33 @@ internal class LecturesStoreFactory(
             scope.launch {
                 dispatch(InitialLoad(settings.getFilters().addPage(deps.db)))
             }
+
+            deps.db.observeCompleted()
+                .onEach { dispatch(UpdateFromDB) }
+                .launchIn(scope)
+
+            deps.db.observeAllFavorites()
+                .onEach { dispatch(UpdateFromDB) }
+                .launchIn(scope)
+
+            deps.db.observeAllDownloads()
+                .onEach { dispatch(UpdateFromDB) }
+                .launchIn(scope)
         }
     }
 
     private inner class ExecutorImpl : CoroutineExecutor<LecturesStore.Intent, Action, LecturesState, Msg, Label>() {
-        override fun executeAction(action: Action, getState: () -> LecturesState) =
+        override fun executeAction(action: Action, getState: () -> LecturesState) {
             when (action) {
+                is UpdateFromDB -> {
+                    updateFromDB(getState())
+                }
                 is InitialLoad -> {
                     Napier.d("InitialLoad action.queryParams = ${action.queryParams}", tag = "LecturesStoreExecutor")
                     load(action.queryParams)
                 }
             }
+        }
 
         override fun executeIntent(intent: LecturesStore.Intent, getState: () -> LecturesState) {
             if (getState().isLoading) {
@@ -78,9 +100,6 @@ internal class LecturesStoreFactory(
                 is Favorite -> setFavorite(id = intent.id, isFavorite = intent.isFavorite, getState())
                 is UpdatePage -> load(settings.getFilters().addPage(intent.page))
                 is UpdateFilters -> load(settings.getFilters().addPage(deps.db))
-                else -> {
-                    /** do nothing **/
-                }
             }
         }
 
@@ -135,9 +154,15 @@ internal class LecturesStoreFactory(
                 }
         }
 
+        private fun updateFromDB(state: LecturesState) =
+            scope.launch {
+                dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateFromDB()))
+            }
+
         private fun List<Lecture>.updateFromDB() =
             map { lecture ->
                 val lectureEntity = deps.db.selectLecture(lecture.id)
+                Napier.d("updateFromDB title = ${lecture.title.take(16)}, db isCompleted = ${lectureEntity?.isCompleted}", tag = "LecturesStoreFactory")
                 lecture.copy(
                     fileUrl = lectureEntity?.fileUrl ?: lecture.fileUrl,
                     isFavorite = lectureEntity?.isFavorite ?: lecture.isFavorite,
@@ -152,6 +177,7 @@ internal class LecturesStoreFactory(
             when (msg) {
                 Msg.StartLoading -> copy(isLoading = true)
                 is Msg.FavoriteChanged -> update(id = msg.id) { copy(isFavorite = msg.isFavorite) }
+                is Msg.UpdateFromDB -> copy(lectures = msg.lectures)
                 is Msg.CurrentChanged -> copy(lectures = lectures.map { it.copy(isPlaying = it.id == msg.id && msg.isPlaying) })
                 is Msg.LoadingComplete -> msg.state
             }
@@ -172,31 +198,10 @@ internal class LecturesStoreFactory(
 
 fun HashMap<String, Any>.addPage(db: Database) =
     apply {
-        put(com.prabhupadalectures.common.network_api.PAGE_QUERY_KEY, db.selectPage(toDatabaseIdentifier()))
+        put(PAGE_QUERY_KEY, db.selectPage(toDatabaseIdentifier()))
     }
 
-//
-//private fun observeDownloads() =
-//    launch {
-//        db.observeAllDownloads().collect {
-//            updateFromDb()
-//        }
-//    }
-//
-//private fun observeFavorites() =
-//    launch {
-//        db.observeAllFavorites().collect {
-//            updateFromDb()
-//        }
-//    }
-//
-//private fun observeCompleted() =
-//    launch {
-//        db.observeCompleted().collect {
-//            updateFromDb()
-//        }
-//    }
-//
+
 //private fun observeSelfState() =
 //    launch {
 //        observeState().collect {

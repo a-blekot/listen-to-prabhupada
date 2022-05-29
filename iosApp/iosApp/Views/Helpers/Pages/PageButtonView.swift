@@ -36,7 +36,7 @@ struct PageButtonView: View {
             component.onPage(page: pagination.nextPage(buttonType))
         } label: {
             Image(systemName: icon(for: buttonType))
-                .resizable(resizingMode: .tile)
+                .resizable()
                 .frame(width: SIZE_FAVORITE_BUTTON, height: SIZE_FAVORITE_BUTTON)
                 .fixedSize()
                 .foregroundColor(.orange)
@@ -49,8 +49,8 @@ struct PageButtonView: View {
         case .first: return "backward.end"
         case .prev_20: return "chevron.backward.square"
         case .prev_5: return "chevron.backward.2"
-        case .prev_1: return "chevron.backward"
-        case .next_1: return "chevron.forward"
+        case .prev_1: return "chevron.backward.circle"
+        case .next_1: return "chevron.forward.circle"
         case .next_5: return "chevron.forward.2"
         case .next_20: return "chevron.forward.square"
         case .last: return "forward.end"

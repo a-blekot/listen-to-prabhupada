@@ -116,7 +116,7 @@ struct PlayerView: View {
             onClick()
         } label: {
             Image(systemName: icon)
-                .resizable(resizingMode: .tile)
+                .resizable()
                 .frame(width: size(s), height: size(s))
                 .fixedSize()
                 .foregroundColor(theme.bodyTextColor)

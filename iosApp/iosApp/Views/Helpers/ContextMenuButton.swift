@@ -10,17 +10,23 @@ import SwiftUI
 import Prabhupada
 
 struct ContextMenuButton: View {
+    @EnvironmentObject var theme: Theme
     var onClick : () -> ()
     
     var body: some View {
-        Button {
-            onClick()
-        } label: {
-            Image(systemName: "list.bullet")
-                .resizable(resizingMode: .stretch)
-                .frame(width: CONTEXT_MENU_BTN_H, height: CONTEXT_MENU_BTN_H)
-                .foregroundColor(.orange)
-        }
+
+            VStack(alignment: .center, spacing: 3) {
+                circle()
+                circle()
+                circle()
+            }
+
+    }
+    
+    private func circle() -> some View {
+        Circle()
+            .frame(width: 6, height: 6)
+            .foregroundColor(theme.descriptionTextColor)
     }
 }
 
