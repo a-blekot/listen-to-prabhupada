@@ -49,7 +49,6 @@ class FavoritesFeatureComponentImpl(
         when(output) {
             Pause -> deps.playerBus.update(PlayerAction.Pause)
             is Play -> deps.playerBus.update(PlayerAction.Play(output.lectureId))
-            is Download -> deps.playerBus.update(PlayerAction.Download(output.lecture))
             is UpdatePlaylist -> deps.playerBus.update(output.lectures)
         }
 }

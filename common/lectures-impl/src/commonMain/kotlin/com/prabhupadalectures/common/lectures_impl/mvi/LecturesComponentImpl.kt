@@ -62,12 +62,6 @@ class LecturesComponentImpl(
 
     override fun onPause() = output(LecturesOutput.Pause)
     override fun onPlay(id: Long) = output(LecturesOutput.Play(id))
-    override fun onDownload(id: Long) =
-        flow.value
-            .lectures
-            .firstOrNull { id == id }
-            ?.let { output(LecturesOutput.Download(it)) }
-            ?: Unit
 
     private fun handleLabel(label: LecturesStore.Label) {
         when (label) {

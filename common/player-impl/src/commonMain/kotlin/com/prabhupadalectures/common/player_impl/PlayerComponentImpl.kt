@@ -33,5 +33,4 @@ class PlayerComponentImpl(
     override fun onPlay(id: Long) = playerBus.update(PlayerAction.Play(id))
     override fun onSeekTo(timeMs: Long) = playerBus.update(PlayerAction.SeekTo(timeMs))
     override fun onSpeed(speed: Float) = playerBus.update(PlayerAction.Speed(speed))
-    override fun onDownload(lecture: Lecture) = playerBus.update(PlayerAction.Download(lecture))
 }

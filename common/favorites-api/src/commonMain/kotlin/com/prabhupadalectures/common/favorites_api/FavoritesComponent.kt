@@ -8,7 +8,6 @@ interface FavoritesComponent {
 
     fun onPlay(id: Long) {}
     fun onPause() {}
-    fun onDownload(id: Long) {}
     fun onFavorite(id: Long, isFavorite: Boolean) {}
     fun onCurrentLecture(id: Long, isPlaying: Boolean) {}
 }

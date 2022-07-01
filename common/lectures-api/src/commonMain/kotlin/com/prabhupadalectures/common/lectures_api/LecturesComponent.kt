@@ -13,5 +13,4 @@ interface LecturesComponent {
 
     fun onPause() {}
     fun onPlay(id: Long) {}
-    fun onDownload(id: Long) {}
 }

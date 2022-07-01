@@ -13,5 +13,4 @@ sealed interface PlayerAction {
     data class Play(val lectureId: Long): PlayerAction
     data class SeekTo(val timeMs: Long): PlayerAction
     data class Speed(val speed: Float): PlayerAction
-    data class Download(val lecture: Lecture): PlayerAction
 }

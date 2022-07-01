@@ -17,7 +17,6 @@ interface PlayerComponent {
     fun onPlay(id: Long) {}
     fun onSeekTo(timeMs: Long) {}
     fun onSpeed(speed: Float) {}
-    fun onDownload(lecture: Lecture) {}
 
     sealed class Output {
         data class Message(val text: String) : Output()

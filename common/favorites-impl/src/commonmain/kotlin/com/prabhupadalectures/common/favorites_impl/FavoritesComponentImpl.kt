@@ -57,12 +57,6 @@ class FavoritesComponentImpl(
     override fun onPause() = output(FavoritesOutput.Pause)
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
-    override fun onDownload(id: Long) =
-        store.state
-            .lectures
-            .firstOrNull { id == id }
-            ?.let { output(FavoritesOutput.Download(it)) }
-            ?: Unit
 
     private fun handleLabel(label: FavoritesLabel) {
         when (label) {

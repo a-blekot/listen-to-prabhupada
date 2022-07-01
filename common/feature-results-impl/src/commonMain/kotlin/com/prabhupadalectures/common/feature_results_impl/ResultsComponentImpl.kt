@@ -40,11 +40,6 @@ class ResultsComponentImpl(
         deps.playerBus.observeState {
             lecturesComponent.onCurrentLecture(it.lecture.id, it.isPlaying)
         }
-        deps.playerBus.observeActions {
-            if (it is PlayerAction.Download) {
-                lecturesComponent.onDownload(it.lecture.id)
-            }
-        }
     }
 
     override fun onEditFilters() = output(ResultsOutput.EditFilters)
@@ -56,7 +51,6 @@ class ResultsComponentImpl(
         when(output) {
             Pause -> deps.playerBus.update(PlayerAction.Pause)
             is Play -> deps.playerBus.update(PlayerAction.Play(output.lectureId))
-            is Download -> deps.playerBus.update(PlayerAction.Download(output.lecture))
             is UpdatePlaylist -> deps.playerBus.update(output.lectures)
         }
 }

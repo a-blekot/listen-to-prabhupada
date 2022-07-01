@@ -22,7 +22,6 @@ interface DownloadsRepository {
     val hasActiveDownloads: Boolean
 
     fun download(lecture: Lecture)
-    fun checkPendingDownloads()
     fun observeDownload(): SharedFlow<DownloadState>
 }
 
@@ -75,7 +74,7 @@ class DownloadsRepositoryImpl(
             checkPendingDownloads()
         }
 
-    override fun checkPendingDownloads() {
+    private fun checkPendingDownloads() {
         Napier.d("checkPendingDownloads", tag = "DownloadsRepository")
         printQueue()
         if (!queue.isEmpty()) {

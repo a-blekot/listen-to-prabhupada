@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.prabhupadalectures.android.PrabhupadaApp.Companion.app
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.player.SEEK_INCREMENT_MS
 import com.prabhupadalectures.android.ui.LoadingBar
@@ -145,7 +146,8 @@ fun PlayerListItem(playerComponent: PlayerComponent) {
                         textAlign = TextAlign.Center,
                         modifier = Modifier.clickable {
                             expanded = !expanded
-                            playerComponent.onDownload(playbackState.value.lecture)
+                            app.downloadsRepository.download(playbackState.value.lecture)
+//                            playerComponent.onDownload(playbackState.value.lecture)
                         }
                     )
 
