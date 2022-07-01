@@ -8,7 +8,7 @@ interface LecturesComponent {
 
     fun onPage(page: Int) {}
     fun onFavorite(id: Long, isFavorite: Boolean) {}
-    fun onUpdateFilters() {}
+    fun onUpdateLectures() {}
     fun onCurrentLecture(id: Long, isPlaying: Boolean) {}
 
     fun onPause() {}

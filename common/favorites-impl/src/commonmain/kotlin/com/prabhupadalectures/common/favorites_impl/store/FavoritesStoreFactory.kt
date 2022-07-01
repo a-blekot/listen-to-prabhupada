@@ -100,7 +100,6 @@ internal class FavoritesStoreFactory(
         private fun List<Lecture>.updateFromDB() =
             map { lecture ->
                 val lectureEntity = deps.db.selectLecture(lecture.id)
-                Napier.d("updateFromDB title = ${lecture.title.take(16)}, db isCompleted = ${lectureEntity?.isCompleted}", tag = "LecturesStoreFactory")
                 lecture.copy(
                     fileUrl = lectureEntity?.fileUrl ?: lecture.fileUrl,
                     isFavorite = lectureEntity?.isFavorite ?: lecture.isFavorite,

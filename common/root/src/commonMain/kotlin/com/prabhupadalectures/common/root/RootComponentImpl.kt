@@ -91,9 +91,9 @@ class RootComponentImpl internal constructor(
     private fun onFiltersOutput(output: FiltersComponent.Output): Unit =
         when (output) {
             is FiltersComponent.Output.ShowResults -> router.pop { isSuccess ->
-                if (isSuccess) {
-                    (router.activeChild.instance as? Results)?.component?.onUpdateFilters()
-                }
+//                if (isSuccess) {
+//                    (router.activeChild.instance as? Results)?.component?.onUpdateFilters()
+//                }
             }
         }
 

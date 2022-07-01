@@ -58,9 +58,9 @@ internal class LecturesStoreFactory(
 
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
         override fun invoke() {
-            scope.launch {
-                dispatch(InitialLoad(settings.getFilters().addPage(deps.db)))
-            }
+//            scope.launch {
+//                dispatch(InitialLoad(settings.getFilters().addPage(deps.db)))
+//            }
 
             deps.db.observeCompleted()
                 .onEach { dispatch(UpdateFromDB) }
@@ -78,14 +78,13 @@ internal class LecturesStoreFactory(
 
     private inner class ExecutorImpl : CoroutineExecutor<LecturesStore.Intent, Action, LecturesState, Msg, Label>() {
         override fun executeAction(action: Action, getState: () -> LecturesState) {
-            when (action) {
+            fix when (action) {
                 is UpdateFromDB -> {
                     updateFromDB(getState())
                 }
-                is InitialLoad -> {
-                    Napier.d("InitialLoad action.queryParams = ${action.queryParams}", tag = "LecturesStoreExecutor")
-                    load(action.queryParams)
-                }
+//                is InitialLoad -> {
+//                    load(action.queryParams)
+//                }
             }
         }
 
@@ -99,7 +98,7 @@ internal class LecturesStoreFactory(
                 is CurrentLecture -> setCurrent(intent.id, intent.isPlaying, getState())
                 is Favorite -> setFavorite(intent.id, intent.isFavorite, getState())
                 is UpdatePage -> load(settings.getFilters().addPage(intent.page))
-                is UpdateFilters -> load(settings.getFilters().addPage(deps.db))
+                is UpdateLectures -> load(settings.getFilters().addPage(deps.db))
             }
         }
 
@@ -155,6 +154,11 @@ internal class LecturesStoreFactory(
                 }
         }
 
+        private fun updatePlaylist(lectures: List<Lecture>) =
+            scope.launch {
+                publish(Label.UpdatePlaylist(lectures))
+            }
+
         private fun updateFromDB(state: LecturesState) =
             scope.launch {
                 dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateFromDB()))
@@ -163,7 +167,6 @@ internal class LecturesStoreFactory(
         private fun List<Lecture>.updateFromDB() =
             map { lecture ->
                 val lectureEntity = deps.db.selectLecture(lecture.id)
-                Napier.d("updateFromDB title = ${lecture.title.take(16)}, db isCompleted = ${lectureEntity?.isCompleted}", tag = "LecturesStoreFactory")
                 lecture.copy(
                     fileUrl = lectureEntity?.fileUrl ?: lecture.fileUrl,
                     isFavorite = lectureEntity?.isFavorite ?: lecture.isFavorite,

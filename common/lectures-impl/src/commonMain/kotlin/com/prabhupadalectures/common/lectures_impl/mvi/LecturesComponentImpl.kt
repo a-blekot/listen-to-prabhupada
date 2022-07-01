@@ -5,6 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.essenty.lifecycle.doOnResume
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.prabhupadalectures.common.lectures_api.LecturesComponent
@@ -49,13 +50,17 @@ class LecturesComponentImpl(
             .launchIn(scope)
 
         flow.ensureNeverFrozen()
+
+        lifecycle.doOnResume {
+            Napier.d( "LecturesComponent ON_RESUME")
+            store.accept(UpdateLectures)
+        }
     }
 
     override fun onPage(page: Int) = store.accept(UpdatePage(page))
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))
-    override fun onUpdateFilters() = store.accept(UpdateFilters)
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
-    
+
     override fun onPause() = output(LecturesOutput.Pause)
     override fun onPlay(id: Long) = output(LecturesOutput.Play(id))
     override fun onDownload(id: Long) =
@@ -67,10 +72,9 @@ class LecturesComponentImpl(
 
     private fun handleLabel(label: LecturesStore.Label) {
         when (label) {
-           is LecturesStore.Label.LecturesLoaded -> {
-               Napier.d("handleLabel LecturesLoaded -> ${label.lectures.map {it.id}}", tag = "LECTURES")
-               output(LecturesOutput.UpdatePlaylist(label.lectures))
-           }
+            is LecturesStore.Label.LecturesLoaded -> {
+                output(LecturesOutput.UpdatePlaylist(label.lectures))
+            }
         }
     }
 }
