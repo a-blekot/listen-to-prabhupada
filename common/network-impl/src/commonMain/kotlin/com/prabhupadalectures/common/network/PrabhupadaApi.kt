@@ -16,6 +16,8 @@ import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 import kotlin.native.concurrent.SharedImmutable
 
+private const val FILE_TYPE_AUDIO = 1
+
 @SharedImmutable
 private const val DEFAULT_BUFFER_SIZE = 4088L
 
@@ -34,12 +36,14 @@ class PrabhupadaApiImpl(
                 params.forEach {
                     parameter(it.key, it.value)
                 }
+                parameter(FILE_TYPE_QUERY_KEY, FILE_TYPE_AUDIO)
             }.body()
         }
 
     override suspend fun getResults(page: Int): ApiModel =
         client.get(Routes.FILE) {
             parameter(PAGE_QUERY_KEY, page)
+            parameter(FILE_TYPE_QUERY_KEY, FILE_TYPE_AUDIO)
         }.body()
 
     override suspend fun downloadFile(writeChannel: ByteWriteChannel, url: String): Flow<DownloadState> {

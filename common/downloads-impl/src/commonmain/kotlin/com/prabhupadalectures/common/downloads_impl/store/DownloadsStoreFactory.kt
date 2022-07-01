@@ -11,7 +11,7 @@ import com.prabhupadalectures.common.utils.dbEntity
 import com.prabhupadalectures.common.utils.mapped
 import com.prabhupadalectures.common.downloads_impl.store.DownloadsIntent.CurrentLecture
 import com.prabhupadalectures.common.downloads_impl.store.DownloadsIntent.Favorite
-import com.prabhupadalectures.common.downloads_impl.store.DownloadsStoreFactory.Action.InitialLoad
+import com.prabhupadalectures.common.downloads_impl.store.DownloadsStoreFactory.Action.RefreshDownloads
 import com.prabhupadalectures.common.downloads_impl.store.DownloadsStoreFactory.Action.UpdateFromDB
 import com.prabhupadalectures.common.utils.Lecture
 import io.github.aakira.napier.Napier
@@ -37,7 +37,7 @@ internal class DownloadsStoreFactory(
         ) {}
 
     private sealed interface Action {
-        object InitialLoad : Action
+        object RefreshDownloads : Action
         object UpdateFromDB : Action
     }
 
@@ -51,7 +51,7 @@ internal class DownloadsStoreFactory(
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
         override fun invoke() {
             scope.launch {
-                dispatch(InitialLoad)
+                dispatch(RefreshDownloads)
             }
 
             deps.db.observeCompleted()
@@ -63,7 +63,10 @@ internal class DownloadsStoreFactory(
                 .launchIn(scope)
 
             deps.db.observeAllDownloads()
-                .onEach { dispatch(UpdateFromDB) }
+                .onEach {
+                    Napier.d("observeAllDownloads")
+                    dispatch(RefreshDownloads)
+                }
                 .launchIn(scope)
         }
     }
@@ -74,7 +77,7 @@ internal class DownloadsStoreFactory(
                 is UpdateFromDB -> {
                     updateFromDB(getState())
                 }
-                is InitialLoad -> {
+                is RefreshDownloads -> {
                     val lectures = deps.db.selectAllDownloads().mapped()
                     dispatch(Msg.LoadingComplete(DownloadsState(lectures)))
 

@@ -31,13 +31,17 @@ fun lectures(apiModel: ApiModel): List<Lecture> =
 private fun lecture(apiModel: LectureApiModel, idExtra: Long = 0) =
     Lecture(
         id = apiModel.id + idExtra,
-        title = apiModel.title,
+        title = title(apiModel),
         description = apiModel.description,
         date = apiModel.date,
         place = apiModel.place.name,
         durationMillis = apiModel.duration.parseDuration(),
         remoteUrl = "${Routes.BASE_URL}${apiModel.url}"
     )
+
+private fun title(apiModel: LectureApiModel) =
+    apiModel.title
+//    quotes[title] book.chapter.verse
 
 fun lectureFullModel(apiModel: LectureApiModel) =
     LectureFullModel(

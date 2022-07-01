@@ -6,6 +6,8 @@ import kotlin.native.concurrent.ThreadLocal
 @SharedImmutable
 const val PAGE_QUERY_KEY = "page"
 
+const val FILE_TYPE_QUERY_KEY = "t"
+
 @ThreadLocal
 object Routes {
     const val BASE_URL = "https://ydl3.da.net.ua"
