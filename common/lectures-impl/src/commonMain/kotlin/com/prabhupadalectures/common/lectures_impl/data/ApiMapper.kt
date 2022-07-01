@@ -8,6 +8,7 @@ import com.prabhupadalectures.common.network_api.ApiModel
 import com.prabhupadalectures.common.network_api.Routes
 import com.prabhupadalectures.common.network_api.lectures.*
 import com.prabhupadalectures.common.settings.FIRST_PAGE
+import io.github.aakira.napier.Napier
 
 fun pagination(apiModel: ApiModel) =
     Pagination(
@@ -40,8 +41,46 @@ private fun lecture(apiModel: LectureApiModel, idExtra: Long = 0) =
     )
 
 private fun title(apiModel: LectureApiModel) =
-    apiModel.title
-//    quotes[title] book.chapter.verse
+    apiModel.run {
+        when {
+            quotes.isEmpty() -> title
+            else -> title(quotes) ?: title
+        }
+    }
+
+private fun title(quotes: List<QuoteApiModel>) =
+
+    when (quotes.size) {
+        0 -> null
+        1 -> title(quotes.first())
+        else -> title(quotes.first(), quotes.last())
+    }
+
+private fun title(quote: QuoteApiModel) =
+    "${scripture(quote)} ${number(quote)}"
+
+private fun title(first: QuoteApiModel, last: QuoteApiModel) =
+    "${scripture(first)} ${number(first, last)}"
+
+private fun scripture(quote: QuoteApiModel) =
+    quote.scripture.title
+
+private fun number(first: QuoteApiModel, last: QuoteApiModel) =
+    when {
+        canto(first) == canto(last) && first.chapter == last.chapter -> {
+            listOfNotNull(canto(first), first.chapter, "${first.verse}-${last.verse}").joinToString(separator = ".")
+        }
+
+        else -> "${number(first)}-${number(last)}"
+    }
+
+private fun number(quote: QuoteApiModel) =
+    quote.run {
+        listOfNotNull(canto?.title, chapter, verse).joinToString(separator = ".")
+    }
+
+private fun canto(quote: QuoteApiModel) =
+    quote.canto?.title
 
 fun lectureFullModel(apiModel: LectureApiModel) =
     LectureFullModel(
