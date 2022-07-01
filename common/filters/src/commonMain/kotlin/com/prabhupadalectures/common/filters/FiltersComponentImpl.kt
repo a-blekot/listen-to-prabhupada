@@ -44,7 +44,7 @@ class FiltersComponentImpl(
 
     init {
         store.labels
-            .onEach { handleLabel(it) }
+            .onEach(::handleLabel)
             .launchIn(scope)
     }
 

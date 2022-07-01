@@ -45,13 +45,8 @@ class FavoritesComponentImpl(
     override val flow: Value<FavoritesState> = store.asValue()
 
     init {
-        Napier.d("init store.labelsOnEach(...)", tag = "FAVORITES")
-
         store.labels
-            .onEach {
-                Napier.d("onEach $it", tag = "FAVORITES")
-                handleLabel(it)
-            }
+            .onEach(::handleLabel)
             .launchIn(scope)
 
         flow.ensureNeverFrozen()
@@ -72,10 +67,7 @@ class FavoritesComponentImpl(
 
     private fun handleLabel(label: FavoritesLabel) {
         when (label) {
-            is FavoritesLabel.LecturesLoaded -> {
-                Napier.d("handleLabel LecturesLoaded -> ${label.lectures.map {it.id}}", tag = "FAVORITES")
-                output(FavoritesOutput.UpdatePlaylist(label.lectures))
-            }
+            is FavoritesLabel.LecturesLoaded -> output(FavoritesOutput.UpdatePlaylist(label.lectures))
         }
     }
 }
