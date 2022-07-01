@@ -1,6 +1,6 @@
 //package com.prabhupadalectures.android.ui.screens.downloads
 //
-//import com.prabhupadalectures.common.lectures_api.Lecture
+//import com.prabhupadalectures.common.utils.Lecture
 //import com.prabhupadalectures.common.lectures_impl.events.UiEffect
 //import com.prabhupadalectures.common.lectures_impl.events.UiState
 //import com.prabhupadalectures.common.player_api.PlayerState

@@ -13,7 +13,6 @@ import com.prabhupadalectures.common.player_api.PlayerAction
 import com.prabhupadalectures.common.player_api.PlayerComponent
 import com.prabhupadalectures.common.player_impl.PlayerComponentImpl
 import com.prabhupadalectures.common.utils.Consumer
-import kotlinx.coroutines.CoroutineScope
 
 
 class ResultsComponentImpl(
@@ -52,13 +51,7 @@ class ResultsComponentImpl(
     private fun onLecturesOutput(output: LecturesOutput) =
         when(output) {
             Pause -> deps.playerBus.update(PlayerAction.Pause)
-            Next -> deps.playerBus.update(PlayerAction.Next)
-            Prev -> deps.playerBus.update(PlayerAction.Prev)
-            SeekForward -> deps.playerBus.update(PlayerAction.SeekForward)
-            SeekBack -> deps.playerBus.update(PlayerAction.SeekBack)
-            SliderReleased -> deps.playerBus.update(PlayerAction.SliderReleased)
             is Play -> deps.playerBus.update(PlayerAction.Play(output.lectureId))
-            is SeekTo -> deps.playerBus.update(PlayerAction.SeekTo(output.timeMs))
             is Download -> deps.playerBus.update(PlayerAction.Download(output.lecture))
             is UpdatePlaylist -> deps.playerBus.update(output.lectures)
         }

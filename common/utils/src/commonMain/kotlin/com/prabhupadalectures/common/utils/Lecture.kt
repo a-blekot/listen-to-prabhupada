@@ -1,6 +1,4 @@
-package com.prabhupadalectures.common.lectures_api
-
-import com.prabhupadalectures.common.database.LectureEntity
+package com.prabhupadalectures.common.utils
 
 data class Lecture(
     val id: Long = 0L,

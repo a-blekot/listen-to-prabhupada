@@ -22,6 +22,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.coroutines.CoroutineContext
+import io.github.aakira.napier.Napier
 
 class LecturesComponentImpl(
     componentContext: ComponentContext,
@@ -56,13 +57,7 @@ class LecturesComponentImpl(
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
     
     override fun onPause() = output(LecturesOutput.Pause)
-    override fun onNext() = output(LecturesOutput.Next)
-    override fun onPrev() = output(LecturesOutput.Prev)
-    override fun onSeekForward() = output(LecturesOutput.SeekForward)
-    override fun onSeekBack() = output(LecturesOutput.SeekBack)
-    override fun onSliderReleased() = output(LecturesOutput.SliderReleased)
     override fun onPlay(id: Long) = output(LecturesOutput.Play(id))
-    override fun onSeekTo(timeMs: Long) = output(LecturesOutput.SeekTo(timeMs))
     override fun onDownload(id: Long) =
         flow.value
             .lectures
@@ -72,7 +67,10 @@ class LecturesComponentImpl(
 
     private fun handleLabel(label: LecturesStore.Label) {
         when (label) {
-           is LecturesStore.Label.LecturesLoaded -> output(LecturesOutput.UpdatePlaylist(label.lectures))
+           is LecturesStore.Label.LecturesLoaded -> {
+               Napier.d("handleLabel LecturesLoaded -> ${label.lectures.map {it.id}}", tag = "LECTURES")
+               output(LecturesOutput.UpdatePlaylist(label.lectures))
+           }
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.prabhupadalectures.common.player_api
 
-import com.prabhupadalectures.common.lectures_api.Lecture
-import kotlinx.coroutines.CoroutineScope
+import com.prabhupadalectures.common.utils.Lecture
 
 interface PlayerBus {
     fun update(state: PlayerState)

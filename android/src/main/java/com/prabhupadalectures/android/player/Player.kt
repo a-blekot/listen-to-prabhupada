@@ -13,7 +13,7 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.prabhupadalectures.android.MainActivity
 import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.util.notificationColor
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.lectures_impl.repository.ToolsRepository
 import com.prabhupadalectures.common.lectures_impl.utils.toValidUrl
 import com.prabhupadalectures.common.player_api.PlayerAction

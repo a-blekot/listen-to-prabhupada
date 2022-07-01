@@ -3,12 +3,11 @@ package com.prabhupadalectures.common.player_impl
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.player_api.PlayerAction
 import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_api.PlayerComponent
 import com.prabhupadalectures.common.player_api.PlayerState
-import kotlinx.coroutines.CoroutineScope
 
 class PlayerComponentImpl(
     componentContext: ComponentContext,

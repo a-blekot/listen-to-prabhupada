@@ -14,7 +14,7 @@
 //import com.prabhupadalectures.android.ui.screens.helpers.LectureListItem
 //import com.prabhupadalectures.android.ui.screens.helpers.PlayerListItem
 //import com.prabhupadalectures.common.lectures_impl.events.CommonUiEvent
-//import com.prabhupadalectures.common.lectures_api.Lecture
+//import com.prabhupadalectures.common.utils.Lecture
 //import com.prabhupadalectures.common.player_api.PlayerState
 //
 //@Preview

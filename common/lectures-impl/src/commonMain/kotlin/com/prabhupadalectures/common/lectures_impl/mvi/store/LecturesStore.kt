@@ -1,7 +1,7 @@
 package com.prabhupadalectures.common.lectures_impl.mvi.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 
 import com.prabhupadalectures.common.lectures_api.LecturesState
 import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Intent

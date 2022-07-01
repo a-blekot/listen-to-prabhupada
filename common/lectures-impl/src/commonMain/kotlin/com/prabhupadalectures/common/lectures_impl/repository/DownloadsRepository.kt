@@ -3,7 +3,7 @@ package com.prabhupadalectures.common.lectures_impl.repository
 import co.touchlab.stately.collections.IsoArrayDeque
 import com.prabhupadalectures.common.database.Database
 import com.prabhupadalectures.common.database.isDownloaded
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.network_api.*
 
 import com.prabhupadalectures.common.lectures_impl.data.lectures.*

@@ -1,51 +1,41 @@
-//package com.prabhupadalectures.android.ui.screens.favorites
-//
-//import androidx.compose.foundation.background
-//import androidx.compose.foundation.layout.Box
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.foundation.lazy.LazyColumn
-//import androidx.compose.foundation.lazy.items
-//import androidx.compose.material.MaterialTheme
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.tooling.preview.Preview
-//import androidx.compose.ui.unit.dp
-//import com.prabhupadalectures.android.ui.screens.helpers.LectureListItem
-//import com.prabhupadalectures.android.ui.screens.helpers.PlayerListItem
-//import com.prabhupadalectures.common.lectures_impl.events.CommonUiEvent
-//import com.prabhupadalectures.common.lectures_api.Lecture
-//import com.prabhupadalectures.common.player_api.PlayerState
-//
-//@Preview
-//@Composable
-//fun FavoritesView(
-//    lectures: List<Lecture> = emptyList(),
-//    playbackState: PlayerState = PlayerState(),
-//    onEvent: (CommonUiEvent) -> Unit = {}
-//) {
-//    Box(
-//        Modifier
-//            .background(color = MaterialTheme.colors.surface)
-//            .padding(all = 12.dp)
-//    )
-//    {
-//        LazyColumn(
-//            Modifier.fillMaxWidth()
-//        ) {
-//            items(lectures, key = { it.id }) { lectureItem ->
-//                playbackState.run {
-//                    LectureListItem(
-//                        lecture = lectureItem,
-//                        isPlaying = lectureItem.id == lecture.id && isPlaying,
-//                        onEvent = onEvent
-//                    )
-//                }
-//            }
-//
-//            item {
-////                PlayerListItem(playbackState, onEvent)
-//            }
-//        }
-//    }
-//}
+package com.prabhupadalectures.android.ui.screens.favorites
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.prabhupadalectures.android.ui.screens.helpers.*
+import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
+
+@Composable
+fun FavoritesView(component: FavoritesFeatureComponent) {
+    val favoritesState = component.favoritesComponent.flow.subscribeAsState()
+
+    Box {
+        LazyColumn(
+            Modifier.fillMaxWidth()
+        ) {
+            items(favoritesState.value.lectures, key = { it.id }) { lectureItem ->
+                LectureListItem(
+                    lecture = lectureItem,
+                    component = object: Listener {
+                        override fun onPause() = component.favoritesComponent.onPause()
+
+                        override fun onPlay(id: Long) = component.favoritesComponent.onPlay(id)
+
+                        override fun onFavorite(id: Long, isFavorite: Boolean) =
+                            component.favoritesComponent.onFavorite(id, isFavorite)
+
+                    },
+                )
+            }
+
+            item {
+                PlayerListItem(playerComponent = component.playerComponent)
+            }
+        }
+    }
+}

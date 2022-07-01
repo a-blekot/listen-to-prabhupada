@@ -19,6 +19,6 @@ configure<BaseExtension> {
         targetCompatibility = JavaVersion.VERSION_11
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = findProperty("version.compose") as String
+        kotlinCompilerExtensionVersion = findProperty("version.compose_compiler") as String
     }
 }

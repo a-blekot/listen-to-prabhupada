@@ -4,6 +4,10 @@ includeBuild("build-logic")
 include(
     ":android",
     ":common:database",
+    ":common:favorites-api",
+    ":common:favorites-impl",
+    ":common:feature-favorites-api",
+    ":common:feature-favorites-impl",
     ":common:feature-results-api",
     ":common:feature-results-impl",
     ":common:filters",

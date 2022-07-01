@@ -17,14 +17,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prabhupadalectures.android.R
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.lectures_api.LecturesComponent
 import com.prabhupadalectures.common.network_api.FULL_PROGRESS
 
+interface Listener {
+    fun onPause()
+    fun onPlay(id: Long)
+    fun onFavorite(id: Long, isFavorite: Boolean)
+}
+
 @Composable
 fun LectureListItem(
-    component: LecturesComponent,
     lecture: Lecture,
+    component: Listener,
 ) =
     Row(
         modifier = Modifier.padding(top = 8.dp),

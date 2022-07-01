@@ -1,7 +1,7 @@
 package com.prabhupadalectures.common.lectures_impl.data
 
 import com.prabhupadalectures.common.lectures_api.LECTURES_PER_PAGE
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.lectures_api.Pagination
 import com.prabhupadalectures.common.lectures_impl.data.lectures.*
 import com.prabhupadalectures.common.network_api.ApiModel

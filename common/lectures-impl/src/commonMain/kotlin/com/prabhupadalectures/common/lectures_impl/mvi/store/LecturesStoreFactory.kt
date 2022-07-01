@@ -6,7 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.lectures_api.LecturesState
 import com.prabhupadalectures.common.lectures_impl.data.lectures
 import com.prabhupadalectures.common.lectures_impl.data.lectures.dbEntity
@@ -97,7 +97,7 @@ internal class LecturesStoreFactory(
 
             when (intent) {
                 is CurrentLecture -> setCurrent(intent.id, intent.isPlaying, getState())
-                is Favorite -> setFavorite(id = intent.id, isFavorite = intent.isFavorite, getState())
+                is Favorite -> setFavorite(intent.id, intent.isFavorite, getState())
                 is UpdatePage -> load(settings.getFilters().addPage(intent.page))
                 is UpdateFilters -> load(settings.getFilters().addPage(deps.db))
             }
@@ -114,6 +114,7 @@ internal class LecturesStoreFactory(
                         val newState = state(apiModel)
                         deps.db.insertPage(settings.getFilters().toDatabaseIdentifier(), newState.pagination.curr)
 
+                        Napier.d("LecturesStore LecturesLoaded -> ${newState.lectures.map {it.id}}", tag = "LECTURES")
                         dispatch(Msg.LoadingComplete(newState))
                         publish(Label.LecturesLoaded(newState.lectures))
                     }
@@ -201,6 +202,17 @@ fun HashMap<String, Any>.addPage(db: Database) =
         put(PAGE_QUERY_KEY, db.selectPage(toDatabaseIdentifier()))
     }
 
+//    private fun share(lectureId: Long) {
+//        val queryParams = resultsRepository.queryParams()
+//        val timeMs = playbackRepository.currentState().run {
+//            if (lectureId == lecture.id) timeMs else null
+//        }
+//
+//        ShareAction(lectureId, queryParams, timeMs).let {
+//            setEffect { ResultsEffect.Share(it) }
+//        }
+//    }
+//}
 
 //private fun observeSelfState() =
 //    launch {

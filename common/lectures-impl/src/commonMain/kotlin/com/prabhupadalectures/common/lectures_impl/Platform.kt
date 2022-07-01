@@ -1,6 +1,6 @@
 package com.prabhupadalectures.common.lectures_impl
 
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
 import io.ktor.utils.io.*
 import okio.FileSystem

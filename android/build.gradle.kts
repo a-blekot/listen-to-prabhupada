@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("kotlin-parcelize")
+    id("base-kotlin-convention")
 }
 
 android {
@@ -30,19 +31,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = findProperty("version.compose") as String
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
+        kotlinCompilerExtensionVersion = findProperty("version.compose_compiler") as String
     }
 }
 
 dependencies {
     implementation(project(":common:database"))
     implementation(project(":common:feature-results-api"))
+    implementation(project(":common:feature-favorites-api"))
     implementation(project(":common:filters"))
+    implementation(project(":common:favorites-api"))
     implementation(project(":common:lectures-api"))
     implementation(project(":common:lectures-impl"))
     implementation(project(":common:network-api"))
@@ -86,7 +84,7 @@ detekt {
 
 ktlint {
     android.set(true)
-    version.set("0.41.0")
+    version.set("0.46.1")
     ignoreFailures.set(false)
     reporters {
         reporter(ReporterType.PLAIN)

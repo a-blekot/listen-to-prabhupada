@@ -1,16 +1,16 @@
 package com.prabhupadalectures.common.player_impl
 
-import com.prabhupadalectures.common.lectures_api.Lecture
+import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.player_api.PlayerAction
 import com.prabhupadalectures.common.player_api.PlayerBus
 import com.prabhupadalectures.common.player_api.PlayerState
 import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import io.github.aakira.napier.Napier
 
 
 class PlayerBusImpl(
@@ -28,8 +28,10 @@ class PlayerBusImpl(
         playbackFlow.update { state }
     }
 
-    override fun update(playlist: List<Lecture>) =
+    override fun update(playlist: List<Lecture>) {
+        Napier.d("PlayerBusImpl -> update ${playlist.map { it.id }}", tag = "FAVORITES")
         playlistFlow.update { playlist }
+    }
 
     override fun update(action: PlayerAction) {
         scope.launch { playerActionFlow.emit(action) }

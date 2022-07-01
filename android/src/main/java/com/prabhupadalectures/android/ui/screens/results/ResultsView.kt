@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
@@ -20,9 +21,7 @@ import com.prabhupadalectures.common.feature_results_api.ResultsComponent
 import kotlinx.coroutines.launch
 
 @Composable
-fun ResultsView(
-    component: ResultsComponent,
-) {
+fun ResultsView(component: ResultsComponent) {
     val lecturesState = component.lecturesComponent.flow.subscribeAsState()
 
     if (true) { // isOnline
@@ -102,7 +101,15 @@ fun ResultsView(
                         items(lecturesState.value.lectures, key = { it.id }) { lectureItem ->
                             LectureListItem(
                                 lecture = lectureItem,
-                                component = component.lecturesComponent,
+                                component = object: Listener {
+                                    override fun onPause() = component.lecturesComponent.onPause()
+
+                                    override fun onPlay(id: Long) = component.lecturesComponent.onPlay(id)
+
+                                    override fun onFavorite(id: Long, isFavorite: Boolean) =
+                                        component.lecturesComponent.onFavorite(id, isFavorite)
+
+                                },
                             )
                         }
 
@@ -113,9 +120,9 @@ fun ResultsView(
                             )
                         }
 
-                    item {
-                        PlayerListItem(playerComponent = component.playerComponent)
-                    }
+                        item {
+                            PlayerListItem(playerComponent = component.playerComponent)
+                        }
                 }
 
                 if (lecturesState.value.isLoading) {
@@ -142,6 +149,20 @@ private fun TopAppBar(component: ResultsComponent, onMenuClick: () -> Unit = {})
                     imageVector = Icons.Default.List,
 //                    modifier = Modifier.padding(horizontal = 8.dp),
                     contentDescription = "Filter icon"
+                )
+            }
+
+
+            IconButton(
+                onClick = { component.onShowFavorites() },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .wrapContentWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+//                    modifier = Modifier.padding(horizontal = 8.dp),
+                    contentDescription = "Favorites icon"
                 )
             }
 

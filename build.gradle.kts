@@ -1,8 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+
 buildscript {
     repositories {
         google()
         mavenCentral()
         maven("https://plugins.gradle.org/m2/")
+        gradlePluginPortal()
     }
 
     dependencies {
@@ -23,6 +26,21 @@ subprojects {
     apply(plugin ="io.gitlab.arturbosch.detekt")
     apply(plugin ="org.jlleitschuh.gradle.ktlint")
     apply(plugin ="com.github.plnice.canidropjetifier")
+}
+
+allprojects {
+    afterEvaluate {
+        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
+            ext.sourceSets.removeAll { sourceSet ->
+                setOf(
+                    "androidAndroidTestRelease",
+                    "androidTestFixtures",
+                    "androidTestFixturesDebug",
+                    "androidTestFixturesRelease",
+                ).contains(sourceSet.name)
+            }
+        }
+    }
 }
 
 tasks.register("clean", Delete::class) {
