@@ -2,8 +2,6 @@ package com.prabhupadalectures.common.filters
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.LifecycleOwner
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.prabhupadalectures.common.filters.FiltersComponent.Output
@@ -15,6 +13,7 @@ import com.prabhupadalectures.common.filters.store.FiltersStoreFactory
 import com.prabhupadalectures.common.utils.Consumer
 import com.prabhupadalectures.common.utils.asValue
 import com.prabhupadalectures.common.utils.getStore
+import com.prabhupadalectures.common.utils.lifecycleCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -59,11 +58,4 @@ class FiltersComponentImpl(
             FiltersStore.Label.ApplyChanges -> output(Output.ShowResults)
         }
     }
-}
-
-fun LifecycleOwner.lifecycleCoroutineScope(coroutineContext: CoroutineContext = Dispatchers.Main): CoroutineScope {
-    val scope = CoroutineScope(coroutineContext)
-    lifecycle.doOnDestroy(scope::cancel)
-
-    return scope
 }

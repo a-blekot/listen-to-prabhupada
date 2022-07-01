@@ -50,9 +50,6 @@ class FavoritesFeatureComponentImpl(
             Pause -> deps.playerBus.update(PlayerAction.Pause)
             is Play -> deps.playerBus.update(PlayerAction.Play(output.lectureId))
             is Download -> deps.playerBus.update(PlayerAction.Download(output.lecture))
-            is UpdatePlaylist -> {
-                Napier.d("onFavoritesOutput -> UpdatePlaylist ${output.lectures.map {it.id}}", tag = "FAVORITES")
-                deps.playerBus.update(output.lectures)
-            }
+            is UpdatePlaylist -> deps.playerBus.update(output.lectures)
         }
 }

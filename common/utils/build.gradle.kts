@@ -7,6 +7,8 @@ kotlin {
     sourceSets {
         named("commonMain") {
             dependencies {
+                implementation(project(":common:database"))
+
                 implementation(libs.decompose.decompose)
                 implementation(libs.mvikotlin.mvikotlin)
                 implementation(libs.mvikotlin.rx)

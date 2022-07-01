@@ -40,9 +40,13 @@ class ResultsComponentImpl(
         deps.playerBus.observeState {
             lecturesComponent.onCurrentLecture(it.lecture.id, it.isPlaying)
         }
+        deps.playerBus.observeActions {
+            if (it is PlayerAction.Download) {
+                lecturesComponent.onDownload(it.lecture.id)
+            }
+        }
     }
 
-    override fun onUpdateFilters() = lecturesComponent.onUpdateFilters()
     override fun onEditFilters() = output(ResultsOutput.EditFilters)
     override fun onShowDownloads() = output(ResultsOutput.ShowDownloads)
     override fun onShowFavorites() = output(ResultsOutput.ShowFavorites)

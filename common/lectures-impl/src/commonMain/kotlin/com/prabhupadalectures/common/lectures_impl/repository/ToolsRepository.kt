@@ -4,8 +4,8 @@ import com.prabhupadalectures.common.database.Database
 import com.prabhupadalectures.common.settings.getNextNotificationId
 
 import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.lectures_impl.data.lectures.dbEntity
-import com.prabhupadalectures.common.lectures_impl.data.lectures.mapped
+import com.prabhupadalectures.common.utils.dbEntity
+import com.prabhupadalectures.common.utils.mapped
 import kotlinx.coroutines.flow.Flow
 
 interface ToolsRepository {

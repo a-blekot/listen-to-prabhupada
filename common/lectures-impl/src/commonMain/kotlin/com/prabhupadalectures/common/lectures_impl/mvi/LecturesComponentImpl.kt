@@ -3,8 +3,6 @@ package com.prabhupadalectures.common.lectures_impl.mvi
 import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.LifecycleOwner
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -17,6 +15,7 @@ import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStoreFactor
 import com.prabhupadalectures.common.utils.Consumer
 import com.prabhupadalectures.common.utils.asValue
 import com.prabhupadalectures.common.utils.getStore
+import com.prabhupadalectures.common.utils.lifecycleCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -77,11 +76,4 @@ class LecturesComponentImpl(
             }
         }
     }
-}
-
-fun LifecycleOwner.lifecycleCoroutineScope(coroutineContext: CoroutineContext = Dispatchers.Main): CoroutineScope {
-    val scope = CoroutineScope(coroutineContext)
-    lifecycle.doOnDestroy(scope::cancel)
-
-    return scope
 }

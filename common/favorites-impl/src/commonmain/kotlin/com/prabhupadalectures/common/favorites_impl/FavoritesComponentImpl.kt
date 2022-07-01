@@ -3,8 +3,6 @@ package com.prabhupadalectures.common.favorites_impl
 import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.LifecycleOwner
-import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.prabhupadalectures.common.favorites_api.FavoritesComponent
@@ -16,6 +14,7 @@ import com.prabhupadalectures.common.favorites_impl.store.FavoritesStoreFactory
 import com.prabhupadalectures.common.utils.Consumer
 import com.prabhupadalectures.common.utils.asValue
 import com.prabhupadalectures.common.utils.getStore
+import com.prabhupadalectures.common.utils.lifecycleCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -59,7 +58,7 @@ class FavoritesComponentImpl(
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
     override fun onDownload(id: Long) =
-        flow.value
+        store.state
             .lectures
             .firstOrNull { id == id }
             ?.let { output(FavoritesOutput.Download(it)) }
@@ -70,11 +69,4 @@ class FavoritesComponentImpl(
             is FavoritesLabel.LecturesLoaded -> output(FavoritesOutput.UpdatePlaylist(label.lectures))
         }
     }
-}
-
-fun LifecycleOwner.lifecycleCoroutineScope(coroutineContext: CoroutineContext = Dispatchers.Main): CoroutineScope {
-    val scope = CoroutineScope(coroutineContext)
-    lifecycle.doOnDestroy(scope::cancel)
-
-    return scope
 }

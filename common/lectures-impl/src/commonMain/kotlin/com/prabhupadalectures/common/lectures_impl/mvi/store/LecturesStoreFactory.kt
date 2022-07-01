@@ -9,7 +9,7 @@ import com.prabhupadalectures.common.database.Database
 import com.prabhupadalectures.common.utils.Lecture
 import com.prabhupadalectures.common.lectures_api.LecturesState
 import com.prabhupadalectures.common.lectures_impl.data.lectures
-import com.prabhupadalectures.common.lectures_impl.data.lectures.dbEntity
+import com.prabhupadalectures.common.utils.dbEntity
 import com.prabhupadalectures.common.lectures_impl.data.pagination
 import com.prabhupadalectures.common.lectures_impl.mvi.LecturesDeps
 import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Intent.*
@@ -78,9 +78,12 @@ internal class LecturesStoreFactory(
 
     private inner class ExecutorImpl : CoroutineExecutor<LecturesStore.Intent, Action, LecturesState, Msg, Label>() {
         override fun executeAction(action: Action, getState: () -> LecturesState) {
-            fix when (action) {
+            when (action) {
                 is UpdateFromDB -> {
                     updateFromDB(getState())
+                }
+                else -> {
+                    /** do nothing **/
                 }
 //                is InitialLoad -> {
 //                    load(action.queryParams)
@@ -113,12 +116,16 @@ internal class LecturesStoreFactory(
                         val newState = state(apiModel)
                         deps.db.insertPage(settings.getFilters().toDatabaseIdentifier(), newState.pagination.curr)
 
-                        Napier.d("LecturesStore LecturesLoaded -> ${newState.lectures.map {it.id}}", tag = "LECTURES")
+                        Napier.d("LecturesStore LecturesLoaded -> ${newState.lectures.map { it.id }}", tag = "LECTURES")
                         dispatch(Msg.LoadingComplete(newState))
                         publish(Label.LecturesLoaded(newState.lectures))
                     }
                 } else {
-                    Napier.e(message = "api.getResults isFailure ${result.exceptionOrNull()?.message}", throwable = result.exceptionOrNull(), tag = "LecturesStore")
+                    Napier.e(
+                        message = "api.getResults isFailure ${result.exceptionOrNull()?.message}",
+                        throwable = result.exceptionOrNull(),
+                        tag = "LecturesStore"
+                    )
                     dispatch(Msg.LoadingComplete())
                 }
             }
@@ -153,11 +160,6 @@ internal class LecturesStoreFactory(
                     }
                 }
         }
-
-        private fun updatePlaylist(lectures: List<Lecture>) =
-            scope.launch {
-                publish(Label.UpdatePlaylist(lectures))
-            }
 
         private fun updateFromDB(state: LecturesState) =
             scope.launch {

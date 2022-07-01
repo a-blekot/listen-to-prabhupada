@@ -7,8 +7,8 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.prabhupadalectures.common.favorites_impl.FavoritesDeps
 import com.prabhupadalectures.common.favorites_api.FavoritesState
-import com.prabhupadalectures.common.favorites_impl.dbEntity
-import com.prabhupadalectures.common.favorites_impl.mapped
+import com.prabhupadalectures.common.utils.dbEntity
+import com.prabhupadalectures.common.utils.mapped
 import com.prabhupadalectures.common.favorites_impl.store.FavoritesIntent.CurrentLecture
 import com.prabhupadalectures.common.favorites_impl.store.FavoritesIntent.Favorite
 import com.prabhupadalectures.common.favorites_impl.store.FavoritesStoreFactory.Action.InitialLoad

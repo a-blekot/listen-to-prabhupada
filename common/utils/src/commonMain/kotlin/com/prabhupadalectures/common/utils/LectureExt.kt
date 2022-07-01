@@ -1,10 +1,8 @@
-package com.prabhupadalectures.common.favorites_impl
+package com.prabhupadalectures.common.utils
 
 import com.prabhupadalectures.common.database.LectureEntity
-import com.prabhupadalectures.common.utils.Lecture
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
 
 fun Lecture.dbEntity(): LectureEntity =
     LectureEntity(

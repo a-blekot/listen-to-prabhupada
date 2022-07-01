@@ -4,8 +4,9 @@ import co.touchlab.stately.collections.IsoArrayDeque
 import com.prabhupadalectures.common.database.Database
 import com.prabhupadalectures.common.database.isDownloaded
 import com.prabhupadalectures.common.utils.Lecture
+import com.prabhupadalectures.common.utils.dbEntity
+import com.prabhupadalectures.common.utils.mapped
 import com.prabhupadalectures.common.network_api.*
-
 import com.prabhupadalectures.common.lectures_impl.data.lectures.*
 import com.prabhupadalectures.common.lectures_impl.writeChannel
 import io.github.aakira.napier.Napier

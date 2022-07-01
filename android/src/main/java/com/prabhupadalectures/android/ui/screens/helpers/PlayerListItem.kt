@@ -190,21 +190,21 @@ fun PlayerListItem(playerComponent: PlayerComponent) {
                     }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+//            Spacer(modifier = Modifier.height(10.dp))
 
-
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                list.forEach {
-                    DropdownMenuItem(
-                        onClick = {
-                            expanded = false
-                            playerComponent.onSpeed(it.speed)
-                        }
-                    ) {
-                        Text(text = it.title)
-                    }
-                }
-            }
+//
+//            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+//                list.forEach {
+//                    DropdownMenuItem(
+//                        onClick = {
+//                            expanded = false
+//                            playerComponent.onSpeed(it.speed)
+//                        }
+//                    ) {
+//                        Text(text = it.title)
+//                    }
+//                }
+//            }
         }
         if (playbackState.value.isBuffering) {
             LoadingBar()

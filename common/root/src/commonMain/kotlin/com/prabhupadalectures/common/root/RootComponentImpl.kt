@@ -6,6 +6,10 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureComponent
+import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureOutput
+import com.prabhupadalectures.common.feature_downloads_impl.DownloadsFeatureComponentImpl
+import com.prabhupadalectures.common.feature_downloads_impl.DownloadsFeatureDeps
 import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
 import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureOutput
 import com.prabhupadalectures.common.feature_favorites_impl.FavoritesFeatureComponentImpl
@@ -24,6 +28,7 @@ class RootComponentImpl internal constructor(
     componentContext: ComponentContext,
     private val results: (ComponentContext, Consumer<ResultsOutput>) -> ResultsComponent,
     private val favorites: (ComponentContext, Consumer<FavoritesFeatureOutput>) -> FavoritesFeatureComponent,
+    private val downloads: (ComponentContext, Consumer<DownloadsFeatureOutput>) -> DownloadsFeatureComponent,
     private val filters: (ComponentContext, Consumer<FiltersComponent.Output>) -> FiltersComponent
 ) : RootComponent, ComponentContext by componentContext {
 
@@ -46,6 +51,14 @@ class RootComponentImpl internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 deps = deps.run { FavoritesFeatureDeps(db, api, playerBus, dispatchers) },
+                output = output
+            )
+        },
+        downloads = { childContext, output ->
+            DownloadsFeatureComponentImpl(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                deps = deps.run { DownloadsFeatureDeps(db, api, playerBus, dispatchers) },
                 output = output
             )
         },
@@ -72,6 +85,7 @@ class RootComponentImpl internal constructor(
         when (configuration) {
             is Configuration.Results -> Results(results(componentContext, Consumer(::onResultsOutput)))
             is Configuration.Favorites -> Favorites(favorites(componentContext, Consumer(::onFavoritesOutput)))
+            is Configuration.Downloads -> Downloads(downloads(componentContext, Consumer(::onDownloadsOutput)))
             is Configuration.Filters -> Filters(filters(componentContext, Consumer(::onFiltersOutput)))
         }
 
@@ -79,10 +93,17 @@ class RootComponentImpl internal constructor(
         when (output) {
             is ResultsOutput.EditFilters -> router.push(Configuration.Filters)
             is ResultsOutput.ShowFavorites -> router.push(Configuration.Favorites)
+            is ResultsOutput.ShowDownloads -> router.push(Configuration.Downloads)
             else -> { /** TODO **/}
         }
 
     private fun onFavoritesOutput(output: FavoritesFeatureOutput): Unit =
+        when (output) {
+//            is FavoritesFeatureOutput.ShowSettings -> router.push(Configuration.Filters)
+            else -> { /** TODO **/}
+        }
+
+    private fun onDownloadsOutput(output: DownloadsFeatureOutput): Unit =
         when (output) {
 //            is FavoritesFeatureOutput.ShowSettings -> router.push(Configuration.Filters)
             else -> { /** TODO **/}
@@ -103,6 +124,9 @@ class RootComponentImpl internal constructor(
 
         @Parcelize
         object Favorites : Configuration()
+
+        @Parcelize
+        object Downloads : Configuration()
 
         @Parcelize
         object Filters : Configuration()
