@@ -36,3 +36,6 @@ fun Bundle.getBooleanOrNull(key: String) =
     if (containsKey(key)) getBoolean(key) else null
 
 fun Bundle.getStringOrNull(key: String) = getString(key)
+
+fun <T> selector(positive: T, negative: T, condition: Boolean): T =
+    if (condition) positive else negative

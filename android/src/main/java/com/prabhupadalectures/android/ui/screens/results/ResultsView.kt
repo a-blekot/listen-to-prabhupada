@@ -1,5 +1,6 @@
 package com.prabhupadalectures.android.ui.screens.results
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,12 +10,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FilterList
+import androidx.compose.material.icons.rounded.MenuOpen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import com.prabhupadalectures.android.R
 import com.prabhupadalectures.android.ui.LoadingBar
 import com.prabhupadalectures.android.ui.screens.helpers.*
 import com.prabhupadalectures.common.feature_results_api.ResultsComponent
@@ -87,8 +97,8 @@ fun ResultsView(component: ResultsComponent) {
                         .padding(horizontal = 8.dp)
                         .fillMaxWidth(),
 //                        state = listState,
-                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 40.dp),
-//                        verticalArrangement = Arrangement.spacedBy(4.dp),
+//                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 40.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                         item {
                             Header(
@@ -138,33 +148,33 @@ fun ResultsView(component: ResultsComponent) {
 @Composable
 private fun TopAppBar(component: ResultsComponent, onMenuClick: () -> Unit = {}) {
     TopAppBar(
+
         actions = {
-            IconButton(
+            Button(
                 onClick = { component.onEditFilters() },
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .wrapContentWidth()
             ) {
                 Icon(
-                    imageVector = Icons.Default.List,
+                    imageVector = Icons.Rounded.FilterList,
 //                    modifier = Modifier.padding(horizontal = 8.dp),
                     contentDescription = "Filter icon"
                 )
             }
 
-
-            IconButton(
-                onClick = { component.onShowFavorites() },
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .wrapContentWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-//                    modifier = Modifier.padding(horizontal = 8.dp),
-                    contentDescription = "Favorites icon"
-                )
-            }
+//            IconButton(
+//                onClick = { component.onShowFavorites() },
+//                modifier = Modifier
+//                    .padding(horizontal = 8.dp)
+//                    .wrapContentWidth()
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Rounded.Favorite,
+////                    modifier = Modifier.padding(horizontal = 8.dp),
+//                    contentDescription = "Favorites icon"
+//                )
+//            }
 
             IconButton(
                 onClick = { onMenuClick() },
@@ -173,13 +183,38 @@ private fun TopAppBar(component: ResultsComponent, onMenuClick: () -> Unit = {})
                     .wrapContentWidth()
             ) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
+                    imageVector = Icons.Rounded.MenuOpen,
 //                    modifier = Modifier.padding(horizontal = 8.dp),
                     contentDescription = "Menu icon"
                 )
             }
         },
-        title = { Text("") },
+        title = {
+            Row(
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary),
+                    contentDescription = "logo image",
+                    modifier = Modifier
+                        .height(50.dp)
+                        .aspectRatio(1f)
+                        .align(Alignment.CenterVertically)
+                )
+
+                Text(
+                    text = stringResource(id = R.string.header_app_name),
+                    style = MaterialTheme.typography.h6,
+                    maxLines = 2,
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colors.onSecondary,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                )
+            }
+        },
         backgroundColor = MaterialTheme.colors.background
     )
 }

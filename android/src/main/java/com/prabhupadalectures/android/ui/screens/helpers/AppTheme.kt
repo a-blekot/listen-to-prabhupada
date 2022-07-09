@@ -8,14 +8,18 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val BrownDark = Color(0xFF603004)
+val BrownDark = Color(0xFF603004)
 private val BrownMed = Color(0xB2DE924D)
 private val BrownMedLight = Color(0xFFFEC795)
-private val BrownMedLight2 = Color(0xFFE8B07E)
+val BrownMedLight2 = Color(0xFFE8B07E)
 private val BrownLight = Color(0xB2FFECDB)
 private val BrownXLight = Color(0xFFFFFFFF)
 val AlphaDarkBg = Color(0x44000000)
 //private val BrownXLight = Color(0xFFE5E5E5)
+
+val favoriteSelected = Color(0xFFD0690D)
+val favoriteUnselected = Color(0xFFFEEAD8)
+val playerBg = Color(0xFFFFF7EF)
 
 private val Orange = Color(0xFFB65D0D)
 //private val OrangeLight = Color(0xFFFAD1B4) ?? BrownMedLight

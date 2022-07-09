@@ -1,6 +1,5 @@
 package com.prabhupadalectures.android.ui.screens.helpers
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,14 +7,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons.Rounded
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,13 +30,10 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.prabhupadalectures.android.PrabhupadaApp.Companion.app
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.android.player.SEEK_INCREMENT_MS
 import com.prabhupadalectures.android.ui.LoadingBar
 import com.prabhupadalectures.android.util.ONE_DAY_MS
 import com.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
-import com.prabhupadalectures.common.network_api.FULL_PROGRESS
+import com.prabhupadalectures.android.util.selector
 import com.prabhupadalectures.common.player_api.PlayerComponent
 import com.prabhupadalectures.common.player_api.PlayerState
 
@@ -38,14 +41,27 @@ import com.prabhupadalectures.common.player_api.PlayerState
 fun PlayerListItem(playerComponent: PlayerComponent) {
     val playbackState = playerComponent.flow.subscribeAsState()
 
-    Box(
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val bgWidth = (screenWidth - (8 * 2)).dp // + 4*2
+
+    println("screenWidth = $screenWidth")
+    println("bgWidth = $bgWidth")
+
+    BoxWithConstraints(
         modifier = Modifier
-            .padding(top = 12.dp)
-            .background(
-                color = MaterialTheme.colors.secondary,
-                shape = RoundedCornerShape(4.dp)
-            )
-            .padding(all = 4.dp)
+//            .background(
+//                color = Color(0x880000FF),
+//                shape = RoundedCornerShape(4.dp)
+//            )
+            .drawBehind {
+                drawRoundRect(
+                    brush = Brush.horizontalGradient(listOf(playerBg, playerBg.copy(alpha = 0.5f))),
+                    topLeft = Offset(x = 0f, y = 7.dp.toPx()),
+                    size = Size(bgWidth.toPx(), 700.dp.toPx()),
+                    cornerRadius = CornerRadius(8f, 8f)
+                )
+            }
+
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -56,7 +72,8 @@ fun PlayerListItem(playerComponent: PlayerComponent) {
                 playerComponent
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
             MarqueeText(
                 text = playbackState.value.lecture.title,
 //                overflow = TextOverflow.Ellipsis,
@@ -66,210 +83,67 @@ fun PlayerListItem(playerComponent: PlayerComponent) {
                 textAlign = TextAlign.Center
             )
 
-            Text(
-                text = playbackState.value.lecture.displayedDescription,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = GrayLight,
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Row(
                 modifier = Modifier
-                    .height(28.dp)
-                    .padding(start = 20.dp)
-                    .padding(end = 20.dp)
-                    .padding(bottom = 30.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Spacer(modifier = Modifier.weight(0.15f))
-                PlayerActionIcon(R.drawable.ic_player_prev, "previous", 1.4f) {
+                PlayerActionIcon(Rounded.SkipPrevious, "previous") {
                     playerComponent.onPrev()
                 }
-                Spacer(modifier = Modifier.weight(0.1f))
-
-                Box(
-                    modifier = Modifier
-                        .weight(0.1f)
-                        .aspectRatio(1.1f)
-                ) {
-                    PlayerActionIcon(R.drawable.ic_player_seek_backward, "seek back", 1.1f) {
-                        playerComponent.onSeekBack()
-                    }
-                    SeekText(Modifier.padding(start = 4.dp))
+                PlayerActionIcon(Rounded.Replay10, "seek back") {
+                    playerComponent.onSeekBack()
                 }
-                Spacer(modifier = Modifier.weight(0.1f))
-
-                val playIconId =
-                    if (playbackState.value.isPlaying) R.drawable.ic_player_pause else R.drawable.ic_player_play
-                PlayerActionIcon(playIconId, "play/pause", 0.9f) {
+                val imageVector = selector(Rounded.Pause, Rounded.PlayArrow, playbackState.value.isPlaying)
+                PlayerActionIcon(imageVector, "play/pause", 0.14f) {
                     when (playbackState.value.isPlaying) {
                         true -> playerComponent.onPause()
                         else -> playerComponent.onPlay(playbackState.value.lecture.id)
                     }
                 }
-                Spacer(modifier = Modifier.weight(0.1f))
-
-                Box(
-                    modifier = Modifier
-                        .weight(0.1f)
-                        .aspectRatio(1.1f)
-                ) {
-                    PlayerActionIcon(R.drawable.ic_player_seek_forward, "seek forward", 1.1f) {
-                        playerComponent.onSeekForward()
-                    }
-                    SeekText(Modifier.padding(end = 4.dp))
+                PlayerActionIcon(Rounded.Forward10, "seek forward") {
+                    playerComponent.onSeekForward()
                 }
-                Spacer(modifier = Modifier.weight(0.1f))
-
-                PlayerActionIcon(R.drawable.ic_player_next, "next", 1.4f) {
+                PlayerActionIcon(Rounded.SkipNext, "next") {
                     playerComponent.onNext()
                 }
-                Spacer(modifier = Modifier.weight(0.15f))
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            var expanded by remember { mutableStateOf(false) }
-
-            when (playbackState.value.lecture.downloadProgress) {
-                null ->
-                    Text(
-                        text = stringResource(R.string.download_lecture),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colors.onPrimary,
-                        style = MaterialTheme.typography.body1,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.clickable {
-                            expanded = !expanded
-                            app.downloadsRepository.download(playbackState.value.lecture)
-//                            playerComponent.onDownload(playbackState.value.lecture)
-                        }
-                    )
-
-                FULL_PROGRESS ->
-                    Image(
-                        painter = painterResource(R.drawable.ic_download_mark),
-                        contentScale = ContentScale.FillBounds,
-                        contentDescription = "download success image",
-                        modifier = Modifier.size(30.dp),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary)
-                    )
-                else ->
-                    Row {
-                        Text(
-                            text = "${playbackState.value.lecture.downloadProgress}%",
-                            maxLines = 1,
-                            color = MaterialTheme.colors.onPrimary,
-                            style = MaterialTheme.typography.body1,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        val infiniteTransition = rememberInfiniteTransition()
-                        val alpha by infiniteTransition.animateFloat(
-                            initialValue = 0f,
-                            targetValue = 1f,
-                            animationSpec = infiniteRepeatable(
-                                animation = keyframes {
-                                    durationMillis = 1000
-                                    0.7f at 500
-                                },
-                                repeatMode = RepeatMode.Reverse
-                            )
-                        )
-                        Image(
-                            painter = painterResource(R.drawable.ic_notification_download_progress),
-                            contentScale = ContentScale.FillBounds,
-                            contentDescription = "download progress image",
-                            modifier = Modifier
-                                .size(30.dp)
-                                .alpha(alpha)
-                        )
-                    }
-            }
-
-//            Spacer(modifier = Modifier.height(10.dp))
-
-//
-//            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-//                list.forEach {
-//                    DropdownMenuItem(
-//                        onClick = {
-//                            expanded = false
-//                            playerComponent.onSpeed(it.speed)
-//                        }
-//                    ) {
-//                        Text(text = it.title)
-//                    }
-//                }
-//            }
         }
         if (playbackState.value.isBuffering) {
-            LoadingBar()
+            LoadingBar(
+                Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize(),
+                bgColor = Color.Transparent
+            )
         }
     }
 }
 
-private val list = listOf(
-    Speedy("0,50", 0.50f),
-    Speedy("0,75", 0.75f),
-    Speedy("1,00", 1.00f),
-    Speedy("1,25", 1.25f),
-    Speedy("1,50", 1.50f),
-    Speedy("1,75", 1.75f),
-    Speedy("2,00", 2.00f),
-)
-
-private class Speedy(val title: String, val speed: Float)
-
 @Composable
 fun RowScope.PlayerActionIcon(
-    @DrawableRes id: Int,
+    imageVector: ImageVector,
     description: String,
-    ratio: Float = 1f,
+    weight: Float = 0.1f,
     onClick: () -> Unit
 ) =
     Image(
-        painter = painterResource(id),
+        imageVector = imageVector,
         contentScale = ContentScale.FillBounds,
         contentDescription = description,
+        colorFilter = ColorFilter.tint(BrownDark),
         modifier =
         Modifier
-            .aspectRatio(ratio)
-            .weight(0.1f)
+            .aspectRatio(1f)
+            .weight(weight)
+//            .background(
+//                color = Color(0x880000FF),
+//                shape = RoundedCornerShape(4.dp)
+//            )
             .clickable { onClick() }
-    )
-
-@Composable
-fun BoxScope.PlayerActionIcon(
-    @DrawableRes id: Int,
-    description: String,
-    ratio: Float = 1f,
-    onClick: () -> Unit
-) =
-    Image(
-        painter = painterResource(id),
-        contentScale = ContentScale.FillBounds,
-        contentDescription = description,
-        modifier =
-        Modifier
-            .aspectRatio(ratio)
-            .clickable { onClick() }
-    )
-
-@Composable
-fun BoxScope.SeekText(modifier: Modifier = Modifier) =
-    Text(
-        text = "${SEEK_INCREMENT_MS / 1000}",
-        maxLines = 1,
-        color = MaterialTheme.colors.onPrimary,
-        style = MaterialTheme.typography.body2,
-        textAlign = TextAlign.Center,
-        modifier = modifier.align(Alignment.Center)
     )
 
 @Composable
@@ -285,9 +159,11 @@ fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponen
                 thumbColor = MaterialTheme.colors.onSurface,
                 activeTrackColor = MaterialTheme.colors.primaryVariant
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(12.dp)
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = playbackState.displayedTime,
             maxLines = 1,

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.prabhupadalectures.android.ui.screens.helpers.*
 import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
@@ -16,7 +17,7 @@ fun FavoritesView(component: FavoritesFeatureComponent) {
 
     Box {
         LazyColumn(
-            Modifier.fillMaxWidth()
+            Modifier.fillMaxWidth().padding(horizontal = 8.dp)
         ) {
             items(favoritesState.value.lectures, key = { it.id }) { lectureItem ->
                 LectureListItem(

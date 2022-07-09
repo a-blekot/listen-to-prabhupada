@@ -111,7 +111,7 @@ fun Header(
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colors.primary,
             modifier = Modifier
-                .padding(bottom = 40.dp)
+                .padding(bottom = 20.dp)
                 .clickable { /**onEvent(CommonUiEvent.ResultsEvent.OpenHelpTranslation) **/ }
         )
     }

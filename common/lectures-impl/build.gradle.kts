@@ -24,5 +24,13 @@ kotlin {
                 implementation(libs.bundles.stately.bndl)
             }
         }
+
+//        findByName("iosMain")?.run {
+//            dependencies {
+//                implementation(libs.sqlDelight.native.driver)
+//                implementation(libs.ktor.client.core.iosx64)
+//                implementation(libs.ktor.client.core.iosarm64)
+//            }
+//        }
     }
 }

@@ -1,5 +1,21 @@
-rootProject.name = "Prabhupada_Lectures"
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
 
+enableFeaturePreview("VERSION_CATALOGS")
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "Prabhupada_Lectures"
 includeBuild("build-logic")
 include(
     ":android",
@@ -25,19 +41,3 @@ include(
     ":common:settings",
     ":common:utils"
 )
-
-enableFeaturePreview("VERSION_CATALOGS")
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
