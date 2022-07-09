@@ -10,57 +10,12 @@ import Foundation
 import Prabhupada
 
 class StubLecturesComponent: LecturesComponent {
-    func onCurrentLecture(id: Int64, isPlaying: Bool) {
-        
-    }
-    
-    func onDownload(id: Int64) {
-        
-    }
-    
-    func onFavorite(id: Int64, isFavorite: Bool) {
-        
-    }
-    
-    func onNext() {
-    
-    }
-    
-    func onPage(page: Int32) {
-        
-    }
-    
-    func onPause() {
-        
-    }
-    
-    func onPlay(id: Int64) {
-        
-    }
-    
-    func onPrev() {
-        
-    }
-    
-    func onSeekBack() {
-        
-    }
-    
-    func onSeekForward() {
-        
-    }
-    
-    func onSeekTo(timeMs: Int64) {
-        
-    }
-    
-    func onSliderReleased() {
-        
-    }
-    
-    func onUpdateFilters() {
-        
-    }
+    func onPage(page: Int32) {}
+    func onFavorite(id: Int64, isFavorite: Bool) {}
+    func onUpdateLectures() {}
+    func onCurrentLecture(id: Int64, isPlaying: Bool) {}
+    func onPause() {}
+    func onPlay(id: Int64) {}
     
     let flow: Value<LecturesState> =
         valueOf(

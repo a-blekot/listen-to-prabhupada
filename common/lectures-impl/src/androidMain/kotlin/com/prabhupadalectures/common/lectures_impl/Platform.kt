@@ -5,7 +5,7 @@ import com.prabhupadalectures.common.lectures_impl.data.lectures.filePath
 import com.prabhupadalectures.common.lectures_impl.utils.DEEP_LINK_SCHEME
 import com.prabhupadalectures.common.lectures_impl.utils.HOST_LECTURE
 import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
-import io.ktor.util.cio.*
+import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.*
 import okio.FileSystem
 import java.io.File

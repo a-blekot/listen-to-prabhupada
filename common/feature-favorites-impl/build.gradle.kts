@@ -7,15 +7,15 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":common:database"))
-                implementation(project(":common:settings"))
-                implementation(project(":common:favorites-api"))
-                implementation(project(":common:favorites-impl"))
-                implementation(project(":common:player-api"))
-                implementation(project(":common:player-impl"))
-                implementation(project(":common:feature-favorites-api"))
-                implementation(project(":common:network-api"))
-                implementation(project(":common:utils"))
+                implementation(projects.common.database)
+                implementation(projects.common.settings)
+                implementation(projects.common.favoritesApi)
+                implementation(projects.common.favoritesImpl)
+                implementation(projects.common.playerApi)
+                implementation(projects.common.playerImpl)
+                implementation(projects.common.featureFavoritesApi)
+                implementation(projects.common.networkApi)
+                implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)
                 implementation(libs.mvikotlin.mvikotlin)

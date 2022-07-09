@@ -8,11 +8,11 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":common:database"))
-                implementation(project(":common:lectures-api"))
-                implementation(project(":common:network-api"))
-                implementation(project(":common:settings"))
-                implementation(project(":common:utils"))
+                implementation(projects.common.database)
+                implementation(projects.common.lecturesApi)
+                implementation(projects.common.networkApi)
+                implementation(projects.common.settings)
+                implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)
                 implementation(libs.mvikotlin.mvikotlin)
@@ -24,13 +24,5 @@ kotlin {
                 implementation(libs.bundles.stately.bndl)
             }
         }
-
-//        findByName("iosMain")?.run {
-//            dependencies {
-//                implementation(libs.sqlDelight.native.driver)
-//                implementation(libs.ktor.client.core.iosx64)
-//                implementation(libs.ktor.client.core.iosarm64)
-//            }
-//        }
     }
 }

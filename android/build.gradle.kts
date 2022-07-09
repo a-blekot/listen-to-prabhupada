@@ -1,57 +1,27 @@
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id("android-application-convention")
     id("kotlin-parcelize")
-    id("base-kotlin-convention")
-}
-
-android {
-    compileSdk = 32
-    defaultConfig {
-        applicationId = "com.prabhupadalectures.android"
-
-        minSdk = 21
-        targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = findProperty("version.compose_compiler") as String
-    }
 }
 
 dependencies {
-    implementation(project(":common:database"))
-    implementation(project(":common:feature-results-api"))
-    implementation(project(":common:feature-favorites-api"))
-    implementation(project(":common:feature-downloads-api"))
-    implementation(project(":common:filters"))
-    implementation(project(":common:favorites-api"))
-    implementation(project(":common:downloads-api"))
-    implementation(project(":common:lectures-api"))
-    implementation(project(":common:lectures-impl"))
-    implementation(project(":common:network-api"))
-    implementation(project(":common:network-impl"))
-    implementation(project(":common:player-api"))
-    implementation(project(":common:player-impl"))
-    implementation(project(":common:root"))
-    implementation(project(":common:settings"))
-    implementation(project(":common:utils"))
+    implementation(projects.common.database)
+    implementation(projects.common.featureResultsApi)
+    implementation(projects.common.featureFavoritesApi)
+    implementation(projects.common.featureDownloadsApi)
+    implementation(projects.common.filters)
+    implementation(projects.common.favoritesApi)
+    implementation(projects.common.downloadsApi)
+    implementation(projects.common.lecturesApi)
+    implementation(projects.common.lecturesImpl)
+    implementation(projects.common.networkApi)
+    implementation(projects.common.networkImpl)
+    implementation(projects.common.playerApi)
+    implementation(projects.common.playerImpl)
+    implementation(projects.common.root)
+    implementation(projects.common.settings)
+    implementation(projects.common.utils)
 
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
