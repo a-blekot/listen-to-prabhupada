@@ -2,30 +2,37 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 buildscript {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        maven("https://plugins.gradle.org/m2/")
-        gradlePluginPortal()
     }
 
     dependencies {
-        classpath(libs.android.gradlePlgn)
-        classpath(libs.kotlin.gradlePlgn)
-        classpath(libs.kotlin.serialization.gradlePlgn)
-        classpath(libs.sqlDelight.gradlePlgn)
-
-        classpath(libs.versionsPlgn)
-        classpath(libs.detektPlgn)
-        classpath(libs.ktlintPlgn)
-        classpath(libs.canidropjetifierPlgn)
+        classpath(libs.bundles.pulagins)
     }
 }
 
 subprojects {
+    // ./gradlew dependencyUpdates
+    // Report: build/dependencyUpdates/report.txt
     apply(plugin ="com.github.ben-manes.versions")
     apply(plugin ="io.gitlab.arturbosch.detekt")
     apply(plugin ="org.jlleitschuh.gradle.ktlint")
     apply(plugin ="com.github.plnice.canidropjetifier")
+}
+
+//https://github.com/ben-manes/gradle-versions-plugin#rejectversionsif-and-componentselection
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    rejectVersionIf {
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
+    }
 }
 
 allprojects {

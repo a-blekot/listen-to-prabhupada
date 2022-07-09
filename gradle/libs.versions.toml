@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.24.13-rc"
-android-gradlePlgn = "7.2.1"
+android-gradlePlgn = "7.2.0"
 androidx-activity = "1.6.0-alpha05"
 androidx-appcompat = "1.6.0-alpha05"
 androidx-core = "1.8.0"
@@ -105,3 +105,4 @@ androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx
 ktor-common-bndl = [ "ktor-client-core", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json" ]
 mvikotlin-bndl= [ "mvikotlin-mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-extensions-coroutines" ]
 stately-bndl = [ "stately-common", "stately-concurrency", "stately-isolate", "stately-iso-collections" ]
+pulagins = ["android-gradlePlgn", "kotlin-gradlePlgn", "kotlin-serialization-gradlePlgn", "sqlDelight-gradlePlgn", "versionsPlgn", "detektPlgn", "ktlintPlgn", "canidropjetifierPlgn"]

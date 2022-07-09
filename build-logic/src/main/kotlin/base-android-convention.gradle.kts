@@ -1,10 +1,10 @@
 import com.android.build.gradle.BaseExtension
 
 configure<BaseExtension> {
-    setCompileSdkVersion((findProperty("android.compileSdk") as String).toInt())
+    compileSdkVersion(32)
     defaultConfig {
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-        targetSdk = (findProperty("android.targetSdk") as String).toInt()
+        minSdk = 21
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
     }

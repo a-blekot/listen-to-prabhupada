@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    setCompileSdkVersion((findProperty("android.compileSdk") as String).toInt())
+    compileSdk = 32
     defaultConfig {
         applicationId = "com.prabhupadalectures.android"
 
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-        targetSdk = (findProperty("android.targetSdk") as String).toInt()
+        minSdk = 21
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
     }

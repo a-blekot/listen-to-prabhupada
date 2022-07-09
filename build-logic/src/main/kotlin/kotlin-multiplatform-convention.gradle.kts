@@ -15,9 +15,19 @@ kotlin {
     }
 
     sourceSets {
+        val commonMain by getting {
+            kotlin.srcDirs("src/commonMain/kotlin")
+        }
+        val commonTest by getting
+
         if (providers.gradleProperty("include_ios").get().toBoolean()) {
-            val iosMain by creating
-            val iosTest by creating
+            val iosMain by creating {
+                dependsOn(commonMain)
+                kotlin.srcDirs("src/iosMain/kotlin")
+            }
+            val iosTest by creating {
+                dependsOn(commonTest)
+            }
 
             getByName("iosX64Main").dependsOn(iosMain)
             getByName("iosX64Test").dependsOn(iosTest)

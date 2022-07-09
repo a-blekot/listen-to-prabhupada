@@ -8,7 +8,8 @@ plugins {
 
 configure<BaseExtension> {
     sourceSets {
-        named("main") {
+        getByName("main") {
+            java.srcDirs("src/androidMain/kotlin")
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
             res.srcDirs("src/androidMain/res")
         }
