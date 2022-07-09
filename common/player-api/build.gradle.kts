@@ -7,8 +7,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":common:lectures-api"))
-                implementation(project(":common:utils"))
+                implementation(projects.common.lecturesApi)
+                implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)
                 implementation(libs.kotlinx.coroutines.core)

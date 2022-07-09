@@ -7,9 +7,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":common:favorites-api"))
-                implementation(project(":common:player-api"))
-                implementation(project(":common:utils"))
+                implementation(projects.common.favoritesApi)
+                implementation(projects.common.playerApi)
+                implementation(projects.common.utils)
             }
         }
     }

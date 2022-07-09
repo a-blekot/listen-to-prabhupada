@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -37,7 +35,7 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 allprojects {
     afterEvaluate {
-        project.extensions.findByType<KotlinMultiplatformExtension>()?.let { ext ->
+        project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()?.let { ext ->
             ext.sourceSets.removeAll { sourceSet ->
                 setOf(
                     "androidAndroidTestRelease",

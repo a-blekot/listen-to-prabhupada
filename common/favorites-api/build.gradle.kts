@@ -7,7 +7,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":common:utils"))
+                implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)
             }

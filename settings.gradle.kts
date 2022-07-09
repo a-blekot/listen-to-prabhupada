@@ -1,25 +1,15 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-}
-
 enableFeaturePreview("VERSION_CATALOGS")
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
 
 rootProject.name = "Prabhupada_Lectures"
-includeBuild("build-logic")
 include(
     ":android",
     ":common:database",

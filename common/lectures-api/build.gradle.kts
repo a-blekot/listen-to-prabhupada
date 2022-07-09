@@ -7,9 +7,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":common:database"))
-                implementation(project(":common:network-api"))
-                implementation(project(":common:utils"))
+                implementation(projects.common.database)
+                implementation(projects.common.networkApi)
+                implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)
             }
