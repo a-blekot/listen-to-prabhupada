@@ -9,6 +9,18 @@
 import SwiftUI
 import Prabhupada
 
+struct ResultsLectureListener : LectureListener {
+    
+    let component: LecturesComponent
+    init(_ component: LecturesComponent) {
+        self.component = component
+    }
+    
+    func onPause() { component.onPause() }
+    func onPlay(id: Int64) { component.onPlay(id: id) }
+    func onFavorite(id: Int64, isFavorite: Bool) { component.onFavorite(id: id, isFavorite: isFavorite) }
+}
+
 class Data: CustomStringConvertible {
     var last: CGFloat = 0.0
     var offset: CGFloat = 0.0
@@ -84,7 +96,7 @@ struct LecturesView: View {
                 
                 if !model.lectures.isEmpty {
                     ForEach(model.lectures) { lecture in
-                        LectureItemView(lecture: lecture, component: component)
+                        LectureItemView(lecture: lecture, listener: ResultsLectureListener(component))
                             .environmentObject(theme)
                     }
                 } else {
@@ -189,27 +201,11 @@ struct LecturesView: View {
     }
 }
 
-
-
 extension Lecture: Identifiable {}
 
 struct LecturesView_Previews: PreviewProvider {
     static var previews: some View {
         ResultsView(component: StubResultsComponent())
             .environmentObject(themes[0])
-    }
-}
-
-struct StatefulPreviewWrapper<Value, Content: View>: View {
-    @State var value: Value
-    var content: (Binding<Value>) -> Content
-    
-    var body: some View {
-        content($value)
-    }
-    
-    init(_ value: Value, content: @escaping (Binding<Value>) -> Content) {
-        self._value = State(wrappedValue: value)
-        self.content = content
     }
 }

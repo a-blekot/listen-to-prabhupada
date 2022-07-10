@@ -36,6 +36,12 @@
 		C685A04328439C9C0052A2A8 /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = C685A04228439C9C0052A2A8 /* Chips.swift */; };
 		C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */; };
 		C6A7C4E02802D6DD001116EE /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A7C4DF2802D6DD001116EE /* PlayButton.swift */; };
+		C6BF4AC9287AFB3B00243208 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4AC8287AFB3B00243208 /* FavoritesView.swift */; };
+		C6BF4ACB287AFC3000243208 /* StubFavoritesFeatureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4ACA287AFC3000243208 /* StubFavoritesFeatureComponent.swift */; };
+		C6BF4ACD287AFDE100243208 /* StubFavoritesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4ACC287AFDE100243208 /* StubFavoritesComponent.swift */; };
+		C6BF4ACF287B031B00243208 /* StubDownloadsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4ACE287B031B00243208 /* StubDownloadsComponent.swift */; };
+		C6BF4AD1287B03AB00243208 /* StubDownloadsFeatureComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4AD0287B03AB00243208 /* StubDownloadsFeatureComponent.swift */; };
+		C6BF4AD3287B052D00243208 /* FavoritesFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6BF4AD2287B052D00243208 /* FavoritesFeatureView.swift */; };
 		C6CA2E4A2843A3E8007C5C6B /* SelectedFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA2E492843A3E8007C5C6B /* SelectedFilters.swift */; };
 		C6CA2E4C2843B122007C5C6B /* ChipData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CA2E4B2843B122007C5C6B /* ChipData.swift */; };
 		C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */; };
@@ -104,6 +110,12 @@
 		C685A04228439C9C0052A2A8 /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
 		C6A7C4DD2802D5C2001116EE /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
 		C6A7C4DF2802D6DD001116EE /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
+		C6BF4AC8287AFB3B00243208 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		C6BF4ACA287AFC3000243208 /* StubFavoritesFeatureComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFavoritesFeatureComponent.swift; sourceTree = "<group>"; };
+		C6BF4ACC287AFDE100243208 /* StubFavoritesComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFavoritesComponent.swift; sourceTree = "<group>"; };
+		C6BF4ACE287B031B00243208 /* StubDownloadsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubDownloadsComponent.swift; sourceTree = "<group>"; };
+		C6BF4AD0287B03AB00243208 /* StubDownloadsFeatureComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubDownloadsFeatureComponent.swift; sourceTree = "<group>"; };
+		C6BF4AD2287B052D00243208 /* FavoritesFeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesFeatureView.swift; sourceTree = "<group>"; };
 		C6CA2E492843A3E8007C5C6B /* SelectedFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedFilters.swift; sourceTree = "<group>"; };
 		C6CA2E4B2843B122007C5C6B /* ChipData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipData.swift; sourceTree = "<group>"; };
 		C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayer.swift; sourceTree = "<group>"; };
@@ -197,6 +209,10 @@
 				C61B531A28324F0300AE862D /* StubPlayerComponent.swift */,
 				C61B531C283254EB00AE862D /* StubFiltersComponent.swift */,
 				C6D7B88528378FFF000EFFB7 /* StubPlayer.swift */,
+				C6BF4ACA287AFC3000243208 /* StubFavoritesFeatureComponent.swift */,
+				C6BF4ACC287AFDE100243208 /* StubFavoritesComponent.swift */,
+				C6BF4ACE287B031B00243208 /* StubDownloadsComponent.swift */,
+				C6BF4AD0287B03AB00243208 /* StubDownloadsFeatureComponent.swift */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -265,9 +281,19 @@
 			path = Chips;
 			sourceTree = "<group>";
 		};
+		C6BF4AC7287AFB0000243208 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				C6BF4AC8287AFB3B00243208 /* FavoritesView.swift */,
+				C6BF4AD2287B052D00243208 /* FavoritesFeatureView.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
 		C6DB1DF92806AC57000F2BD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6BF4AC7287AFB0000243208 /* Favorites */,
 				C6FA8ACC282FEA4A003BBCB5 /* ComponentHolder.swift */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				C6FA8ACE282FEDA3003BBCB5 /* RootView.swift */,
@@ -427,7 +453,9 @@
 				C61DE2C32837DB930074C85C /* Theme.swift in Sources */,
 				C6FA8AD3282FEEEE003BBCB5 /* FiltersView.swift in Sources */,
 				C61DE2D9283942F80074C85C /* PlayerStatus.swift in Sources */,
+				C6BF4ACF287B031B00243208 /* StubDownloadsComponent.swift in Sources */,
 				C6DB1DFE2806C886000F2BD1 /* Sizes.swift in Sources */,
+				C6BF4ACD287AFDE100243208 /* StubFavoritesComponent.swift in Sources */,
 				C61B531728324EA300AE862D /* StubLecturesComponent.swift in Sources */,
 				C6FA8ACD282FEA4A003BBCB5 /* ComponentHolder.swift in Sources */,
 				C6DB1E082806E754000F2BD1 /* BookmarkButton.swift in Sources */,
@@ -435,6 +463,7 @@
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				C685A04328439C9C0052A2A8 /* Chips.swift in Sources */,
 				C61DE2C92838E75F0074C85C /* MarqueeText.swift in Sources */,
+				C6BF4AD3287B052D00243208 /* FavoritesFeatureView.swift in Sources */,
 				C6D7B88628378FFF000EFFB7 /* StubPlayer.swift in Sources */,
 				C61B531928324EDC00AE862D /* StubResultsComponent.swift in Sources */,
 				C61DE2E6283953590074C85C /* PeriodicTimeObserver.swift in Sources */,
@@ -449,6 +478,7 @@
 				C61DE2CF28392D300074C85C /* ScopeFunc.swift in Sources */,
 				C6CA2E4C2843B122007C5C6B /* ChipData.swift in Sources */,
 				C6FA8ADA282FFD84003BBCB5 /* PlayerView.swift in Sources */,
+				C6BF4AC9287AFB3B00243208 /* FavoritesView.swift in Sources */,
 				C6DB1E042806D901000F2BD1 /* LecturesView.swift in Sources */,
 				C61DE2D52839415B0074C85C /* PlayerItemInfo.swift in Sources */,
 				C61DE2E228394D6F0074C85C /* RemoteControlMode.swift in Sources */,
@@ -472,6 +502,8 @@
 				C6FA8AD5282FF24E003BBCB5 /* FilterItemView.swift in Sources */,
 				C61DE2DE283945650074C85C /* AQQueuePlayer.swift in Sources */,
 				C6A7C4DE2802D5C2001116EE /* LectureItemView.swift in Sources */,
+				C6BF4AD1287B03AB00243208 /* StubDownloadsFeatureComponent.swift in Sources */,
+				C6BF4ACB287AFC3000243208 /* StubFavoritesFeatureComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

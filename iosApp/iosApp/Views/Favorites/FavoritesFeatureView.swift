@@ -1,21 +1,23 @@
 //
-//  ResultsView.swift
+//  FavoritesFeatureView.swift
 //  iosApp
 //
-//  Created by Aleksey Blekot on 14.05.2022.
+//  Created by Aleksey Blekot on 10.07.2022.
 //  Copyright © 2022 orgName. All rights reserved.
 //
 
 import SwiftUI
 import Prabhupada
 
-struct ResultsView: View {
-    
+struct FavoritesFeatureView: View {
     @EnvironmentObject var theme: Theme
     @State var hideTopBar = false
     @State var hideBottomBar = false
     
-    let component: ResultsComponent
+    let component: FavoritesFeatureComponent
+    init(_ component: FavoritesFeatureComponent) {
+        self.component = component
+    }
     
     var body: some View {
         NavigationView {
@@ -24,8 +26,7 @@ struct ResultsView: View {
                 let topArea: CGFloat = 20
                 let bottomArea: CGFloat = 550
                 
-                
-                LecturesView(component.lecturesComponent, $hideTopBar, $hideBottomBar, topArea, bottomArea)
+                FavoritesView(component.favoritesComponent, $hideTopBar, $hideBottomBar, topArea, bottomArea)
                     .environmentObject(theme)
                     .animation(.easeOut(duration: 0.2))
                 
@@ -39,35 +40,17 @@ struct ResultsView: View {
                 }
 
             }
-            .navigationTitle("Results")
+            .navigationTitle("Favorites")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationViewStyle(.stack)
             .navigationBarHidden(hideTopBar)
             .animation(.easeOut(duration: 0.7))
-            .toolbar {
-                HStack(spacing: 4) {
-                    Button {
-                        component.onEditFilters()
-                    } label: {
-                        Label("Фильтры", systemImage: "line.3.horizontal.decrease.circle")
-                    }
-                    
-                    Button {
-                        component.onShowFavorites()
-                    } label: {
-                        Label("Избранное", systemImage: "heart.fill")
-                    }
-                }
-                .foregroundColor(Color.orange)
-            }
-            
         }
     }
 }
 
-struct ResultsView_Previews: PreviewProvider {
+struct FavoritesFeatureView_Previews: PreviewProvider {
     static var previews: some View {
-        ResultsView(component: StubResultsComponent())
+        FavoritesFeatureView(StubFavoritesFeatureComponent())
             .environmentObject(themes[0])
     }
 }

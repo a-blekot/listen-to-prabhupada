@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.favorites
+package com.prabhupadalectures.android.ui.screens.downloads
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,28 +9,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.prabhupadalectures.android.ui.screens.helpers.*
-import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
+import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureComponent
 
 @Composable
-fun FavoritesView(component: FavoritesFeatureComponent) {
-    val favoritesState = component.favoritesComponent.flow.subscribeAsState()
+fun DownloadsView(component: DownloadsFeatureComponent) {
+    val downloadsState = component.downloadsComponent.flow.subscribeAsState()
 
     Box {
         LazyColumn(
             Modifier.fillMaxWidth().padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            items(favoritesState.value.lectures, key = { it.id }) { lectureItem ->
+            items(downloadsState.value.lectures, key = { it.id }) { lectureItem ->
                 LectureListItem(
                     lecture = lectureItem,
                     component = object: Listener {
-                        override fun onPause() = component.favoritesComponent.onPause()
+                        override fun onPause() = component.downloadsComponent.onPause()
 
-                        override fun onPlay(id: Long) = component.favoritesComponent.onPlay(id)
+                        override fun onPlay(id: Long) = component.downloadsComponent.onPlay(id)
 
                         override fun onFavorite(id: Long, isFavorite: Boolean) =
-                            component.favoritesComponent.onFavorite(id, isFavorite)
-
+                            component.downloadsComponent.onFavorite(id, isFavorite)
                     },
                 )
             }

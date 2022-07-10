@@ -81,6 +81,18 @@ class RootComponentImpl internal constructor(
 
     override val routerState: Value<RouterState<*, RootComponent.Child>> = router.state
 
+    override fun onResultsTabClicked() =
+        router.bringToFront(Configuration.Results)
+
+    override fun onFavoritesTabClicked() =
+        router.bringToFront(Configuration.Favorites)
+
+    override fun onDownloadsTabClicked() =
+        router.bringToFront(Configuration.Downloads)
+
+    override fun onFiltersTabClicked() =
+        router.bringToFront(Configuration.Filters)
+
     private fun createChild(configuration: Configuration, componentContext: ComponentContext): RootComponent.Child =
         when (configuration) {
             is Configuration.Results -> Results(results(componentContext, Consumer(::onResultsOutput)))

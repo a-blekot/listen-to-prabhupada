@@ -17,12 +17,13 @@ func mockPagination(_ page: Int32, _ total: Int32) -> Pagination {
     return Pagination(prev: KotlinInt(value: page - 1), curr: page, next: KotlinInt(value: page + 1), total: total)
 }
 
-func mockLecture(_ id: Int64) -> Lecture {
+func mockLecture(_ id: Int64, isFavorite: Bool = true) -> Lecture {
     getLecture(
         id: id,
         title: "Бхагавад-Гита. Вступление. Беседа на утренней прогулке. Лекция прочитана в Бомбее куча учеников Его Божественной Милости",
         date: "1970-08-02",
-        place: "Лос-Анджелес, США"
+        place: "Лос-Анджелес, США",
+        isFavorite: isFavorite
     )
 }
 
@@ -43,7 +44,7 @@ func emptyLecture() -> Lecture {
     )
 }
 
-func getLecture(id: Int64, title: String, date: String, place: String) -> Lecture {
+func getLecture(id: Int64, title: String, date: String, place: String, isFavorite: Bool) -> Lecture {
     Lecture(
         id: id,
         title: title,
@@ -53,7 +54,7 @@ func getLecture(id: Int64, title: String, date: String, place: String) -> Lectur
         durationMillis: 100000,
         fileUrl: nil,
         remoteUrl: "",
-        isFavorite: false,
+        isFavorite: isFavorite,
         isCompleted: true,
         isPlaying: false,
         downloadProgress: nil

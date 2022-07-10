@@ -20,6 +20,8 @@ kotlin {
                     export(projects.common.featureResultsApi)
                     export(projects.common.featureFavoritesApi)
                     export(projects.common.featureDownloadsApi)
+                    export(projects.common.favoritesApi)
+                    export(projects.common.downloadsApi)
                     export(projects.common.filters)
                     export(projects.common.lecturesApi)
                     export(projects.common.networkApi)
@@ -59,6 +61,8 @@ kotlin {
         findByName("iosMain")?.run  {
             dependencies {
                 api(projects.common.database)
+                api(projects.common.favoritesApi)
+                api(projects.common.downloadsApi)
                 api(projects.common.featureResultsApi)
                 api(projects.common.featureFavoritesApi)
                 api(projects.common.featureDownloadsApi)
