@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.root
+package com.listentoprabhupada.common.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.*
@@ -6,23 +6,23 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureComponent
-import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureOutput
-import com.prabhupadalectures.common.feature_downloads_impl.DownloadsFeatureComponentImpl
-import com.prabhupadalectures.common.feature_downloads_impl.DownloadsFeatureDeps
-import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
-import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureOutput
-import com.prabhupadalectures.common.feature_favorites_impl.FavoritesFeatureComponentImpl
-import com.prabhupadalectures.common.feature_favorites_impl.FavoritesFeatureDeps
-import com.prabhupadalectures.common.feature_results_api.ResultsComponent
-import com.prabhupadalectures.common.feature_results_api.ResultsOutput
-import com.prabhupadalectures.common.feature_results_impl.ResultsComponentImpl
-import com.prabhupadalectures.common.feature_results_impl.ResultsDeps
-import com.prabhupadalectures.common.filters.FiltersDeps
-import com.prabhupadalectures.common.filters.FiltersComponent
-import com.prabhupadalectures.common.filters.FiltersComponentImpl
-import com.prabhupadalectures.common.root.RootComponent.Child.*
-import com.prabhupadalectures.common.utils.Consumer
+import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureComponent
+import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureOutput
+import com.listentoprabhupada.common.feature_downloads_impl.DownloadsFeatureComponentImpl
+import com.listentoprabhupada.common.feature_downloads_impl.DownloadsFeatureDeps
+import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureComponent
+import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureOutput
+import com.listentoprabhupada.common.feature_favorites_impl.FavoritesFeatureComponentImpl
+import com.listentoprabhupada.common.feature_favorites_impl.FavoritesFeatureDeps
+import com.listentoprabhupada.common.feature_results_api.ResultsComponent
+import com.listentoprabhupada.common.feature_results_api.ResultsOutput
+import com.listentoprabhupada.common.feature_results_impl.ResultsComponentImpl
+import com.listentoprabhupada.common.feature_results_impl.ResultsDeps
+import com.listentoprabhupada.common.filters.FiltersDeps
+import com.listentoprabhupada.common.filters.FiltersComponent
+import com.listentoprabhupada.common.filters.FiltersComponentImpl
+import com.listentoprabhupada.common.root.RootComponent.Child.*
+import com.listentoprabhupada.common.utils.Consumer
 
 class RootComponentImpl internal constructor(
     componentContext: ComponentContext,

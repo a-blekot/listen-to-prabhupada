@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.network_api.filters
+package com.listentoprabhupada.common.network_api.filters
 
 import kotlinx.serialization.Serializable
 

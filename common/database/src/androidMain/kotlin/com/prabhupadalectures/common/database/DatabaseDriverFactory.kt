@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.database
+package com.listentoprabhupada.common.database
 
 import android.content.Context
 import com.squareup.sqldelight.android.AndroidSqliteDriver

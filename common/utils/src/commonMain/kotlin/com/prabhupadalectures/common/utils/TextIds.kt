@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 object TextIds {
     const val app_name = "app_name"

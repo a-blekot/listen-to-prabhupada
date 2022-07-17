@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.helpers
+package com.listentoprabhupada.android.ui.screens.helpers
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.common.feature_results_api.ResultsComponent
+import com.listentoprabhupada.android.R
+import com.listentoprabhupada.common.feature_results_api.ResultsComponent
 
 @Composable
 fun DrawerContent(component: ResultsComponent) {

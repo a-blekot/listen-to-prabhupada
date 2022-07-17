@@ -1,10 +1,10 @@
-package com.prabhupadalectures.common.player_impl
+package com.listentoprabhupada.common.player_impl
 
-import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.player_api.PlayerAction
-import com.prabhupadalectures.common.player_api.PlayerBus
-import com.prabhupadalectures.common.player_api.PlayerState
-import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
+import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.player_api.PlayerAction
+import com.listentoprabhupada.common.player_api.PlayerBus
+import com.listentoprabhupada.common.player_api.PlayerState
+import com.listentoprabhupada.common.utils.dispatchers.DispatcherProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*

@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android
+package com.listentoprabhupada.android
 
 import android.content.ComponentName
 import android.content.Context
@@ -19,18 +19,18 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.prabhupadalectures.android.PrabhupadaApp.Companion.app
-import com.prabhupadalectures.android.download.DownloadService
-import com.prabhupadalectures.android.download.DownloadServiceAction
-import com.prabhupadalectures.android.player.PlaybackService
-import com.prabhupadalectures.android.ui.screens.MainContent
-import com.prabhupadalectures.android.ui.screens.helpers.AppTheme
-import com.prabhupadalectures.android.util.parseShareAction
-import com.prabhupadalectures.common.root.RootComponent
-import com.prabhupadalectures.common.root.RootComponentImpl
-import com.prabhupadalectures.common.root.RootDeps
-import com.prabhupadalectures.common.utils.dispatchers.dispatchers
-import com.prabhupadalectures.common.utils.LogTag
+import com.listentoprabhupada.android.PrabhupadaApp.Companion.app
+import com.listentoprabhupada.android.download.DownloadService
+import com.listentoprabhupada.android.download.DownloadServiceAction
+import com.listentoprabhupada.android.player.PlaybackService
+import com.listentoprabhupada.android.ui.screens.MainContent
+import com.listentoprabhupada.android.ui.screens.helpers.AppTheme
+import com.listentoprabhupada.android.util.parseShareAction
+import com.listentoprabhupada.common.root.RootComponent
+import com.listentoprabhupada.common.root.RootComponentImpl
+import com.listentoprabhupada.common.root.RootDeps
+import com.listentoprabhupada.common.utils.dispatchers.dispatchers
+import com.listentoprabhupada.common.utils.LogTag
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
 

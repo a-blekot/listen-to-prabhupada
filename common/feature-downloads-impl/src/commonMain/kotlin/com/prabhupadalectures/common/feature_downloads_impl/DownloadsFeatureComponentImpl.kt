@@ -1,18 +1,18 @@
-package com.prabhupadalectures.common.feature_downloads_impl
+package com.listentoprabhupada.common.feature_downloads_impl
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.prabhupadalectures.common.downloads_api.DownloadsComponent
-import com.prabhupadalectures.common.downloads_api.DownloadsOutput
-import com.prabhupadalectures.common.downloads_api.DownloadsOutput.*
-import com.prabhupadalectures.common.downloads_impl.DownloadsComponentImpl
-import com.prabhupadalectures.common.downloads_impl.DownloadsDeps
-import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureComponent
-import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureOutput
-import com.prabhupadalectures.common.player_api.PlayerAction
-import com.prabhupadalectures.common.player_api.PlayerComponent
-import com.prabhupadalectures.common.player_impl.PlayerComponentImpl
-import com.prabhupadalectures.common.utils.Consumer
+import com.listentoprabhupada.common.downloads_api.DownloadsComponent
+import com.listentoprabhupada.common.downloads_api.DownloadsOutput
+import com.listentoprabhupada.common.downloads_api.DownloadsOutput.*
+import com.listentoprabhupada.common.downloads_impl.DownloadsComponentImpl
+import com.listentoprabhupada.common.downloads_impl.DownloadsDeps
+import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureComponent
+import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureOutput
+import com.listentoprabhupada.common.player_api.PlayerAction
+import com.listentoprabhupada.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.player_impl.PlayerComponentImpl
+import com.listentoprabhupada.common.utils.Consumer
 import io.github.aakira.napier.Napier
 
 

@@ -1,7 +1,7 @@
-package com.prabhupadalectures.common.feature_results_api
+package com.listentoprabhupada.common.feature_results_api
 
-import com.prabhupadalectures.common.lectures_api.LecturesComponent
-import com.prabhupadalectures.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.lectures_api.LecturesComponent
+import com.listentoprabhupada.common.player_api.PlayerComponent
 
 interface ResultsComponent {
 

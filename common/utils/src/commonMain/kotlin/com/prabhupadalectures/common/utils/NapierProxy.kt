@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier

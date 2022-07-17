@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.helpers
+package com.listentoprabhupada.android.ui.screens.helpers
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -16,9 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.common.lectures_api.LecturesComponent
-import com.prabhupadalectures.common.lectures_api.Pagination
+import com.listentoprabhupada.android.R
+import com.listentoprabhupada.common.lectures_api.LecturesComponent
+import com.listentoprabhupada.common.lectures_api.Pagination
 
 private const val WEIGHT_BUTTON = 1f
 
@@ -148,14 +148,14 @@ fun RowScope.PageImageButton(
 
 fun Pagination.canAdd(buttonType: ButtonType) =
     when (buttonType) {
-        ButtonType.FIRST -> curr > com.prabhupadalectures.common.settings.FIRST_PAGE
+        ButtonType.FIRST -> curr > com.listentoprabhupada.common.settings.FIRST_PAGE
         ButtonType.LAST -> curr < total
         else -> canAdd(buttonType.pagesDiff)
     }
 
 private fun Pagination.nextPage(buttonType: ButtonType) =
     when (buttonType) {
-        ButtonType.FIRST -> com.prabhupadalectures.common.settings.FIRST_PAGE
+        ButtonType.FIRST -> com.listentoprabhupada.common.settings.FIRST_PAGE
         ButtonType.LAST -> total
         else -> add(buttonType.pagesDiff)
     }

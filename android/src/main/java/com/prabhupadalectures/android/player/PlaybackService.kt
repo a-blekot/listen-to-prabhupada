@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.player
+package com.listentoprabhupada.android.player
 
 import android.Manifest.permission.WAKE_LOCK
 import android.app.Notification
@@ -8,8 +8,8 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
-import com.prabhupadalectures.android.PrabhupadaApp.Companion.app
-import com.prabhupadalectures.android.util.cancelSafely
+import com.listentoprabhupada.android.PrabhupadaApp.Companion.app
+import com.listentoprabhupada.android.util.cancelSafely
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

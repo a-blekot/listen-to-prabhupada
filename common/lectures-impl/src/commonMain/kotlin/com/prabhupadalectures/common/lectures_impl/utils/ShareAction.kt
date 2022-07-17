@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.lectures_impl.utils
+package com.listentoprabhupada.common.lectures_impl.utils
 
 import kotlin.native.concurrent.SharedImmutable
 

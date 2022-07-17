@@ -1,9 +1,9 @@
-package com.prabhupadalectures.common.filters.store
+package com.listentoprabhupada.common.filters.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.prabhupadalectures.common.filters.FiltersState
-import com.prabhupadalectures.common.filters.data.QueryParam
-import com.prabhupadalectures.common.filters.store.FiltersStore.*
+import com.listentoprabhupada.common.filters.FiltersState
+import com.listentoprabhupada.common.filters.data.QueryParam
+import com.listentoprabhupada.common.filters.store.FiltersStore.*
 
 internal interface FiltersStore : Store<Intent, FiltersState, Label> {
 

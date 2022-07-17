@@ -1,9 +1,9 @@
-package com.prabhupadalectures.common.filters.data
+package com.listentoprabhupada.common.filters.data
 
-import com.prabhupadalectures.common.network_api.ApiModel
-import com.prabhupadalectures.common.network_api.FILE_TYPE_QUERY_KEY
-import com.prabhupadalectures.common.network_api.filters.FilterApiModel
-import com.prabhupadalectures.common.network_api.filters.OptionApiModel
+import com.listentoprabhupada.common.network_api.ApiModel
+import com.listentoprabhupada.common.network_api.FILE_TYPE_QUERY_KEY
+import com.listentoprabhupada.common.network_api.filters.FilterApiModel
+import com.listentoprabhupada.common.network_api.filters.OptionApiModel
 
 private const val LECTURES_PER_PAGE = 6
 

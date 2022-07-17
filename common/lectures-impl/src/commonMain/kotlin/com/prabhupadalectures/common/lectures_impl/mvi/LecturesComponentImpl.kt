@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.lectures_impl.mvi
+package com.listentoprabhupada.common.lectures_impl.mvi
 
 import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
@@ -6,16 +6,16 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import com.prabhupadalectures.common.lectures_api.LecturesComponent
-import com.prabhupadalectures.common.lectures_api.LecturesOutput
-import com.prabhupadalectures.common.lectures_api.LecturesState
-import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore
-import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Intent.*
-import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStoreFactory
-import com.prabhupadalectures.common.utils.Consumer
-import com.prabhupadalectures.common.utils.asValue
-import com.prabhupadalectures.common.utils.getStore
-import com.prabhupadalectures.common.utils.lifecycleCoroutineScope
+import com.listentoprabhupada.common.lectures_api.LecturesComponent
+import com.listentoprabhupada.common.lectures_api.LecturesOutput
+import com.listentoprabhupada.common.lectures_api.LecturesState
+import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStore
+import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStore.Intent.*
+import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStoreFactory
+import com.listentoprabhupada.common.utils.Consumer
+import com.listentoprabhupada.common.utils.asValue
+import com.listentoprabhupada.common.utils.getStore
+import com.listentoprabhupada.common.utils.lifecycleCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel

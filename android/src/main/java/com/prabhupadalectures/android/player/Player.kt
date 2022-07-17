@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.player
+package com.listentoprabhupada.android.player
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -10,16 +10,16 @@ import android.os.Build
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.prabhupadalectures.android.MainActivity
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.android.util.notificationColor
-import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.lectures_impl.repository.ToolsRepository
-import com.prabhupadalectures.common.lectures_impl.utils.toValidUrl
-import com.prabhupadalectures.common.player_api.PlayerAction
-import com.prabhupadalectures.common.player_api.PlayerAction.*
-import com.prabhupadalectures.common.player_api.PlayerBus
-import com.prabhupadalectures.common.player_api.PlayerState
+import com.listentoprabhupada.android.MainActivity
+import com.listentoprabhupada.android.R
+import com.listentoprabhupada.android.util.notificationColor
+import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.lectures_impl.repository.ToolsRepository
+import com.listentoprabhupada.common.lectures_impl.utils.toValidUrl
+import com.listentoprabhupada.common.player_api.PlayerAction
+import com.listentoprabhupada.common.player_api.PlayerAction.*
+import com.listentoprabhupada.common.player_api.PlayerBus
+import com.listentoprabhupada.common.player_api.PlayerState
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

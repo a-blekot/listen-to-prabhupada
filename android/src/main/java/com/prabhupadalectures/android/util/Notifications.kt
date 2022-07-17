@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.util
+package com.listentoprabhupada.android.util
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

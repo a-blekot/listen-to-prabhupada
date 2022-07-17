@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.helpers
+package com.listentoprabhupada.android.ui.screens.helpers
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.prabhupadalectures.android.ui.LoadingBar
-import com.prabhupadalectures.android.util.ONE_DAY_MS
-import com.prabhupadalectures.android.util.formatTimeAdaptiveHoursMax
-import com.prabhupadalectures.android.util.selector
-import com.prabhupadalectures.common.player_api.PlayerComponent
-import com.prabhupadalectures.common.player_api.PlayerState
+import com.listentoprabhupada.android.ui.LoadingBar
+import com.listentoprabhupada.android.util.ONE_DAY_MS
+import com.listentoprabhupada.android.util.formatTimeAdaptiveHoursMax
+import com.listentoprabhupada.android.util.selector
+import com.listentoprabhupada.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.player_api.PlayerState
 
 @Composable
 fun PlayerListItem(playerComponent: PlayerComponent) {

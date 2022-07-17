@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.feature_downloads_api
+package com.listentoprabhupada.common.feature_downloads_api
 
 sealed interface DownloadsFeatureOutput {
     object ShowSettings : DownloadsFeatureOutput

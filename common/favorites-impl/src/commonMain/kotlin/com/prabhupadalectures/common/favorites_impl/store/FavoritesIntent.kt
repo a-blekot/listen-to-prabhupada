@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.favorites_impl.store
+package com.listentoprabhupada.common.favorites_impl.store
 
 sealed interface FavoritesIntent {
     data class CurrentLecture(val id: Long, val isPlaying: Boolean) : FavoritesIntent

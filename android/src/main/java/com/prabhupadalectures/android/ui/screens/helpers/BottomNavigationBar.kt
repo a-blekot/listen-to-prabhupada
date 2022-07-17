@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.helpers
+package com.listentoprabhupada.android.ui.screens.helpers
 
 import androidx.compose.foundation.Image
 import androidx.compose.material.BottomNavigation
@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import com.prabhupadalectures.common.root.RootComponent
+import com.listentoprabhupada.common.root.RootComponent
 
 val items = listOf(
     NavigationItem.Home,

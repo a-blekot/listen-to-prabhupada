@@ -1,13 +1,13 @@
-package com.prabhupadalectures.common.player_impl
+package com.listentoprabhupada.common.player_impl
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.player_api.PlayerAction
-import com.prabhupadalectures.common.player_api.PlayerBus
-import com.prabhupadalectures.common.player_api.PlayerComponent
-import com.prabhupadalectures.common.player_api.PlayerState
+import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.player_api.PlayerAction
+import com.listentoprabhupada.common.player_api.PlayerBus
+import com.listentoprabhupada.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.player_api.PlayerState
 
 class PlayerComponentImpl(
     componentContext: ComponentContext,

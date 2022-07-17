@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.doOnDestroy

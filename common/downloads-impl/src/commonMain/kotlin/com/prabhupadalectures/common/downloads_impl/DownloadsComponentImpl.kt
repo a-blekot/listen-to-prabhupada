@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.downloads_impl
+package com.listentoprabhupada.common.downloads_impl
 
 
 import co.touchlab.stately.ensureNeverFrozen
@@ -6,16 +6,16 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import com.prabhupadalectures.common.downloads_api.DownloadsComponent
-import com.prabhupadalectures.common.downloads_api.DownloadsOutput
-import com.prabhupadalectures.common.downloads_api.DownloadsState
-import com.prabhupadalectures.common.downloads_impl.store.DownloadsIntent.*
-import com.prabhupadalectures.common.downloads_impl.store.DownloadsLabel
-import com.prabhupadalectures.common.downloads_impl.store.DownloadsStoreFactory
-import com.prabhupadalectures.common.utils.Consumer
-import com.prabhupadalectures.common.utils.asValue
-import com.prabhupadalectures.common.utils.getStore
-import com.prabhupadalectures.common.utils.lifecycleCoroutineScope
+import com.listentoprabhupada.common.downloads_api.DownloadsComponent
+import com.listentoprabhupada.common.downloads_api.DownloadsOutput
+import com.listentoprabhupada.common.downloads_api.DownloadsState
+import com.listentoprabhupada.common.downloads_impl.store.DownloadsIntent.*
+import com.listentoprabhupada.common.downloads_impl.store.DownloadsLabel
+import com.listentoprabhupada.common.downloads_impl.store.DownloadsStoreFactory
+import com.listentoprabhupada.common.utils.Consumer
+import com.listentoprabhupada.common.utils.asValue
+import com.listentoprabhupada.common.utils.getStore
+import com.listentoprabhupada.common.utils.lifecycleCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel

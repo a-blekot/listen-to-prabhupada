@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate

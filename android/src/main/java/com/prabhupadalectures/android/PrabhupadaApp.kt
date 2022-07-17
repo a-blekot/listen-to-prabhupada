@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android
+package com.listentoprabhupada.android
 
 import android.app.Activity
 import android.app.Application
@@ -8,25 +8,25 @@ import android.os.Environment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.database.DatabaseDriverFactory
-import com.prabhupadalectures.common.database.DatabaseImpl
-import com.prabhupadalectures.common.network.createPrabhupadaApi
-import com.prabhupadalectures.common.utils.Strings
-import com.prabhupadalectures.common.lectures_impl.deepLink
-import com.prabhupadalectures.common.lectures_impl.repository.*
-import com.prabhupadalectures.common.lectures_impl.utils.DOWNLOADS_DIR
-import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
-import com.prabhupadalectures.common.player_api.PlayerBus
-import com.prabhupadalectures.common.player_impl.PlayerBusImpl
-import com.prabhupadalectures.common.utils.debugBuild
-import com.prabhupadalectures.common.utils.LogTag
+import com.listentoprabhupada.common.database.Database
+import com.listentoprabhupada.common.database.DatabaseDriverFactory
+import com.listentoprabhupada.common.database.DatabaseImpl
+import com.listentoprabhupada.common.network.createPrabhupadaApi
+import com.listentoprabhupada.common.utils.Strings
+import com.listentoprabhupada.common.lectures_impl.deepLink
+import com.listentoprabhupada.common.lectures_impl.repository.*
+import com.listentoprabhupada.common.lectures_impl.utils.DOWNLOADS_DIR
+import com.listentoprabhupada.common.lectures_impl.utils.ShareAction
+import com.listentoprabhupada.common.player_api.PlayerBus
+import com.listentoprabhupada.common.player_impl.PlayerBusImpl
+import com.listentoprabhupada.common.utils.debugBuild
+import com.listentoprabhupada.common.utils.LogTag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.io.File
-import com.prabhupadalectures.common.utils.dispatchers.dispatchers
+import com.listentoprabhupada.common.utils.dispatchers.dispatchers
 import io.github.aakira.napier.Napier
 
 class PrabhupadaApp : Application() {

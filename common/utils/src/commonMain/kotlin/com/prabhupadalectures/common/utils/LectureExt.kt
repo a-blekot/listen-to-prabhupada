@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
-import com.prabhupadalectures.common.database.LectureEntity
+import com.listentoprabhupada.common.database.LectureEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

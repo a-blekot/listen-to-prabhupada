@@ -6,7 +6,7 @@ plugins {
 
 sqldelight {
     database("AppDatabase") {
-        packageName = "com.prabhupadalectures.common.database"
+        packageName = "com.listentoprabhupada.common.database"
         dialect = "sqlite:3.25"
     }
 }

@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.network_api
+package com.listentoprabhupada.common.network_api
 
 import io.github.aakira.napier.Napier
 import kotlin.native.concurrent.SharedImmutable

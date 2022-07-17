@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.lectures_api
+package com.listentoprabhupada.common.lectures_api
 
-import com.prabhupadalectures.common.utils.Lecture
+import com.listentoprabhupada.common.utils.Lecture
 
 sealed interface LecturesOutput {
     object Pause : LecturesOutput

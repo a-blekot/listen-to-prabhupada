@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.network_api.lectures
+package com.listentoprabhupada.common.network_api.lectures
 
 import kotlinx.serialization.Serializable
 

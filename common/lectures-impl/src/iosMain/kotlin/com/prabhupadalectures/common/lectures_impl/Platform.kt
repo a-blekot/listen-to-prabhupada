@@ -1,7 +1,7 @@
-package com.prabhupadalectures.common.lectures_impl
+package com.listentoprabhupada.common.lectures_impl
 
-import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.lectures_impl.utils.ShareAction
+import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.lectures_impl.utils.ShareAction
 import io.ktor.utils.io.*
 import okio.FileSystem
 import platform.UIKit.UIDevice

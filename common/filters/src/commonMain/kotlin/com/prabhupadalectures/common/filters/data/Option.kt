@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.filters.data
+package com.listentoprabhupada.common.filters.data
 
 import kotlinx.serialization.Serializable
 

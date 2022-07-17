@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.settings
+package com.listentoprabhupada.common.settings
 
 import com.russhwolf.settings.Settings
 import kotlin.native.concurrent.SharedImmutable

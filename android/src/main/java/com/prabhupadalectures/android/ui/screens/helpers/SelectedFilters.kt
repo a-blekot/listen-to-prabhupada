@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.helpers
+package com.listentoprabhupada.android.ui.screens.helpers
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
@@ -17,11 +17,11 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.common.filters.FiltersComponent
-import com.prabhupadalectures.common.filters.data.Filter
-import com.prabhupadalectures.common.filters.data.Option
-import com.prabhupadalectures.common.filters.data.QueryParam
+import com.listentoprabhupada.android.R
+import com.listentoprabhupada.common.filters.FiltersComponent
+import com.listentoprabhupada.common.filters.data.Filter
+import com.listentoprabhupada.common.filters.data.Option
+import com.listentoprabhupada.common.filters.data.QueryParam
 
 @Composable
 fun SelectedFilters(

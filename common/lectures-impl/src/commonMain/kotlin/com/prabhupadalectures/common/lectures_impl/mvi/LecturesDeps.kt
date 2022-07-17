@@ -1,8 +1,8 @@
-package com.prabhupadalectures.common.lectures_impl.mvi
+package com.listentoprabhupada.common.lectures_impl.mvi
 
-import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.network_api.PrabhupadaApi
-import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
+import com.listentoprabhupada.common.database.Database
+import com.listentoprabhupada.common.network_api.PrabhupadaApi
+import com.listentoprabhupada.common.utils.dispatchers.DispatcherProvider
 
 class LecturesDeps(
     val db: Database,

@@ -1,14 +1,14 @@
-package com.prabhupadalectures.common.lectures_impl.repository
+package com.listentoprabhupada.common.lectures_impl.repository
 
 import co.touchlab.stately.collections.IsoArrayDeque
-import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.database.isDownloaded
-import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.utils.dbEntity
-import com.prabhupadalectures.common.utils.mapped
-import com.prabhupadalectures.common.network_api.*
-import com.prabhupadalectures.common.lectures_impl.data.lectures.*
-import com.prabhupadalectures.common.lectures_impl.writeChannel
+import com.listentoprabhupada.common.database.Database
+import com.listentoprabhupada.common.database.isDownloaded
+import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.utils.dbEntity
+import com.listentoprabhupada.common.utils.mapped
+import com.listentoprabhupada.common.network_api.*
+import com.listentoprabhupada.common.lectures_impl.data.lectures.*
+import com.listentoprabhupada.common.lectures_impl.writeChannel
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

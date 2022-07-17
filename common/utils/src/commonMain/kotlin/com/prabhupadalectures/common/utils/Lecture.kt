@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 data class Lecture(
     val id: Long = 0L,

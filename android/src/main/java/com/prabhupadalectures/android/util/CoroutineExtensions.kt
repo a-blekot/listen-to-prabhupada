@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.util
+package com.listentoprabhupada.android.util
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel

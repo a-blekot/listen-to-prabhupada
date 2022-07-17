@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.network_api
+package com.listentoprabhupada.common.network_api
 
-import com.prabhupadalectures.common.network_api.lectures.ResultsApiModel
+import com.listentoprabhupada.common.network_api.lectures.ResultsApiModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.native.concurrent.SharedImmutable

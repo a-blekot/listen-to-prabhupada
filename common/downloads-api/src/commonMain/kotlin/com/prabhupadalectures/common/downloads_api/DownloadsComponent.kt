@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.downloads_api
+package com.listentoprabhupada.common.downloads_api
 
 import com.arkivanov.decompose.value.Value
 

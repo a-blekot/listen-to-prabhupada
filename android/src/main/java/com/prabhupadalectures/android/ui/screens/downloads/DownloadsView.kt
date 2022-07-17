@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.downloads
+package com.listentoprabhupada.android.ui.screens.downloads
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.prabhupadalectures.android.ui.screens.helpers.*
-import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureComponent
+import com.listentoprabhupada.android.ui.screens.helpers.*
+import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureComponent
 
 @Composable
 fun DownloadsView(component: DownloadsFeatureComponent) {

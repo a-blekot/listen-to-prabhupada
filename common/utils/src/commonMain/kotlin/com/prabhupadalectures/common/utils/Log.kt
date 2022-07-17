@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 object LogTag {
     const val lifecycleApp = "LIFECYCLE_APP"

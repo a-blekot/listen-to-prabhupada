@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.network
+package com.listentoprabhupada.common.network
 
 import io.ktor.client.*
 

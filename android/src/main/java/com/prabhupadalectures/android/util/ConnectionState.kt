@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.util
+package com.listentoprabhupada.android.util
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.platform.LocalContext
-import com.prabhupadalectures.common.lectures_impl.utils.ConnectionState
-import com.prabhupadalectures.common.lectures_impl.utils.toConnectionState
+import com.listentoprabhupada.common.lectures_impl.utils.ConnectionState
+import com.listentoprabhupada.common.lectures_impl.utils.toConnectionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose

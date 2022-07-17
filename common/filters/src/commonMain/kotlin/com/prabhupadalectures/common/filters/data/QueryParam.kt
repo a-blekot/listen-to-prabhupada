@@ -1,7 +1,7 @@
-package com.prabhupadalectures.common.filters.data
+package com.listentoprabhupada.common.filters.data
 
-import com.prabhupadalectures.common.network_api.FIRST_PAGE
-import com.prabhupadalectures.common.network_api.PAGE_QUERY_KEY
+import com.listentoprabhupada.common.network_api.FIRST_PAGE
+import com.listentoprabhupada.common.network_api.PAGE_QUERY_KEY
 
 data class QueryParam(
     val filterName: String = "",

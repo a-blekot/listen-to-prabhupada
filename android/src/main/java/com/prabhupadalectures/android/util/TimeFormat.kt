@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.util
+package com.listentoprabhupada.android.util
 
 enum class TimeFormat(val format: String) {
     MINUTES("%02d:%02d"),

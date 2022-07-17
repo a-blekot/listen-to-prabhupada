@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.network_api.lectures
+package com.listentoprabhupada.common.network_api.lectures
 
-import com.prabhupadalectures.common.network_api.filters.FilterApiModel
+import com.listentoprabhupada.common.network_api.filters.FilterApiModel
 import kotlinx.serialization.Serializable
 
 @Serializable

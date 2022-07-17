@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 sealed interface TextResource {
     fun resolve(vararg formatArgs: Any) : String =

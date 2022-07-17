@@ -1,11 +1,11 @@
-package com.prabhupadalectures.common.root
+package com.listentoprabhupada.common.root
 
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
-import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
-import com.prabhupadalectures.common.feature_downloads_api.DownloadsFeatureComponent
-import com.prabhupadalectures.common.feature_results_api.ResultsComponent
-import com.prabhupadalectures.common.filters.FiltersComponent
+import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureComponent
+import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureComponent
+import com.listentoprabhupada.common.feature_results_api.ResultsComponent
+import com.listentoprabhupada.common.filters.FiltersComponent
 
 interface RootComponent {
 

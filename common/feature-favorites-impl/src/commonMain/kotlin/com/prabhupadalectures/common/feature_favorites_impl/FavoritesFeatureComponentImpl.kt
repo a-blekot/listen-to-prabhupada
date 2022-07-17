@@ -1,18 +1,18 @@
-package com.prabhupadalectures.common.feature_favorites_impl
+package com.listentoprabhupada.common.feature_favorites_impl
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.prabhupadalectures.common.favorites_api.FavoritesComponent
-import com.prabhupadalectures.common.favorites_api.FavoritesOutput
-import com.prabhupadalectures.common.favorites_api.FavoritesOutput.*
-import com.prabhupadalectures.common.favorites_impl.FavoritesComponentImpl
-import com.prabhupadalectures.common.favorites_impl.FavoritesDeps
-import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureComponent
-import com.prabhupadalectures.common.feature_favorites_api.FavoritesFeatureOutput
-import com.prabhupadalectures.common.player_api.PlayerAction
-import com.prabhupadalectures.common.player_api.PlayerComponent
-import com.prabhupadalectures.common.player_impl.PlayerComponentImpl
-import com.prabhupadalectures.common.utils.Consumer
+import com.listentoprabhupada.common.favorites_api.FavoritesComponent
+import com.listentoprabhupada.common.favorites_api.FavoritesOutput
+import com.listentoprabhupada.common.favorites_api.FavoritesOutput.*
+import com.listentoprabhupada.common.favorites_impl.FavoritesComponentImpl
+import com.listentoprabhupada.common.favorites_impl.FavoritesDeps
+import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureComponent
+import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureOutput
+import com.listentoprabhupada.common.player_api.PlayerAction
+import com.listentoprabhupada.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.player_impl.PlayerComponentImpl
+import com.listentoprabhupada.common.utils.Consumer
 import io.github.aakira.napier.Napier
 
 

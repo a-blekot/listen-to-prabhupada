@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils.dispatchers
+package com.listentoprabhupada.common.utils.dispatchers
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

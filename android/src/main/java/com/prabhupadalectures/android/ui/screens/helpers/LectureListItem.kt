@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.helpers
+package com.listentoprabhupada.android.ui.screens.helpers
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -20,10 +20,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.common.utils.Lecture
-import com.prabhupadalectures.common.lectures_api.LecturesComponent
-import com.prabhupadalectures.common.network_api.FULL_PROGRESS
+import com.listentoprabhupada.android.R
+import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.lectures_api.LecturesComponent
+import com.listentoprabhupada.common.network_api.FULL_PROGRESS
 
 interface Listener {
     fun onPause() {}

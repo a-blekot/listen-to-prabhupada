@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android
+package com.listentoprabhupada.android
 
 import android.util.Log
 

@@ -1,9 +1,9 @@
-package com.prabhupadalectures.common.root
+package com.listentoprabhupada.common.root
 
-import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.network_api.PrabhupadaApi
-import com.prabhupadalectures.common.player_api.PlayerBus
-import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
+import com.listentoprabhupada.common.database.Database
+import com.listentoprabhupada.common.network_api.PrabhupadaApi
+import com.listentoprabhupada.common.player_api.PlayerBus
+import com.listentoprabhupada.common.utils.dispatchers.DispatcherProvider
 import kotlin.native.concurrent.SharedImmutable
 
 data class RootDeps(

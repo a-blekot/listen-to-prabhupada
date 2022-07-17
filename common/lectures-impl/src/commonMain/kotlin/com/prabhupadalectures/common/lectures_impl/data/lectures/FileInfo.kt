@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.lectures_impl.data.lectures
+package com.listentoprabhupada.common.lectures_impl.data.lectures
 
-import com.prabhupadalectures.common.network_api.Routes
+import com.listentoprabhupada.common.network_api.Routes
 import io.github.aakira.napier.Napier
 import kotlin.native.concurrent.SharedImmutable
 

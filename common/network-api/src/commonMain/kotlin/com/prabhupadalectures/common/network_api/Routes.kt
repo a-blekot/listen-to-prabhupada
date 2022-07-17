@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.network_api
+package com.listentoprabhupada.common.network_api
 
 import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.ThreadLocal

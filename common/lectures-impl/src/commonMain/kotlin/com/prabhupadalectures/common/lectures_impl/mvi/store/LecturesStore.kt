@@ -1,11 +1,11 @@
-package com.prabhupadalectures.common.lectures_impl.mvi.store
+package com.listentoprabhupada.common.lectures_impl.mvi.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.prabhupadalectures.common.utils.Lecture
+import com.listentoprabhupada.common.utils.Lecture
 
-import com.prabhupadalectures.common.lectures_api.LecturesState
-import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Intent
-import com.prabhupadalectures.common.lectures_impl.mvi.store.LecturesStore.Label
+import com.listentoprabhupada.common.lectures_api.LecturesState
+import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStore.Intent
+import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStore.Label
 
 internal interface LecturesStore : Store<Intent, LecturesState, Label> {
 

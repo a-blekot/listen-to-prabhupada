@@ -1,7 +1,7 @@
 import org.gradle.api.JavaVersion
 
 object ApkConfig {
-    const val APPLICATION_ID = "com.prabhupadalectures.android"
+    const val APPLICATION_ID = "com.listentoprabhupada"
     const val APPLICATION_ID_SUFFIX = ".dev"
 
     const val MIN_SDK_VERSION = 21

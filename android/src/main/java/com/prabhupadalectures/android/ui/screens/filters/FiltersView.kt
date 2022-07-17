@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.filters
+package com.listentoprabhupada.android.ui.screens.filters
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,10 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.prabhupadalectures.android.ui.LoadingBar
-import com.prabhupadalectures.android.ui.screens.helpers.FilterListItem
-import com.prabhupadalectures.android.ui.screens.helpers.SelectedFilters
-import com.prabhupadalectures.common.filters.FiltersComponent
+import com.listentoprabhupada.android.ui.LoadingBar
+import com.listentoprabhupada.android.ui.screens.helpers.FilterListItem
+import com.listentoprabhupada.android.ui.screens.helpers.SelectedFilters
+import com.listentoprabhupada.common.filters.FiltersComponent
 
 @Composable
 fun FiltersView(component: FiltersComponent) {

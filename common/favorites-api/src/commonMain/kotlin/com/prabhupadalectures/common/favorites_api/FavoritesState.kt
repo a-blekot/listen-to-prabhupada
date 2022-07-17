@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.favorites_api
+package com.listentoprabhupada.common.favorites_api
 
-import com.prabhupadalectures.common.utils.Lecture
+import com.listentoprabhupada.common.utils.Lecture
 
 data class FavoritesState(
     val lectures: List<Lecture> = emptyList(),

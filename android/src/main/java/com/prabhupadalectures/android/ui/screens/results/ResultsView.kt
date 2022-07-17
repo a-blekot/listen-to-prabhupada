@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens.results
+package com.listentoprabhupada.android.ui.screens.results
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,10 +24,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.prabhupadalectures.android.R
-import com.prabhupadalectures.android.ui.LoadingBar
-import com.prabhupadalectures.android.ui.screens.helpers.*
-import com.prabhupadalectures.common.feature_results_api.ResultsComponent
+import com.listentoprabhupada.android.R
+import com.listentoprabhupada.android.ui.LoadingBar
+import com.listentoprabhupada.android.ui.screens.helpers.*
+import com.listentoprabhupada.common.feature_results_api.ResultsComponent
 import kotlinx.coroutines.launch
 
 @Composable

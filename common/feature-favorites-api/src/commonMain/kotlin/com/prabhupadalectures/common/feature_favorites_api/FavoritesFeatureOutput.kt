@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.feature_favorites_api
+package com.listentoprabhupada.common.feature_favorites_api
 
 sealed interface FavoritesFeatureOutput {
     object ShowSettings : FavoritesFeatureOutput

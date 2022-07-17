@@ -1,7 +1,7 @@
-package com.prabhupadalectures.common.feature_favorites_api
+package com.listentoprabhupada.common.feature_favorites_api
 
-import com.prabhupadalectures.common.favorites_api.FavoritesComponent
-import com.prabhupadalectures.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.favorites_api.FavoritesComponent
+import com.listentoprabhupada.common.player_api.PlayerComponent
 
 
 interface FavoritesFeatureComponent {

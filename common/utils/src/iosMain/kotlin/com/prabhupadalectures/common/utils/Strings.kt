@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 import platform.Foundation.NSBundle
 import platform.Foundation.NSString

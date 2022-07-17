@@ -1,6 +1,6 @@
-package com.prabhupadalectures.common.filters
+package com.listentoprabhupada.common.filters
 
-import com.prabhupadalectures.common.filters.data.Filter
+import com.listentoprabhupada.common.filters.data.Filter
 
 data class FiltersState(
     val isLoading: Boolean = false,

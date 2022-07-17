@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.feature_results_api
+package com.listentoprabhupada.common.feature_results_api
 
 sealed interface ResultsOutput {
     object EditFilters : ResultsOutput

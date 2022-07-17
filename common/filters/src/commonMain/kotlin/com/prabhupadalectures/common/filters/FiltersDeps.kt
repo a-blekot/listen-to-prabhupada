@@ -1,8 +1,8 @@
-package com.prabhupadalectures.common.filters
+package com.listentoprabhupada.common.filters
 
-import com.prabhupadalectures.common.database.Database
-import com.prabhupadalectures.common.network_api.PrabhupadaApi
-import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
+import com.listentoprabhupada.common.database.Database
+import com.listentoprabhupada.common.network_api.PrabhupadaApi
+import com.listentoprabhupada.common.utils.dispatchers.DispatcherProvider
 import kotlin.coroutines.CoroutineContext
 
 data class FiltersDeps(

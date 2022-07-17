@@ -1,11 +1,11 @@
-package com.prabhupadalectures.android.util
+package com.listentoprabhupada.android.util
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
-import com.prabhupadalectures.android.BuildConfig
+import com.listentoprabhupada.android.BuildConfig
 import java.io.File
 
 fun Context.openFile(file: File) {

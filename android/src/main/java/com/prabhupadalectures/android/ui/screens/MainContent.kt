@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui.screens
+package com.listentoprabhupada.android.ui.screens
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
@@ -6,11 +6,11 @@ import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.childA
 import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.fade
 import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.plus
 import com.arkivanov.decompose.extensions.compose.jetpack.animation.child.scale
-import com.prabhupadalectures.android.ui.screens.favorites.FavoritesView
-import com.prabhupadalectures.android.ui.screens.filters.FiltersView
-import com.prabhupadalectures.android.ui.screens.downloads.DownloadsView
-import com.prabhupadalectures.android.ui.screens.results.ResultsView
-import com.prabhupadalectures.common.root.RootComponent
+import com.listentoprabhupada.android.ui.screens.favorites.FavoritesView
+import com.listentoprabhupada.android.ui.screens.filters.FiltersView
+import com.listentoprabhupada.android.ui.screens.downloads.DownloadsView
+import com.listentoprabhupada.android.ui.screens.results.ResultsView
+import com.listentoprabhupada.common.root.RootComponent
 
 @Composable
 fun MainContent(component: RootComponent) {

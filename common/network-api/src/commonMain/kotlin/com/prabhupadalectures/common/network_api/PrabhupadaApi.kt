@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.network_api
+package com.listentoprabhupada.common.network_api
 
 import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow

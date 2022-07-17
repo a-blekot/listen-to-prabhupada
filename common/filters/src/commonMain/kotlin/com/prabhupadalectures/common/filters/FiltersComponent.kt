@@ -1,8 +1,8 @@
-package com.prabhupadalectures.common.filters
+package com.listentoprabhupada.common.filters
 
 import com.arkivanov.decompose.value.Value
-import com.prabhupadalectures.common.filters.data.Filter
-import com.prabhupadalectures.common.filters.data.QueryParam
+import com.listentoprabhupada.common.filters.data.Filter
+import com.listentoprabhupada.common.filters.data.QueryParam
 
 interface FiltersComponent {
 

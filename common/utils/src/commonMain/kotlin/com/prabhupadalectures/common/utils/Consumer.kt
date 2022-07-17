@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.utils
+package com.listentoprabhupada.common.utils
 
 fun interface Consumer<T> {
     fun onNext(t: T)

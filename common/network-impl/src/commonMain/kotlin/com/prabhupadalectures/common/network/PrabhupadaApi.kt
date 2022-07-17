@@ -1,7 +1,7 @@
-package com.prabhupadalectures.common.network
+package com.listentoprabhupada.common.network
 
-import com.prabhupadalectures.common.network_api.*
-import com.prabhupadalectures.common.utils.dispatchers.DispatcherProvider
+import com.listentoprabhupada.common.network_api.*
+import com.listentoprabhupada.common.utils.dispatchers.DispatcherProvider
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.call.*

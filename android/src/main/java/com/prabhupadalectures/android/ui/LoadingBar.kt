@@ -1,4 +1,4 @@
-package com.prabhupadalectures.android.ui
+package com.listentoprabhupada.android.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.prabhupadalectures.android.ui.screens.helpers.AlphaDarkBg
+import com.listentoprabhupada.android.ui.screens.helpers.AlphaDarkBg
 
 @Composable
 fun LoadingBar(modifier: Modifier = Modifier, bgColor: Color = AlphaDarkBg) =

@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.downloads_impl.store
+package com.listentoprabhupada.common.downloads_impl.store
 
 sealed interface DownloadsIntent {
     data class CurrentLecture(val id: Long, val isPlaying: Boolean) : DownloadsIntent

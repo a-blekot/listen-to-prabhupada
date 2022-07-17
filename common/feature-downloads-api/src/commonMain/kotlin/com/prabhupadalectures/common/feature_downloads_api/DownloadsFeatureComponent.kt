@@ -1,7 +1,7 @@
-package com.prabhupadalectures.common.feature_downloads_api
+package com.listentoprabhupada.common.feature_downloads_api
 
-import com.prabhupadalectures.common.downloads_api.DownloadsComponent
-import com.prabhupadalectures.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.downloads_api.DownloadsComponent
+import com.listentoprabhupada.common.player_api.PlayerComponent
 
 
 interface DownloadsFeatureComponent {

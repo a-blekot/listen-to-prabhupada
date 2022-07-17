@@ -1,18 +1,18 @@
-package com.prabhupadalectures.common.feature_results_impl
+package com.listentoprabhupada.common.feature_results_impl
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.prabhupadalectures.common.feature_results_api.ResultsComponent
-import com.prabhupadalectures.common.feature_results_api.ResultsOutput
-import com.prabhupadalectures.common.lectures_api.LecturesComponent
-import com.prabhupadalectures.common.lectures_api.LecturesOutput
-import com.prabhupadalectures.common.lectures_api.LecturesOutput.*
-import com.prabhupadalectures.common.lectures_impl.mvi.LecturesComponentImpl
-import com.prabhupadalectures.common.lectures_impl.mvi.LecturesDeps
-import com.prabhupadalectures.common.player_api.PlayerAction
-import com.prabhupadalectures.common.player_api.PlayerComponent
-import com.prabhupadalectures.common.player_impl.PlayerComponentImpl
-import com.prabhupadalectures.common.utils.Consumer
+import com.listentoprabhupada.common.feature_results_api.ResultsComponent
+import com.listentoprabhupada.common.feature_results_api.ResultsOutput
+import com.listentoprabhupada.common.lectures_api.LecturesComponent
+import com.listentoprabhupada.common.lectures_api.LecturesOutput
+import com.listentoprabhupada.common.lectures_api.LecturesOutput.*
+import com.listentoprabhupada.common.lectures_impl.mvi.LecturesComponentImpl
+import com.listentoprabhupada.common.lectures_impl.mvi.LecturesDeps
+import com.listentoprabhupada.common.player_api.PlayerAction
+import com.listentoprabhupada.common.player_api.PlayerComponent
+import com.listentoprabhupada.common.player_impl.PlayerComponentImpl
+import com.listentoprabhupada.common.utils.Consumer
 
 
 class ResultsComponentImpl(
