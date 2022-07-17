@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #1 in ResultsView.body.getter:ResultsView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "RootView.body.getter:RootView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "LecturesView.body.getter:LecturesView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "model.lectures.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

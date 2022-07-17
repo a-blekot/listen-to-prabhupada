@@ -1,4 +1,4 @@
-package com.prabhupadalectures.common.database
+package com.listentoprabhupada.common.database
 
 import kotlinx.coroutines.flow.Flow
 
