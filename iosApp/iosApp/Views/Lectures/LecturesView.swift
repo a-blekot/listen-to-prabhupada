@@ -81,7 +81,7 @@ struct LecturesView: View {
         let _ = updateCurrentPage(model.pagination.curr)
         
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .center, spacing: 1) {
+            VStack(alignment: .center, spacing: 20) {
                 
                 if !hidePages {
                     if model.pagination.total > 1 {
@@ -90,7 +90,6 @@ struct LecturesView: View {
                                 .move(edge: .top)
                                     .combined(with: .scale(scale: 0.1, anchor: .top))
                             )
-                            .padding(.bottom, 4)
                     }
                 }
                 

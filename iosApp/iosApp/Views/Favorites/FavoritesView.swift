@@ -61,7 +61,7 @@ struct FavoritesView: View {
         let model = models.value
 
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .center, spacing: 1) {
+            VStack(alignment: .center, spacing: 20) {
                 ForEach(model.lectures) { lecture in
                     LectureItemView(lecture: lecture, listener: FavoritesLectureListener(component))
                         .environmentObject(theme)

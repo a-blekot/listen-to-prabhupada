@@ -21,7 +21,7 @@ val favoriteSelected = Color(0xFFD0690D)
 val favoriteUnselected = Color(0xFFFEEAD8)
 val playerBg = Color(0xFFFFF7EF)
 
-private val Orange = Color(0xFFB65D0D)
+val Orange = Color(0xFFB65D0D)
 //private val OrangeLight = Color(0xFFFAD1B4) ?? BrownMedLight
 val GrayLight = Color(0xFF919191)
 
