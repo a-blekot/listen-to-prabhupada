@@ -12,11 +12,10 @@ import com.listentoprabhupada.common.database.Database
 import com.listentoprabhupada.common.database.DatabaseDriverFactory
 import com.listentoprabhupada.common.database.DatabaseImpl
 import com.listentoprabhupada.common.network.createPrabhupadaApi
-import com.listentoprabhupada.common.utils.Strings
 import com.listentoprabhupada.common.lectures_impl.deepLink
 import com.listentoprabhupada.common.lectures_impl.repository.*
-import com.listentoprabhupada.common.lectures_impl.utils.DOWNLOADS_DIR
-import com.listentoprabhupada.common.lectures_impl.utils.ShareAction
+import com.listentoprabhupada.common.utils.DOWNLOADS_DIR
+import com.listentoprabhupada.common.utils.ShareAction
 import com.listentoprabhupada.common.player_api.PlayerBus
 import com.listentoprabhupada.common.player_impl.PlayerBusImpl
 import com.listentoprabhupada.common.utils.debugBuild
@@ -106,7 +105,6 @@ class PrabhupadaApp : Application() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleEventObserver)
 
         app = this
-        Strings.context = this
         DOWNLOADS_DIR = app.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: ""
 
         db = DatabaseImpl(DatabaseDriverFactory(this))

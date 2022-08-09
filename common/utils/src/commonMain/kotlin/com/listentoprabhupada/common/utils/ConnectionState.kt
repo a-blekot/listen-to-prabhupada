@@ -1,4 +1,4 @@
-package com.listentoprabhupada.common.lectures_impl.utils
+package com.listentoprabhupada.common.utils
 
 sealed class ConnectionState {
     object Online : ConnectionState()

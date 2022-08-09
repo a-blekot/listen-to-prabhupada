@@ -2,8 +2,8 @@ package com.listentoprabhupada.common.lectures_impl.data.lectures
 
 import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.lectures_impl.fileSystem
-import com.listentoprabhupada.common.lectures_impl.utils.DOWNLOADS_DIR
-import com.listentoprabhupada.common.lectures_impl.utils.FILE_EXTENSION
+import com.listentoprabhupada.common.utils.DOWNLOADS_DIR
+import com.listentoprabhupada.common.utils.FILE_EXTENSION
 import okio.Path.Companion.DIRECTORY_SEPARATOR
 import okio.Path.Companion.toPath
 

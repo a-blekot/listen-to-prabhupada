@@ -17,7 +17,4 @@ interface PlayerComponent {
     fun onSeekTo(timeMs: Long) {}
     fun onSpeed(speed: Float) {}
 
-    sealed class Output {
-        data class Message(val text: String) : Output()
-    }
 }
