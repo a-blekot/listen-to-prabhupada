@@ -1,8 +1,5 @@
 package com.listentoprabhupada.common.lectures_api
 
-import kotlin.native.concurrent.SharedImmutable
-
-@SharedImmutable
 const val LECTURES_PER_PAGE = 6
 
 data class Pagination(
