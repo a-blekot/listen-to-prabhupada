@@ -23,13 +23,8 @@ include(
     ":common:downloads-impl",
     ":common:favorites-api",
     ":common:favorites-impl",
-    ":common:feature-downloads-api",
-    ":common:feature-downloads-impl",
-    ":common:feature-favorites-api",
-    ":common:feature-favorites-impl",
-    ":common:feature-results-api",
-    ":common:feature-results-impl",
-    ":common:filters",
+    ":common:filters-api",
+    ":common:filters-impl",
     ":common:lectures-api",
     ":common:lectures-impl",
     ":common:network-api",
@@ -38,9 +33,13 @@ include(
     ":common:player-impl",
     ":common:root",
     ":common:settings",
-    ":common:utils"
+    ":common:utils",
+    ":common:features:feature-downloads-api",
+    ":common:features:feature-downloads-impl",
+    ":common:features:feature-favorites-api",
+    ":common:features:feature-favorites-impl",
+    ":common:features:feature-results-api",
+    ":common:features:feature-results-impl"
 )
-
-
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

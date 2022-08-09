@@ -23,11 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.value.MutableValue
 import com.listentoprabhupada.android.R
-import com.listentoprabhupada.common.filters.FiltersComponent
-import com.listentoprabhupada.common.filters.FiltersState
-import com.listentoprabhupada.common.filters.data.Filter
-import com.listentoprabhupada.common.filters.data.Option
-import com.listentoprabhupada.common.filters.data.QueryParam
+import com.listentoprabhupada.common.filters_api.*
 
 @Composable
 fun FilterListItem(

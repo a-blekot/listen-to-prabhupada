@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureComponent
 import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureComponent
 import com.listentoprabhupada.common.feature_results_api.ResultsComponent
-import com.listentoprabhupada.common.filters.FiltersComponent
+import com.listentoprabhupada.common.filters_api.FiltersComponent
 
 interface RootComponent {
 

@@ -18,9 +18,10 @@ import com.listentoprabhupada.common.feature_results_api.ResultsComponent
 import com.listentoprabhupada.common.feature_results_api.ResultsOutput
 import com.listentoprabhupada.common.feature_results_impl.ResultsComponentImpl
 import com.listentoprabhupada.common.feature_results_impl.ResultsDeps
-import com.listentoprabhupada.common.filters.FiltersDeps
-import com.listentoprabhupada.common.filters.FiltersComponent
-import com.listentoprabhupada.common.filters.FiltersComponentImpl
+import com.listentoprabhupada.common.filters_api.FiltersComponent
+import com.listentoprabhupada.common.filters_api.FiltersOutput
+import com.listentoprabhupada.common.filters_impl.FiltersDeps
+import com.listentoprabhupada.common.filters_impl.FiltersComponentImpl
 import com.listentoprabhupada.common.root.RootComponent.Child.*
 import com.listentoprabhupada.common.utils.Consumer
 
@@ -29,7 +30,7 @@ class RootComponentImpl internal constructor(
     private val results: (ComponentContext, Consumer<ResultsOutput>) -> ResultsComponent,
     private val favorites: (ComponentContext, Consumer<FavoritesFeatureOutput>) -> FavoritesFeatureComponent,
     private val downloads: (ComponentContext, Consumer<DownloadsFeatureOutput>) -> DownloadsFeatureComponent,
-    private val filters: (ComponentContext, Consumer<FiltersComponent.Output>) -> FiltersComponent
+    private val filters: (ComponentContext, Consumer<FiltersOutput>) -> FiltersComponent
 ) : RootComponent, ComponentContext by componentContext {
 
     constructor(
@@ -121,9 +122,9 @@ class RootComponentImpl internal constructor(
             else -> { /** TODO **/}
         }
 
-    private fun onFiltersOutput(output: FiltersComponent.Output): Unit =
+    private fun onFiltersOutput(output: FiltersOutput): Unit =
         when (output) {
-            is FiltersComponent.Output.ShowResults -> router.pop { isSuccess ->
+            is FiltersOutput.ShowResults -> router.pop { isSuccess ->
 //                if (isSuccess) {
 //                    (router.activeChild.instance as? Results)?.component?.onUpdateFilters()
 //                }

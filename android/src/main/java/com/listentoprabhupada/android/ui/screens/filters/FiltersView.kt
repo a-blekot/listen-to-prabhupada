@@ -17,7 +17,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.listentoprabhupada.android.ui.LoadingBar
 import com.listentoprabhupada.android.ui.screens.helpers.FilterListItem
 import com.listentoprabhupada.android.ui.screens.helpers.SelectedFilters
-import com.listentoprabhupada.common.filters.FiltersComponent
+import com.listentoprabhupada.common.filters_api.FiltersComponent
 
 @Composable
 fun FiltersView(component: FiltersComponent) {

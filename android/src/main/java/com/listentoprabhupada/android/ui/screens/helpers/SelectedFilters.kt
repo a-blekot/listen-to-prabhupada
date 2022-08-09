@@ -18,10 +18,10 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.listentoprabhupada.android.R
-import com.listentoprabhupada.common.filters.FiltersComponent
-import com.listentoprabhupada.common.filters.data.Filter
-import com.listentoprabhupada.common.filters.data.Option
-import com.listentoprabhupada.common.filters.data.QueryParam
+import com.listentoprabhupada.common.filters_api.Filter
+import com.listentoprabhupada.common.filters_api.Option
+import com.listentoprabhupada.common.filters_api.FiltersComponent
+import com.listentoprabhupada.common.filters_api.QueryParam
 
 @Composable
 fun SelectedFilters(
