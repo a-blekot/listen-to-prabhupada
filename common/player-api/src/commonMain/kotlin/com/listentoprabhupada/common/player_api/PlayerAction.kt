@@ -1,7 +1,5 @@
 package com.listentoprabhupada.common.player_api
 
-import com.listentoprabhupada.common.utils.Lecture
-
 sealed interface PlayerAction {
     object Pause: PlayerAction
     object Next: PlayerAction

@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
 
-    if (providers.gradleProperty("include_ios").get().toBoolean()) {
+//    if (providers.gradleProperty("include_ios").get().toBoolean()) {
         listOf(
             iosX64(),
             iosArm64(),
@@ -35,7 +35,7 @@ kotlin {
                 }
             }
         }
-    }
+//    }
 
     sourceSets {
         commonMain {

@@ -16,13 +16,13 @@ configure<BaseExtension> {
 
         consumerProguardFiles("consumer-rules.pro")
 
-        packagingOptions {
-            resources.excludes += "META-INF/LICENSE-LGPL-2.1.txt"
-            resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
-            resources.excludes += "META-INF/LICENSE-W3C-TEST"
-            resources.excludes += "META-INF/DEPENDENCIES"
-            resources.excludes += "*.proto"
-        }
+//        packagingOptions {
+//            resources.excludes += "META-INF/LICENSE-LGPL-2.1.txt"
+//            resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
+//            resources.excludes += "META-INF/LICENSE-W3C-TEST"
+//            resources.excludes += "META-INF/DEPENDENCIES"
+//            resources.excludes += "*.proto"
+//        }
     }
     buildTypes {
         maybeCreate("debug").apply {

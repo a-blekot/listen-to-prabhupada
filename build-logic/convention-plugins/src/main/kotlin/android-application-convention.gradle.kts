@@ -2,10 +2,10 @@ import ApkConfig.APPLICATION_ID
 import ApkConfig.APPLICATION_ID_SUFFIX
 
 plugins {
-    id("com.android.application")
-    id("base-android-convention")
-    id("base-kotlin-convention")
     kotlin("android")
+    id("com.android.application")
+    id("kotlin-base-convention")
+    id("android-base-convention")
 }
 
 android {

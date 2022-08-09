@@ -89,10 +89,11 @@ class PlaybackService : Service(), Player.Listener {
         Napier.d("stop", tag = "PlaybackService")
         stopForeground(true)
         Napier.d("stopForeground", tag = "PlaybackService")
-        if (player?.isPlaying == false) {
-            stopSelf()
-            Napier.d("stopSelf", tag = "PlaybackService")
-        }
+
+        player?.release()
+        player = null
+        stopSelf()
+        Napier.d("stopSelf", tag = "PlaybackService")
     }
 
     private fun requireWakeLock(duration: Long = player?.totalDurationMillis ?: 0L) {

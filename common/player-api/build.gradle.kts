@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.common.data)
                 implementation(projects.common.lecturesApi)
                 implementation(projects.common.utils)
 

@@ -14,7 +14,6 @@ sqldelight {
 //Please wait while Kotlin/Native compiler 1.7.0 is being installed.
 //Download https://download.jetbrains.com/kotlin/native/builds/releases/1.7.0/macos-aarch64/kotlin-native-prebuilt-macos-aarch64-1.7.0.tar.gz
 
-
 kotlin {
     sourceSets {
         commonMain {

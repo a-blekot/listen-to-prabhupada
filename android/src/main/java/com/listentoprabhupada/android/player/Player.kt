@@ -201,7 +201,6 @@ class Player(
     val isPlaying
         get() = exoPlayer?.isPlaying == true
 
-
     fun release() {
         hideNotification()
         exoPlayer?.release()

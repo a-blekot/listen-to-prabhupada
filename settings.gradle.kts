@@ -1,7 +1,13 @@
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    includeBuild("build-logic")
+}
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
@@ -11,6 +17,7 @@ dependencyResolutionManagement {
 rootProject.name = "Prabhupada_Lectures"
 include(
     ":android",
+    ":common:data",
     ":common:database",
     ":common:downloads-api",
     ":common:downloads-impl",
@@ -33,3 +40,7 @@ include(
     ":common:settings",
     ":common:utils"
 )
+
+
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

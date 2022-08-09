@@ -2,11 +2,11 @@ import com.android.build.gradle.BaseExtension
 
 plugins {
     id("com.android.library")
-    id("base-android-convention")
-    id("base-kotlin-convention")
+    id("kotlin-base-convention")
+    id("android-base-convention")
 }
 
-configure<BaseExtension> {
+android {
     sourceSets {
         getByName("main") {
             java.srcDirs("src/androidMain/kotlin")

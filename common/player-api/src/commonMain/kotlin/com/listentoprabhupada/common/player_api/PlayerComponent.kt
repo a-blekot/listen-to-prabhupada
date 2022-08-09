@@ -1,7 +1,6 @@
 package com.listentoprabhupada.common.player_api
 
 import com.arkivanov.decompose.value.Value
-import com.listentoprabhupada.common.utils.Lecture
 
 interface PlayerComponent {
 

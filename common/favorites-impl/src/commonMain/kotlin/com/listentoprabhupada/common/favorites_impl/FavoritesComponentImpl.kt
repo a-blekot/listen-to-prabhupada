@@ -16,12 +16,8 @@ import com.listentoprabhupada.common.utils.asValue
 import com.listentoprabhupada.common.utils.getStore
 import com.listentoprabhupada.common.utils.lifecycleCoroutineScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.coroutines.CoroutineContext
-import io.github.aakira.napier.Napier
 
 
 class FavoritesComponentImpl(

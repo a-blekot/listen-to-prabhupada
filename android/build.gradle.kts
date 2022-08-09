@@ -1,11 +1,10 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-
 plugins {
     id("android-application-convention")
     id("kotlin-parcelize")
 }
 
 dependencies {
+    implementation(projects.common.data)
     implementation(projects.common.database)
     implementation(projects.common.featureResultsApi)
     implementation(projects.common.featureFavoritesApi)
@@ -45,22 +44,22 @@ dependencies {
     implementation(libs.decompose.extCompose)
 }
 
-detekt {
-    version = "1.0.0"
-    reports {
-        xml {
-            destination = file("$project.buildDir/reports/detekt/detekt.xml")
-        }
-    }
-}
+//detekt {
+//    version = "1.0.0"
+//    reports {
+//        xml {
+//            destination = file("$project.buildDir/reports/detekt/detekt.xml")
+//        }
+//    }
+//}
 
-ktlint {
-    android.set(true)
-    version.set("0.46.1")
-    ignoreFailures.set(false)
-    reporters {
-        reporter(ReporterType.PLAIN)
-        reporter(ReporterType.CHECKSTYLE)
-    }
-    outputToConsole.set(true)
-}
+//ktlint {
+//    android.set(true)
+//    version.set("0.46.1")
+//    ignoreFailures.set(false)
+//    reporters {
+//        reporter(ReporterType.PLAIN)
+//        reporter(ReporterType.CHECKSTYLE)
+//    }
+//    outputToConsole.set(true)
+//}
