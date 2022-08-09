@@ -1,14 +1,13 @@
 package com.listentoprabhupada.common.lectures_impl.data
 
 import com.listentoprabhupada.common.lectures_api.LECTURES_PER_PAGE
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.lectures_api.Pagination
 import com.listentoprabhupada.common.lectures_impl.data.lectures.*
 import com.listentoprabhupada.common.network_api.ApiModel
 import com.listentoprabhupada.common.network_api.Routes
 import com.listentoprabhupada.common.network_api.lectures.*
 import com.listentoprabhupada.common.settings.FIRST_PAGE
-import io.github.aakira.napier.Napier
 
 fun pagination(apiModel: ApiModel) =
     Pagination(

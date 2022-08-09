@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.player_api
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 
 interface PlayerBus {
     fun update(state: PlayerState)

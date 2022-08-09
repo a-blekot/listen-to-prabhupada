@@ -6,7 +6,7 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.listentoprabhupada.common.database.Database
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.lectures_api.LecturesState
 import com.listentoprabhupada.common.lectures_impl.data.lectures
 import com.listentoprabhupada.common.utils.dbEntity
@@ -14,7 +14,6 @@ import com.listentoprabhupada.common.lectures_impl.data.pagination
 import com.listentoprabhupada.common.lectures_impl.mvi.LecturesDeps
 import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStore.Intent.*
 import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStore.Label
-import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStoreFactory.Action.InitialLoad
 import com.listentoprabhupada.common.lectures_impl.mvi.store.LecturesStoreFactory.Action.UpdateFromDB
 import com.listentoprabhupada.common.network_api.ApiModel
 import com.listentoprabhupada.common.network_api.PAGE_QUERY_KEY

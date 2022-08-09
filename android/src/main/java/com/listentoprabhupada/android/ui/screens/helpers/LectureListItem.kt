@@ -4,25 +4,18 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Rounded
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.listentoprabhupada.android.R
-import com.listentoprabhupada.common.utils.Lecture
-import com.listentoprabhupada.common.lectures_api.LecturesComponent
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.network_api.FULL_PROGRESS
 
 interface Listener {

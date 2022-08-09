@@ -13,11 +13,9 @@ import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.Curren
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.Favorite
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesStoreFactory.Action.InitialLoad
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesStoreFactory.Action.UpdateFromDB
-import com.listentoprabhupada.common.utils.Lecture
-import io.github.aakira.napier.Napier
+import com.listentoprabhupada.common.data.Lecture
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

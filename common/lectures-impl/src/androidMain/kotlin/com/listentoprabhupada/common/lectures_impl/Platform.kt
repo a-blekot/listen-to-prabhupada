@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.lectures_impl
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.lectures_impl.data.lectures.filePath
 import com.listentoprabhupada.common.lectures_impl.utils.DEEP_LINK_SCHEME
 import com.listentoprabhupada.common.lectures_impl.utils.HOST_LECTURE

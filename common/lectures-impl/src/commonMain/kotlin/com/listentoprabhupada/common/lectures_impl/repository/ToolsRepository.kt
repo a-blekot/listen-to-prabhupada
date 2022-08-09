@@ -3,7 +3,7 @@ package com.listentoprabhupada.common.lectures_impl.repository
 import com.listentoprabhupada.common.database.Database
 import com.listentoprabhupada.common.settings.getNextNotificationId
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.utils.dbEntity
 import com.listentoprabhupada.common.utils.mapped
 import kotlinx.coroutines.flow.Flow

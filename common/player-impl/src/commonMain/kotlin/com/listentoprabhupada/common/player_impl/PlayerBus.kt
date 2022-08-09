@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.player_impl
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.player_api.PlayerAction
 import com.listentoprabhupada.common.player_api.PlayerBus
 import com.listentoprabhupada.common.player_api.PlayerState

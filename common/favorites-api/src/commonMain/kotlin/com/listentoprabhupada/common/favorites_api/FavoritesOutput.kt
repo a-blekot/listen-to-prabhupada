@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.favorites_api
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 
 sealed interface FavoritesOutput {
     object Pause : FavoritesOutput

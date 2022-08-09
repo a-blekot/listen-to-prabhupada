@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.player_api
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 
 data class PlayerState(
     val lecture: Lecture = Lecture(),

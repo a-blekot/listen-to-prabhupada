@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.lectures_api
 
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 
 data class LecturesState(
     val isLoading: Boolean = false,

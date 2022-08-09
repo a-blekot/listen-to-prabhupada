@@ -13,11 +13,10 @@ import com.listentoprabhupada.common.downloads_impl.store.DownloadsIntent.Curren
 import com.listentoprabhupada.common.downloads_impl.store.DownloadsIntent.Favorite
 import com.listentoprabhupada.common.downloads_impl.store.DownloadsStoreFactory.Action.RefreshDownloads
 import com.listentoprabhupada.common.downloads_impl.store.DownloadsStoreFactory.Action.UpdateFromDB
-import com.listentoprabhupada.common.utils.Lecture
+import com.listentoprabhupada.common.data.Lecture
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
