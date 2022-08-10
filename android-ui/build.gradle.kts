@@ -20,7 +20,7 @@ dependencies {
     implementation(projects.common.features.featureFavoritesApi)
     implementation(projects.common.features.featureResultsApi)
     implementation(projects.common.filtersApi)
-    implementation(projects.common.lecturesApi)
+    implementation(projects.common.resultsApi)
     implementation(projects.common.playerApi)
     implementation(projects.common.root)
     implementation(projects.common.settings)

@@ -1,14 +1,10 @@
 package com.listentoprabhupada.common.downloads_api
 
 import com.arkivanov.decompose.value.Value
+import com.listentoprabhupada.common.data.LectureComponent
 
-interface DownloadsComponent {
-
+interface DownloadsComponent: LectureComponent {
     val flow: Value<DownloadsState>
 
-    fun onPlay(id: Long) {}
-    fun onPause() {}
-    fun onRemove(id: Long) {}
-    fun onFavorite(id: Long, isFavorite: Boolean) {}
     fun onCurrentLecture(id: Long, isPlaying: Boolean) {}
 }

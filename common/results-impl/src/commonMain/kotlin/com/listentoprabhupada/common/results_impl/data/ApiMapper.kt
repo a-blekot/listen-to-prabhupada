@@ -1,0 +1,82 @@
+package com.listentoprabhupada.common.results_impl.data
+
+import com.listentoprabhupada.common.results_api.LECTURES_PER_PAGE
+import com.listentoprabhupada.common.data.Lecture
+import com.listentoprabhupada.common.results_api.Pagination
+import com.listentoprabhupada.common.results_impl.data.lectures.*
+import com.listentoprabhupada.common.network_api.ApiModel
+import com.listentoprabhupada.common.network_api.Routes
+import com.listentoprabhupada.common.network_api.lectures.*
+import com.listentoprabhupada.common.settings.FIRST_PAGE
+
+fun pagination(apiModel: ApiModel) =
+    Pagination(
+        prev = apiModel.prevPage,
+        curr = currentPage(apiModel),
+        next = apiModel.nextPage,
+        total = totalPages(apiModel.count)
+    )
+
+private fun currentPage(apiModel: ApiModel) =
+    apiModel.prevPage?.let { it + 1 }
+        ?: apiModel.nextPage?.let { it - 1 }
+        ?: FIRST_PAGE
+
+private fun totalPages(totalLectures: Int) =
+    totalLectures / LECTURES_PER_PAGE + if (totalLectures % LECTURES_PER_PAGE == 0) 0 else 1
+
+fun lectures(apiModel: ApiModel): List<Lecture> =
+    apiModel.results.files.map { lecture(it) }
+
+private fun lecture(apiModel: LectureApiModel, idExtra: Long = 0) =
+    Lecture(
+        id = apiModel.id + idExtra,
+        title = title(apiModel),
+        description = apiModel.description,
+        date = apiModel.date,
+        place = apiModel.place.name,
+        durationMillis = apiModel.duration.parseDuration(),
+        remoteUrl = "${Routes.BASE_URL}${apiModel.url}"
+    )
+
+private fun title(apiModel: LectureApiModel) =
+    apiModel.run {
+        when {
+            quotes.isEmpty() -> title
+            else -> title(quotes) ?: title
+        }
+    }
+
+private fun title(quotes: List<QuoteApiModel>) =
+
+    when (quotes.size) {
+        0 -> null
+        1 -> title(quotes.first())
+        else -> title(quotes.first(), quotes.last())
+    }
+
+private fun title(quote: QuoteApiModel) =
+    "${scripture(quote)} ${number(quote)}"
+
+private fun title(first: QuoteApiModel, last: QuoteApiModel) =
+    "${scripture(first)} ${number(first, last)}"
+
+private fun scripture(quote: QuoteApiModel) =
+    quote.scripture.title
+
+private fun number(first: QuoteApiModel, last: QuoteApiModel) =
+    when {
+        canto(first) == canto(last) && first.chapter == last.chapter -> {
+            listOfNotNull(canto(first), first.chapter, "${first.verse}-${last.verse}").joinToString(separator = ".")
+        }
+
+        else -> "${number(first)}-${number(last)}"
+    }
+
+private fun number(quote: QuoteApiModel) =
+    quote.run {
+        listOfNotNull(canto?.title, chapter, verse).joinToString(separator = ".")
+    }
+
+private fun canto(quote: QuoteApiModel) =
+    quote.canto?.title

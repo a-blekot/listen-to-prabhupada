@@ -15,8 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.listentoprabhupada.common.lectures_api.LecturesComponent
-import com.listentoprabhupada.common.lectures_api.Pagination
+import com.listentoprabhupada.common.results_api.ResultsComponent
+import com.listentoprabhupada.common.results_api.Pagination
 import com.listentoprabhupada.android_ui.R
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 
@@ -35,8 +35,8 @@ enum class ButtonType(val pagesDiff: Int, @StringRes val textRes: Int) {
 
 @Composable
 fun PageControl(
-    component: LecturesComponent,
     pagination: Pagination,
+    component: ResultsComponent,
     modifier: Modifier = Modifier,
 ) =
     Row(
@@ -105,7 +105,7 @@ fun PageControl(
 fun RowScope.PageButton(
     buttonType: ButtonType,
     pagination: Pagination,
-    component: LecturesComponent
+    component: ResultsComponent
 ) =
     Button(
         modifier = Modifier.weight(WEIGHT_BUTTON).padding(horizontal = 1.dp),
@@ -128,7 +128,7 @@ fun RowScope.PageButton(
 fun RowScope.PageImageButton(
     buttonType: ButtonType,
     pagination: Pagination,
-    component: LecturesComponent,
+    component: ResultsComponent,
 ) =
     Button(
         modifier = Modifier.weight(WEIGHT_BUTTON).padding(horizontal = 1.dp),

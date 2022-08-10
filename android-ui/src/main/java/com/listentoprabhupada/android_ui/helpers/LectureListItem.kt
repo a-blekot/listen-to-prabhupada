@@ -16,27 +16,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.listentoprabhupada.common.data.Lecture
+import com.listentoprabhupada.common.data.LectureComponent
 
 private const val FULL_PROGRESS = 100
 
-interface Listener {
-    fun onPause() {}
-    fun onPlay(id: Long) {}
-    fun onFavorite(id: Long, isFavorite: Boolean) {}
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LectureListItem(
-    lecture: Lecture,
-    component: Listener,
-) =
+fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Modifier = Modifier) =
     Row(
-        modifier = Modifier
-            .combinedClickable(
+        modifier = modifier.combinedClickable(
 //                onLongClick = { showContextMenu(lecture, component) },
-                onClick = {}
-            ),
+            onClick = {}
+        ),
     ) {
 
         val playVector =
@@ -127,7 +118,7 @@ fun PreviewLectureListItem() {
                 date = "1970-08-02",
                 place = "Лос-Анджелес, США"
             ),
-            object : Listener {}
+            object : LectureComponent {}
         )
     }
 }

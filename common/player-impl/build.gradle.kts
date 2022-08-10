@@ -11,7 +11,7 @@ kotlin {
                 implementation(projects.common.database)
                 implementation(projects.common.settings)
                 implementation(projects.common.playerApi)
-                implementation(projects.common.lecturesApi)
+                implementation(projects.common.resultsApi)
                 implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)

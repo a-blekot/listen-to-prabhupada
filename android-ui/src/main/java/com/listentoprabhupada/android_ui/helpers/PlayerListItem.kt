@@ -33,7 +33,7 @@ import com.listentoprabhupada.common.player_api.PlayerComponent
 import com.listentoprabhupada.common.player_api.PlayerState
 
 @Composable
-fun PlayerListItem(playerComponent: PlayerComponent) {
+fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifier) {
     val playbackState = playerComponent.flow.subscribeAsState()
 
     val screenWidth = LocalConfiguration.current.screenWidthDp

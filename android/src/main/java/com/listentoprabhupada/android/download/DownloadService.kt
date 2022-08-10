@@ -14,7 +14,7 @@ import com.listentoprabhupada.android.util.notificationColor
 import com.listentoprabhupada.android.util.notificationManager
 import com.listentoprabhupada.common.network_api.*
 import com.listentoprabhupada.common.settings.DOWNLOAD_NOTIFICATION_ID
-import com.listentoprabhupada.common.lectures_impl.repository.DownloadsRepository
+import com.listentoprabhupada.common.results_impl.repository.DownloadsRepository
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
