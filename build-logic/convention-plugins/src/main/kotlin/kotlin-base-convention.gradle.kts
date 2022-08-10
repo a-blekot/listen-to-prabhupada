@@ -4,6 +4,5 @@ import ApkConfig.JAVA_VERSION_NAME
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = JAVA_VERSION_NAME
-//        freeCompilerArgs += listOf("-Xjdk-release=$JAVA_VERSION_NAME")
     }
 }

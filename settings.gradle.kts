@@ -14,9 +14,10 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Prabhupada_Lectures"
+rootProject.name = "listen-to-prabhupada"
 include(
     ":android",
+    ":android-ui",
     ":common:data",
     ":common:database",
     ":common:downloads-api",
@@ -33,6 +34,8 @@ include(
     ":common:player-impl",
     ":common:root",
     ":common:settings",
+    ":common:settings-api",
+    ":common:settings-impl",
     ":common:utils",
     ":common:features:feature-downloads-api",
     ":common:features:feature-downloads-impl",

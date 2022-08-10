@@ -6,17 +6,11 @@ plugins {
 kotlin {
     android()
 
-//    providers.gradleProperty("include_ios").get().toBoolean()
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     )
-//    .forEach {
-//        it.binaries.framework {
-//            baseName = "shared"
-//        }
-//    }
 
     sourceSets {
         val commonMain by getting

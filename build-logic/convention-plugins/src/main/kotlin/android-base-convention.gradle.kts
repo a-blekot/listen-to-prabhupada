@@ -15,14 +15,6 @@ configure<BaseExtension> {
         versionName = VERSION_NAME
 
         consumerProguardFiles("consumer-rules.pro")
-
-//        packagingOptions {
-//            resources.excludes += "META-INF/LICENSE-LGPL-2.1.txt"
-//            resources.excludes += "META-INF/LICENSE-LGPL-3.txt"
-//            resources.excludes += "META-INF/LICENSE-W3C-TEST"
-//            resources.excludes += "META-INF/DEPENDENCIES"
-//            resources.excludes += "*.proto"
-//        }
     }
     buildTypes {
         maybeCreate("debug").apply {
@@ -50,6 +42,6 @@ configure<BaseExtension> {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = "1.3.0-rc02"
     }
 }

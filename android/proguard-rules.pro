@@ -19,3 +19,34 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-optimizationpasses 5
+-printmapping mapping.txt
+
+# Keep data models (for json parsing)
+#-keep class com.listentoprabhupada.common.data.** { *; }
+
+# Keep Parcelable model
+#-keep class * implements android.os.Parcelable { *; }
+
+# Kotlin serialization looks up the generated serializer classes through a function on companion
+# objects. The companions are looked up reflectively so we need to explicitly keep these functions.
+-keepclasseswithmembers class **.*$Companion {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+# If a companion has the serializer function, keep the companion field on the original type so that
+# the reflective lookup succeeds.
+-if class **.*$Companion {
+  kotlinx.serialization.KSerializer serializer(...);
+}
+-keepclassmembers class <1>.<2> {
+  <1>.<2>$Companion Companion;
+}
+
+#Crashlytics
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception

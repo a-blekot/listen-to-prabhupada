@@ -23,8 +23,8 @@ import com.listentoprabhupada.android.PrabhupadaApp.Companion.app
 import com.listentoprabhupada.android.download.DownloadService
 import com.listentoprabhupada.android.download.DownloadServiceAction
 import com.listentoprabhupada.android.player.PlaybackService
-import com.listentoprabhupada.android.ui.screens.MainContent
-import com.listentoprabhupada.android.ui.screens.helpers.AppTheme
+import com.listentoprabhupada.android_ui.screens.MainContent
+import com.listentoprabhupada.android_ui.helpers.AppTheme
 import com.listentoprabhupada.android.util.parseShareAction
 import com.listentoprabhupada.common.root.RootComponent
 import com.listentoprabhupada.common.root.RootComponentImpl
@@ -54,21 +54,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
 
         setContent {
             AppTheme {
-                ProvideWindowInsets {
-                    Box(
-                        Modifier.padding(
-                            rememberInsetsPaddingValues(
-                                insets = LocalWindowInsets.current.systemBars,
-                                applyStart = true,
-                                applyTop = true,
-                                applyEnd = true,
-                                applyBottom = true
-                            )
-                        )
-                    ) {
-                        MainContent(root)
-                    }
-                }
+                MainContent(root)
             }
         }
     }

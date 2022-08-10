@@ -2,6 +2,7 @@ package com.listentoprabhupada.common.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.*
+import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
@@ -73,26 +74,30 @@ class RootComponentImpl internal constructor(
         }
     )
 
-    private val router =
-        router<Configuration, RootComponent.Child>(
+    private val navigation = StackNavigation<Configuration>()
+
+    private val stack =
+        childStack(
+            source = navigation,
             initialConfiguration = Configuration.Results,
             handleBackButton = true,
             childFactory = ::createChild
         )
 
-    override val routerState: Value<RouterState<*, RootComponent.Child>> = router.state
+    override val childStack: Value<ChildStack<*, RootComponent.Child>>
+        get() = stack
 
     override fun onResultsTabClicked() =
-        router.bringToFront(Configuration.Results)
+        navigation.bringToFront(Configuration.Results)
 
     override fun onFavoritesTabClicked() =
-        router.bringToFront(Configuration.Favorites)
+        navigation.bringToFront(Configuration.Favorites)
 
     override fun onDownloadsTabClicked() =
-        router.bringToFront(Configuration.Downloads)
+        navigation.bringToFront(Configuration.Downloads)
 
     override fun onFiltersTabClicked() =
-        router.bringToFront(Configuration.Filters)
+        navigation.bringToFront(Configuration.Filters)
 
     private fun createChild(configuration: Configuration, componentContext: ComponentContext): RootComponent.Child =
         when (configuration) {
@@ -104,9 +109,9 @@ class RootComponentImpl internal constructor(
 
     private fun onResultsOutput(output: ResultsOutput): Unit =
         when (output) {
-            is ResultsOutput.EditFilters -> router.push(Configuration.Filters)
-            is ResultsOutput.ShowFavorites -> router.push(Configuration.Favorites)
-            is ResultsOutput.ShowDownloads -> router.push(Configuration.Downloads)
+            is ResultsOutput.EditFilters -> navigation.push(Configuration.Filters)
+            is ResultsOutput.ShowFavorites -> navigation.push(Configuration.Favorites)
+            is ResultsOutput.ShowDownloads -> navigation.push(Configuration.Downloads)
             else -> { /** TODO **/}
         }
 
@@ -124,7 +129,7 @@ class RootComponentImpl internal constructor(
 
     private fun onFiltersOutput(output: FiltersOutput): Unit =
         when (output) {
-            is FiltersOutput.ShowResults -> router.pop { isSuccess ->
+            is FiltersOutput.ShowResults -> navigation.pop { isSuccess ->
 //                if (isSuccess) {
 //                    (router.activeChild.instance as? Results)?.component?.onUpdateFilters()
 //                }

@@ -88,13 +88,15 @@ class PrabhupadaApp : Application() {
     lateinit var toolsRepository: ToolsRepository
     lateinit var downloadsRepository: DownloadsRepository
 
-    val mainScope = CoroutineScope(Dispatchers.Main)
-
     override fun onCreate() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
+//            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
             debugBuild()
+        } else {
+//            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+//            Napier.base(CrashlyticsAntilog(this))
         }
 
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)

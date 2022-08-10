@@ -6,7 +6,6 @@ dependencies {
     implementation(libs.android.gradlePlgn)
     implementation(libs.kotlin.gradlePlgn)
     implementation(libs.sqlDelight.gradlePlgn)
-//    implementation(libs.kotlin.serialization.gradlePlgn)
 }
 
 val rootDirProject = file("../")

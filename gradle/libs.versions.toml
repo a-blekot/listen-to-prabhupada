@@ -1,30 +1,32 @@
 [versions]
-accompanist = "0.24.13-rc"
-android-gradlePlgn = "7.2.0"
+accompanist = "0.26.0-alpha"
+android-gradlePlgn = "7.2.2"
 androidx-activity = "1.6.0-alpha05"
 androidx-appcompat = "1.6.0-alpha05"
 androidx-core = "1.8.0"
 androidx-lifecycle-ext = "2.6.0-alpha01"
 androidx-lifecycle-runtime = "2.6.0-alpha01"
 canidropjetifier = "0.5"
-compose = "1.3.0-alpha01"
-compose_compiler="1.2.0"
-decompose = "0.7.0"
+compose = "1.3.0-alpha02"
+compose_compiler="1.3.0-rc02"
+decompose = "1.0.0-alpha-01"
 detekt = "1.17.0"
 essenty = "0.2.2"
-exoplayer = "2.18.0"
-kotlin = "1.7.0"
-kotlinx_coroutines = "1.6.3"
+exoplayer = "2.18.1"
+firebase-bom = "30.3.1"
+google-services = "4.3.13"
+kotlin = "1.7.10"
+kotlinx_coroutines = "1.6.4"
 kotlinx_serialization = "1.3.2"
 ktlint = "10.2.1"
 ktor = "2.0.3"
-material = "1.4.0-beta01"
-mvikotlin = "3.0.0-beta02"
+material = "1.0.0-alpha15"
+mvikotlin = "3.0.1"
 napier = "2.6.1"
 okio = "3.0.0"
-settings = "0.8.1"
+settings = "0.9"
 sql_delight = "1.5.3"
-stately = "1.2.0"
+stately = "1.2.3"
 versions = "0.42.0"
 
 [libraries]
@@ -35,16 +37,22 @@ kotlin-serialization-gradlePlgn = { module = "org.jetbrains.kotlin:kotlin-serial
 kotlin-gradlePlgn = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 ktlintPlgn = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
 versionsPlgn = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versions" }
+google-services-gradlePlgn = { module = "com.google.gms:google-services", version.ref = "google-services" }
 
 accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist"}
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist"}
 
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity"}
+androidx-composeFoundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+androidx-composeIcons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+androidx-composeMaterial = { module = "androidx.compose.material3:material3", version.ref = "material" }
+androidx-composeUi = { module = "androidx.compose.ui:ui", version.ref = "compose"}
+androidx-composeUiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat"}
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core"}
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle-ext"}
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-runtime"}
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-ext"}
 
 decompose-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extCompose = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
@@ -52,6 +60,12 @@ essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = 
 
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
 exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayer" }
+
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics"  }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx_coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines" }
@@ -65,7 +79,6 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-material = { module = "com.google.android.material:material", version.ref = "material"}
 
 mvikotlin-mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
 mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
@@ -74,7 +87,8 @@ mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.re
 mvikotlin-rx = { module = "com.arkivanov.mvikotlin:rx", version.ref = "mvikotlin" }
 
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
-napier-android = { module = "io.github.aakira:napier-android-debug", version.ref = "napier" }
+napier-android-debug = { module = "io.github.aakira:napier-android-debug", version.ref = "napier" }
+napier-android-release = { module = "io.github.aakira:napier-android", version.ref = "napier" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "settings" }
 
@@ -95,16 +109,10 @@ test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref 
 test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 
-androidx-composeFoundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-androidx-composeMaterial = { module = "androidx.compose.material:material", version.ref = "compose" }
-androidx-composeUi = { module = "androidx.compose.ui:ui", version.ref = "compose"}
-androidx-composeUiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-androidx-composeIcons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-
 [bundles]
 androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx-composeUiTooling", "androidx-composeFoundation", "androidx-composeIcons" ]
 ktor-common-bndl = [ "ktor-client-core", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json" ]
 mvikotlin-bndl= [ "mvikotlin-mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-extensions-coroutines" ]
 stately-bndl = [ "stately-common", "stately-concurrency", "stately-isolate", "stately-iso-collections" ]
-pulagins = ["android-gradlePlgn", "kotlin-gradlePlgn", "kotlin-serialization-gradlePlgn", "sqlDelight-gradlePlgn",]
+plaginz = ["android-gradlePlgn", "kotlin-gradlePlgn", "kotlin-serialization-gradlePlgn", "sqlDelight-gradlePlgn", "versionsPlgn"]
 #pulagins = ["android-gradlePlgn", "kotlin-gradlePlgn", "kotlin-serialization-gradlePlgn", "sqlDelight-gradlePlgn", "versionsPlgn", "detektPlgn", "ktlintPlgn", "canidropjetifierPlgn"]

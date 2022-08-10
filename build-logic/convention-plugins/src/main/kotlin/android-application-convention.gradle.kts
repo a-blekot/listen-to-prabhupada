@@ -21,9 +21,11 @@ android {
         debug {
             applicationIdSuffix = APPLICATION_ID_SUFFIX
             isShrinkResources = false
+            isMinifyEnabled = false
         }
         release {
             isShrinkResources = true
+            isMinifyEnabled = true
         }
     }
 }
