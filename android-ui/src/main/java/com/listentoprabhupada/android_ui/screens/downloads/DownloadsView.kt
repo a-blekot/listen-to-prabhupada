@@ -13,7 +13,7 @@ import com.listentoprabhupada.android_ui.helpers.PlayerListItem
 import com.listentoprabhupada.common.feature_downloads_api.DownloadsFeatureComponent
 
 @Composable
-fun DownloadsView(component: DownloadsFeatureComponent) {
+fun DownloadsView(component: DownloadsFeatureComponent, modifier: Modifier = Modifier) {
     val downloadsState = component.downloadsComponent.flow.subscribeAsState()
 
     Box {

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.listentoprabhupada.common.lectures_api.LecturesComponent
 import com.listentoprabhupada.common.lectures_api.Pagination
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 
 private const val WEIGHT_BUTTON = 1f
 
@@ -72,7 +73,7 @@ fun PageControl(
             textAlign = TextAlign.Center,
             modifier = modifier
                 .wrapContentWidth()
-                .padding(start = 4.dp, end = 4.dp)
+                .padding(start = paddingXS, end = paddingXS)
         )
 
         PageButton(

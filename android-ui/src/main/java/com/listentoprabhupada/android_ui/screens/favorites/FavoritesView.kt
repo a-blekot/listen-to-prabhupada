@@ -13,7 +13,7 @@ import com.listentoprabhupada.android_ui.helpers.PlayerListItem
 import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureComponent
 
 @Composable
-fun FavoritesView(component: FavoritesFeatureComponent) {
+fun FavoritesView(component: FavoritesFeatureComponent, modifier: Modifier = Modifier) {
     val favoritesState = component.favoritesComponent.flow.subscribeAsState()
 
     Box {

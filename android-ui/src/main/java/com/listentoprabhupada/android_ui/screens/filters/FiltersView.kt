@@ -20,7 +20,7 @@ import com.listentoprabhupada.android_ui.helpers.SelectedFilters
 import com.listentoprabhupada.common.filters_api.FiltersComponent
 
 @Composable
-fun FiltersView(component: FiltersComponent) {
+fun FiltersView(component: FiltersComponent, modifier: Modifier = Modifier) {
     val state = component.models.subscribeAsState()
 
     val expandedList = state.value.filters.map {

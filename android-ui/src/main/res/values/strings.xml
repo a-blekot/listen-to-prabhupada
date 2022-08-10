@@ -35,6 +35,13 @@
     <string name="next_page_last">%3E%3E</string>
     <!-- >> -->
 
+
+    <string name="nav_bar_results">Результаты</string>
+    <string name="nav_bar_favorite">Избранное</string>
+    <string name="nav_bar_filter">Фильтр</string>
+    <string name="nav_bar_search">Поиск</string>
+    <string name="nav_bar_settings">Настройки</string>
+
     <string name="playback_channel_name">Listen to Prabhupada playback notifications</string>
     <string name="download_channel_name">Listen to Prabhupada downloads notifications</string>
 </resources>

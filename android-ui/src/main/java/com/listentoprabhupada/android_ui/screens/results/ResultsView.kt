@@ -22,7 +22,7 @@ import com.listentoprabhupada.common.feature_results_api.ResultsComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ResultsView(component: ResultsComponent) {
+fun ResultsView(component: ResultsComponent, modifier: Modifier = Modifier) {
     val lecturesState = component.lecturesComponent.flow.subscribeAsState()
 
     if (true) { // isOnline
