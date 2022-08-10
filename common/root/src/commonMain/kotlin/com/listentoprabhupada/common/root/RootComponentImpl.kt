@@ -1,7 +1,6 @@
 package com.listentoprabhupada.common.root
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -15,10 +14,10 @@ import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureCompo
 import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureOutput
 import com.listentoprabhupada.common.feature_favorites_impl.FavoritesFeatureComponentImpl
 import com.listentoprabhupada.common.feature_favorites_impl.FavoritesFeatureDeps
-import com.listentoprabhupada.common.feature_results_api.ResultsComponent
-import com.listentoprabhupada.common.feature_results_api.ResultsOutput
-import com.listentoprabhupada.common.feature_results_impl.ResultsComponentImpl
-import com.listentoprabhupada.common.feature_results_impl.ResultsDeps
+import com.listentoprabhupada.common.feature_results_api.ResultsFeatureComponent
+import com.listentoprabhupada.common.feature_results_api.ResultsFeatureOutput
+import com.listentoprabhupada.common.feature_results_impl.ResultsFeatureComponentImpl
+import com.listentoprabhupada.common.feature_results_impl.ResultsFeatureDeps
 import com.listentoprabhupada.common.filters_api.FiltersComponent
 import com.listentoprabhupada.common.filters_api.FiltersOutput
 import com.listentoprabhupada.common.filters_impl.FiltersDeps
@@ -28,7 +27,7 @@ import com.listentoprabhupada.common.utils.Consumer
 
 class RootComponentImpl internal constructor(
     componentContext: ComponentContext,
-    private val results: (ComponentContext, Consumer<ResultsOutput>) -> ResultsComponent,
+    private val results: (ComponentContext, Consumer<ResultsFeatureOutput>) -> ResultsFeatureComponent,
     private val favorites: (ComponentContext, Consumer<FavoritesFeatureOutput>) -> FavoritesFeatureComponent,
     private val downloads: (ComponentContext, Consumer<DownloadsFeatureOutput>) -> DownloadsFeatureComponent,
     private val filters: (ComponentContext, Consumer<FiltersOutput>) -> FiltersComponent
@@ -41,10 +40,10 @@ class RootComponentImpl internal constructor(
     ) : this(
         componentContext = componentContext,
         results = { childContext, output ->
-            ResultsComponentImpl(
+            ResultsFeatureComponentImpl(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                deps = deps.run { ResultsDeps(db, api, playerBus, dispatchers) },
+                deps = deps.run { ResultsFeatureDeps(db, api, playerBus, dispatchers) },
                 output = output
             )
         },
@@ -99,41 +98,63 @@ class RootComponentImpl internal constructor(
     override fun onFiltersTabClicked() =
         navigation.bringToFront(Configuration.Filters)
 
-    private fun createChild(configuration: Configuration, componentContext: ComponentContext): RootComponent.Child =
+    private fun createChild(
+        configuration: Configuration,
+        componentContext: ComponentContext
+    ): RootComponent.Child =
         when (configuration) {
-            is Configuration.Results -> Results(results(componentContext, Consumer(::onResultsOutput)))
-            is Configuration.Favorites -> Favorites(favorites(componentContext, Consumer(::onFavoritesOutput)))
-            is Configuration.Downloads -> Downloads(downloads(componentContext, Consumer(::onDownloadsOutput)))
-            is Configuration.Filters -> Filters(filters(componentContext, Consumer(::onFiltersOutput)))
+            is Configuration.Results -> Results(
+                results(
+                    componentContext,
+                    Consumer(::onResultsOutput)
+                )
+            )
+            is Configuration.Favorites -> Favorites(
+                favorites(
+                    componentContext,
+                    Consumer(::onFavoritesOutput)
+                )
+            )
+            is Configuration.Downloads -> Downloads(
+                downloads(
+                    componentContext,
+                    Consumer(::onDownloadsOutput)
+                )
+            )
+            is Configuration.Filters -> Filters(
+                filters(
+                    componentContext,
+                    Consumer(::onFiltersOutput)
+                )
+            )
         }
 
-    private fun onResultsOutput(output: ResultsOutput): Unit =
+    private fun onResultsOutput(output: ResultsFeatureOutput): Unit =
         when (output) {
-            is ResultsOutput.EditFilters -> navigation.push(Configuration.Filters)
-            is ResultsOutput.ShowFavorites -> navigation.push(Configuration.Favorites)
-            is ResultsOutput.ShowDownloads -> navigation.push(Configuration.Downloads)
-            else -> { /** TODO **/}
+            else -> {
+                /** TODO **/
+            }
         }
 
     private fun onFavoritesOutput(output: FavoritesFeatureOutput): Unit =
         when (output) {
 //            is FavoritesFeatureOutput.ShowSettings -> router.push(Configuration.Filters)
-            else -> { /** TODO **/}
+            else -> {
+                /** TODO **/
+            }
         }
 
     private fun onDownloadsOutput(output: DownloadsFeatureOutput): Unit =
         when (output) {
 //            is FavoritesFeatureOutput.ShowSettings -> router.push(Configuration.Filters)
-            else -> { /** TODO **/}
+            else -> {
+                /** TODO **/
+            }
         }
 
     private fun onFiltersOutput(output: FiltersOutput): Unit =
         when (output) {
-            is FiltersOutput.ShowResults -> navigation.pop { isSuccess ->
-//                if (isSuccess) {
-//                    (router.activeChild.instance as? Results)?.component?.onUpdateFilters()
-//                }
-            }
+            is FiltersOutput.ShowResults -> navigation.bringToFront(Configuration.Results)
         }
 
     private sealed class Configuration : Parcelable {

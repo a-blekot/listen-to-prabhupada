@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 import com.listentoprabhupada.common.filters_api.Filter
 import com.listentoprabhupada.common.filters_api.FiltersComponent
 import com.listentoprabhupada.common.filters_api.Option
@@ -25,8 +26,8 @@ import com.listentoprabhupada.common.filters_api.QueryParam
 
 @Composable
 fun SelectedFilters(
-    component: FiltersComponent,
     filters: List<Filter>,
+    component: FiltersComponent,
     modifier: Modifier = Modifier,
 ) =
     FlowLayout(
@@ -73,7 +74,7 @@ fun FilterChip(
             )
         },
         leadingIcon = { ClearImage() },
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = Modifier.padding(end = paddingXS),
         label = { Text(option.text) }
     )
 

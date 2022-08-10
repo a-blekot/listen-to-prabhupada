@@ -1,6 +1,6 @@
 @file:JvmName("DateUtils")
 
-package com.listentoprabhupada.android_ui.helpers
+package com.listentoprabhupada.android_ui.utils
 
 import java.util.*
 import java.util.concurrent.TimeUnit.*

@@ -5,9 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -23,25 +22,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.listentoprabhupada.android_ui.R
 import com.arkivanov.decompose.value.MutableValue
+import com.listentoprabhupada.android_ui.custom.SmallColumn
+import com.listentoprabhupada.android_ui.custom.StandartRow
+import com.listentoprabhupada.android_ui.theme.AppTheme
+import com.listentoprabhupada.android_ui.theme.Colors.filtersCategory
+import com.listentoprabhupada.android_ui.theme.Colors.filtersNeutral
+import com.listentoprabhupada.android_ui.theme.Colors.filtersSelected
+import com.listentoprabhupada.android_ui.theme.Colors.filtersText
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeL
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeM
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingZero
+import com.listentoprabhupada.android_ui.theme.Dimens.radiusS
+import com.listentoprabhupada.android_ui.theme.Dimens.rowHeightL
 import com.listentoprabhupada.common.filters_api.*
 
 @Composable
 fun FilterListItem(
-    component: FiltersComponent,
     filter: Filter,
+    component: FiltersComponent,
     isExpanded: MutableState<Boolean> = remember { mutableStateOf(filter.isExpanded) },
     modifier: Modifier = Modifier,
 ) =
     Column(
-        modifier = modifier.padding(top = 8.dp),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(paddingXS),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        FilterTitle(filter, isExpanded.value) {
+        FilterTitle(filter, isExpanded.value, modifier) {
             isExpanded.value = it
             component.onFilterExpanded(filter.name, it)
         }
         if (isExpanded.value) {
             filter.options.forEach { option ->
-                OptionListItem(option) { isSelected ->
+                OptionListItem(option, modifier) { isSelected ->
                     component.onQueryParam(
                         QueryParam(
                             filterName = filter.name,
@@ -55,18 +71,21 @@ fun FilterListItem(
     }
 
 @Composable
-fun FilterTitle(filter: Filter, isExpanded: Boolean, onExpandedChanged: (Boolean) -> Unit) =
+fun FilterTitle(
+    filter: Filter,
+    isExpanded: Boolean,
+    modifier: Modifier = Modifier,
+    onExpandedChanged: (Boolean) -> Unit
+) =
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .padding(bottom = if (isExpanded) 4.dp else 0.dp)
+        modifier = modifier
+            .height(rowHeightL)
             .background(
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(4.dp)
+                color = filtersCategory(),
+                shape = RoundedCornerShape(radiusS)
             )
             .clickable { onExpandedChanged(!isExpanded) }
-            .padding(all = 8.dp)
+            .padding(all = paddingS)
     ) {
         Image(
             painter = painterResource(if (isExpanded) R.drawable.ic_minus else R.drawable.ic_plus),
@@ -75,14 +94,13 @@ fun FilterTitle(filter: Filter, isExpanded: Boolean, onExpandedChanged: (Boolean
             modifier =
             Modifier
                 .align(Alignment.CenterStart)
-                .size(24.dp)
+                .size(iconSizeM)
         )
 
         Text(
             text = filter.title,
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.titleLarge,
+            color = filtersText(),
+            style = typography.titleLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.Center)
         )
@@ -91,57 +109,38 @@ fun FilterTitle(filter: Filter, isExpanded: Boolean, onExpandedChanged: (Boolean
 @Composable
 fun OptionListItem(
     option: Option,
+    modifier: Modifier = Modifier,
     onOptionSelected: ((Boolean) -> Unit)? = null
 ) =
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .padding(bottom = 4.dp)
+    Box(
+        modifier = modifier
+            .height(rowHeightL)
             .background(
-                color = MaterialTheme.colorScheme.secondary,
+                color = option.background(),
                 shape = RoundedCornerShape(4.dp)
             )
             .clickable { onOptionSelected?.invoke(!option.isSelected) }
-            .padding(all = 4.dp)
-
     ) {
-        Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = option.text,
-            color = MaterialTheme.colorScheme.onSecondary,
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.titleLarge,
+            color = filtersText(),
+            style = typography.titleLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1.0f)
+            modifier = Modifier
+                .padding(horizontal = paddingM)
+                .align(Alignment.CenterStart)
         )
-        Checkbox(
-            checked = option.isSelected,
-            onCheckedChange = null, // { onOptionSelected?.invoke(it) },
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colorScheme.onSecondary,
-                checkmarkColor = MaterialTheme.colorScheme.secondary,
-            )
-        )
-        Spacer(modifier = Modifier.width(16.dp))
     }
+
+@Composable
+private fun Option.background() =
+    if (isSelected) filtersSelected() else filtersNeutral()
 
 @Composable
 fun PreviewFilterListItem() {
     AppTheme {
         FilterListItem(
-            component = object: FiltersComponent {
-                override val models = MutableValue(
-                    FiltersState(
-                        isLoading = false,
-                        filters = emptyList(),
-                        totalLecturesCount = 0,
-                        pagesCount = 0
-                    )
-                )
-            },
             getFilter(
                 title = "Категория",
                 options = listOf(
@@ -153,6 +152,16 @@ fun PreviewFilterListItem() {
                     "Интервью и пресс конференции asd asd asd sdf sdf" to false,
                 )
             ),
+            component = object: FiltersComponent {
+                override val models = MutableValue(
+                    FiltersState(
+                        isLoading = false,
+                        filters = emptyList(),
+                        totalLecturesCount = 0,
+                        pagesCount = 0
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth()
         )
     }

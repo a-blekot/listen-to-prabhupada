@@ -3,11 +3,14 @@ package com.listentoprabhupada.common.results_impl.data
 import com.listentoprabhupada.common.results_api.LECTURES_PER_PAGE
 import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.results_api.Pagination
-import com.listentoprabhupada.common.results_impl.data.lectures.*
 import com.listentoprabhupada.common.network_api.ApiModel
 import com.listentoprabhupada.common.network_api.Routes
 import com.listentoprabhupada.common.network_api.lectures.*
 import com.listentoprabhupada.common.settings.FIRST_PAGE
+import io.github.aakira.napier.Napier
+
+fun lectures(apiModel: ApiModel): List<Lecture> =
+    apiModel.results.files.map { lecture(it) }
 
 fun pagination(apiModel: ApiModel) =
     Pagination(
@@ -24,9 +27,6 @@ private fun currentPage(apiModel: ApiModel) =
 
 private fun totalPages(totalLectures: Int) =
     totalLectures / LECTURES_PER_PAGE + if (totalLectures % LECTURES_PER_PAGE == 0) 0 else 1
-
-fun lectures(apiModel: ApiModel): List<Lecture> =
-    apiModel.results.files.map { lecture(it) }
 
 private fun lecture(apiModel: LectureApiModel, idExtra: Long = 0) =
     Lecture(
@@ -80,3 +80,17 @@ private fun number(quote: QuoteApiModel) =
 
 private fun canto(quote: QuoteApiModel) =
     quote.canto?.title
+
+// 00:03:09.072000
+private fun String.parseDuration() =
+    try {
+        val arr = split(":")
+        val hours = arr.getOrNull(0)?.toLong() ?: 0L
+        val minutes = arr.getOrNull(1)?.toLong() ?: 0L
+        val seconds = arr.getOrNull(2)?.toFloat() ?: 0F
+
+        hours * 3_600_000 + minutes * 60_000 + (seconds * 1000).toLong()
+    } catch (e: NumberFormatException) {
+        Napier.e("failed to compute durationMillis", e)
+        0L
+    }

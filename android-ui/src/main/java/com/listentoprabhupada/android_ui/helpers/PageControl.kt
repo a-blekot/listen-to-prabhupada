@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.listentoprabhupada.common.results_api.ResultsComponent
 import com.listentoprabhupada.common.results_api.Pagination
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.theme.Colors.btnPages
+import com.listentoprabhupada.android_ui.theme.Colors.tertiary
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 
 private const val WEIGHT_BUTTON = 1f
@@ -112,15 +115,15 @@ fun RowScope.PageButton(
         enabled = pagination.canAdd(buttonType),
         onClick = { component.onPage(pagination.nextPage(buttonType)) },
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = btnPages(),
         ),
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) {
         Text(
             text = stringResource(buttonType.textRes),
             maxLines = 1,
-            color = MaterialTheme.colorScheme.onSecondary,
-            style = MaterialTheme.typography.bodyMedium,
+            color = tertiary(),
+            style = typography.titleSmall,
         )
     }
 
@@ -135,7 +138,7 @@ fun RowScope.PageImageButton(
         enabled = pagination.canAdd(buttonType),
         onClick = { component.onPage(pagination.nextPage(buttonType)) },
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = btnPages(),
         ),
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) {

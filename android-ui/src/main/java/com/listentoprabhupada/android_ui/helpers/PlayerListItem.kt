@@ -1,13 +1,15 @@
 package com.listentoprabhupada.android_ui.helpers
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -28,7 +30,16 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.listentoprabhupada.android.ui.LoadingBar
+import com.listentoprabhupada.android_ui.LoadingBar
+import com.listentoprabhupada.android_ui.theme.AppTheme
+import com.listentoprabhupada.android_ui.theme.Colors.playerBg
+import com.listentoprabhupada.android_ui.theme.Colors.playerButtons
+import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineBg
+import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineSelector
+import com.listentoprabhupada.android_ui.theme.Colors.playerTimer
+import com.listentoprabhupada.android_ui.theme.Colors.playerTitle
+import com.listentoprabhupada.android_ui.utils.ONE_DAY_MS
+import com.listentoprabhupada.android_ui.utils.formatTimeAdaptiveHoursMax
 import com.listentoprabhupada.common.player_api.PlayerComponent
 import com.listentoprabhupada.common.player_api.PlayerState
 
@@ -41,6 +52,8 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
 
     println("screenWidth = $screenWidth")
     println("bgWidth = $bgWidth")
+
+    val playerBg = playerBg()
 
     BoxWithConstraints(
         modifier = Modifier
@@ -72,9 +85,9 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
             MarqueeText(
                 text = playbackState.value.lecture.title,
 //                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = playerTitle(),
                 fontSize = 18.sp,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Center
             )
 
@@ -129,7 +142,7 @@ fun RowScope.PlayerActionIcon(
         imageVector = imageVector,
         contentScale = ContentScale.FillBounds,
         contentDescription = description,
-        colorFilter = ColorFilter.tint(BrownDark),
+        colorFilter = ColorFilter.tint(playerButtons()),
         modifier =
         Modifier
             .aspectRatio(1f)
@@ -151,8 +164,8 @@ fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponen
             onValueChange = { playerComponent.onSeekTo(it.toLong()) },
             onValueChangeFinished = { playerComponent.onSliderReleased() },
             colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.onSurface,
-                activeTrackColor = MaterialTheme.colorScheme.primary
+                thumbColor = playerTimeLineSelector(),
+                activeTrackColor = playerTimeLineBg()
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -163,8 +176,8 @@ fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponen
             text = playbackState.displayedTime,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleLarge,
+            color = playerTimer(),
+            style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center
         )
     }

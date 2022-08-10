@@ -50,7 +50,6 @@ fun SmallColumn(
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(paddingXS),
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
-    padding: Dp = paddingZero,
     content: @Composable ColumnScope.() -> Unit
 ) =
     Column(
@@ -58,7 +57,7 @@ fun SmallColumn(
         horizontalAlignment = horizontalAlignment,
         modifier = modifier
             .fillMaxWidth()
-            .padding(padding),
+            .padding(horizontal = horizontalScreenPadding),
         content = content
     )
 

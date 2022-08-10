@@ -17,6 +17,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.theme.Colors.primary
+import com.listentoprabhupada.android_ui.theme.Colors.tertiary
 
 
 @Composable
@@ -32,7 +34,7 @@ fun Header(
 
         Image(
             painter = painterResource(id = R.drawable.ic_logo),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+            colorFilter = ColorFilter.tint(tertiary()),
             contentDescription = "logo image",
             modifier = Modifier
                 .fillMaxWidth(0.2f)
@@ -46,7 +48,7 @@ fun Header(
             maxLines = 1,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = tertiary(),
             modifier = Modifier.padding(bottom = 40.dp)
         )
 
@@ -57,7 +59,7 @@ fun Header(
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = primary(),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(end = 10.dp)
             )
@@ -67,7 +69,7 @@ fun Header(
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSecondary,
+                color = tertiary(),
                 fontWeight = FontWeight.Bold
             )
         }
@@ -75,7 +77,7 @@ fun Header(
         Text(
             text = stringResource(id = R.string.header_of_srila_prabhupada),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = tertiary(),
             maxLines = 1,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
@@ -86,7 +88,7 @@ fun Header(
         Text(
             text = stringResource(id = R.string.header_of_total_audio, "$totalLectures"),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = tertiary(),
             maxLines = 1,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
@@ -95,7 +97,7 @@ fun Header(
         Text(
             text = stringResource(id = R.string.header_of_needs_translation, "$needsTranslate"),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = tertiary(),
             maxLines = 1,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
@@ -109,7 +111,7 @@ fun Header(
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.primary,
+            color = primary(),
             modifier = Modifier
                 .padding(bottom = 20.dp)
                 .clickable { /**onEvent(CommonUiEvent.ResultsEvent.OpenHelpTranslation) **/ }

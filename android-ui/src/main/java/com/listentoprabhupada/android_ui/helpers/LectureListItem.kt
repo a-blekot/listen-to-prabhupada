@@ -4,17 +4,23 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.listentoprabhupada.android_ui.custom.StandartRow
+import com.listentoprabhupada.android_ui.theme.*
+import com.listentoprabhupada.android_ui.theme.Colors.favSelected
+import com.listentoprabhupada.android_ui.theme.Colors.favUnselected
+import com.listentoprabhupada.android_ui.theme.Colors.lectureDescr
+import com.listentoprabhupada.android_ui.theme.Colors.lecturePause
+import com.listentoprabhupada.android_ui.theme.Colors.lecturePlay
+import com.listentoprabhupada.android_ui.theme.Colors.lectureTitle
 import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.data.LectureComponent
 
@@ -23,80 +29,56 @@ private const val FULL_PROGRESS = 100
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Modifier = Modifier) =
-    Row(
+    StandartRow(
         modifier = modifier.combinedClickable(
 //                onLongClick = { showContextMenu(lecture, component) },
             onClick = {}
         ),
     ) {
 
-        val playVector =
-            when {
-                lecture.isPlaying -> Icons.Rounded.PauseCircleOutline
-                lecture.isCompleted -> Icons.Rounded.TaskAlt
-                else -> Icons.Rounded.PlayCircleOutline
-            }
-
         Image(
-            imageVector = playVector,
+            imageVector = lecture.playIcon(),
             contentScale = ContentScale.FillBounds,
             contentDescription = "play image",
-            colorFilter = ColorFilter.tint(BrownMedLight2),
+            colorFilter = ColorFilter.tint(lecture.playColor()),
             modifier =
             Modifier
-                .align(CenterVertically)
                 .weight(15f)
                 .aspectRatio(1f)
-                .clickable {
-                    if (lecture.isPlaying) {
-                        component.onPause()
-                    } else {
-                        component.onPlay(lecture.id)
-                    }
-                }
+                .clickable { component.togglePlay(lecture) }
         )
 
         Spacer(modifier = Modifier.weight(4f))
 
-        // We toggle the isExpanded variable when we click on this Column
-        Column(
-            modifier = Modifier
-                .weight(110f)
-        ) {
+        Column(modifier = Modifier.weight(110f)) {
             Text(
                 text = lecture.title,
-                fontSize = 17.sp,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.titleLarge,
+                color = lectureTitle(),
+                style = typography.titleSmall,
                 modifier = Modifier
                     .combinedClickable(
 //                        onLongClick = { showContextMenu(lecture, component) },
-                        onClick = {
-                            if (lecture.isPlaying) {
-                                component.onPause()
-                            } else {
-                                component.onPlay(lecture.id)
-                            }
-                        }
+                        onClick = { component.togglePlay(lecture) }
                     )
             )
+
             Spacer(modifier = Modifier.height(2.dp))
+
             Text(
                 text = lecture.subTitle,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                color = GrayLight,
-                style = MaterialTheme.typography.titleSmall
+                color = lectureDescr(),
+                style = typography.bodySmall
             )
         }
 
         Spacer(modifier = Modifier.weight(2f))
 
         Image(
-//                painter = if (lecture.isFavorite) R.drawable.ic_star else R.drawable.ic_star_border,
-            imageVector = if (lecture.isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+            imageVector = lecture.favIcon(),
             contentScale = ContentScale.FillBounds,
             contentDescription = "favorite image",
             modifier =
@@ -104,9 +86,38 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
                 .weight(8f)
                 .aspectRatio(1f)
                 .clickable { component.onFavorite(lecture.id, !lecture.isFavorite) },
-            colorFilter = ColorFilter.tint(if (lecture.isFavorite) favoriteSelected else favoriteUnselected),
+            colorFilter = ColorFilter.tint(favColor(lecture.isFavorite)),
         )
     }
+
+@Composable
+fun Lecture.playIcon() =
+    when {
+        isPlaying -> Icons.Rounded.PauseCircleOutline
+        isCompleted -> Icons.Rounded.TaskAlt
+        else -> Icons.Rounded.PlayCircleOutline
+    }
+
+@Composable
+fun Lecture.playColor() =
+    when {
+        isPlaying -> lecturePlay()
+        else -> lecturePause()
+    }
+
+@Composable
+fun Lecture.favIcon() =
+    when {
+        isFavorite -> Icons.Rounded.Favorite
+        else -> Icons.Rounded.FavoriteBorder
+    }
+
+@Composable
+private fun favColor(isFavorite: Boolean) =
+    if (isFavorite) favSelected() else favUnselected()
+
+private fun LectureComponent.togglePlay(lecture: Lecture) =
+    if (lecture.isPlaying) onPause() else onPlay(lecture.id)
 
 @Preview(widthDp = 360, heightDp = 40)
 @Composable

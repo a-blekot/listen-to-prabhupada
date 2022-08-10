@@ -1,24 +1,22 @@
 package com.listentoprabhupada.android_ui.screens.results
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
-import com.listentoprabhupada.android.ui.LoadingBar
+import com.listentoprabhupada.android_ui.LoadingBar
 import com.listentoprabhupada.android_ui.custom.StandartLazyColumn
 import com.listentoprabhupada.android_ui.helpers.*
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
-import com.listentoprabhupada.common.feature_results_api.ResultsComponent
+import com.listentoprabhupada.common.feature_results_api.ResultsFeatureComponent
 
 @Composable
-fun ResultsView(component: ResultsComponent, modifier: Modifier = Modifier) =
+fun ResultsView(component: ResultsFeatureComponent, modifier: Modifier = Modifier) =
     component.run {
         val state = resultsComponent.flow.subscribeAsState()
 
-        Box(Modifier.background(color = colorScheme.background)) {
+        Box(modifier) {
             StandartLazyColumn(itemPadding = paddingM) {
                 item { Header(modifier = modifier) }
 
