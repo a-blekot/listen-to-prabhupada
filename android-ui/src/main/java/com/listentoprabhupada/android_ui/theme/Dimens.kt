@@ -25,4 +25,6 @@ object Dimens {
 
     val rowHeightM = 36.dp
     val rowHeightL = 60.dp
+
+    val bottomSheetPeekHeight = 36.dp
 }

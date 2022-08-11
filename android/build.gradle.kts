@@ -63,8 +63,6 @@ dependencies {
     //Compose Utils
     implementation(libs.bundles.androidx.compose)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.accompanist.insets)
-    implementation(libs.accompanist.swiperefresh)
     //Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)

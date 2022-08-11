@@ -1,8 +1,10 @@
 package com.listentoprabhupada.android_ui.helpers
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.MaterialTheme
@@ -34,10 +36,13 @@ import com.listentoprabhupada.android_ui.LoadingBar
 import com.listentoprabhupada.android_ui.theme.AppTheme
 import com.listentoprabhupada.android_ui.theme.Colors.playerBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerButtons
+import com.listentoprabhupada.android_ui.theme.Colors.playerDescr
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineSelector
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimer
 import com.listentoprabhupada.android_ui.theme.Colors.playerTitle
+import com.listentoprabhupada.android_ui.theme.Dimens.radiusM
+import com.listentoprabhupada.android_ui.theme.Dimens.radiusS
 import com.listentoprabhupada.android_ui.utils.ONE_DAY_MS
 import com.listentoprabhupada.android_ui.utils.formatTimeAdaptiveHoursMax
 import com.listentoprabhupada.common.player_api.PlayerComponent
@@ -58,18 +63,17 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
     BoxWithConstraints(
         modifier = Modifier
 //            .background(
-//                color = Color(0x880000FF),
-//                shape = RoundedCornerShape(4.dp)
+//                color = playerBg(),
+//                shape = RoundedCornerShape(radiusM)
 //            )
             .drawBehind {
                 drawRoundRect(
-                    brush = Brush.horizontalGradient(listOf(playerBg, playerBg.copy(alpha = 0.5f))),
+                    brush = Brush.verticalGradient(listOf(playerBg.copy(alpha = 0.0f), playerBg)),
                     topLeft = Offset(x = 0f, y = 7.dp.toPx()),
                     size = Size(bgWidth.toPx(), 700.dp.toPx()),
                     cornerRadius = CornerRadius(8f, 8f)
                 )
             }
-
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -84,10 +88,15 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
 
             MarqueeText(
                 text = playbackState.value.lecture.title,
-//                overflow = TextOverflow.Ellipsis,
                 color = playerTitle(),
-                fontSize = 18.sp,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = playbackState.value.lecture.displayedDescription,
+                color = playerDescr(),
+                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center
             )
 
@@ -105,7 +114,8 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                 PlayerActionIcon(Rounded.Replay10, "seek back") {
                     playerComponent.onSeekBack()
                 }
-                val imageVector = selector(Rounded.Pause, Rounded.PlayArrow, playbackState.value.isPlaying)
+                val imageVector =
+                    selector(Rounded.Pause, Rounded.PlayArrow, playbackState.value.isPlaying)
                 PlayerActionIcon(imageVector, "play/pause", 0.14f) {
                     when (playbackState.value.isPlaying) {
                         true -> playerComponent.onPause()
@@ -147,10 +157,6 @@ fun RowScope.PlayerActionIcon(
         Modifier
             .aspectRatio(1f)
             .weight(weight)
-//            .background(
-//                color = Color(0x880000FF),
-//                shape = RoundedCornerShape(4.dp)
-//            )
             .clickable { onClick() }
     )
 
@@ -169,9 +175,8 @@ fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponen
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(12.dp)
+                .height(20.dp)
         )
-        Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = playbackState.displayedTime,
             maxLines = 1,
@@ -192,7 +197,8 @@ fun PreviewPlayerListItem() {
     AppTheme {
         PlayerListItem(
             object : PlayerComponent {
-                override val flow: Value<PlayerState> = MutableValue(PlayerState())
+                override val flow: Value<PlayerState> =
+                    MutableValue(PlayerState(timeMs = 1, durationMs = 2))
             }
         )
     }

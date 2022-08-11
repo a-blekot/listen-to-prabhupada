@@ -45,7 +45,8 @@ accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiper
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity"}
 androidx-composeFoundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 androidx-composeIcons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
-androidx-composeMaterial = { module = "androidx.compose.material3:material3", version.ref = "material" }
+androidx-composeMaterial = { module = "androidx.compose.material:material", version.ref = "compose" }
+androidx-composeMaterial3 = { module = "androidx.compose.material3:material3", version.ref = "material" }
 androidx-composeUi = { module = "androidx.compose.ui:ui", version.ref = "compose"}
 androidx-composeUiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 
@@ -110,7 +111,7 @@ test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = 
 test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 
 [bundles]
-androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx-composeUiTooling", "androidx-composeFoundation", "androidx-composeIcons" ]
+androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx-composeMaterial3", "androidx-composeUiTooling", "androidx-composeFoundation", "androidx-composeIcons" ]
 ktor-common-bndl = [ "ktor-client-core", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json" ]
 mvikotlin-bndl= [ "mvikotlin-mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-extensions-coroutines" ]
 stately-bndl = [ "stately-common", "stately-concurrency", "stately-isolate", "stately-iso-collections" ]
