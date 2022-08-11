@@ -5,6 +5,4 @@ import com.listentoprabhupada.common.data.LectureComponent
 
 interface FavoritesComponent: LectureComponent {
     val flow: Value<FavoritesState>
-
-    fun onCurrentLecture(id: Long, isPlaying: Boolean) {}
 }

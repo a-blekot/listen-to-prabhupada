@@ -7,22 +7,18 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.listentoprabhupada.android_ui.custom.StandartLazyColumn
 import com.listentoprabhupada.android_ui.helpers.LectureListItem
-import com.listentoprabhupada.android_ui.helpers.PlayerListItem
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
-import com.listentoprabhupada.common.feature_favorites_api.FavoritesFeatureComponent
+import com.listentoprabhupada.common.favorites_api.FavoritesComponent
 
 @Composable
-fun FavoritesView(component: FavoritesFeatureComponent, modifier: Modifier = Modifier) =
-    component.run {
-    val favoritesState = favoritesComponent.flow.subscribeAsState()
+fun FavoritesView(component: FavoritesComponent, modifier: Modifier = Modifier) {
+    val state = component.flow.subscribeAsState()
 
     Box {
-        StandartLazyColumn(itemPadding = paddingM) {
-            items(favoritesState.value.lectures, key = { it.id }) { lectureItem ->
-                LectureListItem(lectureItem, favoritesComponent )
+        StandartLazyColumn(modifier = modifier, itemPadding = paddingM) {
+            items(state.value.lectures, key = { it.id }) { lectureItem ->
+                LectureListItem(lectureItem, component )
             }
-
-            item { PlayerListItem(playerComponent, modifier) }
         }
     }
 }

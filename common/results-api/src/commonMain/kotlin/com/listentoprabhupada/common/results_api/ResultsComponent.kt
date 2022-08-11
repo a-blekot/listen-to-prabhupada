@@ -7,5 +7,4 @@ interface ResultsComponent: LectureComponent {
     val flow: Value<ResultsState>
 
     fun onPage(page: Int) {}
-    fun onCurrentLecture(id: Long, isPlaying: Boolean) {}
 }

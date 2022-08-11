@@ -5,6 +5,4 @@ import com.listentoprabhupada.common.data.LectureComponent
 
 interface DownloadsComponent: LectureComponent {
     val flow: Value<DownloadsState>
-
-    fun onCurrentLecture(id: Long, isPlaying: Boolean) {}
 }

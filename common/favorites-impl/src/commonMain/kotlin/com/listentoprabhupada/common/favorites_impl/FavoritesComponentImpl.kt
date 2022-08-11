@@ -5,10 +5,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.listentoprabhupada.common.data.LectureOutput
 import com.listentoprabhupada.common.favorites_api.FavoritesComponent
-import com.listentoprabhupada.common.favorites_api.FavoritesOutput
 import com.listentoprabhupada.common.favorites_api.FavoritesState
-import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.*
+import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.CurrentLecture
+import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.Favorite
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesLabel
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesStoreFactory
 import com.listentoprabhupada.common.utils.Consumer
@@ -24,7 +25,7 @@ class FavoritesComponentImpl(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
     deps: FavoritesDeps,
-    private val output: Consumer<FavoritesOutput>
+    private val output: Consumer<LectureOutput>
 ) : FavoritesComponent, ComponentContext by componentContext {
 
     private val store =
@@ -49,14 +50,14 @@ class FavoritesComponentImpl(
         store.init()
     }
 
-    override fun onPlay(id: Long) = output(FavoritesOutput.Play(id))
-    override fun onPause() = output(FavoritesOutput.Pause)
+    override fun onPlay(id: Long) = output(LectureOutput.Play(id))
+    override fun onPause() = output(LectureOutput.Pause)
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
 
     private fun handleLabel(label: FavoritesLabel) {
         when (label) {
-            is FavoritesLabel.LecturesLoaded -> output(FavoritesOutput.UpdatePlaylist(label.lectures))
+            is FavoritesLabel.LecturesLoaded -> output(LectureOutput.UpdatePlaylist(label.lectures))
         }
     }
 }

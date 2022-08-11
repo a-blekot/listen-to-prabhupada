@@ -37,12 +37,6 @@ include(
     ":common:settings-api",
     ":common:settings-impl",
     ":common:utils",
-    ":common:features:feature-downloads-api",
-    ":common:features:feature-downloads-impl",
-    ":common:features:feature-favorites-api",
-    ":common:features:feature-favorites-impl",
-    ":common:features:feature-results-api",
-    ":common:features:feature-results-impl"
 )
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

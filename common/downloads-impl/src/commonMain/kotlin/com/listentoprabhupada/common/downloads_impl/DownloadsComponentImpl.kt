@@ -6,6 +6,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.listentoprabhupada.common.data.LectureOutput
 import com.listentoprabhupada.common.downloads_api.DownloadsComponent
 import com.listentoprabhupada.common.downloads_api.DownloadsOutput
 import com.listentoprabhupada.common.downloads_api.DownloadsState
@@ -29,7 +30,7 @@ class DownloadsComponentImpl(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
     deps: DownloadsDeps,
-    private val output: Consumer<DownloadsOutput>
+    private val output: Consumer<LectureOutput>
 ) : DownloadsComponent, ComponentContext by componentContext {
 
     private val store =
@@ -54,14 +55,14 @@ class DownloadsComponentImpl(
         store.init()
     }
 
-    override fun onPlay(id: Long) = output(DownloadsOutput.Play(id))
-    override fun onPause() = output(DownloadsOutput.Pause)
+    override fun onPlay(id: Long) = output(LectureOutput.Play(id))
+    override fun onPause() = output(LectureOutput.Pause)
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
 
     private fun handleLabel(label: DownloadsLabel) {
         when (label) {
-            is DownloadsLabel.LecturesLoaded -> output(DownloadsOutput.UpdatePlaylist(label.lectures))
+            is DownloadsLabel.LecturesLoaded -> output(LectureOutput.UpdatePlaylist(label.lectures))
         }
     }
 }

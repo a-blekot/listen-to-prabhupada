@@ -6,6 +6,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnResume
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.listentoprabhupada.common.data.LectureOutput
 import com.listentoprabhupada.common.results_api.ResultsComponent
 import com.listentoprabhupada.common.results_api.ResultsOutput
 import com.listentoprabhupada.common.results_api.ResultsState
@@ -25,7 +26,7 @@ class ResultsComponentImpl(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
     private val deps: ResultsDeps,
-    private val output: Consumer<ResultsOutput>
+    private val output: Consumer<LectureOutput>
 ) : ResultsComponent, ComponentContext by componentContext {
 
     private val store =
@@ -57,13 +58,13 @@ class ResultsComponentImpl(
     override fun onFavorite(id: Long, isFavorite: Boolean) = store.accept(Favorite(id = id, isFavorite = isFavorite))
     override fun onCurrentLecture(id: Long, isPlaying: Boolean) = store.accept(CurrentLecture(id, isPlaying))
 
-    override fun onPause() = output(ResultsOutput.Pause)
-    override fun onPlay(id: Long) = output(ResultsOutput.Play(id))
+    override fun onPause() = output(LectureOutput.Pause)
+    override fun onPlay(id: Long) = output(LectureOutput.Play(id))
 
     private fun handleLabel(label: ResultsLabel) {
         when (label) {
             is ResultsLabel.LecturesLoaded -> {
-                output(ResultsOutput.UpdatePlaylist(label.lectures))
+                output(LectureOutput.UpdatePlaylist(label.lectures))
             }
         }
     }

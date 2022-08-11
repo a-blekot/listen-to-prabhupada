@@ -18,5 +18,5 @@ data class Lecture(
         get() = "$date, $place"
 
     val displayedDescription
-        get() = description ?: subTitle
+        get() = description?.ifBlank { subTitle } ?: subTitle
 }

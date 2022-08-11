@@ -21,7 +21,7 @@ import com.listentoprabhupada.android.download.DownloadService
 import com.listentoprabhupada.android.download.DownloadServiceAction
 import com.listentoprabhupada.android.player.PlaybackService
 import com.listentoprabhupada.android.util.parseShareAction
-import com.listentoprabhupada.android_ui.screens.RootContent
+import com.listentoprabhupada.android_ui.screens.root.RootContent
 import com.listentoprabhupada.android_ui.theme.AppTheme
 import com.listentoprabhupada.common.root.RootComponent
 import com.listentoprabhupada.common.root.RootComponentImpl
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                 RootContent(
                     root,
                     Modifier.windowInsetsPadding(
-                        WindowInsets.Companion.systemBars.only(WindowInsetsSides.Top)
+                        WindowInsets.systemBars.only(WindowInsetsSides.Top)
                     )
                 )
             }

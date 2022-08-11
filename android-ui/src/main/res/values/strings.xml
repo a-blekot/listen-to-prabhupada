@@ -38,6 +38,7 @@
 
     <string name="nav_bar_results">Лекции</string>
     <string name="nav_bar_favorite">Избранное</string>
+    <string name="nav_bar_downloads">Загрузки</string>
     <string name="nav_bar_filter">Фильтры</string>
     <string name="nav_bar_search">Поиск</string>
     <string name="nav_bar_settings">Настройки</string>
