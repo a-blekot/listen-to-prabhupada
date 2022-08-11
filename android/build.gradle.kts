@@ -8,10 +8,9 @@ plugins {
     id("kotlin-parcelize")
 }
 
-/**
 val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = java.util.Properties()
-keystoreProperties.load(java.io.FileInputStream(keystorePropertiesFile))
+val keystoreProperties = Properties()
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     signingConfigs {
@@ -32,7 +31,7 @@ android {
             signingConfig = signingConfigs.getByName("config")
         }
     }
-} */
+}
 
 dependencies {
     implementation(projects.androidUi)

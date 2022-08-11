@@ -12,10 +12,7 @@ import com.listentoprabhupada.android_ui.theme.Colors.navBarIconSelectedText
 import com.listentoprabhupada.android_ui.theme.Colors.navBarText
 import com.listentoprabhupada.common.root.RootComponent
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Hearing
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
@@ -43,6 +40,13 @@ fun NavBar(activeComponent: Child, root: RootComponent, onSettings: () -> Unit) 
             onClick = root::onFiltersTabClicked,
             imageVector = Icons.Default.Tune,
             text = stringResource(R.string.nav_bar_filter),
+        )
+
+        NavBarItem(
+            selected = activeComponent is Child.Settings,
+            onClick = root::onSearchTabClicked,
+            imageVector = Icons.Default.Search,
+            text = stringResource(R.string.nav_bar_search),
         )
 
         NavBarItem(
