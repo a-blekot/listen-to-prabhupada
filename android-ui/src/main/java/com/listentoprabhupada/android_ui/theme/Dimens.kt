@@ -23,7 +23,7 @@ object Dimens {
 
     val horizontalScreenPadding = 8.dp
 
-    val rowHeightM = 36.dp
+    val rowHeightM = 44.dp
     val rowHeightL = 60.dp
 
     val bottomSheetPeekHeight = 36.dp

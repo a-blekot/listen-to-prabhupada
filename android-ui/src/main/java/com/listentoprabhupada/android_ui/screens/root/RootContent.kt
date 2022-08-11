@@ -79,13 +79,11 @@ fun RootContent(root: RootComponent, modifier: Modifier = Modifier) {
                 animation = tabAnimation()
             ) {
 
-                val modifier = modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight)
-                
                 when (val child = it.instance) {
-                    is Child.Results -> ResultsView(child.component, modifier)
-                    is Child.Favorites -> FavoritesView(child.component, modifier)
-                    is Child.Downloads -> DownloadsView(child.component, modifier)
-                    is Child.Filters -> FiltersView(child.component, modifier)
+                    is Child.Results -> ResultsView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
+                    is Child.Favorites -> FavoritesView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
+                    is Child.Downloads -> DownloadsView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
+                    is Child.Filters -> FiltersView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
                     else -> throw IllegalArgumentException("No View for child: ${child.javaClass.simpleName}")
                 }
             }

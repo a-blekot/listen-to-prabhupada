@@ -1,19 +1,14 @@
 package com.listentoprabhupada.android_ui.screens.results
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.listentoprabhupada.android_ui.LoadingBar
 import com.listentoprabhupada.android_ui.custom.StandartLazyColumn
 import com.listentoprabhupada.android_ui.helpers.*
-import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetPeekHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
 import com.listentoprabhupada.common.results_api.ResultsComponent
 
@@ -22,7 +17,7 @@ fun ResultsView(component: ResultsComponent, modifier: Modifier = Modifier) {
     val state = component.flow.subscribeAsState()
     Box(modifier) {
         StandartLazyColumn(itemPadding = paddingM) {
-            item { Header(modifier = modifier) }
+            item { Header() }
 
             if (state.value.useSimplePageView) {
                 item { SimplePageControl(state.value.pagination, component) }
@@ -31,7 +26,7 @@ fun ResultsView(component: ResultsComponent, modifier: Modifier = Modifier) {
             }
 
             items(state.value.lectures, key = { it.id }) { lectureItem ->
-                LectureListItem(lectureItem, component, modifier)
+                LectureListItem(lectureItem, component)
             }
         }
 
