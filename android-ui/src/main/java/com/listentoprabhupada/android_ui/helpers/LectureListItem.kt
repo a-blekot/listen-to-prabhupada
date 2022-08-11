@@ -4,6 +4,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,27 +38,29 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
         ),
     ) {
 
-        Image(
-            imageVector = lecture.playIcon(),
-            contentScale = ContentScale.FillBounds,
-            contentDescription = "play image",
-            colorFilter = ColorFilter.tint(lecture.playColor()),
-            modifier =
+        IconButton(
+            onClick = { component.togglePlay(lecture) },
             Modifier
-                .weight(15f)
+                .weight(0.1f)
                 .aspectRatio(1f)
-                .clickable { component.togglePlay(lecture) }
-        )
+        ) {
+            Icon(
+                imageVector = lecture.playIcon(),
+                contentDescription = "play image",
+                modifier = Modifier.fillMaxSize(),
+                tint = lecture.playColor(),
+            )
+        }
 
-        Spacer(modifier = Modifier.weight(4f))
+        Spacer(modifier = Modifier.weight(0.02f))
 
-        Column(modifier = Modifier.weight(110f)) {
+        Column(modifier = Modifier.weight(0.7f)) {
             Text(
                 text = lecture.title,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 color = lectureTitle(),
-                style = typography.titleSmall,
+                style = typography.titleMedium,
                 modifier = Modifier
                     .combinedClickable(
 //                        onLongClick = { showContextMenu(lecture, component) },
@@ -68,26 +72,29 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
 
             Text(
                 text = lecture.subTitle,
-                maxLines = 3,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = lectureDescr(),
                 style = typography.bodySmall
             )
         }
 
-        Spacer(modifier = Modifier.weight(2f))
+        Spacer(modifier = Modifier.weight(0.02f))
 
-        Image(
-            imageVector = lecture.favIcon(),
-            contentScale = ContentScale.FillBounds,
-            contentDescription = "favorite image",
-            modifier =
+
+        IconButton(
+            onClick = { component.onFavorite(lecture.id, !lecture.isFavorite) },
             Modifier
-                .weight(8f)
-                .aspectRatio(1f)
-                .clickable { component.onFavorite(lecture.id, !lecture.isFavorite) },
-            colorFilter = ColorFilter.tint(favColor(lecture.isFavorite)),
-        )
+                .weight(0.06f)
+                .aspectRatio(1.1f)
+        ) {
+            Icon(
+                imageVector = lecture.favIcon(),
+                contentDescription = "favorite image",
+                modifier = Modifier.fillMaxSize(),
+                tint = favColor(lecture.isFavorite),
+            )
+        }
     }
 
 @Composable
