@@ -11,7 +11,7 @@ import com.listentoprabhupada.common.results_api.ResultsState
 import com.listentoprabhupada.common.results_impl.data.lectures
 import com.listentoprabhupada.common.utils.dbEntity
 import com.listentoprabhupada.common.results_impl.data.pagination
-import com.listentoprabhupada.common.results_impl.LecturesDeps
+import com.listentoprabhupada.common.results_impl.ResultsDeps
 import com.listentoprabhupada.common.results_impl.store.ResultsIntent.*
 import com.listentoprabhupada.common.results_impl.store.LecturesStoreFactory.Action.UpdateFromDB
 import com.listentoprabhupada.common.network_api.ApiModel
@@ -29,13 +29,15 @@ import kotlinx.coroutines.withContext
 
 internal class LecturesStoreFactory(
     private val storeFactory: StoreFactory,
-    private val deps: LecturesDeps,
+    private val deps: ResultsDeps,
 ) {
 
     fun create(): ResultsStore =
         object : ResultsStore, Store<ResultsIntent, ResultsState, ResultsLabel> by storeFactory.create(
             name = "ResultsStore",
-            initialState = ResultsState(),
+            initialState = ResultsState(
+                useSimplePageView = deps.remoteConfig.useSimplePageView
+            ),
             bootstrapper = BootstrapperImpl(),
             executorFactory = { ExecutorImpl() },
             reducer = ReducerImpl

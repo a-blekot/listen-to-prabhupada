@@ -8,7 +8,7 @@ import com.listentoprabhupada.common.results_api.ResultsComponent
 import com.listentoprabhupada.common.results_api.ResultsOutput
 import com.listentoprabhupada.common.results_api.ResultsOutput.*
 import com.listentoprabhupada.common.results_impl.ResultsComponentImpl
-import com.listentoprabhupada.common.results_impl.LecturesDeps
+import com.listentoprabhupada.common.results_impl.ResultsDeps
 import com.listentoprabhupada.common.player_api.PlayerAction
 import com.listentoprabhupada.common.player_api.PlayerComponent
 import com.listentoprabhupada.common.player_impl.PlayerComponentImpl
@@ -26,7 +26,7 @@ class ResultsFeatureComponentImpl(
         ResultsComponentImpl(
             componentContext = componentContext,
             storeFactory = storeFactory,
-            deps = LecturesDeps(deps.db, deps.api, deps.dispatchers),
+            deps = ResultsDeps(deps.db, deps.api, deps.remoteConfig, deps.dispatchers),
             output = Consumer(::onLecturesOutput)
         )
 

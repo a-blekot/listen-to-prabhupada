@@ -24,7 +24,7 @@ import io.github.aakira.napier.Napier
 class ResultsComponentImpl(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
-    private val deps: LecturesDeps,
+    private val deps: ResultsDeps,
     private val output: Consumer<ResultsOutput>
 ) : ResultsComponent, ComponentContext by componentContext {
 

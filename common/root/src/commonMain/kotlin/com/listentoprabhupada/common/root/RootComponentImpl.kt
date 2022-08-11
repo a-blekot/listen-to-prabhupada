@@ -43,7 +43,7 @@ class RootComponentImpl internal constructor(
             ResultsFeatureComponentImpl(
                 componentContext = childContext,
                 storeFactory = storeFactory,
-                deps = deps.run { ResultsFeatureDeps(db, api, playerBus, dispatchers) },
+                deps = deps.run { ResultsFeatureDeps(db, api, playerBus, remoteConfig, dispatchers) },
                 output = output
             )
         },

@@ -28,6 +28,7 @@ import com.listentoprabhupada.common.root.RootComponent
 import com.listentoprabhupada.common.root.RootComponentImpl
 import com.listentoprabhupada.common.root.RootDeps
 import com.listentoprabhupada.common.utils.LogTag
+import com.listentoprabhupada.common.utils.RemoteConfig
 import com.listentoprabhupada.common.utils.dispatchers.dispatchers
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
@@ -72,6 +73,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                 db = app.db,
                 api = app.api,
                 playerBus = app.playerBus,
+                remoteConfig = RemoteConfig(),
                 dispatchers = dispatchers()
             )
         )
