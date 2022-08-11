@@ -20,11 +20,12 @@ fun ResultsView(component: ResultsFeatureComponent, modifier: Modifier = Modifie
             StandartLazyColumn(itemPadding = paddingM) {
                 item { Header(modifier = modifier) }
 
+                item { PageControl(state.value.pagination, resultsComponent) }
+
                 items(state.value.lectures, key = { it.id }) { lectureItem ->
                     LectureListItem(lectureItem, resultsComponent, modifier)
                 }
 
-                item { PageControl(state.value.pagination, resultsComponent, modifier) }
                 item { PlayerListItem(playerComponent, modifier) }
             }
 

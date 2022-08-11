@@ -8,6 +8,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.common.data)
                 implementation(projects.common.database)
                 implementation(projects.common.filtersApi)
                 implementation(projects.common.networkApi)

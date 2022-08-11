@@ -3,6 +3,7 @@ package com.listentoprabhupada.android_ui.theme
 import androidx.compose.ui.unit.dp
 
 object Dimens {
+    val iconSizeS = 16.dp
     val iconSizeM = 24.dp
     val iconSizeL = 36.dp
     val iconSizeXL = 48.dp
@@ -22,5 +23,6 @@ object Dimens {
 
     val horizontalScreenPadding = 8.dp
 
+    val rowHeightM = 36.dp
     val rowHeightL = 60.dp
 }

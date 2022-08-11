@@ -7,7 +7,7 @@ import com.listentoprabhupada.common.network_api.FILE_TYPE_QUERY_KEY
 import com.listentoprabhupada.common.network_api.filters.FilterApiModel
 import com.listentoprabhupada.common.network_api.filters.OptionApiModel
 
-private const val LECTURES_PER_PAGE = 6
+private const val LECTURES_PER_PAGE = 10
 
 fun totalLecturesCount(apiModel: ApiModel) =
     apiModel.count

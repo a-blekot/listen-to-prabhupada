@@ -1,6 +1,6 @@
 package com.listentoprabhupada.common.results_api
 
-const val LECTURES_PER_PAGE = 6
+const val LECTURES_PER_PAGE = 10
 
 data class Pagination(
     val prev: Int? = null,

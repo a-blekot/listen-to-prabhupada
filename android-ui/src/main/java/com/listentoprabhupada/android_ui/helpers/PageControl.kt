@@ -1,27 +1,33 @@
 package com.listentoprabhupada.android_ui.helpers
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ChevronLeft
+import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import com.listentoprabhupada.common.results_api.ResultsComponent
-import com.listentoprabhupada.common.results_api.Pagination
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.custom.StandartRow
 import com.listentoprabhupada.android_ui.theme.Colors.btnPages
 import com.listentoprabhupada.android_ui.theme.Colors.tertiary
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
+import com.listentoprabhupada.common.results_api.Pagination
+import com.listentoprabhupada.common.results_api.ResultsState
+import com.listentoprabhupada.common.settings.FIRST_PAGE
 
 private const val WEIGHT_BUTTON = 1f
 
@@ -30,6 +36,8 @@ enum class ButtonType(val pagesDiff: Int, @StringRes val textRes: Int) {
     PREV_20(-20, R.string.prev_page_20),
     PREV_5(-5, R.string.prev_page_5),
     PREV_1(-1, R.string.prev_page_1),
+    PREV(-1, R.string.previous_page),
+    NEXT(1, R.string.next_page),
     NEXT_1(1, R.string.next_page_1),
     NEXT_5(5, R.string.next_page_5),
     NEXT_20(20, R.string.next_page_20),
@@ -42,10 +50,7 @@ fun PageControl(
     component: ResultsComponent,
     modifier: Modifier = Modifier,
 ) =
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    StandartRow(modifier = modifier,) {
 
         PageImageButton(
             ButtonType.FIRST,
@@ -74,9 +79,10 @@ fun PageControl(
         Text(
             text = "${pagination.curr} из ${pagination.total}",
             textAlign = TextAlign.Center,
+            style = typography.titleSmall,
+            color = tertiary(),
             modifier = modifier
-                .wrapContentWidth()
-                .padding(start = paddingXS, end = paddingXS)
+                .padding(horizontal = paddingXS)
         )
 
         PageButton(
@@ -105,65 +111,73 @@ fun PageControl(
     }
 
 @Composable
-fun RowScope.PageButton(
+private fun PageButton(
     buttonType: ButtonType,
     pagination: Pagination,
     component: ResultsComponent
 ) =
     Button(
-        modifier = Modifier.weight(WEIGHT_BUTTON).padding(horizontal = 1.dp),
+        modifier = Modifier.size(30.dp),
         enabled = pagination.canAdd(buttonType),
         onClick = { component.onPage(pagination.nextPage(buttonType)) },
         colors = ButtonDefaults.buttonColors(
             containerColor = btnPages(),
         ),
-        contentPadding = PaddingValues(horizontal = 2.dp)
+        contentPadding = PaddingValues(horizontal = paddingXS)
     ) {
         Text(
             text = stringResource(buttonType.textRes),
             maxLines = 1,
+            textAlign = TextAlign.Center,
             color = tertiary(),
-            style = typography.titleSmall,
+            style = typography.bodySmall,
         )
     }
 
 @Composable
-fun RowScope.PageImageButton(
+private fun PageImageButton(
     buttonType: ButtonType,
     pagination: Pagination,
     component: ResultsComponent,
-) =
-    Button(
-        modifier = Modifier.weight(WEIGHT_BUTTON).padding(horizontal = 1.dp),
-        enabled = pagination.canAdd(buttonType),
-        onClick = { component.onPage(pagination.nextPage(buttonType)) },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = btnPages(),
-        ),
-        contentPadding = PaddingValues(horizontal = 2.dp)
-    ) {
-        Image(
-            painter = painterResource(if (buttonType == ButtonType.FIRST) R.drawable.ic_first_page else R.drawable.ic_last_page),
-            contentDescription = "page button",
-            contentScale = ContentScale.Inside,
-        )
-    }
+) {
+    val enabled = pagination.canAdd(buttonType)
+    Icon(
+        imageVector = if (buttonType == ButtonType.FIRST) Icons.Rounded.ChevronLeft else Icons.Rounded.ChevronRight,
+        contentDescription = "page button",
+        modifier = Modifier
+            .size(30.dp)
+            .alpha(if (enabled) 1f else 0.5f)
+            .background(
+                color = btnPages(),
+                shape = CircleShape
+            )
+            .clickable {
+                if (enabled) component.onPage(pagination.nextPage(buttonType))
+            },
+        tint = tertiary()
+    )
+}
 
 fun Pagination.canAdd(buttonType: ButtonType) =
     when (buttonType) {
-        ButtonType.FIRST -> curr > com.listentoprabhupada.common.settings.FIRST_PAGE
+        ButtonType.FIRST -> curr > FIRST_PAGE
         ButtonType.LAST -> curr < total
         else -> canAdd(buttonType.pagesDiff)
     }
 
-private fun Pagination.nextPage(buttonType: ButtonType) =
+fun Pagination.nextPage(buttonType: ButtonType) =
     when (buttonType) {
-        ButtonType.FIRST -> com.listentoprabhupada.common.settings.FIRST_PAGE
+        ButtonType.FIRST -> FIRST_PAGE
         ButtonType.LAST -> total
         else -> add(buttonType.pagesDiff)
     }
 
-//@Preview
-//@Composable
-//fun PageControlPreview() =
-//    PageControl(Pagination(prev = 121, curr = 122, next = 123, total = 180))
+@Preview
+@Composable
+fun PageControlPreview() =
+    PageControl(Pagination(prev = 121, curr = 122, next = 123, total = 180), ResultsComponentStub)
+
+private object ResultsComponentStub : ResultsComponent {
+    override val flow: Value<ResultsState> =
+        MutableValue(ResultsState())
+}
