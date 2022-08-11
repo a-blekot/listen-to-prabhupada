@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102681403804",
+    "project_id": "listen-to-prabhupada",
+    "storage_bucket": "listen-to-prabhupada.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102681403804:android:bc7d7616790aad56aae859",
+        "android_client_info": {
+          "package_name": "com.listentoprabhupada"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102681403804-6dqad8te75lf690b8qudnki1epk2tdeo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKTs-lAT9X--E59pnppE4Wt7DbVPeAeBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102681403804-6dqad8te75lf690b8qudnki1epk2tdeo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

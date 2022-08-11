@@ -7,6 +7,8 @@ buildscript {
 
     dependencies {
         classpath(libs.bundles.plaginz)
+        classpath(libs.firebase.crashlytics.gradlePlgn)
+        classpath(libs.google.services.gradlePlgn)
     }
 }
 //subprojects {

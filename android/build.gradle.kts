@@ -3,8 +3,8 @@ import java.io.FileInputStream
 
 plugins {
     id("android-application-convention")
-//    id("com.google.gms.google-services")
-//    id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
 }
 
@@ -72,6 +72,11 @@ dependencies {
     implementation(libs.bundles.mvikotlin.bndl)
     implementation(libs.decompose.decompose)
     implementation(libs.decompose.extCompose)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.crashlytics.ktx)
 }
 
 //detekt {

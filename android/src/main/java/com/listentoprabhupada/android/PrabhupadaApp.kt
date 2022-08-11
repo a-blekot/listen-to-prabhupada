@@ -8,6 +8,8 @@ import android.os.Environment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.listentoprabhupada.android.util.CrashlyticsAntilog
 import com.listentoprabhupada.common.database.Database
 import com.listentoprabhupada.common.database.DatabaseDriverFactory
 import com.listentoprabhupada.common.database.DatabaseImpl
@@ -92,11 +94,11 @@ class PrabhupadaApp : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
-//            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
             debugBuild()
         } else {
-//            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-//            Napier.base(CrashlyticsAntilog(this))
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+            Napier.base(CrashlyticsAntilog(this))
         }
 
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)

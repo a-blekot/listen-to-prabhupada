@@ -20,7 +20,7 @@ import com.listentoprabhupada.common.results_api.ResultsComponent
 @Composable
 fun ResultsView(component: ResultsComponent, modifier: Modifier = Modifier) {
     val state = component.flow.subscribeAsState()
-    Box(modifier.padding(bottom = bottomSheetPeekHeight)) {
+    Box(modifier) {
         StandartLazyColumn(itemPadding = paddingM) {
             item { Header(modifier = modifier) }
 
