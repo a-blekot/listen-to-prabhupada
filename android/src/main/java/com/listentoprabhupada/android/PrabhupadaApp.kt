@@ -109,6 +109,7 @@ class PrabhupadaApp : Application() {
 
         db = DatabaseImpl(DatabaseDriverFactory(this))
         playerBus = PlayerBusImpl(dispatchers())
+        Napier.d( "PlayerBusImpl created!!!!!!!!!!!!!!!!", tag = LogTag.lifecycleActivity)
         toolsRepository = ToolsRepositoryImpl(db)
         downloadsRepository = DownloadsRepositoryImpl(db, api)
 

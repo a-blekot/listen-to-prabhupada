@@ -8,10 +8,9 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.listentoprabhupada.common.data.LectureOutput
 import com.listentoprabhupada.common.results_api.ResultsComponent
-import com.listentoprabhupada.common.results_api.ResultsOutput
 import com.listentoprabhupada.common.results_api.ResultsState
 import com.listentoprabhupada.common.results_impl.store.ResultsIntent.*
-import com.listentoprabhupada.common.results_impl.store.LecturesStoreFactory
+import com.listentoprabhupada.common.results_impl.store.ResultsStoreFactory
 import com.listentoprabhupada.common.results_impl.store.ResultsLabel
 import com.listentoprabhupada.common.utils.Consumer
 import com.listentoprabhupada.common.utils.asValue
@@ -31,7 +30,7 @@ class ResultsComponentImpl(
 
     private val store =
         instanceKeeper.getStore {
-            LecturesStoreFactory(
+            ResultsStoreFactory(
                 storeFactory = storeFactory,
                 deps = deps,
             ).create()

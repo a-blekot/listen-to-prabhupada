@@ -13,7 +13,7 @@ import com.listentoprabhupada.common.utils.dbEntity
 import com.listentoprabhupada.common.results_impl.data.pagination
 import com.listentoprabhupada.common.results_impl.ResultsDeps
 import com.listentoprabhupada.common.results_impl.store.ResultsIntent.*
-import com.listentoprabhupada.common.results_impl.store.LecturesStoreFactory.Action.UpdateFromDB
+import com.listentoprabhupada.common.results_impl.store.ResultsStoreFactory.Action.UpdateFromDB
 import com.listentoprabhupada.common.network_api.ApiModel
 import com.listentoprabhupada.common.network_api.PAGE_QUERY_KEY
 import com.listentoprabhupada.common.network_api.QueryParams
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-internal class LecturesStoreFactory(
+internal class ResultsStoreFactory(
     private val storeFactory: StoreFactory,
     private val deps: ResultsDeps,
 ) {
@@ -93,7 +93,7 @@ internal class LecturesStoreFactory(
 
         override fun executeIntent(intent: ResultsIntent, getState: () -> ResultsState) {
             if (getState().isLoading) {
-                Napier.d("executeIntent canceled, isLoading = true!", tag = "LecturesStoreExecutor")
+                Napier.d("executeIntent canceled, isLoading = true!", tag = "ResultsStoreExecutor")
                 return
             }
 
@@ -116,7 +116,7 @@ internal class LecturesStoreFactory(
                         val newState = state(apiModel)
                         deps.db.insertPage(settings.getFilters().toDatabaseIdentifier(), newState.pagination.curr)
 
-                        Napier.d("LecturesStore LecturesLoaded -> ${newState.lectures.map { it.id }}", tag = "LECTURES")
+                        Napier.d("LecturesLoaded -> ${newState.lectures.map { it.id }}", tag = "ResultsStore")
                         dispatch(Msg.LoadingComplete(newState))
                         publish(ResultsLabel.LecturesLoaded(newState.lectures))
                     }
@@ -124,7 +124,7 @@ internal class LecturesStoreFactory(
                     Napier.e(
                         message = "api.getResults isFailure ${result.exceptionOrNull()?.message}",
                         throwable = result.exceptionOrNull(),
-                        tag = "LecturesStore"
+                        tag = "ResultsStore"
                     )
                     dispatch(Msg.LoadingComplete())
                 }

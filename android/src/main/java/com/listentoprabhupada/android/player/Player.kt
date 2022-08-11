@@ -175,6 +175,8 @@ class Player(
     private var pendingPlaylist: List<Lecture> = emptyList()
 
     init {
+        Napier.d("Player init() !!! $this", tag = "AUDIO_PLAYER")
+
         playerBus.observeActions(::handleAction)
         playerBus.observePlaylist(::setPlaylist)
     }
@@ -209,6 +211,7 @@ class Player(
 
     private fun handleAction(playerAction: PlayerAction) {
         Napier.d("handleAction $playerAction", tag = "AUDIO_PLAYER")
+        Napier.d("exoPlayer $exoPlayer", tag = "AUDIO_PLAYER")
 
         when (playerAction) {
             is Play -> play(playerAction.lectureId)
@@ -309,14 +312,17 @@ class Player(
         }
 
     private fun switchTrack(lectureId: Long) {
+        Napier.d("switchTrack $lectureId", tag = "AUDIO_PLAYER")
         if (pendingPlaylist.any { it.id == lectureId }) {
             currentPlaylist = pendingPlaylist
             resetTracks(currentPlaylist)
         }
 
         val index = currentPlaylist.indexOfFirst { it.id == lectureId }
+        Napier.d("index = $index", tag = "AUDIO_PLAYER")
         if (index >= 0 && index < currentPlaylist.size) {
             try {
+                Napier.d("seekTo $index", tag = "AUDIO_PLAYER")
                 exoPlayer?.seekTo(index, tools.getPosition(lectureId))
             } catch (e: IllegalSeekPositionException) {
 

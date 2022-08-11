@@ -25,6 +25,7 @@ class PlaybackService : Service(), Player.Listener {
     private val binder = PlaybackBinder()
     private var player: Player? = null
     private var wakeLock: PowerManager.WakeLock? = null
+    private var isActivityStarted = false
 
     private val playerBus = app.playerBus
     private val tools = app.toolsRepository
@@ -32,6 +33,7 @@ class PlaybackService : Service(), Player.Listener {
     private val playerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     fun onActivityStarted() {
+        isActivityStarted = true
         Napier.d("onActivityStarted", tag = "PlaybackService")
         stopForeground(true)
         Napier.d("stopForeground", tag = "PlaybackService")
@@ -40,6 +42,7 @@ class PlaybackService : Service(), Player.Listener {
 
     fun onActivityStopped() =
         player?.run {
+            isActivityStarted = false
             Napier.d("onActivityStopped", tag = "PlaybackService")
             Napier.d("isPlaying = $isPlaying", tag = "PlaybackService")
 
@@ -86,6 +89,9 @@ class PlaybackService : Service(), Player.Listener {
     }
 
     private fun stop() {
+        if (isActivityStarted) {
+            return
+        }
         Napier.d("stop", tag = "PlaybackService")
         stopForeground(true)
         Napier.d("stopForeground", tag = "PlaybackService")

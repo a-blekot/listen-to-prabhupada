@@ -23,13 +23,17 @@ class PlayerBusImpl(
     private val playlistFlow = MutableStateFlow(emptyList<Lecture>())
     private val playerActionFlow = MutableSharedFlow<PlayerAction>()
 
+    init {
+        Napier.d("init() !!! $this", tag = "PlayerBusImpl")
+    }
+
     override fun update(state: PlayerState) {
         // Napier.d("update PlayerState = $state", tag = "PlayerBus" )
         playbackFlow.update { state }
     }
 
     override fun update(playlist: List<Lecture>) {
-        Napier.d("PlayerBusImpl -> update ${playlist.map { it.id }}", tag = "FAVORITES")
+        Napier.d("update ${playlist.map { it.id }}", tag = "PlayerBusImpl")
         playlistFlow.update { playlist }
     }
 
