@@ -33,7 +33,6 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
                 fileUrl = fileUrl,
                 remoteUrl = remoteUrl,
                 isFavorite = isFavorite,
-                isCompleted = isCompleted,
                 downloadProgress = downloadProgress,
             )
         }
@@ -112,16 +111,33 @@ class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {
             .executeAsOneOrNull()
             ?.pos ?: 0L
 
-    override fun setCompleted(id: Long) =
-        selectLecture(id)?.let {
-            insertLecture(it.copy(isCompleted = true))
-        } ?: Unit
-
     override fun deleteSavedPosition(id: Long) =
         dbQuery.deleteSavedPosition(id = id)
 
     override fun deleteAllSavedPositions() =
         dbQuery.deleteAllSavedPositions()
+
+    override fun insertCompleted(id: Long, isCompleted: Boolean) =
+        dbQuery.insertCompleted(id = id, isCompleted = isCompleted)
+
+    override fun selectCompleted(id: Long) =
+        dbQuery.selectCompleted(id = id).executeAsOneOrNull()
+
+    override fun deleteCompleted(id: Long) =
+        dbQuery.deleteCompleted(id = id)
+
+    override fun deleteAllCompleted() =
+        dbQuery.deleteAllCompleted()
+
+//    override fun setCompleted(id: Long) {
+//        var list = dbQuery.selectAllCompleted(isCompleted = true).executeAsList()
+//
+//        val ids = dbQuery.selectAllLectures().executeAsList().map { it.id }
+//        Napier.d("ids $ids")
+//        Napier.d("before setCompleted($id) size = ${list.size}")
+//        dbQuery.setCompleted(id = id)
+//        Napier.d("after setCompleted($id)  size = ${list.size}")
+//    }
 
     override fun selectExpandedFilter(filterName: String) =
         dbQuery.selectExpandedFilter(id = filterName.toLong())

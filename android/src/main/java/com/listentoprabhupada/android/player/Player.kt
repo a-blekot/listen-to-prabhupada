@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.listentoprabhupada.android.MainActivity
 import com.listentoprabhupada.android.R
+import com.listentoprabhupada.android.util.formatTimeHoursMinutesSeconds
 import com.listentoprabhupada.android.util.notificationColor
 import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.results_impl.repository.ToolsRepository
@@ -191,6 +192,7 @@ class Player(
             }
 
             if (trackIsAlmostCompleted) {
+                Napier.d("setCompleted", tag = "AUDIO_PLAYER")
                 tools.setCompleted(currentId)
             } else {
                 tools.savePosition(id = currentId, timeMs = currentPosition)

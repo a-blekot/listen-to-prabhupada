@@ -11,9 +11,8 @@ import com.listentoprabhupada.common.utils.dbEntity
 import com.listentoprabhupada.common.utils.mapped
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.CurrentLecture
 import com.listentoprabhupada.common.favorites_impl.store.FavoritesIntent.Favorite
-import com.listentoprabhupada.common.favorites_impl.store.FavoritesStoreFactory.Action.InitialLoad
-import com.listentoprabhupada.common.favorites_impl.store.FavoritesStoreFactory.Action.UpdateFromDB
 import com.listentoprabhupada.common.data.Lecture
+import com.listentoprabhupada.common.favorites_impl.store.FavoritesStoreFactory.Action.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -37,6 +36,7 @@ internal class FavoritesStoreFactory(
     private sealed interface Action {
         object InitialLoad : Action
         object UpdateFromDB : Action
+        object UpdateCompleted : Action
     }
 
     private sealed interface Msg {
@@ -53,7 +53,7 @@ internal class FavoritesStoreFactory(
             }
 
             deps.db.observeCompleted()
-                .onEach { dispatch(UpdateFromDB) }
+                .onEach { dispatch(UpdateCompleted) }
                 .launchIn(scope)
 
             deps.db.observeAllFavorites()
@@ -69,11 +69,10 @@ internal class FavoritesStoreFactory(
     private inner class ExecutorImpl : CoroutineExecutor<FavoritesIntent, Action, FavoritesState, Msg, FavoritesLabel>() {
         override fun executeAction(action: Action, getState: () -> FavoritesState) {
             when (action) {
-                is UpdateFromDB -> {
-                    updateFromDB(getState())
-                }
+                is UpdateFromDB -> updateFromDB(getState())
+                is UpdateCompleted -> updateCompleted(getState())
                 is InitialLoad -> {
-                    val lectures = deps.db.selectAllFavorites().mapped()
+                    val lectures = deps.db.selectAllFavorites().mapped().updateCompleted()
                     dispatch(Msg.LoadingComplete(FavoritesState(lectures)))
 
                     scope.launch {
@@ -95,16 +94,25 @@ internal class FavoritesStoreFactory(
                 dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateFromDB()))
             }
 
+        private fun updateCompleted(state: FavoritesState) =
+            scope.launch {
+                dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateCompleted()))
+            }
+
         private fun List<Lecture>.updateFromDB() =
             map { lecture ->
                 val lectureEntity = deps.db.selectLecture(lecture.id)
+                val isCompleted = deps.db.selectCompleted(lecture.id)
                 lecture.copy(
                     fileUrl = lectureEntity?.fileUrl ?: lecture.fileUrl,
                     isFavorite = lectureEntity?.isFavorite ?: lecture.isFavorite,
-                    isCompleted = lectureEntity?.isCompleted ?: lecture.isCompleted,
+                    isCompleted = isCompleted ?: lecture.isCompleted,
                     downloadProgress = lectureEntity?.downloadProgress?.toInt() ?: lecture.downloadProgress
                 )
             }
+
+        private fun List<Lecture>.updateCompleted() =
+            map { it.copy(isCompleted = deps.db.selectCompleted(it.id) ?: it.isCompleted) }
 
         private fun setCurrent(id: Long, isPlaying: Boolean, state: FavoritesState) {
             state.lectures

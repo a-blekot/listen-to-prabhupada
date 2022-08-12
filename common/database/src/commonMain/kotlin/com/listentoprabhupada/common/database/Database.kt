@@ -11,7 +11,7 @@ interface Database {
     fun selectAllFavorites(): List<LectureEntity>
     fun observeAllDownloads(): Flow<List<LectureEntity>>
     fun observeAllFavorites(): Flow<List<LectureEntity>>
-    fun observeCompleted(): Flow<List<LectureEntity>>
+    fun observeCompleted(): Flow<List<Boolean>>
     fun deleteLecture(id: Long)
     fun deleteFromDownloadsOnly(lecture: LectureEntity)
     fun deleteFromFavoritesOnly(lecture: LectureEntity)
@@ -24,9 +24,13 @@ interface Database {
 
     fun insertSavedPosition(id: Long, pos: Long)
     fun selectSavedPosition(id: Long): Long
-    fun setCompleted(id: Long)
     fun deleteSavedPosition(id: Long)
     fun deleteAllSavedPositions()
+
+    fun insertCompleted(id: Long, isCompleted: Boolean)
+    fun selectCompleted(id: Long): Boolean?
+    fun deleteCompleted(id: Long)
+    fun deleteAllCompleted()
 
     fun insertExpandedFilter(filterName: String, isExpanded: Boolean)
     fun selectExpandedFilter(filterName: String): Boolean

@@ -11,9 +11,8 @@ import com.listentoprabhupada.common.utils.dbEntity
 import com.listentoprabhupada.common.utils.mapped
 import com.listentoprabhupada.common.downloads_impl.store.DownloadsIntent.CurrentLecture
 import com.listentoprabhupada.common.downloads_impl.store.DownloadsIntent.Favorite
-import com.listentoprabhupada.common.downloads_impl.store.DownloadsStoreFactory.Action.RefreshDownloads
-import com.listentoprabhupada.common.downloads_impl.store.DownloadsStoreFactory.Action.UpdateFromDB
 import com.listentoprabhupada.common.data.Lecture
+import com.listentoprabhupada.common.downloads_impl.store.DownloadsStoreFactory.Action.*
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,6 +37,7 @@ internal class DownloadsStoreFactory(
     private sealed interface Action {
         object RefreshDownloads : Action
         object UpdateFromDB : Action
+        object UpdateCompleted : Action
     }
 
     private sealed interface Msg {
@@ -54,7 +54,7 @@ internal class DownloadsStoreFactory(
             }
 
             deps.db.observeCompleted()
-                .onEach { dispatch(UpdateFromDB) }
+                .onEach { dispatch(UpdateCompleted) }
                 .launchIn(scope)
 
             deps.db.observeAllFavorites()
@@ -73,9 +73,8 @@ internal class DownloadsStoreFactory(
     private inner class ExecutorImpl : CoroutineExecutor<DownloadsIntent, Action, DownloadsState, Msg, DownloadsLabel>() {
         override fun executeAction(action: Action, getState: () -> DownloadsState) {
             when (action) {
-                is UpdateFromDB -> {
-                    updateFromDB(getState())
-                }
+                is UpdateFromDB -> updateFromDB(getState())
+                is UpdateCompleted -> updateCompleted(getState())
                 is RefreshDownloads -> {
                     val lectures = deps.db.selectAllDownloads().mapped()
                     dispatch(Msg.LoadingComplete(DownloadsState(lectures)))
@@ -99,16 +98,25 @@ internal class DownloadsStoreFactory(
                 dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateFromDB()))
             }
 
+        private fun updateCompleted(state: DownloadsState) =
+            scope.launch {
+                dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateCompleted()))
+            }
+
         private fun List<Lecture>.updateFromDB() =
             map { lecture ->
                 val lectureEntity = deps.db.selectLecture(lecture.id)
+                val isCompleted = deps.db.selectCompleted(lecture.id)
                 lecture.copy(
                     fileUrl = lectureEntity?.fileUrl ?: lecture.fileUrl,
                     isFavorite = lectureEntity?.isFavorite ?: lecture.isFavorite,
-                    isCompleted = lectureEntity?.isCompleted ?: lecture.isCompleted,
+                    isCompleted = isCompleted ?: lecture.isCompleted,
                     downloadProgress = lectureEntity?.downloadProgress?.toInt() ?: lecture.downloadProgress
                 )
             }
+
+        private fun List<Lecture>.updateCompleted() =
+            map { it.copy(isCompleted = deps.db.selectCompleted(it.id) ?: it.isCompleted) }
 
         private fun setCurrent(id: Long, isPlaying: Boolean, state: DownloadsState) {
             state.lectures

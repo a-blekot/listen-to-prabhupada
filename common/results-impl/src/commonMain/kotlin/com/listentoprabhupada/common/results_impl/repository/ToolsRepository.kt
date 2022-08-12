@@ -34,7 +34,7 @@ class ToolsRepositoryImpl(
         db.insertLecture(lecture.copy(isFavorite = isFavorite).dbEntity())
 
     override fun setCompleted(id: Long) {
-        db.setCompleted(id)
+        db.insertCompleted(id, isCompleted = true)
         db.insertSavedPosition(id, 0)
     }
 

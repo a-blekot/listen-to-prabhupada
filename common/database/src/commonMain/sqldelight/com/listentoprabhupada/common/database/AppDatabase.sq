@@ -1,4 +1,4 @@
-CREATE TABLE LectureEntity (
+CREATE TABLE IF NOT EXISTS LectureEntity (
     id INTEGER NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT,
@@ -8,28 +8,32 @@ CREATE TABLE LectureEntity (
     fileUrl TEXT,
     remoteUrl TEXT NOT NULL,
     isFavorite INTEGER AS Boolean NOT NULL DEFAULT 0,
-    isCompleted INTEGER AS Boolean NOT NULL DEFAULT 0,
     downloadProgress INTEGER
 );
 
-CREATE TABLE Page (
+CREATE TABLE IF NOT EXISTS Page (
     id INTEGER NOT NULL PRIMARY KEY,
     page INTEGER NOT NULL
 );
 
-CREATE TABLE SavedPosition (
+CREATE TABLE IF NOT EXISTS SavedPosition (
     id INTEGER NOT NULL PRIMARY KEY,
     pos INTEGER NOT NULL
 );
 
-CREATE TABLE ExpandedFilter (
+CREATE TABLE IF NOT EXISTS Completed (
+    id INTEGER NOT NULL PRIMARY KEY,
+    isCompleted INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS ExpandedFilter (
     id INTEGER NOT NULL PRIMARY KEY,
     expanded INTEGER AS Boolean NOT NULL DEFAULT 0
 );
 
 insertLecture:
-INSERT OR REPLACE INTO LectureEntity(id, title, description, date, place, durationMillis, fileUrl, remoteUrl, isFavorite, isCompleted, downloadProgress)
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO LectureEntity(id, title, description, date, place, durationMillis, fileUrl, remoteUrl, isFavorite, downloadProgress)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 selectLecture:
 SELECT * FROM LectureEntity
@@ -46,10 +50,6 @@ WHERE downloadProgress = 100;
 selectAllFavorites:
 SELECT * FROM LectureEntity
 WHERE isFavorite = 1;
-
-selectAllCompleted:
-SELECT * FROM LectureEntity
-WHERE isCompleted = 1;
 
 deleteLecture:
 DELETE FROM LectureEntity
@@ -87,6 +87,25 @@ WHERE id = ?;
 
 deleteAllSavedPositions:
 DELETE FROM SavedPosition;
+
+insertCompleted:
+INSERT OR REPLACE INTO Completed(id, isCompleted)
+VALUES(?, ?);
+
+selectAllCompleted:
+SELECT isCompleted FROM Completed
+WHERE isCompleted = 1;
+
+selectCompleted:
+SELECT isCompleted FROM Completed
+WHERE id = ?;
+
+deleteCompleted:
+DELETE FROM Completed
+WHERE id = ?;
+
+deleteAllCompleted:
+DELETE FROM Completed;
 
 insertExpandedFilter:
 INSERT OR REPLACE INTO ExpandedFilter(id, expanded)

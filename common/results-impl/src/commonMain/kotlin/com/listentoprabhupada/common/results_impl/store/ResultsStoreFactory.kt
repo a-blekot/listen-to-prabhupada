@@ -17,6 +17,7 @@ import com.listentoprabhupada.common.results_impl.store.ResultsStoreFactory.Acti
 import com.listentoprabhupada.common.network_api.ApiModel
 import com.listentoprabhupada.common.network_api.PAGE_QUERY_KEY
 import com.listentoprabhupada.common.network_api.QueryParams
+import com.listentoprabhupada.common.results_impl.store.ResultsStoreFactory.Action.UpdateCompleted
 import com.listentoprabhupada.common.settings.addPage
 import com.listentoprabhupada.common.settings.getFilters
 import com.listentoprabhupada.common.settings.settings
@@ -45,6 +46,7 @@ internal class ResultsStoreFactory(
 
     private sealed interface Action {
         object UpdateFromDB : Action
+        object UpdateCompleted : Action
         class InitialLoad(val queryParams: QueryParams) : Action
     }
 
@@ -63,7 +65,7 @@ internal class ResultsStoreFactory(
 //            }
 
             deps.db.observeCompleted()
-                .onEach { dispatch(UpdateFromDB) }
+                .onEach { dispatch(UpdateCompleted) }
                 .launchIn(scope)
 
             deps.db.observeAllFavorites()
@@ -79,9 +81,8 @@ internal class ResultsStoreFactory(
     private inner class ExecutorImpl : CoroutineExecutor<ResultsIntent, Action, ResultsState, Msg, ResultsLabel>() {
         override fun executeAction(action: Action, getState: () -> ResultsState) {
             when (action) {
-                is UpdateFromDB -> {
-                    updateFromDB(getState())
-                }
+                is UpdateFromDB -> updateFromDB(getState())
+                is UpdateCompleted -> updateCompleted(getState())
                 else -> {
                     /** do nothing **/
                 }
@@ -166,16 +167,26 @@ internal class ResultsStoreFactory(
                 dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateFromDB()))
             }
 
+        private fun updateCompleted(state: ResultsState) =
+            scope.launch {
+                dispatch(Msg.UpdateFromDB(lectures = state.lectures.updateCompleted()))
+            }
+
         private fun List<Lecture>.updateFromDB() =
             map { lecture ->
                 val lectureEntity = deps.db.selectLecture(lecture.id)
+                val isCompleted = deps.db.selectCompleted(lecture.id)
                 lecture.copy(
                     fileUrl = lectureEntity?.fileUrl ?: lecture.fileUrl,
                     isFavorite = lectureEntity?.isFavorite ?: lecture.isFavorite,
-                    isCompleted = lectureEntity?.isCompleted ?: lecture.isCompleted,
+                    isCompleted = isCompleted ?: lecture.isCompleted,
                     downloadProgress = lectureEntity?.downloadProgress?.toInt() ?: lecture.downloadProgress
                 )
             }
+
+        private fun List<Lecture>.updateCompleted() =
+            map { it.copy(isCompleted = deps.db.selectCompleted(it.id) ?: it.isCompleted) }
+
     }
 
     private object ReducerImpl : Reducer<ResultsState, Msg> {

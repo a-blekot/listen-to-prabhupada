@@ -21,6 +21,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.sqlDelight.runtime)
                 implementation(libs.sqlDelight.coroutines.extensions)
+                implementation(libs.napier)
             }
         }
 

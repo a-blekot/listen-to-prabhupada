@@ -16,7 +16,6 @@ fun Lecture.dbEntity(): LectureEntity =
         fileUrl = fileUrl,
         remoteUrl = remoteUrl,
         isFavorite = isFavorite,
-        isCompleted = isCompleted,
         downloadProgress = downloadProgress?.toLong()
     )
 
@@ -35,7 +34,6 @@ fun List<LectureEntity>.mapped() =
             fileUrl = it.fileUrl,
             remoteUrl = it.remoteUrl,
             isFavorite = it.isFavorite,
-            isCompleted = it.isCompleted,
             downloadProgress = it.downloadProgress?.toInt()
         )
     }
