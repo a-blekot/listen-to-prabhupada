@@ -3,6 +3,7 @@ package com.listentoprabhupada.android_ui.screens.root
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ExperimentalDecomposeApi
@@ -32,12 +34,14 @@ import com.listentoprabhupada.android_ui.screens.filters.FiltersView
 import com.listentoprabhupada.android_ui.screens.results.ResultsView
 import com.listentoprabhupada.android_ui.theme.Colors.background
 import com.listentoprabhupada.android_ui.theme.Colors.surface
+import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetPeekHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.horizontalScreenPadding
 import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeL
 import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeM
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingL
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
+import com.listentoprabhupada.android_ui.theme.Dimens.radiusXL
 import com.listentoprabhupada.common.root.RootComponent
 import com.listentoprabhupada.common.root.RootComponent.Child
 import kotlinx.coroutines.launch
@@ -60,14 +64,10 @@ fun RootContent(root: RootComponent, modifier: Modifier = Modifier) {
             scaffoldState = scaffoldState,
             modifier = Modifier.weight(weight = 1F),
             sheetContent = {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(160.dp)
-                ) {
-                    PlayerListItem(root.playerComponent, modifier)
-                }
+                PlayerListItem(root.playerComponent, Modifier.fillMaxWidth().height(bottomSheetHeight))
             },
+            sheetShape = RoundedCornerShape(topStart = radiusXL, topEnd = radiusXL),
+            sheetBackgroundColor = Color.Transparent,
             sheetPeekHeight = bottomSheetPeekHeight,
             drawerContent = {
                 DrawerContent(root)

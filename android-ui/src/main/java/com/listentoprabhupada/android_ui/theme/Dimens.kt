@@ -11,6 +11,8 @@ object Dimens {
 
     val radiusS = 4.dp
     val radiusM = 8.dp
+    val radiusL = 16.dp
+    val radiusXL = 32.dp
 
     val borderSmall = 2.dp
 
@@ -26,5 +28,6 @@ object Dimens {
     val rowHeightM = 44.dp
     val rowHeightL = 60.dp
 
-    val bottomSheetPeekHeight = 36.dp
+    val bottomSheetHeight = 200.dp
+    val bottomSheetPeekHeight = 64.dp
 }
