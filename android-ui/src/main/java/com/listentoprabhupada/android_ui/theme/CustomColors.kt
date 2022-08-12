@@ -23,6 +23,10 @@ private object LightColors {
     val background = Color(0xFFFFFFFF)
     val surface = Color(0xFFFFF7EF)
 
+    val toolbar = surface
+    val chipsBg = surface
+    val chipsContent = primary
+
     val lectureTitle = primary
     val lectureDescr = gray1
     val lecturePlay = primary3
@@ -79,6 +83,10 @@ private object DarkColors {
     val background = Color(0xFFFFFFFF)
     val surface = Color(0xFFFFF7EF)
 
+    val toolbar = surface
+    val chipsBg = surface
+    val chipsContent = primary
+
     val lectureTitle = primary
     val lectureDescr = gray1
     val lecturePlay = primary3
@@ -128,6 +136,15 @@ object Colors {
 
     @Composable
     fun tertiary() = dayNight(LightColors.tertiary, DarkColors.tertiary)
+
+    @Composable
+    fun toolbar() = dayNight(LightColors.toolbar, DarkColors.toolbar)
+
+    @Composable
+    fun chipsBg() = dayNight(LightColors.chipsBg, DarkColors.chipsBg)
+
+    @Composable
+    fun chipsContent() = dayNight(LightColors.chipsContent, DarkColors.chipsContent)
 
     @Composable
     fun lectureTitle() = dayNight(LightColors.lectureTitle, DarkColors.lectureTitle)

@@ -1,6 +1,5 @@
 package com.listentoprabhupada.android_ui.helpers
 
-import android.graphics.Typeface
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,8 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.I
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -32,7 +29,6 @@ import com.listentoprabhupada.android_ui.theme.Colors.filtersSelected
 import com.listentoprabhupada.android_ui.theme.Colors.filtersText
 import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeM
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
-import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 import com.listentoprabhupada.android_ui.theme.Dimens.radiusS
 import com.listentoprabhupada.android_ui.theme.Dimens.rowHeightL
@@ -84,14 +80,15 @@ fun FilterTitle(
                 shape = RoundedCornerShape(radiusS)
             )
             .clickable { onExpandedChanged(!isExpanded) }
-            .padding(all = paddingS)
     ) {
         Text(
             text = filter.title,
             color = filtersText(),
             style = typography.titleMedium.copy(fontSize = 18.sp),
             textAlign = TextAlign.Center,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .padding(horizontal = paddingM)
+                .align(Alignment.CenterStart)
         )
 
         Icon(
@@ -99,6 +96,7 @@ fun FilterTitle(
             contentDescription = "expand filter",
             tint = filtersCountText(),
             modifier = Modifier
+                .padding(horizontal = paddingM)
                 .align(Alignment.CenterEnd)
                 .size(iconSizeM)
         )

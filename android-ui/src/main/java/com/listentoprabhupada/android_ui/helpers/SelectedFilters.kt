@@ -1,27 +1,24 @@
 package com.listentoprabhupada.android_ui.helpers
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.InputChip
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.theme.Colors.chipsBg
+import com.listentoprabhupada.android_ui.theme.Colors.chipsContent
+import com.listentoprabhupada.android_ui.theme.Dimens.borderXS
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeS
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 import com.listentoprabhupada.common.filters_api.Filter
 import com.listentoprabhupada.common.filters_api.FiltersComponent
-import com.listentoprabhupada.common.filters_api.Option
 import com.listentoprabhupada.common.filters_api.QueryParam
 
 @Composable
@@ -41,60 +38,61 @@ fun SelectedFilters(
             .forEach { filter ->
                 filter.options.firstOrNull { it.isSelected }?.let { option ->
                     hasSelectedFilters = true
-                    FilterChip(
-                        filterName = filter.name,
-                        option = option,
-                    ) {
-                        component.onQueryParam(it)
+                    FilterChip(option.text) {
+                        component.onQueryParam(
+                            QueryParam(
+                                filterName = filter.name,
+                                selectedOption = option.value,
+                                isSelected = false
+                            )
+                        )
                     }
                 }
             }
 
         if (hasSelectedFilters) {
-            ClearAllFiltersChip { component.onClearAll() }
+            FilterChip(stringResource(R.string.clear_all)) {
+                component.onClearAll()
+            }
         }
     }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterChip(
-    filterName: String,
-    option: Option,
-    onClick: (QueryParam) -> Unit = {}
+    text: String,
+    onClick: () -> Unit = {}
 ) =
     InputChip(
         selected = true,
-        onClick = {
-            onClick(
-                QueryParam(
-                    filterName = filterName,
-                    selectedOption = option.value,
-                    isSelected = false
-                )
-            )
-        },
-        leadingIcon = { ClearImage() },
-        modifier = Modifier.padding(end = paddingXS),
-        label = { Text(option.text) }
-    )
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ClearAllFiltersChip(onClick: () -> Unit = {}) =
-    InputChip(
-        selected = true,
         onClick = onClick,
-        leadingIcon = { ClearImage() },
-        label = { Text(text = stringResource(R.string.clear_all)) }
+        trailingIcon = { ClearImage() },
+        border = InputChipDefaults.inputChipBorder(
+            borderColor = chipsContent(),
+            selectedBorderColor = chipsContent(),
+            borderWidth = borderXS,
+
+        ),
+        colors = InputChipDefaults.inputChipColors(
+            containerColor = chipsBg(),
+            selectedContainerColor = chipsBg(),
+            labelColor = chipsContent(),
+            leadingIconColor = chipsContent(),
+            trailingIconColor = chipsContent(),
+            selectedLabelColor = chipsContent(),
+            selectedLeadingIconColor = chipsContent(),
+            selectedTrailingIconColor = chipsContent(),
+        ),
+        modifier = Modifier.padding(end = paddingXS),
+        label = { Text(text) }
     )
 
 @Composable
 fun ClearImage() =
-    Image(
-        imageVector = Icons.Default.Clear, // Close, Clear,
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+    Icon(
+        imageVector = Icons.Default.Clear,
         contentDescription = "delete filter chip",
-        modifier = Modifier.wrapContentWidth()
+        modifier = Modifier.size(iconSizeS)
     )
 
 class RowInfo(val width: Int, val height: Int, val nextChildIndex: Int)
