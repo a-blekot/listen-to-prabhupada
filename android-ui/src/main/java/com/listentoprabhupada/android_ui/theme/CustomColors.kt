@@ -48,7 +48,7 @@ private object LightColors {
     val navBarIconSelectedBg = primary
     val navBarIconSelectedText = primary
 
-    val filtersCategory = secondary4
+    val filtersCategory = secondary4.copy(alpha = 0.7f)
     val filtersSelected = secondary3
     val filtersNeutral = surface
     val filtersText = tertiary
@@ -104,7 +104,7 @@ private object DarkColors {
     val navBarIconSelectedBg = primary
     val navBarIconSelectedText = primary
 
-    val filtersCategory = secondary4
+    val filtersCategory = secondary4.copy(alpha = 0.7f)
     val filtersSelected = secondary3
     val filtersNeutral = surface
     val filtersText = tertiary

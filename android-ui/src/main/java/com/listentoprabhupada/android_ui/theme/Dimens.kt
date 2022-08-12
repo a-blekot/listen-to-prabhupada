@@ -28,7 +28,7 @@ object Dimens {
 
     val buttonHeight = 40.dp
     val rowHeightM = 44.dp
-    val rowHeightL = 60.dp
+    val rowHeightL = 48.dp
 
     val bottomSheetHeight = 200.dp
     val bottomSheetPeekHeight = 64.dp
