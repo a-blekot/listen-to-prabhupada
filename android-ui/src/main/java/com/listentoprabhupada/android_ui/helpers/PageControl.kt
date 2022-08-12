@@ -177,7 +177,7 @@ fun Pagination.nextPage(buttonType: ButtonType) =
 fun PageControlPreview() =
     PageControl(Pagination(prev = 121, curr = 122, next = 123, total = 180), ResultsComponentStub)
 
-private object ResultsComponentStub : ResultsComponent {
+object ResultsComponentStub : ResultsComponent {
     override val flow: Value<ResultsState> =
         MutableValue(ResultsState())
 }

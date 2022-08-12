@@ -14,7 +14,8 @@ object Dimens {
     val radiusL = 16.dp
     val radiusXL = 32.dp
 
-    val borderSmall = 2.dp
+    val borderXS = 1.dp
+    val borderS = 2.dp
 
     val paddingZero = 0.dp
     val paddingXS = 4.dp
@@ -25,6 +26,7 @@ object Dimens {
 
     val horizontalScreenPadding = 8.dp
 
+    val buttonHeight = 40.dp
     val rowHeightM = 44.dp
     val rowHeightL = 60.dp
 

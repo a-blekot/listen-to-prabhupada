@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import com.listentoprabhupada.android_ui.theme.Dimens.borderSmall
+import com.listentoprabhupada.android_ui.theme.Dimens.borderS
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
 
 @Composable
@@ -31,7 +31,7 @@ fun SmoothProgress(
     color: Color = colorScheme.primary,
     bgColor: Color = colorScheme.background,
     borderColor: Color = colorScheme.secondaryContainer,
-    strokeWidth: Dp = borderSmall
+    strokeWidth: Dp = borderS
 ) {
     val currentProgress: Float by animateFloatAsState(
         targetValue = current.toFloat() / total,
@@ -82,7 +82,7 @@ fun SmoothProgress(
             Divider(
                 modifier = Modifier.padding(horizontal = paddingS),
                 color = borderColor,
-                thickness = borderSmall
+                thickness = borderS
             )
 
             Text(

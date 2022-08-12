@@ -30,7 +30,7 @@ private object LightColors {
 
     val favSelected = primary
     val favUnselected = secondary2
-    val btnPages = secondary
+    val btnPages = surface
 
     val playerBg = surface
     val playerTimeLineSelector = primary
@@ -86,7 +86,7 @@ private object DarkColors {
 
     val favSelected = primary
     val favUnselected = secondary2
-    val btnPages = secondary
+    val btnPages = surface
 
     val playerBg = surface
     val playerTimeLineSelector = primary
