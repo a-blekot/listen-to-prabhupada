@@ -9,5 +9,6 @@ data class PlayerState(
     val hasNext: Boolean = false,
     val hasPrevious: Boolean = false,
     val timeMs: Long = 0L,
-    val durationMs: Long = 1L
+    val durationMs: Long = 1L,
+    val speed: Float = 1.0f
 )

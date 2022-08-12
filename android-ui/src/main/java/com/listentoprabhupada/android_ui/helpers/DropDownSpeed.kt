@@ -1,34 +1,57 @@
 package com.listentoprabhupada.android_ui.helpers
 
-//
-//private val list = listOf(
-//    Speedy("0,50", 0.50f),
-//    Speedy("0,75", 0.75f),
-//    Speedy("1,00", 1.00f),
-//    Speedy("1,25", 1.25f),
-//    Speedy("1,50", 1.50f),
-//    Speedy("1,75", 1.75f),
-//    Speedy("2,00", 2.00f),
-//)
-//
-//private class Speedy(val title: String, val speed: Float)
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
+import com.listentoprabhupada.android_ui.theme.Colors
+import com.listentoprabhupada.android_ui.theme.Colors.playerTimer
 
-//Spacer(modifier = Modifier.height(20.dp))
-//
-//var expanded by remember { mutableStateOf(false) }
 
-//            Spacer(modifier = Modifier.height(10.dp))
+private val list = listOf(
+    Speedy("1x", 1f),
+    Speedy("1,25x", 1.25f),
+    Speedy("1,5x", 1.5f),
+    Speedy("1,75x", 1.75f),
+    Speedy("2x", 2f),
+)
 
-//
-//            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-//                list.forEach {
-//                    DropdownMenuItem(
-//                        onClick = {
-//                            expanded = false
-//                            playerComponent.onSpeed(it.speed)
-//                        }
-//                    ) {
-//                        Text(text = it.title)
-//                    }
-//                }
-//            }
+private class Speedy(val title: String, val speed: Float)
+
+@Composable
+fun SpeedDropdown(expanded: MutableState<Boolean>, onChange: (Float) -> Unit) {
+
+    DropdownMenu(
+        expanded = expanded.value,
+        onDismissRequest = { expanded.value = false }
+    ) {
+        list.forEach {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = it.title,
+                        maxLines = 1,
+                        overflow = Ellipsis,
+                        color = playerTimer(),
+                        style = typography.labelLarge,
+                        textAlign = TextAlign.Center
+                    )
+                },
+                onClick = {
+                    expanded.value = false
+                    onChange(it.speed)
+                }
+            )
+        }
+    }
+}
+

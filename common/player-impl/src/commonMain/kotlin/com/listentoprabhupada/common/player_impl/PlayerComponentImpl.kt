@@ -7,13 +7,16 @@ import com.listentoprabhupada.common.player_api.PlayerAction
 import com.listentoprabhupada.common.player_api.PlayerBus
 import com.listentoprabhupada.common.player_api.PlayerComponent
 import com.listentoprabhupada.common.player_api.PlayerState
+import com.listentoprabhupada.common.settings.getSpeed
+import com.listentoprabhupada.common.settings.saveSpeed
+import com.listentoprabhupada.common.settings.settings
 
 class PlayerComponentImpl(
     componentContext: ComponentContext,
     private val playerBus: PlayerBus
 ) : PlayerComponent, ComponentContext by componentContext {
 
-    private val mutableState = MutableValue(PlayerState())
+    private val mutableState = MutableValue(PlayerState(speed = settings.getSpeed()))
 
     init {
         playerBus.observeState {
@@ -31,5 +34,8 @@ class PlayerComponentImpl(
     override fun onSliderReleased() = playerBus.update(PlayerAction.SliderReleased)
     override fun onPlay(id: Long) = playerBus.update(PlayerAction.Play(id))
     override fun onSeekTo(timeMs: Long) = playerBus.update(PlayerAction.SeekTo(timeMs))
-    override fun onSpeed(speed: Float) = playerBus.update(PlayerAction.Speed(speed))
+    override fun onSpeed(speed: Float) {
+        playerBus.update(PlayerAction.Speed(speed))
+        settings.saveSpeed(speed)
+    }
 }

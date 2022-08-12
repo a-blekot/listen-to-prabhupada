@@ -1,7 +1,5 @@
 package com.listentoprabhupada.android_ui.helpers
 
-import android.media.session.PlaybackState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,13 +9,13 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,14 +29,16 @@ import com.listentoprabhupada.android_ui.theme.AppTheme
 import com.listentoprabhupada.android_ui.theme.Colors.playerBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerButtons
 import com.listentoprabhupada.android_ui.theme.Colors.playerDescr
+import com.listentoprabhupada.android_ui.theme.Colors.playerSpeedBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineSelector
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimer
 import com.listentoprabhupada.android_ui.theme.Colors.playerTitle
 import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetPeekHeight
-import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeS
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
+import com.listentoprabhupada.android_ui.theme.Dimens.radiusM
 import com.listentoprabhupada.android_ui.theme.Dimens.radiusXL
 import com.listentoprabhupada.android_ui.utils.ONE_DAY_MS
 import com.listentoprabhupada.android_ui.utils.formatTimeAdaptiveHoursMax
@@ -65,6 +65,63 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                 playbackState.value,
                 playerComponent
             )
+
+            StandartRow(
+                modifier = Modifier.padding(horizontal = paddingS),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Text(
+                    text = playbackState.value.displayedTime,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = playerTimer(),
+                    style = typography.labelLarge,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(Modifier.weight(1f))
+
+                val speed = remember { mutableStateOf(1f) }
+                val showDropdown = remember { mutableStateOf(false) }
+
+                Box(
+                    modifier = Modifier
+                        .width(70.dp)
+                        .height(24.dp)
+                        .background(
+                            color = playerSpeedBg(),
+                            shape = RoundedCornerShape(radiusM)
+                        )
+                ) {
+                    Text(
+                        text = "${speed.value}x",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = playerTimer(),
+                        style = typography.labelLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { showDropdown.value = true }
+                            .align(Alignment.Center)
+                    )
+
+                    Icon(
+                        imageVector = Rounded.ArrowDropDown,
+                        contentDescription = "arrow down",
+                        modifier = Modifier
+                            .size(iconSizeS)
+                            .align(Alignment.CenterEnd)
+                            .padding(end = paddingXS),
+                        tint = playerTimer()
+                    )
+
+                    SpeedDropdown(showDropdown) {
+                        speed.value = it
+                        playerComponent.onSpeed(it)
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(paddingXS))
 
@@ -150,7 +207,7 @@ fun RowScope.PlayerActionIcon(
 fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponent) {
 
     Column(
-        modifier = Modifier.fillMaxWidth().height(bottomSheetPeekHeight),
+        modifier = Modifier.fillMaxWidth().height(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
@@ -173,31 +230,6 @@ fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponen
                 .fillMaxWidth()
                 .height(20.dp)
         )
-
-        StandartRow(
-            modifier = Modifier.padding(horizontal = paddingS),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Text(
-                text = playbackState.displayedTime,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = playerTimer(),
-                style = typography.labelLarge,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(Modifier.weight(1f))
-
-            Text(
-                text = playbackState.displayedTime,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = playerTimer(),
-                style = typography.labelLarge,
-                textAlign = TextAlign.Center
-            )
-        }
     }
 }
 

@@ -21,6 +21,10 @@ import com.listentoprabhupada.common.player_api.PlayerAction
 import com.listentoprabhupada.common.player_api.PlayerAction.*
 import com.listentoprabhupada.common.player_api.PlayerBus
 import com.listentoprabhupada.common.player_api.PlayerState
+import com.listentoprabhupada.common.settings.MAX_SPEED
+import com.listentoprabhupada.common.settings.MIN_SPEED
+import com.listentoprabhupada.common.settings.getSpeed
+import com.listentoprabhupada.common.settings.settings
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -60,7 +64,10 @@ class Player(
 
     private val playbackListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
-            Napier.d("onPlaybackStateChanged ${playbackState.readablePlaybackState}", tag = "AUDIO_PLAYER")
+            Napier.d(
+                "onPlaybackStateChanged ${playbackState.readablePlaybackState}",
+                tag = "AUDIO_PLAYER"
+            )
             when (playbackState) {
                 Player.STATE_ENDED -> {
                     stopUpdateJob()
@@ -101,6 +108,7 @@ class Player(
         .build().apply {
             repeatMode = Player.REPEAT_MODE_OFF
             addListener(playbackListener)
+            setPlaybackSpeed(settings.getSpeed())
         }
 
     private val mediaDescriptionAdapter by lazy {
@@ -123,16 +131,24 @@ class Player(
             override fun getCurrentContentTitle(player: Player) =
                 exoPlayer?.mediaMetadata?.title.toString()
 
-            override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback) =
+            override fun getCurrentLargeIcon(
+                player: Player,
+                callback: PlayerNotificationManager.BitmapCallback
+            ) =
                 notificationBg
         }
     }
 
-    private val notificationBg: Bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.prabhupada_speaking)
+    private val notificationBg: Bitmap =
+        BitmapFactory.decodeResource(context.resources, R.drawable.prabhupada_speaking)
 
     private val notificationListener by lazy {
         object : PlayerNotificationManager.NotificationListener {
-            override fun onNotificationPosted(notificationId: Int, notification: Notification, onGoing: Boolean) {
+            override fun onNotificationPosted(
+                notificationId: Int,
+                notification: Notification,
+                onGoing: Boolean
+            ) {
                 Napier.d("onNotificationPosted = $notificationId", tag = "AUDIO_PLAYER")
                 listener.onNotificationPosted(notification)
             }
@@ -182,7 +198,9 @@ class Player(
         playerBus.observePlaylist(::setPlaylist)
     }
 
-    private fun updatePlaybackState(playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState()) =
+    private fun updatePlaybackState(
+        playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState()
+    ) =
         playerBus.update(playbackState)
 
     private fun saveCurrentPosition() =
@@ -355,7 +373,11 @@ class Player(
         }
 
     private fun setSpeed(speed: Float) =
-        exoPlayer?.setPlaybackSpeed(speed.coerceAtLeast(0.25f))
+        exoPlayer?.run {
+            val wasPlaying = playWhenReady
+            setPlaybackSpeed(speed.coerceIn(MIN_SPEED, MAX_SPEED))
+            playWhenReady = wasPlaying
+        }
 
     private fun onSliderReleased() {
         playOnSliderRelease?.let { exoPlayer?.playWhenReady = it }

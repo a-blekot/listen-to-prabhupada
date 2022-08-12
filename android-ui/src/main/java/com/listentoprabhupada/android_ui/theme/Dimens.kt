@@ -30,4 +30,5 @@ object Dimens {
 
     val bottomSheetHeight = 200.dp
     val bottomSheetPeekHeight = 64.dp
+    val sliderHeight = 32.dp
 }

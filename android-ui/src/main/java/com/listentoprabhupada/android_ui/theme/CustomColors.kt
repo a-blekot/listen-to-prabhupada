@@ -39,6 +39,7 @@ private object LightColors {
     val playerTitle = tertiary
     val playerDescr = gray2
     val playerButtons = tertiary
+    val playerSpeedBg = secondary6
 
     val navBarBg = secondary6
     val navBarText = tertiary
@@ -94,6 +95,7 @@ private object DarkColors {
     val playerTitle = tertiary
     val playerDescr = gray2
     val playerButtons = tertiary
+    val playerSpeedBg = secondary6
 
     val navBarBg = secondary6
     val navBarText = tertiary
@@ -169,6 +171,9 @@ object Colors {
 
     @Composable
     fun playerButtons() = dayNight(LightColors.playerButtons, DarkColors.playerButtons)
+
+    @Composable
+    fun playerSpeedBg() = dayNight(LightColors.playerSpeedBg, DarkColors.playerSpeedBg)
 
     @Composable
     fun navBarBg() = dayNight(LightColors.navBarBg, DarkColors.navBarBg)
