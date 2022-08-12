@@ -3,6 +3,7 @@ package com.listentoprabhupada.android_ui.screens.root
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import com.listentoprabhupada.android_ui.theme.Colors.navBarBg
 import com.listentoprabhupada.android_ui.theme.Colors.navBarIcon
@@ -15,10 +16,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.listentoprabhupada.android_ui.R
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeL
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeM
 import com.listentoprabhupada.common.root.RootComponent.Child
 
 @Composable
@@ -68,7 +72,7 @@ private fun RowScope.NavBarItem(
     NavigationBarItem(
         selected = selected,
         onClick = onClick,
-        icon = { Icon(imageVector, text) },
+        icon = { Icon(imageVector, text, modifier = Modifier.size(iconSizeM)) },
         label = { NavBarText(text) },
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = navBarIconSelected(),
@@ -83,5 +87,5 @@ private fun RowScope.NavBarItem(
 private fun NavBarText(text: String) =
     Text(
         text = text,
-        style = MaterialTheme.typography.labelSmall,
+        style = typography.labelMedium,
     )
