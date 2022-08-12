@@ -1,5 +1,6 @@
 package com.listentoprabhupada.android_ui.helpers
 
+import android.media.session.PlaybackState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,14 +8,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.Divider
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,9 +38,11 @@ import com.listentoprabhupada.android_ui.theme.Colors.playerTitle
 import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetPeekHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 import com.listentoprabhupada.android_ui.theme.Dimens.radiusXL
 import com.listentoprabhupada.android_ui.utils.ONE_DAY_MS
 import com.listentoprabhupada.android_ui.utils.formatTimeAdaptiveHoursMax
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.player_api.PlayerComponent
 import com.listentoprabhupada.common.player_api.PlayerState
 
@@ -65,7 +66,7 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                 playerComponent
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(paddingXS))
 
             MarqueeText(
                 text = playbackState.value.lecture.title,
@@ -74,6 +75,8 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                 textAlign = TextAlign.Center
             )
 
+            Spacer(modifier = Modifier.height(paddingXS))
+
             Text(
                 text = playbackState.value.lecture.subTitle,
                 color = playerDescr(),
@@ -81,11 +84,10 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(paddingS))
 
             Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                modifier = Modifier.fillMaxWidth(0.7f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -97,7 +99,7 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                 }
                 val imageVector =
                     selector(Rounded.Pause, Rounded.PlayArrow, playbackState.value.isPlaying)
-                PlayerActionIcon(imageVector, "play/pause", 0.14f) {
+                PlayerActionIcon(imageVector, "play/pause", 1f) {
                     when (playbackState.value.isPlaying) {
                         true -> playerComponent.onPause()
                         else -> playerComponent.onPlay(playbackState.value.lecture.id)
@@ -126,20 +128,23 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
 fun RowScope.PlayerActionIcon(
     imageVector: ImageVector,
     description: String,
-    weight: Float = 0.1f,
+    weight: Float = 0.6f,
+    aspectRatio: Float = 1f,
     onClick: () -> Unit
 ) =
-    Image(
-        imageVector = imageVector,
-        contentScale = ContentScale.FillBounds,
-        contentDescription = description,
-        colorFilter = ColorFilter.tint(playerButtons()),
-        modifier =
-        Modifier
-            .aspectRatio(1f)
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .aspectRatio(aspectRatio)
             .weight(weight)
-            .clickable { onClick() }
-    )
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = description,
+            tint = playerButtons(),
+            modifier = Modifier.fillMaxSize().scale(1.0f)
+        )
+    }
 
 @Composable
 fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponent) {
@@ -206,20 +211,21 @@ fun PreviewPlayerListItem() {
         PlayerListItem(
             object : PlayerComponent {
                 override val flow: Value<PlayerState> =
-                    MutableValue(PlayerState(timeMs = 400, durationMs = 2000))
+                    MutableValue(getPlaybackState())
             }
         )
     }
 }
 
-//fun getPlaybackState() =
-//    PlaybackState(
-//        lecture = Lecture(
-//            id = 1L,
-//            title = "Бхагавад-гита 2.12",
-//            description = "1996.09.12 Mumbai"
-//        ),
-//        isPlaying = true,
-//        timeMs = 10_000L,
-//        durationMs = 100_000L
-//    )
+fun getPlaybackState() =
+    PlayerState(
+        lecture = Lecture(
+            id = 1L,
+            title = "Бхагавад-гита 2.12",
+            date = "9 марта, 1966",
+            place = "Нью-Йорк (США)"
+        ),
+        isPlaying = true,
+        timeMs = 30_000L,
+        durationMs = 100_000L
+    )
