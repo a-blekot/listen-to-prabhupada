@@ -1,13 +1,11 @@
 package com.listentoprabhupada.android_ui.helpers
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons.Rounded
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -41,8 +39,6 @@ import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineSelector
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimer
 import com.listentoprabhupada.android_ui.theme.Colors.playerTitle
-import com.listentoprabhupada.android_ui.theme.Dimens.radiusM
-import com.listentoprabhupada.android_ui.theme.Dimens.radiusS
 import com.listentoprabhupada.android_ui.utils.ONE_DAY_MS
 import com.listentoprabhupada.android_ui.utils.formatTimeAdaptiveHoursMax
 import com.listentoprabhupada.common.player_api.PlayerComponent
@@ -89,14 +85,14 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
             MarqueeText(
                 text = playbackState.value.lecture.title,
                 color = playerTitle(),
-                style = MaterialTheme.typography.titleMedium,
+                style = typography.titleMedium,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = playbackState.value.lecture.displayedDescription,
+                text = playbackState.value.lecture.subTitle,
                 color = playerDescr(),
-                style = MaterialTheme.typography.bodySmall,
+                style = typography.bodyMedium,
                 textAlign = TextAlign.Center
             )
 
@@ -182,7 +178,7 @@ fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponen
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = playerTimer(),
-            style = MaterialTheme.typography.bodySmall,
+            style = typography.bodySmall,
             textAlign = TextAlign.Center
         )
     }

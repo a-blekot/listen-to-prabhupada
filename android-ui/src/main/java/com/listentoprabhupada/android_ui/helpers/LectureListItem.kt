@@ -41,7 +41,7 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
         IconButton(
             onClick = { component.togglePlay(lecture) },
             Modifier
-                .weight(0.1f)
+                .weight(0.09f)
                 .aspectRatio(1f)
         ) {
             Icon(
@@ -54,7 +54,7 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
 
         Spacer(modifier = Modifier.weight(0.02f))
 
-        Column(modifier = Modifier.weight(0.7f)) {
+        Column(modifier = Modifier.weight(0.69f)) {
             Text(
                 text = lecture.title,
                 maxLines = 3,
@@ -75,7 +75,7 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = lectureDescr(),
-                style = typography.bodySmall
+                style = typography.bodyMedium
             )
         }
 
@@ -85,7 +85,7 @@ fun LectureListItem(lecture: Lecture, component: LectureComponent, modifier: Mod
         IconButton(
             onClick = { component.onFavorite(lecture.id, !lecture.isFavorite) },
             Modifier
-                .weight(0.06f)
+                .weight(0.08f)
                 .aspectRatio(1.1f)
         ) {
             Icon(

@@ -11,7 +11,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
@@ -31,8 +33,24 @@ import com.listentoprabhupada.common.utils.RemoteConfig
 import com.listentoprabhupada.common.utils.dispatchers.dispatchers
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity(), ServiceConnection {
+class MainActivity : ComponentActivity() {
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+            playbackService = (binder as? PlaybackService.PlaybackBinder)?.service
+            playbackService?.onActivityStarted()
+            Napier.d("ACTIVITY onServiceConnected", tag = LogTag.playbackService)
+            Napier.d("ACTIVITY boundService = $playbackService", tag = LogTag.playbackService)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            playbackService = null
+            Napier.d("ACTIVITY onServiceDisconnected", tag = LogTag.playbackService)
+            Napier.d("ACTIVITY boundService = $playbackService", tag = LogTag.playbackService)
+        }
+    }
 
     private val playbackServiceIntent
         get() = Intent(this, PlaybackService::class.java)
@@ -40,6 +58,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
     private val downloadServiceIntent
         get() = Intent(this, DownloadService::class.java)
 
+    private var isBound = false
     private var playbackService: PlaybackService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +81,7 @@ class MainActivity : ComponentActivity(), ServiceConnection {
                 )
             }
         }
+        bindService()
     }
 
     private fun root(componentContext: ComponentContext): RootComponent =
@@ -91,15 +111,6 @@ class MainActivity : ComponentActivity(), ServiceConnection {
         super.onStart()
         Napier.d("ACTIVITY startService", tag = LogTag.playbackService)
         startService(playbackServiceIntent)
-        lifecycleScope.launchWhenStarted {
-            delay(500L)
-            applicationContext.bindService(
-                playbackServiceIntent,
-                this@MainActivity,
-                Context.BIND_IMPORTANT
-            )
-        }
-
         downloadServiceIntent
             .apply { action = DownloadServiceAction.ON_ACTIVITY_START.name }
             .let { intent -> startService(intent) }
@@ -111,25 +122,24 @@ class MainActivity : ComponentActivity(), ServiceConnection {
             .let { intent -> startService(intent) }
 
         playbackService?.onActivityStopped()
-        applicationContext.unbindService(this)
+        unbindService()
         super.onStop()
     }
 
-    override fun onDestroy() {
-        Napier.d("ACTIVITY onDestroy", tag = LogTag.playbackService)
-        super.onDestroy()
+    private fun bindService() {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                delay(500L)
+                Napier.d("app.playerBus = ${app.playerBus}", tag="PlayerBus")
+                isBound = applicationContext.bindService(playbackServiceIntent, serviceConnection, Context.BIND_IMPORTANT)
+            }
+        }
     }
 
-    override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-        playbackService = (binder as? PlaybackService.PlaybackBinder)?.service
-        playbackService?.onActivityStarted()
-        Napier.d("ACTIVITY onServiceConnected", tag = LogTag.playbackService)
-        Napier.d("ACTIVITY boundService = $playbackService", tag = LogTag.playbackService)
-    }
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        playbackService = null
-        Napier.d("ACTIVITY onServiceDisconnected", tag = LogTag.playbackService)
-        Napier.d("ACTIVITY boundService = $playbackService", tag = LogTag.playbackService)
+    private fun unbindService() {
+        if (isBound) {
+            applicationContext.unbindService(serviceConnection)
+            isBound = false
+        }
     }
 }
