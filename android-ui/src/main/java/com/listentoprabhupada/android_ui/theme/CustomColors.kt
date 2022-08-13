@@ -57,11 +57,6 @@ private object LightColors {
     val filtersNeutral = surface
     val filtersText = tertiary
     val filtersCountText = primary2
-
-    val chipBg = surface
-    val chipText = tertiary
-    val chipIconBg = primary
-    val chipIcon = tertiary
 }
 
 private object DarkColors {
@@ -117,11 +112,6 @@ private object DarkColors {
     val filtersNeutral = surface
     val filtersText = tertiary
     val filtersCountText = primary2
-
-    val chipBg = surface
-    val chipText = tertiary
-    val chipIconBg = primary
-    val chipIcon = tertiary
 }
 
 object Colors {
@@ -227,18 +217,6 @@ object Colors {
 
     @Composable
     fun filtersNeutral() = dayNight(LightColors.filtersNeutral, DarkColors.filtersNeutral)
-
-    @Composable
-    fun chipBg() = dayNight(LightColors.chipBg, DarkColors.chipBg)
-
-    @Composable
-    fun chipText() = dayNight(LightColors.chipText, DarkColors.chipText)
-
-    @Composable
-    fun chipIconBg() = dayNight(LightColors.chipIconBg, DarkColors.chipIconBg)
-
-    @Composable
-    fun chipIcon() = dayNight(LightColors.chipIcon, DarkColors.chipIcon)
 
     @Composable
     private fun dayNight(day: Color, night: Color) =

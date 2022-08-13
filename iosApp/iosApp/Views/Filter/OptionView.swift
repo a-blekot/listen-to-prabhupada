@@ -19,8 +19,8 @@ struct OptionView: View {
     var body: some View {
         HStack {
             Text(option.text)
-                .font(theme.buttonFont)
-                .foregroundColor(theme.bodyTextColor)
+                .font(theme.titleMedium)
+                .foregroundColor(theme.colors.filtersText)
                 .padding(.leading)
             
             Spacer()
@@ -29,7 +29,7 @@ struct OptionView: View {
         .contentShape(Rectangle())
         .onTapGesture { onOptionSelected(!option.isSelected) }
         .frame(maxWidth: .infinity, minHeight: 50)
-        .background(option.isSelected ? theme.buttonMidBacground : theme.buttonLightBacground)
+        .background(option.isSelected ? theme.colors.filtersSelected : theme.colors.filtersNeutral)
         .padding(.horizontal, 20)
         .padding(.bottom, 2)
     }

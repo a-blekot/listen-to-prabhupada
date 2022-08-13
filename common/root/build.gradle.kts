@@ -15,6 +15,7 @@ kotlin {
             framework {
                 baseName = "Prabhupada"
                 linkerOpts.add("-lsqlite3")
+                export(projects.common.data)
                 export(projects.common.database)
                 export(projects.common.downloadsApi)
                 export(projects.common.favoritesApi)
@@ -61,6 +62,7 @@ kotlin {
 
         iosMain {
             dependencies {
+                api(projects.common.data)
                 api(projects.common.database)
                 api(projects.common.downloadsApi)
                 api(projects.common.favoritesApi)

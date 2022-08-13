@@ -92,6 +92,7 @@ func mockPlayerState() -> PlayerState {
         hasNext: true,
         hasPrevious: true,
         timeMs: 1231000,
-        durationMs: 1800000
+        durationMs: 1800000,
+        speed: 1.0
     )
 }

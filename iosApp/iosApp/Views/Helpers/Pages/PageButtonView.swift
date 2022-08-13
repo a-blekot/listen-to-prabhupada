@@ -23,9 +23,9 @@ enum ButtonType : Int32 {
 struct PageButtonView: View {
     let buttonType: ButtonType
     let pagination: Pagination
-    let component: LecturesComponent
+    let component: ResultsComponent
     
-    init(_ buttonType: ButtonType, _ pagination: Pagination, _ component: LecturesComponent) {
+    init(_ buttonType: ButtonType, _ pagination: Pagination, _ component: ResultsComponent) {
         self.buttonType = buttonType
         self.pagination = pagination
         self.component = component
@@ -78,7 +78,7 @@ extension Pagination {
 
 struct PageButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        PageButtonView(.next_5, mockPagination(5, 100), StubLecturesComponent())
+        PageButtonView(.next_5, mockPagination(5, 100), StubResultsComponent())
             .environmentObject(themes[0])
     }
 }

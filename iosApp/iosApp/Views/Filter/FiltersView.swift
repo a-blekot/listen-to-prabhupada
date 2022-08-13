@@ -48,16 +48,16 @@ struct FiltersView: View {
                     Button("Применить") {
                         component.onApplyChanges()
                     }
-                    .foregroundColor(theme.bodyTextColor)
+                    .foregroundColor(theme.colors.filtersText)
                 }
                 
                 Spacer()
                 
                 Text("Найдено \(model.totalLecturesCount) лекций")
-                    .font(theme.buttonFont)
-                    .foregroundColor(theme.bodyTextColor)
+                    .font(theme.titleLarge)
+                    .foregroundColor(theme.colors.filtersText)
                     .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(theme.buttonMidBacground)
+                    .background(theme.colors.filtersCategory)
                     .contentShape(Rectangle())
                     .onTapGesture { component.onApplyChanges() }
             }

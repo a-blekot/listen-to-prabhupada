@@ -76,7 +76,7 @@ class Player: ObservableObject {
     }
     
     private func setupAudioSession() {
-        do {
+    do {
             try audioSession.setCategory(.playback)
             let _ = try audioSession.setActive(true)
             UIApplication.shared.beginReceivingRemoteControlEvents()
@@ -96,6 +96,7 @@ class Player: ObservableObject {
         case is PlayerActionSeekBack: seekBack()
         case is PlayerActionSeekTo: seekTo(timeMs: (action as! PlayerActionSeekTo).timeMs)
         case is PlayerActionSliderReleased: onSliderReleased()
+        case is PlayerActionSpeed: setSpeed((action as! PlayerActionSpeed).speed)
         default: debugPrint("default")
         }
     }
@@ -250,6 +251,10 @@ class Player: ObservableObject {
         // Set the metadata
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
+    
+    private func setSpeed(_ speed: Float) {
+        player.rate = speed
+    }
 }
 
 extension Player {
@@ -391,7 +396,8 @@ extension Player {
             hasNext: currentIndex != -1 && currentIndex < currentPlaylist.endIndex,
             hasPrevious: currentIndex > 0,
             timeMs: timeMs,
-            durationMs: currentItem?.itemInfo.duration ?? 0
+            durationMs: currentItem?.itemInfo.duration ?? 0,
+            speed: self.player.rate
         )
     }
 }

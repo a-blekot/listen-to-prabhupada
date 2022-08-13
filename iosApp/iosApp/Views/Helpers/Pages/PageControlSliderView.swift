@@ -9,6 +9,10 @@
 import SwiftUI
 import Prabhupada
 
+class ObservablePage: ObservableObject {
+    @Published var value: Double = 0.0
+}
+
 extension Pagination {
     var progress: Double {
         Double(curr) / Double(total)
@@ -19,9 +23,9 @@ struct PageControlSliderView: View {
     @EnvironmentObject var theme: Theme
     @ObservedObject private var page = ObservablePage()
     private let pagination: Pagination
-    private let component : LecturesComponent
+    private let component : ResultsComponent
     
-    init(_ page: ObservablePage, _ pagination: Pagination, _ component: LecturesComponent) {
+    init(_ page: ObservablePage, _ pagination: Pagination, _ component: ResultsComponent) {
         self.page = page
         self.pagination = pagination
         self.component = component
@@ -31,8 +35,8 @@ struct PageControlSliderView: View {
         
         HStack(alignment: .center, spacing: 4) {
             Text("\(Int(page.value)) из \(pagination.total)")
-                .font(theme.bodyFont)
-                .foregroundColor(theme.bodyTextColor)
+                .font(theme.titleSmall)
+                .foregroundColor(theme.colors.tertiary)
                 .lineLimit(1)
                 .padding(.horizontal, 2)
                 .frame(width: 75)
@@ -46,7 +50,7 @@ struct PageControlSliderView: View {
             )
                 .accentColor(.orange)
                 .padding()
-                .foregroundColor(theme.bodyTextColor)
+                .foregroundColor(theme.colors.tertiary)
                 .frame(height: 40)
             
             
@@ -63,7 +67,7 @@ struct PageControlSliderView: View {
 
 struct PageControlSliderView_Previews: PreviewProvider {
     static var previews: some View {
-        ResultsView(component: StubResultsComponent())
+        ResultsView(StubResultsComponent())
             .environmentObject(themes[0])
     }
 }

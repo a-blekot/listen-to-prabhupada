@@ -84,7 +84,7 @@ fun FilterChip(
             selectedTrailingIconColor = chipsContent(),
         ),
         modifier = Modifier.padding(end = paddingXS),
-        label = { Text(text) }
+        label = { Text(text, style = MaterialTheme.typography.titleSmall) }
     )
 
 @Composable

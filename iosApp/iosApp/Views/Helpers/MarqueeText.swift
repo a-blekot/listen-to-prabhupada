@@ -101,7 +101,7 @@ struct MarqueeText : View {
     
     public init(
         text: String,
-        font: UIFont = UIFont.preferredFont(forTextStyle: .subheadline),
+        font: UIFont = UIFont.preferredFont(forTextStyle: .title1),
         color: Color,
         leftFade: CGFloat = 16,
         rightFade: CGFloat = 16,
@@ -137,7 +137,7 @@ struct MarqueeText_Previews: PreviewProvider {
         MarqueeText(
             text: "Бхагавад-Гита. Вступление. Беседа на утренней прогулке. Лекция прочитана в Бомбее куча учеников Его Божественной Милости",
             font: UIFont.preferredFont(forTextStyle: .subheadline),
-            color: themes[0].bodyTextColor,
+            color: themes[0].colors.playerTitle,
             leftFade: 16,
             rightFade: 16,
             startDelay: 1,

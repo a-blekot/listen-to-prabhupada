@@ -12,9 +12,8 @@ import Prabhupada
 struct PageControlView: View {
     
     @EnvironmentObject var theme: Theme
-    let page: Int
     let pagination: Pagination
-    let component : LecturesComponent
+    let component : ResultsComponent
     
     var body: some View {
         HStack(alignment: .center, spacing: 6) {
@@ -23,9 +22,9 @@ struct PageControlView: View {
             button(.prev_5)
             button(.prev_1)
             
-            Text("\(page) из \(pagination.total)")
-                .font(theme.bodyFont)
-                .foregroundColor(theme.bodyTextColor)
+            Text("\(pagination.curr) из \(pagination.total)")
+                .font(theme.titleSmall)
+                .foregroundColor(theme.colors.tertiary)
                 .lineLimit(1)
                 .padding(.horizontal, 2)
                 .frame(width: 75)
@@ -44,7 +43,7 @@ struct PageControlView: View {
 
 struct PageControlView_Previews: PreviewProvider {
     static var previews: some View {
-        PageControlView(page: 1, pagination: mockPagination(100, 100), component: StubLecturesComponent())
+        PageControlView(pagination: mockPagination(2, 100), component: StubResultsComponent())
             .environmentObject(themes[0])
     }
 }

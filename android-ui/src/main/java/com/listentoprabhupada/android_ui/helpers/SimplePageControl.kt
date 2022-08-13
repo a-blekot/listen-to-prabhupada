@@ -21,6 +21,7 @@ import com.listentoprabhupada.android_ui.custom.StandartRow
 import com.listentoprabhupada.android_ui.theme.Colors
 import com.listentoprabhupada.android_ui.theme.Colors.btnPages
 import com.listentoprabhupada.android_ui.theme.Colors.primary
+import com.listentoprabhupada.android_ui.theme.Colors.tertiary
 import com.listentoprabhupada.android_ui.theme.Dimens.borderXS
 import com.listentoprabhupada.android_ui.theme.Dimens.buttonHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
@@ -87,6 +88,7 @@ private fun RowScope.PageButton(
             maxLines = 1,
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center,
+            color = tertiary()
         )
     }
 }

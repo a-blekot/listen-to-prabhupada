@@ -62,18 +62,18 @@ struct PlayerView: View {
             .frame(height: 16, alignment: .center)
             .padding(.horizontal, 8)
             
-            MarqueeText(text: model.lecture.title, color: theme.bodyTextColor)
+            MarqueeText(text: model.lecture.title, color: theme.colors.playerTitle)
                 .padding(2)
 
             Text(model.lecture.displayedDescription)
-                .font(theme.descriptionFont)
-                .foregroundColor(theme.descriptionTextColor)
+                .font(theme.bodyMedium)
+                .foregroundColor(theme.colors.playerDescr)
                 .lineLimit(1)
                 .padding(2)
             
             Text(model.displayedTime)
-                .font(theme.buttonFont)
-                .foregroundColor(theme.descriptionTextColor)
+                .font(theme.labelLarge)
+                .foregroundColor(theme.colors.playerTimer)
                 .lineLimit(1)
                 .padding(2)
             
@@ -93,7 +93,7 @@ struct PlayerView: View {
             .padding(4)
         }
         .padding(4)
-        .background(theme.buttonLightBacground)
+        .background(theme.colors.playerBg)
         .cornerRadius(8)
         .edgesIgnoringSafeArea(.bottom)
     }
@@ -119,7 +119,7 @@ struct PlayerView: View {
                 .resizable()
                 .frame(width: size(s), height: size(s))
                 .fixedSize()
-                .foregroundColor(theme.bodyTextColor)
+                .foregroundColor(theme.colors.playerButtons)
         }
         .padding(4)
     }

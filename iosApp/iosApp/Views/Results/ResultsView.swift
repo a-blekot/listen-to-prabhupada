@@ -9,65 +9,67 @@
 import SwiftUI
 import Prabhupada
 
+extension Lecture: Identifiable {}
+
 struct ResultsView: View {
     
     @EnvironmentObject var theme: Theme
-    @State var hideTopBar = false
-    @State var hideBottomBar = false
+    
+    @ObservedObject
+    private var state: ObservableValue<ResultsState>
     
     let component: ResultsComponent
     
+    init(_ component: ResultsComponent) {
+        self.component = component
+        self.state = ObservableValue(component.flow)
+    }
+    
     var body: some View {
+        let state = state.value
+        
         NavigationView {
             ZStack(alignment: .bottom) {
-                
-                let topArea: CGFloat = 20
-                let bottomArea: CGFloat = 550
-                
-                
-                LecturesView(component.lecturesComponent, $hideTopBar, $hideBottomBar, topArea, bottomArea)
-                    .environmentObject(theme)
-                    .animation(.easeOut(duration: 0.2))
-                
-                if !hideBottomBar {
-                    PlayerView(component.playerComponent)
-                        .environmentObject(theme)
-                        .transition(
-                            .move(edge: .bottom)
-                            .combined(with: .scale(scale: 0.1, anchor: .bottom))
-                        )
-                }
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(alignment: .center, spacing: theme.dimens.paddingM) {
+                        
+                        if (state.useSimplePageView) {
+                            SimplePageControlView(pagination: state.pagination, component: component)
+                                .environmentObject(theme)
+                        } else {
+                            PageControlView(pagination: state.pagination, component: component)
+                                .environmentObject(theme)
+                        }
 
+                        if !state.lectures.isEmpty {
+                            ForEach(state.lectures) { lecture in
+                                LectureItemView(lecture: lecture, component: component)
+                                    .environmentObject(theme)
+                            }
+                        } else {
+                            ForEach(0...8, id: \.self) { _ in
+                                LectureShimmerView()
+                            }
+                            .animation(.easeInOut(duration: 2).repeatForever())
+                        }
+                    }
+                }
+                .padding(.horizontal, theme.dimens.horizontalScreenPadding)
             }
             .navigationTitle("Results")
             .navigationBarTitleDisplayMode(.inline)
             .navigationViewStyle(.stack)
-            .navigationBarHidden(hideTopBar)
             .animation(.easeOut(duration: 0.7))
-            .toolbar {
-                HStack(spacing: 4) {
-                    Button {
-                        component.onEditFilters()
-                    } label: {
-                        Label("Фильтры", systemImage: "line.3.horizontal.decrease.circle")
-                    }
-                    
-                    Button {
-                        component.onShowFavorites()
-                    } label: {
-                        Label("Избранное", systemImage: "heart.fill")
-                    }
-                }
-                .foregroundColor(Color.orange)
-            }
-            
+            .foregroundColor(Color.orange)
         }
+        
     }
 }
 
+
 struct ResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        ResultsView(component: StubResultsComponent())
+        ResultsView(StubResultsComponent())
             .environmentObject(themes[0])
     }
 }

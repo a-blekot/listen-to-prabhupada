@@ -25,7 +25,7 @@ struct FavoriteButton: View {
             
             Image(systemName: lecture.isFavorite ? "heart.fill" : "heart")
                 .resizable()
-                .frame(width: SIZE_FAVORITE_BUTTON, height: SIZE_FAVORITE_BUTTON)
+                .frame(width: SIZE_FAVORITE_BUTTON, height: SIZE_FAVORITE_BUTTON/1.1)
                 .fixedSize()
                 .foregroundColor(.orange)
                 .contentShape(Rectangle())

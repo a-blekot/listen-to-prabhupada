@@ -17,30 +17,20 @@ struct Chips: View {
     
     var body: some View {
         HStack {
-            Text(text).font(.title3).lineLimit(1)
+            Text(text)
+                .font(theme.titleSmall)
+                .lineLimit(1)
+                .foregroundColor(theme.colors.chipsContent)
             
-            GeometryReader { proxy in
-                ZStack {
-                    Circle()
-                        .frame(
-                            width: proxy.size.width * 0.55,
-                            height: proxy.size.width * 0.55,
-                            alignment: .center
-                        )
-                        .foregroundColor(theme.bodyTextColor)
-                    
-                    Image.init(systemName: "xmark.circle.fill")
-                        .resizable()
-                        .font(.title3)
-                        .foregroundColor(theme.buttonDarkBacground)
-                }
-            }
-            .frame(width: 20, height: 20, alignment: .center)
-            
+            Image.init(systemName: "xmark.circle.fill")
+                .resizable()
+                .frame(width: 20, height: 20, alignment: .center)
+                .font(theme.titleSmall)
+                .foregroundColor(theme.colors.chipsContent)
         }
         .padding()
-        .foregroundColor(theme.bodyTextColor)
-        .background(theme.buttonLightBacground)
+        .foregroundColor(theme.colors.chipsContent)
+        .background(theme.colors.chipsBg)
         .cornerRadius(8)
         .onTapGesture {
             onClick()

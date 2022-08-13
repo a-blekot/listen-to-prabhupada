@@ -12,7 +12,6 @@ import Prabhupada
 class StubDownloadsComponent : DownloadsComponent {
     func onPlay(id: Int64) {}
     func onPause() {}
-    func onRemove(id: Int64) {}
     func onFavorite(id: Int64, isFavorite: Bool) {}
     func onCurrentLecture(id: Int64, isPlaying: Bool) {}
     

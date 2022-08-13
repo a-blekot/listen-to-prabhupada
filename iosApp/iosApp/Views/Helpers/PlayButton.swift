@@ -11,7 +11,7 @@ import Prabhupada
 
 struct PlayButton: View {
     let lecture: Lecture
-    let listener: LectureListener
+    let component: LectureComponent
     
     var image: String {
         switch true {
@@ -23,7 +23,7 @@ struct PlayButton: View {
     
     var body: some View {
         Button {
-            lecture.isPlaying ? listener.onPause() : listener.onPlay(id: lecture.id)
+            lecture.isPlaying ? component.onPause() : component.onPlay(id: lecture.id)
         } label: {
             
             Image(systemName: image)
@@ -37,7 +37,7 @@ struct PlayButton: View {
 
 struct PlayButton_Previews: PreviewProvider {
     static var previews: some View {
-        PlayButton(lecture: mockLecture(12), listener: StubLectureListener())
+        PlayButton(lecture: mockLecture(12), component: StubLectureComponent())
             .environmentObject(themes[0])
     }
 }

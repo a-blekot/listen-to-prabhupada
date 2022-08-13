@@ -22,7 +22,7 @@ struct SavedPositionProvider {
     }
     
     func setCompleted(id: Int64) {
-        db.setCompleted(id: id)
+        db.insertCompleted(id: id, isCompleted_: true)
         db.insertSavedPosition(id: id, pos_: 0)
     }
 }

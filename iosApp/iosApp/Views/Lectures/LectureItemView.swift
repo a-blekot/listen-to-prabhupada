@@ -19,61 +19,50 @@ extension HorizontalAlignment {
   static let customLeading: HorizontalAlignment = .init(CustomCenter.self)
 }
 
-protocol LectureListener {
-    func onPause()
-    func onPlay(id: Int64)
-    func onFavorite(id: Int64, isFavorite: Bool)
-}
-
-struct StubLectureListener : LectureListener {
-    func onPause() {}
-    func onPlay(id: Int64) {}
-    func onFavorite(id: Int64, isFavorite: Bool) {}
-}
-
 struct LectureItemView: View {
     
     @EnvironmentObject var theme: Theme
     
     let lecture: Lecture
-    let listener : LectureListener
+    let component : LectureComponent
     
     var body: some View {
         HStack(alignment: .center, spacing: 2.0) {
             
-            PlayButton(lecture: lecture, listener: listener)
-                .padding(.trailing, 10)
+            PlayButton(lecture: lecture, component: component)
+                .padding(.trailing, theme.dimens.paddingS)
             
-            VStack(alignment: .leading, spacing: 4.0) {
+            VStack(alignment: .leading, spacing: 2.0) {
                 Text(lecture.title)
-                    .font(.system(size: 16))
+                    .font(theme.titleMedium)
                     .allowsTightening(true)
                     .lineLimit(3)
                     .truncationMode(.tail)
                     .multilineTextAlignment(.leading)
-                    .foregroundColor(.orange)
+                    .foregroundColor(theme.colors.lectureTitle)
                     .onTapGesture {
-                        lecture.isPlaying ? listener.onPause() : listener.onPlay(id: lecture.id)
+                        lecture.isPlaying ? component.onPause() : component.onPlay(id: lecture.id)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text(lecture.subTitle)
-                    .font(.system(size: 12))
-                    .lineLimit(3)
+                    .font(theme.bodyMedium)
+                    .lineLimit(1)
                     .truncationMode(.tail)
-                    .foregroundColor(theme.descriptionTextColor)
-                    .multilineTextAlignment(.leading)
+                    .foregroundColor(theme.colors.lectureDescr)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             
             FavoriteButton(lecture) { isFavorite in
-                listener.onFavorite(id: lecture.id, isFavorite: isFavorite)
+                component.onFavorite(id: lecture.id, isFavorite: isFavorite)
             }
+            .padding(.leading, theme.dimens.paddingS)
         }
+        .padding(.horizontal, theme.dimens.paddingXS)
         .buttonStyle(.plain)
         .contextMenu {
             Button {
-                listener.onFavorite(id: lecture.id, isFavorite: !lecture.isFavorite)
+                component.onFavorite(id: lecture.id, isFavorite: !lecture.isFavorite)
             } label: {
                 let text = lecture.isFavorite ? "Удалить из избранного" : "Добавить в избранное"
                 let icon = lecture.isFavorite ? "heart.fill" : "heart"
@@ -92,7 +81,7 @@ struct LectureItemView: View {
 
 struct LectureListItem_Previews: PreviewProvider {
     static var previews: some View {
-        LectureItemView(lecture: mockLecture(12), listener: StubLectureListener())
+        LectureItemView(lecture: mockLecture(12), component: StubLectureComponent())
             .environmentObject(themes[0])
     }
 }

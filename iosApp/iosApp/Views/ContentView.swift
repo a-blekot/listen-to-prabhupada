@@ -20,6 +20,7 @@ struct ContentView: View {
                         db: db!,
                         api: PrabhupadaApiKt.createPrabhupadaApi(),
                         playerBus: playerBus,
+                        remoteConfig: RemoteConfig(useSimplePageView: true),
                         dispatchers: DispatcherProviderImplKt.dispatchers()
                     )
                 )

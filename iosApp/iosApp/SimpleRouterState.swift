@@ -8,14 +8,12 @@
 
 import Prabhupada
 
-func simpleRouterState<T : AnyObject>(_ child: T) -> Value<RouterState<AnyObject, T>> {
+func simpleChildStack<T : AnyObject>(_ child: T) -> Value<ChildStack<AnyObject, T>> {
     return valueOf(
-        RouterState(
-            activeChild: ChildCreated(
-                configuration: "config" as AnyObject,
-                instance: child
-            ),
-            backStack: []
+        ChildStack(
+            configuration: "config" as AnyObject,
+            instance: child
         )
     )
 }
+

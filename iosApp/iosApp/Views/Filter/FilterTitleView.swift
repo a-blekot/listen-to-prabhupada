@@ -35,20 +35,20 @@ struct FilterTitleView: View {
                     .imageScale(.large)
                     .rotationEffect(.degrees(isExpanded ? 90 : 0))
                     .scaleEffect(isExpanded ? 1.5 : 1)
-                    .foregroundColor(theme.bodyTextColor)
+                    .foregroundColor(theme.colors.filtersText)
                     .padding()
             }
             
             Spacer()
             
             Text(filter.title)
-                .font(theme.buttonFont)
-                .foregroundColor(theme.bodyTextColor)
+                .font(theme.titleMedium)
+                .foregroundColor(theme.colors.filtersText)
             
             Spacer()
             
         }
-        .background(theme.buttonDarkBacground)
+        .background(theme.colors.filtersCategory)
         .padding(.bottom, isExpanded ? 2 : 0)
         
     }
