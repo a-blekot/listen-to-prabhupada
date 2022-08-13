@@ -6,37 +6,33 @@ plugins {
 
 kotlin {
 
-//    if (providers.gradleProperty("include_ios").get().toBoolean()) {
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64()
-        ).forEach {
-            it.binaries {
-                framework {
-                    baseName = "Prabhupada"
-                    linkerOpts.add("-lsqlite3")
-                    export(projects.common.database)
-                    export(projects.common.downloadsApi)
-                    export(projects.common.favoritesApi)
-                    export(projects.common.filtersApi)
-                    export(projects.common.filtersImpl)
-                    export(projects.common.networkApi)
-                    export(projects.common.networkImpl)
-                    export(projects.common.playerApi)
-                    export(projects.common.playerImpl)
-                    export(projects.common.resultsApi)
-                    export(projects.common.settingsApi)
-                    export(projects.common.settingsImpl)
-                    export(projects.common.utils)
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries {
+            framework {
+                baseName = "Prabhupada"
+                linkerOpts.add("-lsqlite3")
+                export(projects.common.database)
+                export(projects.common.downloadsApi)
+                export(projects.common.favoritesApi)
+                export(projects.common.filtersApi)
+                export(projects.common.networkApi)
+                export(projects.common.networkImpl)
+                export(projects.common.playerApi)
+                export(projects.common.playerImpl)
+                export(projects.common.resultsApi)
+                export(projects.common.settingsApi)
+                export(projects.common.utils)
 
-                    export(libs.decompose.decompose)
-                    export(libs.essenty.lifecycle)
-                    export(libs.mvikotlin.main)
-                }
+                export(libs.decompose.decompose)
+                export(libs.essenty.lifecycle)
+                export(libs.mvikotlin.main)
             }
         }
-//    }
+    }
 
     sourceSets {
         commonMain {
@@ -62,10 +58,8 @@ kotlin {
                 implementation(libs.decompose.decompose)
             }
         }
-    }
 
-    sourceSets {
-        findByName("iosMain")?.run  {
+        iosMain {
             dependencies {
                 api(projects.common.database)
                 api(projects.common.downloadsApi)
