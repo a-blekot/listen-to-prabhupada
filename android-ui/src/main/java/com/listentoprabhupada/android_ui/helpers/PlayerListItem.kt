@@ -13,17 +13,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.listentoprabhupada.android_ui.LoadingBar
+import com.listentoprabhupada.android_ui.R
 import com.listentoprabhupada.android_ui.custom.StandartRow
 import com.listentoprabhupada.android_ui.theme.AppTheme
 import com.listentoprabhupada.android_ui.theme.Colors.playerBg
@@ -34,8 +38,9 @@ import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineBg
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimeLineSelector
 import com.listentoprabhupada.android_ui.theme.Colors.playerTimer
 import com.listentoprabhupada.android_ui.theme.Colors.playerTitle
-import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetPeekHeight
+import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeM
 import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeS
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingXS
 import com.listentoprabhupada.android_ui.theme.Dimens.radiusM
@@ -67,7 +72,7 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
             )
 
             StandartRow(
-                modifier = Modifier.padding(horizontal = paddingS),
+                modifier = Modifier.padding(horizontal = paddingM).padding(top = paddingXS),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
@@ -81,20 +86,27 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
 
                 Spacer(Modifier.weight(1f))
 
-                val speed = remember { mutableStateOf(1f) }
+                Text(
+                    text = stringResource(R.string.label_speed),
+                    color = playerDescr(),
+                    style = typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(end = paddingS)
+                )
+
                 val showDropdown = remember { mutableStateOf(false) }
 
                 Box(
                     modifier = Modifier
-                        .width(70.dp)
-                        .height(24.dp)
+                        .width(76.dp)
+                        .height(28.dp)
                         .background(
                             color = playerSpeedBg(),
                             shape = RoundedCornerShape(radiusM)
                         )
                 ) {
                     Text(
-                        text = "${speed.value}x",
+                        text = "${playbackState.value.speed}x",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = playerTimer(),
@@ -110,14 +122,13 @@ fun PlayerListItem(playerComponent: PlayerComponent, modifier: Modifier = Modifi
                         imageVector = Rounded.ArrowDropDown,
                         contentDescription = "arrow down",
                         modifier = Modifier
-                            .size(iconSizeS)
+                            .size(iconSizeM)
                             .align(Alignment.CenterEnd)
                             .padding(end = paddingXS),
                         tint = playerTimer()
                     )
 
                     SpeedDropdown(showDropdown) {
-                        speed.value = it
                         playerComponent.onSpeed(it)
                     }
                 }
@@ -206,30 +217,65 @@ fun RowScope.PlayerActionIcon(
 @Composable
 fun SliderComposable(playbackState: PlayerState, playerComponent: PlayerComponent) {
 
-    Column(
-        modifier = Modifier.fillMaxWidth().height(30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    Box(modifier = Modifier.zIndex(1f)) {
+        val timeAlpha = remember { mutableStateOf(0f) }
+        val sliderValue = remember { mutableStateOf(0f) }
 
-        Divider(
-            modifier = Modifier.fillMaxWidth(0.1f).padding(vertical = paddingS),
-            color = playerTimeLineBg(),
-            thickness = 2.dp
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth().height(30.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
 
-        Slider(
-            value = playbackState.timeMs.toFloat(),
-            valueRange = 0f..playbackState.durationMs.coerceIn(1000L, ONE_DAY_MS).toFloat(),
-            onValueChange = { playerComponent.onSeekTo(it.toLong()) },
-            onValueChangeFinished = { playerComponent.onSliderReleased() },
-            colors = SliderDefaults.colors(
-                thumbColor = playerTimeLineSelector(),
-                activeTrackColor = playerTimeLineBg()
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp)
-        )
+            Divider(
+                modifier = Modifier.fillMaxWidth(0.1f).padding(vertical = paddingS),
+                color = playerTimeLineBg(),
+                thickness = 2.dp
+            )
+
+            Slider(
+                value = playbackState.timeMs.toFloat(),
+                valueRange = 0f..playbackState.durationMs.coerceIn(1000L, ONE_DAY_MS).toFloat(),
+                onValueChange = {
+                    sliderValue.value = it
+                    timeAlpha.value = 1f
+                    playerComponent.onSeekTo(it.toLong())
+                },
+                onValueChangeFinished = {
+                    timeAlpha.value = 0f
+                    playerComponent.onSliderReleased()
+                },
+                colors = SliderDefaults.colors(
+                    thumbColor = playerTimeLineSelector(),
+                    activeTrackColor = playerTimeLineBg()
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp)
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth().height(30.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Spacer(modifier = Modifier.weight(sliderValue.value.coerceAtLeast(0.01f)))
+            Text(
+                text = formatTimeAdaptiveHoursMax(sliderValue.value.toLong()),
+                modifier = Modifier.alpha(timeAlpha.value),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = playerTimer(),
+                style = typography.labelLarge,
+                textAlign = TextAlign.Center
+            )
+            Spacer(
+                modifier = Modifier.weight(
+                    (playbackState.durationMs - sliderValue.value).coerceAtLeast(
+                        0.01f
+                    )
+                )
+            )
+        }
     }
 }
 

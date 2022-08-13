@@ -43,6 +43,9 @@
     <string name="nav_bar_search">Поиск</string>
     <string name="nav_bar_settings">Настройки</string>
 
+
+    <string name="label_speed">Скорость:</string>
+
     <string name="playback_channel_name">Listen to Prabhupada playback notifications</string>
     <string name="download_channel_name">Listen to Prabhupada downloads notifications</string>
 </resources>

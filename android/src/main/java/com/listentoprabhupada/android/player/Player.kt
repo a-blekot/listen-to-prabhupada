@@ -199,7 +199,7 @@ class Player(
     }
 
     private fun updatePlaybackState(
-        playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState()
+        playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState(speed = settings.getSpeed())
     ) =
         playerBus.update(playbackState)
 
@@ -431,7 +431,8 @@ class Player(
             hasNext = hasNextMediaItem(),
             hasPrevious = hasPreviousMediaItem(),
             timeMs = currentPosition,
-            durationMs = duration
+            durationMs = duration,
+            speed = settings.getSpeed()
         )
 
     private val ExoPlayer.currentId

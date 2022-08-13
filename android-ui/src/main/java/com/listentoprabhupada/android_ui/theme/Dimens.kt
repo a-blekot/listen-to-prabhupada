@@ -31,7 +31,7 @@ object Dimens {
     val rowHeightL = 48.dp
     val toolbarHeightL = 60.dp
 
-    val bottomSheetHeight = 200.dp
-    val bottomSheetPeekHeight = 64.dp
+    val bottomSheetHeight = 208.dp
+    val bottomSheetPeekHeight = 72.dp
     val sliderHeight = 32.dp
 }
