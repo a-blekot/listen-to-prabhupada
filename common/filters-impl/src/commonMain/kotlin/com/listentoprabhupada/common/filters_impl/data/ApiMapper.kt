@@ -42,7 +42,7 @@ private fun title(apiModel: FilterApiModel) =
         "Scripture" -> "Писания"
         "Country" -> "Страна"
         "Locality" -> "Локация"
-        "Book" -> "Книга"
+        "Book" -> "Песнь"
         "Chapter" -> "Глава"
         "Verse" -> "Стих"
         else -> apiModel.title

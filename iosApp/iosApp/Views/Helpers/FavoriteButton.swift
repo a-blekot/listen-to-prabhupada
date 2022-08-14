@@ -10,6 +10,8 @@ import SwiftUI
 import Prabhupada
 
 struct FavoriteButton: View {
+    
+    @EnvironmentObject var theme: Theme
     let lecture: Lecture
     let onClick : (Bool) -> ()
     
@@ -27,7 +29,7 @@ struct FavoriteButton: View {
                 .resizable()
                 .frame(width: SIZE_FAVORITE_BUTTON, height: SIZE_FAVORITE_BUTTON/1.1)
                 .fixedSize()
-                .foregroundColor(.orange)
+                .foregroundColor(lecture.isFavorite ? theme.colors.favSelected :theme.colors.favUnselected)
                 .contentShape(Rectangle())
         }
         .contentShape(Rectangle())

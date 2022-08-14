@@ -10,6 +10,8 @@ import SwiftUI
 import Prabhupada
 
 struct PlayButton: View {
+    
+    @EnvironmentObject var theme: Theme
     let lecture: Lecture
     let component: LectureComponent
     
@@ -30,7 +32,7 @@ struct PlayButton: View {
                 .resizable()
                 .frame(width: SIZE_PLAY_BUTTON, height: SIZE_PLAY_BUTTON)
                 .fixedSize()
-                .foregroundColor(.orange)
+                .foregroundColor(lecture.isPlaying ? theme.colors.lecturePlay :theme.colors.lecturePause)
         }
     }
 }
