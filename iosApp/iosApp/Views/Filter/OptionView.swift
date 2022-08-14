@@ -17,21 +17,18 @@ struct OptionView: View {
     let onOptionSelected: (Bool) -> ()
     
     var body: some View {
+        let bgColor = option.isSelected ? theme.colors.filtersSelected : theme.colors.filtersNeutral
         HStack {
             Text(option.text)
                 .font(theme.titleMedium)
                 .foregroundColor(theme.colors.filtersText)
-                .padding(.leading)
+                .padding(.horizontal, theme.dimens.paddingM)
             
             Spacer()
-            
         }
-        .contentShape(Rectangle())
+        .frame(height: theme.dimens.rowHeightL)
+        .background(RoundedRectangle(cornerRadius: theme.dimens.radiusS).fill(bgColor))
         .onTapGesture { onOptionSelected(!option.isSelected) }
-        .frame(maxWidth: .infinity, minHeight: 50)
-        .background(option.isSelected ? theme.colors.filtersSelected : theme.colors.filtersNeutral)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 2)
     }
 }
 

@@ -16,24 +16,22 @@ struct SimplePageControlView: View {
     let component : ResultsComponent
     
     var body: some View {
-        GeometryReader { geo in
-            HStack(alignment: .center, spacing: theme.dimens.paddingXS) {
-                button(.prev_1)
-                    .environmentObject(theme)
-                    .frame(width: geo.size.width*0.36)
-                
-                Text("\(pagination.curr) из \(pagination.total)")
-                    .font(theme.titleSmall)
-                    .foregroundColor(theme.colors.tertiary)
-                    .lineLimit(1)
-                    .frame(width: geo.size.width*0.28)
-                
-                button(.next_1)
-                    .environmentObject(theme)
-                    .frame(width: geo.size.width*0.36)
-            }
-            .frame(height: geo.size.height)
+        HStack(alignment: .center, spacing: theme.dimens.paddingXS) {
+            button(.prev_1)
+                .environmentObject(theme)
+                .frame(width: .infinity)
+            
+            Text("\(pagination.curr) из \(pagination.total)")
+                .font(theme.titleSmall)
+                .foregroundColor(theme.colors.tertiary)
+                .lineLimit(1)
+                .frame(width: 100)
+            
+            button(.next_1)
+                .environmentObject(theme)
+                .frame(width: .infinity)
         }
+        .frame(height: theme.dimens.buttonHeight)
     }
     
     private func button(_ buttonType: ButtonType) -> SimplePageButtonView {

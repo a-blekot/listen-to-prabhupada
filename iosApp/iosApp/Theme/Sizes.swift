@@ -18,7 +18,7 @@ let SIZE_PLAYER_CONTROL_BUTTON = CGFloat(15)
 
 enum Sizes: CGFloat {
     case playerControl = 25
-    case playerControlBig = 30
+    case playerControlBig = 35
 }
 
 func size(_ size: Sizes) -> CGFloat {
@@ -32,13 +32,13 @@ struct Dimens {
     let iconSizeXL = CGFloat(48)
     let iconSizeXXL = CGFloat(64)
 
-    let radiusS = 4
-    let radiusM = 8
-    let radiusL = 16
-    let radiusXL = 32
+    let radiusS = CGFloat(4)
+    let radiusM = CGFloat(8)
+    let radiusL = CGFloat(16)
+    let radiusXL = CGFloat(32)
 
-    let borderXS = 1
-    let borderS = 2
+    let borderXS = CGFloat(1)
+    let borderS = CGFloat(2)
 
     let paddingZero = CGFloat(0)
     let paddingXS = CGFloat(4)
@@ -47,12 +47,12 @@ struct Dimens {
     let paddingL = CGFloat(24)
     let paddingXL = CGFloat(48)
 
-    let horizontalScreenPadding = CGFloat(8)
+    let horizontalScreenPadding = CGFloat(16)
 
     let buttonHeight = CGFloat(40)
-    let rowHeightM = 44
-    let rowHeightL = 48
-    let toolbarHeightL = 60
+    let rowHeightM = CGFloat(44)
+    let rowHeightL = CGFloat(48)
+    let toolbarHeightL = CGFloat(60)
 
     let bottomSheetHeight = 208
     let bottomSheetPeekHeight = 72

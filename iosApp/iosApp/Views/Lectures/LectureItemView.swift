@@ -58,7 +58,6 @@ struct LectureItemView: View {
             }
             .padding(.leading, theme.dimens.paddingS)
         }
-        .padding(.horizontal, theme.dimens.paddingXS)
         .buttonStyle(.plain)
         .contextMenu {
             Button {

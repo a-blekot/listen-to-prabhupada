@@ -57,7 +57,7 @@ fun FiltersView(component: FiltersComponent, modifier: Modifier = Modifier) {
             Spacer(Modifier.width(paddingL))
 
             Text(
-                "Найдено: (${state.value.totalLecturesCount})",
+                "Найдено: ${state.value.totalLecturesCount} лекций",
                 style = typography.titleLarge,
                 color = filtersText(),
             )

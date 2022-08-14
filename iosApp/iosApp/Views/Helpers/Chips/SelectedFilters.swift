@@ -25,7 +25,7 @@ struct SelectedFilters: View {
                 ZStack(alignment: .topLeading) {
                     ForEach(chips) { chipData in
                         chip(chipData)
-                            .padding(3)
+                            .padding(4)
                             .alignmentGuide(.leading) { dimension in
                                 
                                 if (abs(width - dimension.width) > geo.size.width) {

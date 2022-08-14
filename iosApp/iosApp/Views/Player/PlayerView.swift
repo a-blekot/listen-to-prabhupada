@@ -37,17 +37,17 @@ struct PlayerView: View {
                     let width = screenWidth * model.progress
                     
                     Capsule()
-                        .fill(Color.black.opacity(0.38))
-                        .frame(width: screenWidth, height: 8)
+                        .fill(theme.colors.playerTimeLineBg)
+                        .frame(width: screenWidth, height: 4)
                     
-                    Capsule()
-                        .fill(Color.orange)
-                        .frame(width: width, height: 8)
+//                    Capsule()
+//                        .fill(theme.colors.playerTimeLineSelector)
+//                        .frame(width: width, height: 8)
                     
                     Circle()
-                        .fill(Color.orange.opacity(0.8))
-                        .position(x: width, y: 8)
-                        .frame(width: 16, height: 16)
+                        .fill(theme.colors.playerTimeLineSelector)
+                        .position(x: width, y: 9)
+                        .frame(width: 18, height: 18)
                         .gesture(DragGesture()
                                     .onChanged({ (value) in
                             let x = value.location.x - geo.frame(in: .global).minX
@@ -59,8 +59,32 @@ struct PlayerView: View {
                 }
                 
             }
-            .frame(height: 16, alignment: .center)
-            .padding(.horizontal, 8)
+            .frame(height: 8, alignment: .center)
+            .padding(.horizontal, 2)
+            
+            HStack {
+                Text(model.displayedTime)
+                    .lineLimit(1)
+                    .font(theme.labelLarge)
+                    .foregroundColor(theme.colors.playerTimer)
+                    .lineLimit(1)
+                    .padding(2)
+                
+                Spacer()
+                
+                Text("Скорость:")
+                    .lineLimit(1)
+                    .font(theme.bodyMedium)
+                    .foregroundColor(theme.colors.playerDescr)
+                    .padding(.trailing, theme.dimens.paddingS)
+                
+                Text("\(model.speed)x")
+                    .lineLimit(1)
+                    .font(theme.labelLarge)
+                    .foregroundColor(theme.colors.playerTimer)
+                    .padding(.trailing, theme.dimens.paddingS)
+            }
+            .padding(.top, theme.dimens.paddingXS)
             
             MarqueeText(text: model.lecture.title, color: theme.colors.playerTitle)
                 .padding(2)
@@ -71,21 +95,15 @@ struct PlayerView: View {
                 .lineLimit(1)
                 .padding(2)
             
-            Text(model.displayedTime)
-                .font(theme.labelLarge)
-                .foregroundColor(theme.colors.playerTimer)
-                .lineLimit(1)
-                .padding(2)
-            
             HStack(alignment: .center) {
                 Spacer()
                 
                 button(icon: "backward.end.fill") { component.onPrev() }
-                button(icon: "gobackward.10")     { component.onSeekBack() }
+                button(icon: "gobackward.10", .playerControlBig)     { component.onSeekBack() }
                 
                 playPauseButton(isPlaying: model.isPlaying, id: model.lecture.id, component)
                 
-                button(icon: "goforward.10")      { component.onSeekForward() }
+                button(icon: "goforward.10", .playerControlBig)      { component.onSeekForward() }
                 button(icon: "forward.end.fill")  { component.onNext() }
                 
                 Spacer()

@@ -113,7 +113,7 @@ fun OptionListItem(
             .height(rowHeightL)
             .background(
                 color = option.background(),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(radiusS)
             )
             .clickable { onOptionSelected?.invoke(!option.isSelected) }
     ) {

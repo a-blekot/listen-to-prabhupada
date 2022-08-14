@@ -25,41 +25,50 @@ struct FiltersView: View {
         let model = models.value
         
         NavigationView {
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing: theme.dimens.paddingXS) {
+                HStack(spacing: theme.dimens.paddingM) {
+                    Image.init(systemName: "arrow.backward")
+                        .resizable()
+                        .frame(width: theme.dimens.iconSizeS, height: theme.dimens.iconSizeS, alignment: .center)
+                        .padding(.leading, theme.dimens.paddingM)
+                        .onTapGesture { component.onApplyChanges() }
+                    
+                    Text("Найдено: \(model.totalLecturesCount) лекций")
+                        .font(theme.titleLarge)
+                        .foregroundColor(theme.colors.filtersText)
+                        .lineLimit(1)
+                    
+                    Spacer()
+                }
+                .frame(height: theme.dimens.toolbarHeightL)
+                .background(theme.colors.toolbar)
+                .padding(.bottom, theme.dimens.paddingS)
                 
                 var chips = chips(model.filters)
                 
                 if !chips.isEmpty {
                     let _ = chips.append(ChipData(title: "Очистить все", clearAll: true))
                     SelectedFilters(chips: chips, component: component)
+                        .padding(.horizontal, theme.dimens.horizontalScreenPadding - 4)
+                        .padding(.bottom, theme.dimens.paddingS)
                 }
                 
-                List(model.filters) { filter in
-                    FilterItemView(filter: filter, component: component)
+                ScrollView {
+                    ForEach(model.filters) { filter in
+                        FilterItemView(filter: filter, component: component)
+                            .animation(.easeInOut(duration: 0.4))
+                    }
                 }
+                .padding(.horizontal, theme.dimens.horizontalScreenPadding)
                 .edgesIgnoringSafeArea(.bottom)
                 .edgesIgnoringSafeArea(.horizontal)
-                //.listRowSeparator(Visibility.hidden)
-                .listStyle(.plain)
-                .animation(.easeOut(duration: 0.5))
-                .navigationTitle("Фильтры")
-                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(true)
                 .toolbar {
                     Button("Применить") {
                         component.onApplyChanges()
                     }
                     .foregroundColor(theme.colors.filtersText)
                 }
-                
-                Spacer()
-                
-                Text("Найдено \(model.totalLecturesCount) лекций")
-                    .font(theme.titleLarge)
-                    .foregroundColor(theme.colors.filtersText)
-                    .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(theme.colors.filtersCategory)
-                    .contentShape(Rectangle())
-                    .onTapGesture { component.onApplyChanges() }
             }
         }
     }

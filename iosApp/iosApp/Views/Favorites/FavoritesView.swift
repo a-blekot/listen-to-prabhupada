@@ -34,9 +34,7 @@ struct FavoritesView: View {
                     }
                 }
             }
-            .navigationTitle("Favorites")
-            .navigationBarTitleDisplayMode(.inline)
-            .animation(.easeOut(duration: 0.7))
+            .navigationBarHidden(true)
         }
     }
 }

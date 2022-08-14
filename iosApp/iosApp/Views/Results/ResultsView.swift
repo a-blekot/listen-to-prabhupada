@@ -55,12 +55,11 @@ struct ResultsView: View {
                     }
                 }
                 .padding(.horizontal, theme.dimens.horizontalScreenPadding)
+                .padding(.top, theme.dimens.paddingM)
             }
-            .navigationTitle("Results")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationViewStyle(.stack)
-            .animation(.easeOut(duration: 0.7))
-            .foregroundColor(Color.orange)
+            .edgesIgnoringSafeArea(.bottom)
+            .edgesIgnoringSafeArea(.horizontal)
+            .navigationBarHidden(true)
         }
         
     }

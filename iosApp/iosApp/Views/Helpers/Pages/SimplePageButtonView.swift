@@ -31,14 +31,14 @@ struct SimplePageButtonView: View {
                 .lineLimit(1)
                 .font(theme.titleSmall)
                 .foregroundColor(theme.colors.tertiary)
-                .frame(width: nil, height: theme.dimens.buttonHeight)
-                .padding(.horizontal, theme.dimens.paddingS)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 25)
-                        .stroke(theme.colors.primary, lineWidth: 2)
-                )
+                .padding(.horizontal, theme.dimens.paddingM)
         }
+        .frame(height: theme.dimens.buttonHeight)
         .background(enabled ? theme.colors.btnPages : Color.clear)
+        .overlay(
+            RoundedRectangle(cornerRadius: 25)
+                .stroke(theme.colors.primary, lineWidth: 2)
+        )
         .cornerRadius(25)
         .disabled(!enabled)
     }

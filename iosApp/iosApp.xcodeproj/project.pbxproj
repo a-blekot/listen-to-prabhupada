@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,8 @@
 		C603159728A800C200FF21A5 /* SimplePageButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C603159628A800C200FF21A5 /* SimplePageButtonView.swift */; };
 		C603159B28A8049B00FF21A5 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C603159A28A8049B00FF21A5 /* Sizes.swift */; };
 		C603159D28A8067500FF21A5 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C603159C28A8067500FF21A5 /* Colors.swift */; };
+		C619B1D728A95BF7003D504A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = C619B1D628A95BF7003D504A /* BottomSheet */; };
+		C619B1D928A96DFF003D504A /* CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = C619B1D828A96DFF003D504A /* CornerRadius.swift */; };
 		C61B531728324EA300AE862D /* StubResultsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B531628324EA300AE862D /* StubResultsComponent.swift */; };
 		C61B531B28324F0300AE862D /* StubPlayerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B531A28324F0300AE862D /* StubPlayerComponent.swift */; };
 		C61B531D283254EB00AE862D /* StubFiltersComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B531C283254EB00AE862D /* StubFiltersComponent.swift */; };
@@ -89,6 +91,7 @@
 		C603159628A800C200FF21A5 /* SimplePageButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePageButtonView.swift; sourceTree = "<group>"; };
 		C603159A28A8049B00FF21A5 /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
 		C603159C28A8067500FF21A5 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		C619B1D828A96DFF003D504A /* CornerRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadius.swift; sourceTree = "<group>"; };
 		C61B531628324EA300AE862D /* StubResultsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubResultsComponent.swift; sourceTree = "<group>"; };
 		C61B531A28324F0300AE862D /* StubPlayerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayerComponent.swift; sourceTree = "<group>"; };
 		C61B531C283254EB00AE862D /* StubFiltersComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubFiltersComponent.swift; sourceTree = "<group>"; };
@@ -142,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C619B1D728A95BF7003D504A /* BottomSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +319,7 @@
 				C61DE2C82838E75F0074C85C /* MarqueeText.swift */,
 				C685A04028439C860052A2A8 /* Pages */,
 				C6A7C4DF2802D6DD001116EE /* PlayButton.swift */,
+				C619B1D828A96DFF003D504A /* CornerRadius.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -373,6 +378,9 @@
 			dependencies = (
 			);
 			name = iosApp;
+			packageProductDependencies = (
+				C619B1D628A95BF7003D504A /* BottomSheet */,
+			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* iosApp.app */;
 			productType = "com.apple.product-type.application";
@@ -401,6 +409,9 @@
 				Base,
 			);
 			mainGroup = 7555FF72242A565900829871;
+			packageReferences = (
+				C619B1D528A95BF7003D504A /* XCRemoteSwiftPackageReference "BottomSheet" */,
+			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -473,6 +484,7 @@
 				C6FA8ACB282FE827003BBCB5 /* Player.swift in Sources */,
 				C6DB1E022806D6CA000F2BD1 /* Mocks.swift in Sources */,
 				C61DE2CF28392D300074C85C /* ScopeFunc.swift in Sources */,
+				C619B1D928A96DFF003D504A /* CornerRadius.swift in Sources */,
 				C6CA2E4C2843B122007C5C6B /* ChipData.swift in Sources */,
 				C6FA8ADA282FFD84003BBCB5 /* PlayerView.swift in Sources */,
 				C61DE2D52839415B0074C85C /* PlayerItemInfo.swift in Sources */,
@@ -696,6 +708,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C619B1D528A95BF7003D504A /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lucaszischka/BottomSheet";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C619B1D628A95BF7003D504A /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C619B1D528A95BF7003D504A /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7555FF73242A565900829871 /* Project object */;
 }

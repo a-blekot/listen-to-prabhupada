@@ -25,32 +25,28 @@ struct FilterTitleView: View {
     
     var body: some View {
         HStack {
+            Text(filter.title)
+                .font(.system(size: 18))
+                .foregroundColor(theme.colors.filtersText)
+                .padding(.horizontal, theme.dimens.paddingM)
+            
+            Spacer()
+            
             Button {
-                withAnimation(.easeOut(duration: 0.3)) {
-                    onExpandedChanged(!isExpanded)
-                }
+                onExpandedChanged(!isExpanded)
             } label: {
-                Label("Options", systemImage: "chevron.right.circle")
+                Label("Options", systemImage: isExpanded ? "minus" : "plus")
                     .labelStyle(.iconOnly)
                     .imageScale(.large)
-                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                    .scaleEffect(isExpanded ? 1.5 : 1)
-                    .foregroundColor(theme.colors.filtersText)
-                    .padding()
+                    .foregroundColor(theme.colors.filtersCountText)
+                    .padding(.horizontal, theme.dimens.paddingM)
             }
             
-            Spacer()
-            
-            Text(filter.title)
-                .font(theme.titleMedium)
-                .foregroundColor(theme.colors.filtersText)
-            
-            Spacer()
-            
         }
-        .background(theme.colors.filtersCategory)
-        .padding(.bottom, isExpanded ? 2 : 0)
-        
+        .frame(height: theme.dimens.rowHeightL)
+        .contentShape(RoundedRectangle(cornerRadius: theme.dimens.radiusS))
+        .background(RoundedRectangle(cornerRadius: theme.dimens.radiusS).fill(theme.colors.filtersCategory))
+        .onTapGesture { onExpandedChanged(!isExpanded) }
     }
 }
 

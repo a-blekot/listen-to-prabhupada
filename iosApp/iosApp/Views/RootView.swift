@@ -9,6 +9,7 @@
 import SwiftUI
 import Prabhupada
 import AVFoundation
+import BottomSheet
 
 struct RootView: View {
     
@@ -28,20 +29,35 @@ struct RootView: View {
         NapierProxyKt.debugBuild()
     }
     
+    @State var bottomSheetPosition: BottomSheetPosition = .absolute(200)
+    let bottomSheetPositions: [BottomSheetPosition] = [.absolute(200), .absolute(70)]
+    
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ChildView(child: activeChild)
                 .frame(maxHeight: .infinity)
+                .bottomSheet(
+                    bottomSheetPosition: $bottomSheetPosition,
+                    switchablePositions: bottomSheetPositions
+                ) {
+                    PlayerView(component.playerComponent)
+                }
+                .enableContentDrag(true)
+                .showDragIndicator(true)
+                .dragIndicatorColor(theme.colors.playerTimeLineBg)
+                .customBackground(RoundedRectangle(cornerRadius: theme.dimens.radiusXL).fill(theme.colors.playerBg), alignment: .center)
+                .enableSwipeToDismiss(false)
+                .enableTapToDismiss(false)
+                .customThreshold(0.11)
+//                .cornerRadius(theme.dimens.radiusXL)
+//                .cornerRadius(theme.dimens.radiusXL, corners: [.topLeft, .topRight])
+                
             
             //            if !hideBottomBar {
             //                PlayerView(component.playerComponent)
             //                    .environmentObject(theme)
-            //                    .transition(
-            //                        .move(edge: .bottom)
-            //                        .combined(with: .scale(scale: 0.1, anchor: .bottom))
-            //                    )
-            //            }
             
+            //            }
             
             HStack(alignment: .bottom, spacing: theme.dimens.paddingS) {
                 navItem("hearingdevice.ear", "Лекции", activeChild is RootComponentChildResults) { component.onResultsTabClicked() }
@@ -52,7 +68,10 @@ struct RootView: View {
             }
             .background(theme.colors.navBarBg)
         }
+        
     }
+        
+
     
     private func navItem(_ icon: String, _ text: String, _ selected: Bool, _ onClick: @escaping () -> Void) -> some View {
         return Button(action: onClick) {
@@ -104,15 +123,12 @@ private struct ChildView: View {
             
         case let filters as RootComponentChildFilters:
             FiltersView(filters.component)
-                .transition(.move(edge: .trailing))
             
             //        case let downloads as RootComponentChildDownloads:
             //            FavoritesFeatureView(favorites.component)
-            //                .transition(.move(edge: .trailing))
             
         case let favorites as RootComponentChildFavorites:
             FavoritesView(favorites.component)
-                .transition(.move(edge: .trailing))
             
         default: EmptyView() // fatalError("Unexpected router state \(child)")
         }

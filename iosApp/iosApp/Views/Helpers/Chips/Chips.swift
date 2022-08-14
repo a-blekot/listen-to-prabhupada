@@ -16,22 +16,25 @@ struct Chips: View {
     let onClick: () -> Void
     
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             Text(text)
                 .font(theme.titleSmall)
                 .lineLimit(1)
-                .foregroundColor(theme.colors.chipsContent)
             
-            Image.init(systemName: "xmark.circle.fill")
+            Image.init(systemName: "xmark")
                 .resizable()
-                .frame(width: 20, height: 20, alignment: .center)
-                .font(theme.titleSmall)
-                .foregroundColor(theme.colors.chipsContent)
+                .frame(width: 8, height: 8, alignment: .center)
         }
-        .padding()
+        .padding(theme.dimens.paddingS)
         .foregroundColor(theme.colors.chipsContent)
-        .background(theme.colors.chipsBg)
-        .cornerRadius(8)
+        .background(
+            RoundedRectangle(cornerRadius: theme.dimens.radiusM)
+                .fill(theme.colors.chipsBg)
+        )
+        .background(
+            RoundedRectangle(cornerRadius: theme.dimens.radiusM)
+                .stroke(theme.colors.chipsContent, lineWidth: theme.dimens.borderS)
+        )
         .onTapGesture {
             onClick()
         }

@@ -71,7 +71,6 @@ fun FilterChip(
             borderColor = chipsContent(),
             selectedBorderColor = chipsContent(),
             borderWidth = borderXS,
-
         ),
         colors = InputChipDefaults.inputChipColors(
             containerColor = chipsBg(),
