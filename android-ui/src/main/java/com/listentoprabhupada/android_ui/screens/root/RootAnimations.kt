@@ -27,6 +27,7 @@ private val RootComponent.Child.index: Int
             is RootComponent.Child.Downloads -> 2
             is RootComponent.Child.Filters -> 3
             is RootComponent.Child.Settings -> 4
+            is RootComponent.Child.Donations -> 5
         }
 
 //@OptIn(ExperimentalDecomposeApi::class)

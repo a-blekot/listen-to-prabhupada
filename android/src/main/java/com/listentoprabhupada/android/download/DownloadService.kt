@@ -2,6 +2,7 @@ package com.listentoprabhupada.android.download
 
 import android.app.Service
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.listentoprabhupada.android.PrabhupadaApp.Companion.app
@@ -96,7 +97,7 @@ class DownloadService : Service() {
     }
 
     private fun onActivityStart() {
-        stopForeground(true)
+        stopForeground()
         isForeground = false
     }
 
@@ -105,7 +106,7 @@ class DownloadService : Service() {
             isForeground = true
             startForeground(DOWNLOAD_NOTIFICATION_ID, progressNotificationBuilder.build())
         } else {
-            stopForeground(true)
+            stopForeground()
             stopSelf()
             isForeground = false
         }
@@ -173,10 +174,19 @@ class DownloadService : Service() {
             delay(delayMs)
             if (!downloadsRepository.hasActiveDownloads && isForeground) {
                 Napier.d("stopForegroundIfNoTasksRunning invoke() !!!", tag = "DownloadService")
-                stopForeground(true)
+                stopForeground()
                 stopSelf()
                 isForeground = false
             }
+        }
+    }
+
+    private fun stopForeground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else {
+            @Suppress("DEPRECATION")
+            stopForeground(true)
         }
     }
 }

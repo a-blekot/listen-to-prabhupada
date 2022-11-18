@@ -1,0 +1,25 @@
+plugins {
+    id("android-library-convention")
+    id("kotlin-multiplatform-convention")
+    id("dev.icerock.mobile.multiplatform-resources")
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(libs.moko.resources)
+            }
+        }
+        androidMain {
+            dependencies {
+                api(libs.moko.resources.compose)
+            }
+        }
+    }
+}
+
+multiplatformResources {
+    iosBaseLocalizationRegion = "ru"
+    multiplatformResourcesPackage = "com.listentoprabhupada.common.resources"
+}

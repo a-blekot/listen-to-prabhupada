@@ -6,6 +6,12 @@ interface SettingsComponent {
 
     val flow: Value<SettingsState>
 
-    fun onNext() {}
-    fun onPrev() {}
+    fun setLocale(value: String) {}
+    fun onShowTutorial() {}
+    fun onTutorialCompleted() {}
+    fun sendEmail() {}
+    fun shareApp() {}
+    fun rateUs() {}
+    fun donations() {}
+    fun back() {}
 }

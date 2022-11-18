@@ -6,6 +6,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("kotlin-parcelize")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -41,12 +42,13 @@ dependencies {
     implementation(projects.common.favoritesApi)
     implementation(projects.common.filtersApi)
     implementation(projects.common.filtersImpl)
-    implementation(projects.common.resultsApi)
-    implementation(projects.common.resultsImpl)
     implementation(projects.common.networkApi)
     implementation(projects.common.networkImpl)
     implementation(projects.common.playerApi)
     implementation(projects.common.playerImpl)
+//    implementation(projects.common.resources)
+    implementation(projects.common.resultsApi)
+    implementation(projects.common.resultsImpl)
     implementation(projects.common.root)
     implementation(projects.common.settings)
     implementation(projects.common.settingsApi)
@@ -77,6 +79,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.crashlytics.ktx)
+
+    implementation(libs.play.core)
+    implementation(libs.billing)
 }
 
 //detekt {

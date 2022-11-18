@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="email_title">Слушай Прабхупаду - обратная связь.</string>
+    <string name="email_body">Харе Кришна! Спасибо за приложение</string>
+
+    <string name="label_update_is_ready">Загрузка обновлений завершена</string>
+    <string name="label_restart">Перезагрузить</string>
+
     <string name="app_name">Слушай Прабхупаду</string>
     <string name="header_app_name">Слушай Прабхупаду</string>
     <string name="header_archive">Аудиоархив</string>

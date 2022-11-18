@@ -9,6 +9,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.listentoprabhupada.android.util.AnalyticsAndroid
+import com.listentoprabhupada.android.util.AnalyticsAndroidDebug
 import com.listentoprabhupada.android.util.CrashlyticsAntilog
 import com.listentoprabhupada.common.database.Database
 import com.listentoprabhupada.common.database.DatabaseDriverFactory
@@ -17,13 +19,18 @@ import com.listentoprabhupada.common.network.createPrabhupadaApi
 import com.listentoprabhupada.common.results_impl.repository.*
 import com.listentoprabhupada.common.player_api.PlayerBus
 import com.listentoprabhupada.common.player_impl.PlayerBusImpl
+import com.listentoprabhupada.common.settings.onAppLaunch
 import com.listentoprabhupada.common.utils.*
+import com.listentoprabhupada.common.utils.analytics.Analytics
+import com.listentoprabhupada.common.utils.connectivity.ConnectivityObserver
+import com.listentoprabhupada.common.utils.connectivity.ConnectivityObserverAndroid
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.io.File
 import com.listentoprabhupada.common.utils.dispatchers.dispatchers
+import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 
 class PrabhupadaApp : Application() {
@@ -83,22 +90,26 @@ class PrabhupadaApp : Application() {
     var currentActivity: Activity? = null
         private set
 
-    val bgScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val bgScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     val api = createPrabhupadaApi()
     lateinit var db: Database
     lateinit var playerBus: PlayerBus
     lateinit var toolsRepository: ToolsRepository
     lateinit var downloadsRepository: DownloadsRepository
+    lateinit var analytics: Analytics
+    lateinit var connectivityObserver: ConnectivityObserver
 
     override fun onCreate() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
+            analytics = AnalyticsAndroidDebug()
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false)
-            debugBuild()
+            initNapier(DebugAntilog())
         } else {
+            analytics = AnalyticsAndroid(this)
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
-            Napier.base(CrashlyticsAntilog(this))
+            initNapier(CrashlyticsAntilog(this))
         }
 
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
@@ -107,11 +118,13 @@ class PrabhupadaApp : Application() {
         app = this
         DOWNLOADS_DIR = app.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: ""
 
+        connectivityObserver = ConnectivityObserverAndroid(this)
         db = DatabaseImpl(DatabaseDriverFactory(this))
         playerBus = PlayerBusImpl(dispatchers())
         Napier.d( "PlayerBusImpl created!!!!!!!!!!!!!!!!", tag = LogTag.lifecycleActivity)
         toolsRepository = ToolsRepositoryImpl(db)
         downloadsRepository = DownloadsRepositoryImpl(db, api)
+        onAppLaunch()
 
         checkDownloadedFiles()
     }

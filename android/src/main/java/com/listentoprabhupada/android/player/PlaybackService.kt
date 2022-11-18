@@ -6,10 +6,12 @@ import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import com.listentoprabhupada.android.PrabhupadaApp.Companion.app
 import com.listentoprabhupada.android.util.cancelSafely
+import com.listentoprabhupada.common.player_api.PlayerBus
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +29,6 @@ class PlaybackService : Service(), Player.Listener {
     private var wakeLock: PowerManager.WakeLock? = null
     private var isActivityStarted = false
 
-    private val playerBus = app.playerBus
     private val tools = app.toolsRepository
 
     private val playerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -35,8 +36,7 @@ class PlaybackService : Service(), Player.Listener {
     fun onActivityStarted() {
         isActivityStarted = true
         Napier.d("onActivityStarted", tag = "PlaybackService")
-        stopForeground(true)
-        Napier.d("stopForeground", tag = "PlaybackService")
+        stopForeground()
         player?.hideNotification()
     }
 
@@ -53,12 +53,15 @@ class PlaybackService : Service(), Player.Listener {
             }
         }
 
+    fun setPlayerBus(playerBus: PlayerBus) =
+        player?.setPlayerBuss(playerBus)
+
     override fun onBind(intent: Intent): IBinder {
         Napier.d("onBind", tag = "PlaybackService")
         return binder
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Napier.d("onStartCommand", tag = "PlaybackService")
         return START_STICKY
     }
@@ -66,7 +69,7 @@ class PlaybackService : Service(), Player.Listener {
     override fun onCreate() {
         super.onCreate()
         Napier.d("onCreate", tag = "PlaybackService")
-        player = Player(this, playerBus, tools, playerScope, this)
+        player = Player(this, tools, playerScope, this)
 
         requireWakeLock()
     }
@@ -93,13 +96,22 @@ class PlaybackService : Service(), Player.Listener {
             return
         }
         Napier.d("stop", tag = "PlaybackService")
-        stopForeground(true)
-        Napier.d("stopForeground", tag = "PlaybackService")
+        stopForeground()
 
         player?.release()
         player = null
         stopSelf()
         Napier.d("stopSelf", tag = "PlaybackService")
+    }
+
+    private fun stopForeground() {
+        Napier.d("stopForeground", tag = "PlaybackService")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else {
+            @Suppress("DEPRECATION")
+            stopForeground(true)
+        }
     }
 
     private fun requireWakeLock(duration: Long = player?.totalDurationMillis ?: 0L) {

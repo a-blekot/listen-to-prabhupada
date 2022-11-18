@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BottomSheet",
+        "repositoryURL": "https://github.com/lucaszischka/BottomSheet",
+        "state": {
+          "branch": null,
+          "revision": "6f928f6d52e3f476c672884fa97d9a6eb0f0d9d7",
+          "version": "3.0.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

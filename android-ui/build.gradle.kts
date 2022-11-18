@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-base-convention")
     id("android-base-convention")
+    id("dev.icerock.mobile.multiplatform-resources")
     kotlin("android")
     kotlin("plugin.serialization")
 }
@@ -17,8 +18,9 @@ dependencies {
     implementation(projects.common.downloadsApi)
     implementation(projects.common.favoritesApi)
     implementation(projects.common.filtersApi)
-    implementation(projects.common.resultsApi)
     implementation(projects.common.playerApi)
+//    implementation(projects.common.resources)
+    implementation(projects.common.resultsApi)
     implementation(projects.common.root)
     implementation(projects.common.settings)
     implementation(projects.common.settingsApi)

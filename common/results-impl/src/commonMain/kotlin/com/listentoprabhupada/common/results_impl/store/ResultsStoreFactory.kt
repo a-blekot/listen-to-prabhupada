@@ -117,7 +117,7 @@ internal class ResultsStoreFactory(
                         val newState = state(apiModel)
                         deps.db.insertPage(settings.getFilters().toDatabaseIdentifier(), newState.pagination.curr)
 
-                        Napier.d("LecturesLoaded -> ${newState.lectures.map { it.id }}", tag = "ResultsStore")
+                        Napier.d("LecturesLoaded -> ${newState.lectures.map { "\n${it.id} - ${it.title.take(25)}" }}", tag = "ResultsStore")
                         dispatch(Msg.LoadingComplete(newState))
                         publish(ResultsLabel.LecturesLoaded(newState.lectures))
                     }

@@ -15,6 +15,9 @@ fun totalLecturesCount(apiModel: ApiModel) =
 fun pagesCount(apiModel: ApiModel) =
     apiModel.count / LECTURES_PER_PAGE + if (apiModel.count % LECTURES_PER_PAGE == 0) 0 else 1
 
+fun searchQuery(apiModel: ApiModel): String =
+    apiModel.results.searchQuery ?: ""
+
 fun filters(apiModel: ApiModel): List<Filter> =
     apiModel.results.filters
         .filter { it.name != FILE_TYPE_QUERY_KEY}

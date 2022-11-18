@@ -1,15 +1,14 @@
 package com.listentoprabhupada.common.results_impl.repository
 
-import co.touchlab.stately.collections.IsoArrayDeque
+import com.listentoprabhupada.common.data.Lecture
 import com.listentoprabhupada.common.database.Database
 import com.listentoprabhupada.common.database.isDownloaded
-import com.listentoprabhupada.common.data.Lecture
-import com.listentoprabhupada.common.utils.dbEntity
-import com.listentoprabhupada.common.utils.mapped
 import com.listentoprabhupada.common.network_api.*
 import com.listentoprabhupada.common.results_impl.data.exists
 import com.listentoprabhupada.common.results_impl.data.filePath
 import com.listentoprabhupada.common.results_impl.writeChannel
+import com.listentoprabhupada.common.utils.dbEntity
+import com.listentoprabhupada.common.utils.mapped
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,6 @@ interface DownloadsRepository {
     fun observeDownload(): SharedFlow<DownloadState>
 }
 
-@OptIn(ExperimentalStdlibApi::class)
 class DownloadsRepositoryImpl(
     private val db: Database,
     private val api: PrabhupadaApi
@@ -34,7 +32,7 @@ class DownloadsRepositoryImpl(
 
     private val downloadFlow = MutableSharedFlow<DownloadState>()
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val queue = IsoArrayDeque<Lecture>()
+    private val queue = ArrayDeque<Lecture>()
 
     override val hasActiveDownloads
         get() = !queue.isEmpty()

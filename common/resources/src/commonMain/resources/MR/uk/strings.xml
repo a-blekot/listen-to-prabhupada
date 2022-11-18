@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+     <string name="email_title">Слухай Прабгупаду - зворотній звʼязок.</string>
+     <string name="email_body">Харе Крішна! Дякую за додаток!</string>
+
+     <string name="label_no_connection">Нема інтернету...</string>
+
+     <string name="label_version">Версія:</string>
+     <string name="label_feedback">Зворотній звʼязок</string>
+     <string name="label_share_app">Поділитись застосунком</string>
+     <string name="label_donate">Підтримайте проект</string>
+     <string name="label_show_later">Показати пізніше</string>
+
+     <string name="label_donate_1_usd">Каіла̄с</string>
+     <string name="label_donate_2_usd">Вайкун̣т̣ха</string>
+     <string name="label_donate_3_usd">Айодгйā</string>
+     <string name="label_donate_5_usd">Двāракā</string>
+     <string name="label_donate_10_usd">Матхурā</string>
+     <string name="label_donate_25_usd">Голока</string>
+
+     <string name="label_restart">Перезавантажити</string>
+     <string name="label_update_is_ready">Завантаження оновлень завершено</string>
+
+     <string name="label_select_locale">Вибір мови</string>
+     <string name="label_locale_en">англійська</string>
+     <string name="label_locale_ru">російська</string>
+     <string name="label_locale_uk">українська</string>
+
+     <string name="label_prerating_title">Подобається застосунок?!</string>
+     <string name="label_prerating_subtitle">Постав 5 зірочок!</string>
+     <string name="label_prerating_accept">Звичайно!</string>
+     <string name="label_prerating_close">Пізніше</string>
+
+<!--     <string name="label_close_player_title">Зупинити аудіо плеєр?</string>-->
+<!--     <string name="label_close_player_subtitle">Прогрес не буде збережено.</string>-->
+<!--     <string name="label_close_player_stop">Зупинити</string>-->
+<!--     <string name="label_close_player_continue">Продовжити</string>-->
+<!--     <string name="label_do_not_show_again">Більше не показувати</string>-->
+<!--     <string name="label_show_close_player_dialog">Питати перед виходом з плеєра</string>-->
+
+</resources>

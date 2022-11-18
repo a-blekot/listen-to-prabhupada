@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#FF974900</color>
+    <color name="colorAccent">#FFFFFBFF</color>
 
     <color name="notification">#603004</color>
     <color name="brown">#603004</color>

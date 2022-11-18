@@ -1,5 +1,9 @@
 package com.listentoprabhupada.common.settings_api
 
 sealed interface SettingsOutput {
-    data class Message(val text: String) : SettingsOutput
+    object Email: SettingsOutput
+    object ShareApp: SettingsOutput
+    object RateUs: SettingsOutput
+    object Donations: SettingsOutput
+    object Back: SettingsOutput
 }

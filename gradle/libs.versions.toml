@@ -1,34 +1,37 @@
 [versions]
 accompanist = "0.26.0-alpha"
-android-gradlePlgn = "7.2.2"
-androidx-activity = "1.6.0-alpha05"
-androidx-appcompat = "1.6.0-alpha05"
+android-gradlePlgn = "7.3.1"
+androidx-activity = "1.7.0-alpha02"
+androidx-appcompat = "1.7.0-alpha01"
 androidx-core = "1.8.0"
-androidx-lifecycle-ext = "2.6.0-alpha01"
-androidx-lifecycle-runtime = "2.6.0-alpha01"
+androidx-lifecycle-ext = "2.6.0-alpha03"
+androidx-lifecycle-runtime = "2.6.0-alpha03"
+billing = "5.0.0"
 canidropjetifier = "0.5"
-compose = "1.3.0-alpha02"
-compose_compiler="1.3.0-rc02"
-decompose = "1.0.0-alpha-02"
+compose = "1.3.1"
+compose_compiler="1.4.0-alpha02"
+decompose = "1.0.0-alpha-07"
 detekt = "1.17.0"
-essenty = "0.5.2"
+essenty = "0.6.0"
 exoplayer = "2.18.1"
-firebase-bom = "30.3.1"
+firebase-bom = "31.0.1"
 google-services = "4.3.13"
 firebase-crashlytics-gradlePlgn = "2.9.1"
-kotlin = "1.7.10"
+kotlin = "1.7.21"
 kotlinx_coroutines = "1.6.4"
-kotlinx_serialization = "1.3.2"
+kotlinx_serialization = "1.4.1"
 ktlint = "10.2.1"
-ktor = "2.0.3"
-material = "1.0.0-alpha15"
-mvikotlin = "3.0.1"
+ktor = "2.1.3"
+lottie-compose = "5.2.0"
+material = "1.1.0-alpha02"
+moko-resources = "0.20.1"
+mvikotlin = "3.0.2"
 napier = "2.6.1"
-okio = "3.0.0"
+okio = "3.2.0"
+play-core = "1.8.1"
 settings = "0.9"
-sql_delight = "1.5.3"
-stately = "1.2.3"
-versions = "0.42.0"
+sql_delight = "1.5.4"
+versions = "0.44.0"
 
 [libraries]
 android-gradlePlgn = { module = "com.android.tools.build:gradle", version.ref = "android-gradlePlgn"}
@@ -57,9 +60,12 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle-ext"}
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-runtime"}
 
+billing = { module = "com.android.billingclient:billing-ktx", version.ref = "billing"}
+
 decompose-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extCompose = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
 essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+essenty-parcelable = { module = "com.arkivanov.essenty:parcelable", version.ref = "essenty" }
 
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
 exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayer" }
@@ -83,6 +89,10 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+moko-resources-generator = { module = "dev.icerock.moko:resources-generator", version.ref = "moko-resources" }
+
 mvikotlin-mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
 mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvikotlin" }
@@ -103,19 +113,17 @@ sqlDelight-sqljs-driver = { module = "com.squareup.sqldelight:sqljs-driver", ver
 sqlDelight-native-driver = { module = "com.squareup.sqldelight:native-driver", version.ref = "sql_delight" }
 sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sql_delight" }
 
-stately-common = { module = "co.touchlab:stately-common", version.ref = "stately" }
-stately-concurrency = { module = "co.touchlab:stately-concurrency", version.ref = "stately" }
-stately-iso-collections = { module = "co.touchlab:stately-iso-collections", version.ref = "stately" }
-stately-isolate = { module = "co.touchlab:stately-isolate", version.ref = "stately" }
+play-core = { module = "com.google.android.play:core-ktx", version.ref = "play-core" }
 
 test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
 test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 
+ui-lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
+
 [bundles]
 androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx-composeMaterial3", "androidx-composeUiTooling", "androidx-composeFoundation", "androidx-composeIcons" ]
 ktor-common-bndl = [ "ktor-client-core", "ktor-client-logging", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json" ]
 mvikotlin-bndl= [ "mvikotlin-mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-extensions-coroutines" ]
-stately-bndl = [ "stately-common", "stately-concurrency", "stately-isolate", "stately-iso-collections" ]
 plaginz = ["android-gradlePlgn", "kotlin-gradlePlgn", "kotlin-serialization-gradlePlgn", "sqlDelight-gradlePlgn", "versionsPlgn"]
 #pulagins = ["android-gradlePlgn", "kotlin-gradlePlgn", "kotlin-serialization-gradlePlgn", "sqlDelight-gradlePlgn", "versionsPlgn", "detektPlgn", "ktlintPlgn", "canidropjetifierPlgn"]

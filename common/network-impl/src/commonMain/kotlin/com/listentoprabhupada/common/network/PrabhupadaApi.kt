@@ -12,19 +12,14 @@ import io.ktor.utils.io.*
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
-import kotlin.native.concurrent.SharedImmutable
 
 private const val FILE_TYPE_AUDIO = 1
 
-@SharedImmutable
 private const val DEFAULT_BUFFER_SIZE = 4088L
 
-@SharedImmutable
 const val DEFAULT_HTTP_TIMEOUT = 20_000L
 
-@SharedImmutable
 const val DOWNLOAD_HTTP_TIMEOUT = 300_000L
 
 class PrabhupadaApiImpl(

@@ -9,9 +9,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,6 +37,7 @@ import com.listentoprabhupada.android_ui.screens.filters.FiltersView
 import com.listentoprabhupada.android_ui.screens.results.ResultsView
 import com.listentoprabhupada.android_ui.theme.Colors.background
 import com.listentoprabhupada.android_ui.theme.Colors.surface
+import com.listentoprabhupada.android_ui.theme.Dimens
 import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.bottomSheetPeekHeight
 import com.listentoprabhupada.android_ui.theme.Dimens.horizontalScreenPadding
@@ -41,9 +45,11 @@ import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeL
 import com.listentoprabhupada.android_ui.theme.Dimens.iconSizeM
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingL
 import com.listentoprabhupada.android_ui.theme.Dimens.paddingM
+import com.listentoprabhupada.android_ui.theme.Dimens.paddingS
 import com.listentoprabhupada.android_ui.theme.Dimens.radiusXL
 import com.listentoprabhupada.common.root.RootComponent
 import com.listentoprabhupada.common.root.RootComponent.Child
+import com.listentoprabhupada.common.settings_api.SettingsComponent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalDecomposeApi::class, ExperimentalMaterialApi::class)
@@ -70,7 +76,7 @@ fun RootContent(root: RootComponent, modifier: Modifier = Modifier) {
             sheetBackgroundColor = Color.Transparent,
             sheetPeekHeight = bottomSheetPeekHeight,
             drawerContent = {
-                DrawerContent(root)
+                DrawerContent(root, root.settingsComponent)
             },
         ) {
             Children(
@@ -80,10 +86,11 @@ fun RootContent(root: RootComponent, modifier: Modifier = Modifier) {
             ) {
 
                 when (val child = it.instance) {
-                    is Child.Results -> ResultsView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
-                    is Child.Favorites -> FavoritesView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
-                    is Child.Downloads -> DownloadsView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
-                    is Child.Filters -> FiltersView(child.component, Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight))
+                    is Child.Results -> ResultsView(child.component, childModifier())
+                    is Child.Favorites -> FavoritesView(child.component, childModifier())
+                    is Child.Downloads -> DownloadsView(child.component, childModifier())
+                    is Child.Filters -> FiltersView(child.component, childModifier())
+                    is Child.Donations -> TODO("create donations screen")
                     else -> throw IllegalArgumentException("No View for child: ${child.javaClass.simpleName}")
                 }
             }
@@ -95,6 +102,10 @@ fun RootContent(root: RootComponent, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+private fun childModifier() =
+    Modifier.fillMaxSize().padding(bottom = bottomSheetPeekHeight)
+
 @OptIn(ExperimentalMaterialApi::class)
 private suspend fun BottomSheetScaffoldState.toggleDrawer() {
     if (drawerState.isClosed) {
@@ -105,11 +116,14 @@ private suspend fun BottomSheetScaffoldState.toggleDrawer() {
 }
 
 @Composable
-fun DrawerContent(root: RootComponent) {
+fun DrawerContent(root: RootComponent, settings: SettingsComponent) {
+    val state = settings.flow.subscribeAsState()
+
     StandartColumn(
         modifier = Modifier
             .background(surface())
-            .padding(all = paddingL)
+            .padding(vertical = paddingL)
+            .padding(start = paddingS)
     ) {
         StandartRow(
             modifier = Modifier.clickable { root.onFavoritesTabClicked() },
@@ -119,13 +133,13 @@ fun DrawerContent(root: RootComponent) {
             Icon(
                 Icons.Default.Favorite,
                 text,
-                modifier = Modifier.size(iconSizeM),
-                tint = MaterialTheme.colorScheme.tertiary
+                modifier = Modifier.size(iconSizeL),
+                tint = colorScheme.tertiary
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.tertiary
+                style = typography.titleMedium,
+                color = colorScheme.tertiary
             )
         }
 
@@ -137,14 +151,105 @@ fun DrawerContent(root: RootComponent) {
             Icon(
                 Icons.Default.Download,
                 text,
-                modifier = Modifier.size(iconSizeM),
-                tint = MaterialTheme.colorScheme.tertiary
+                modifier = Modifier.size(iconSizeL),
+                tint = colorScheme.tertiary
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.tertiary
+                style = typography.titleMedium,
+                color = colorScheme.tertiary
             )
         }
+
+        StandartRow(
+            horizontalArrangement = Arrangement.spacedBy(paddingM),
+            modifier = Modifier.clickable { settings.donations() }.padding(top = paddingL)
+        ) {
+            Icon(
+                Icons.Rounded.VolunteerActivism,
+                "donations",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(Dimens.iconSizeL)
+            )
+
+            Text(
+                text = stringResource(R.string.label_donate), // todo moko
+                style = typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+            )
+        }
+
+        StandartRow(
+            horizontalArrangement = Arrangement.spacedBy(paddingM),
+            modifier = Modifier.clickable { settings.sendEmail() }
+        ) {
+
+            Icon(
+                Icons.Rounded.Email,
+                "Email",
+                tint = colorScheme.tertiary,
+                modifier = Modifier.size(iconSizeL)
+            )
+
+            Text(
+                text = stringResource(R.string.label_feedback), // todo moko
+                style = typography.titleMedium,
+                color = colorScheme.tertiary,
+                maxLines = 1,
+            )
+        }
+
+        StandartRow(
+            horizontalArrangement = Arrangement.spacedBy(paddingM),
+            modifier = Modifier.clickable { settings.shareApp() }
+        ) {
+
+            Icon(
+                Icons.Rounded.Share,
+                "Share",
+                tint = colorScheme.tertiary,
+                modifier = Modifier.size(iconSizeL)
+            )
+
+            Text(
+                text = stringResource(R.string.label_share_app), // todo moko
+                style = typography.titleMedium,
+                color = colorScheme.tertiary,
+                maxLines = 1,
+            )
+        }
+
+        StandartRow(
+            horizontalArrangement = Arrangement.spacedBy(paddingM),
+            modifier = Modifier.clickable { settings.rateUs() }
+        ) {
+
+            Icon(
+                Icons.Rounded.Star,
+                "Rate us",
+                tint = colorScheme.tertiary,
+                modifier = Modifier.size(iconSizeL)
+            )
+
+            Text(
+                text = stringResource(R.string.label_rate_us), // todo moko
+                style = typography.titleMedium,
+                color = colorScheme.tertiary,
+                maxLines = 1,
+            )
+        }
+
+        Divider(
+            color = colorScheme.tertiary,
+            thickness = Dimens.borderS
+        )
+
+        Text(
+            text = "${stringResource(R.string.label_version)} ${state.value.versionInfo.versionName}", // todo moko
+            style = typography.titleMedium,
+            color = colorScheme.tertiary,
+            maxLines = 1,
+        )
     }
 }

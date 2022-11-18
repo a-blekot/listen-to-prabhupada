@@ -1,6 +1,5 @@
 package com.listentoprabhupada.common.results_impl
 
-import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnResume
@@ -44,8 +43,6 @@ class ResultsComponentImpl(
         store.labels
             .onEach(::handleLabel)
             .launchIn(scope)
-
-        flow.ensureNeverFrozen()
 
         lifecycle.doOnResume {
             Napier.d( "LecturesComponent ON_RESUME")

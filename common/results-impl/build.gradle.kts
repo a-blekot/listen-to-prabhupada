@@ -22,7 +22,6 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(libs.napier)
                 implementation(libs.okio)
-                implementation(libs.bundles.stately.bndl)
             }
         }
     }

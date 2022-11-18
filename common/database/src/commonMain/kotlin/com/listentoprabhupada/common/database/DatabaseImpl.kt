@@ -4,9 +4,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlin.native.concurrent.SharedImmutable
 
-@SharedImmutable
 private const val FULL_PROGRESS = 100L
-@SharedImmutable
 const val FIRST_PAGE = 1
 
 class DatabaseImpl(databaseDriverFactory: DatabaseDriverFactory) : Database {

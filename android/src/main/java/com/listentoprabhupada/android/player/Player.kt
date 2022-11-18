@@ -42,7 +42,6 @@ const val SEEK_INCREMENT_MS = 10_000L
 
 class Player(
     context: Context,
-    private val playerBus: PlayerBus,
     private val tools: ToolsRepository,
     private val playerScope: CoroutineScope,
     private val listener: Listener
@@ -188,15 +187,21 @@ class Player(
             }
     }
 
+    lateinit var playerBus: PlayerBus
+
+    fun setPlayerBuss(playerBus: PlayerBus) {
+        if (!this::playerBus.isInitialized || this.playerBus != playerBus) {
+            this.playerBus = playerBus
+            playerBus.observeActions(::handleAction)
+            playerBus.observePlaylist(::setPlaylist)
+            Napier.d("Player::SET playerBus = $playerBus", tag = "PlayerBus")
+        } else {
+            Napier.d("Player::SAME playerBus = ${this.playerBus}", tag = "PlayerBus")
+        }
+    }
+
     private var currentPlaylist: List<Lecture> = emptyList()
     private var pendingPlaylist: List<Lecture> = emptyList()
-
-    init {
-        Napier.d("Player init() !!! $this", tag = "AUDIO_PLAYER")
-
-        playerBus.observeActions(::handleAction)
-        playerBus.observePlaylist(::setPlaylist)
-    }
 
     private fun updatePlaybackState(
         playbackState: PlayerState = exoPlayer?.myPlaybackState ?: PlayerState(speed = settings.getSpeed())

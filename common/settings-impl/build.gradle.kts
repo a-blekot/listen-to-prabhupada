@@ -8,10 +8,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.common.data)
-                implementation(projects.common.database)
                 implementation(projects.common.settings)
                 implementation(projects.common.settingsApi)
-                implementation(projects.common.networkApi)
                 implementation(projects.common.utils)
 
                 implementation(libs.decompose.decompose)

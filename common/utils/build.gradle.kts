@@ -10,6 +10,7 @@ kotlin {
             dependencies {
                 implementation(projects.common.data)
                 implementation(projects.common.database)
+                implementation(projects.common.settings)
 
                 implementation(libs.decompose.decompose)
                 implementation(libs.mvikotlin.mvikotlin)

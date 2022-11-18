@@ -3,55 +3,71 @@ package com.listentoprabhupada.common.settings_impl.store
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.listentoprabhupada.common.settings_impl.SettingsDeps
 import com.listentoprabhupada.common.settings_api.SettingsState
-import io.github.aakira.napier.Napier
+import com.listentoprabhupada.common.utils.setAppLocale
+import kotlinx.coroutines.launch
 
 internal class SettingsStoreFactory(
     private val storeFactory: StoreFactory,
-    private val deps: SettingsDeps
+    private val initialState: SettingsState,
 ) {
 
     fun create(): SettingsStore =
         object : SettingsStore,
             Store<SettingsIntent, SettingsState, SettingsLabel> by storeFactory.create(
                 name = "SettingsStore",
-                initialState = SettingsState(),
+                autoInit = false,
+                initialState = initialState,
+                bootstrapper = BootstrapperImpl(),
                 executorFactory = { ExecutorImpl() },
                 reducer = ReducerImpl
             ) {}
 
-    private sealed interface Msg {
-        object StartLoading : Msg
-        data class LoadingComplete(val state: SettingsState = SettingsState()) : Msg
+    sealed interface Action {
+        object CheckFtue : Action
     }
 
-    private inner class ExecutorImpl :
-        CoroutineExecutor<SettingsIntent, Unit, SettingsState, Msg, SettingsLabel>() {
-        override fun executeAction(action: Unit, getState: () -> SettingsState) {}
+    sealed interface Msg {
+        data class Locale(val value: String) : Msg
+    }
+
+    private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
+        override fun invoke() {
+            scope.launch {
+                dispatch(Action.CheckFtue)
+            }
+        }
+    }
+
+    private inner class ExecutorImpl : CoroutineExecutor<SettingsIntent, Action, SettingsState, Msg, SettingsLabel>() {
+
+        override fun executeAction(action: Action, getState: () -> SettingsState) {
+            when (action) {
+                Action.CheckFtue -> checkFtue() // TODO ftue
+            }
+        }
 
         override fun executeIntent(intent: SettingsIntent, getState: () -> SettingsState) {
-            if (getState().isLoading) {
-                Napier.d("executeIntent canceled, isLoading = true!", tag = "SettingsStoreExecutor")
-                return
-            }
-
             when (intent) {
-                SettingsIntent.Next -> {}
-                SettingsIntent.Prev -> {}
-                else -> {
-                    /** do nothing **/
-                }
+                is SettingsIntent.Locale -> setLocale(intent.value)
             }
+        }
+
+        private fun setLocale(value: String) {
+            setAppLocale(value)
+            dispatch(Msg.Locale(value))
+        }
+
+        private fun checkFtue() {
         }
     }
 
     private object ReducerImpl : Reducer<SettingsState, Msg> {
         override fun SettingsState.reduce(msg: Msg): SettingsState =
             when (msg) {
-                Msg.StartLoading -> copy(isLoading = true)
-                is Msg.LoadingComplete -> msg.state
+                is Msg.Locale -> copy(locale = msg.value)
             }
     }
 }

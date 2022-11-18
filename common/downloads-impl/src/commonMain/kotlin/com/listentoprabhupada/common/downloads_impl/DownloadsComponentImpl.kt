@@ -1,7 +1,6 @@
 package com.listentoprabhupada.common.downloads_impl
 
 
-import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -49,8 +48,6 @@ class DownloadsComponentImpl(
         store.labels
             .onEach(::handleLabel)
             .launchIn(scope)
-
-        flow.ensureNeverFrozen()
 
         store.init()
     }

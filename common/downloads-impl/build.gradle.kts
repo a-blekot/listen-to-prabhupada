@@ -19,7 +19,6 @@ kotlin {
                 implementation(libs.mvikotlin.extensions.coroutines)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.napier)
-                implementation(libs.bundles.stately.bndl)
             }
         }
     }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="email_title">Шлоки - обратная связь.</string>
+    <string name="email_body">Харе Кришна! Спасибо за приложение</string>
+
+    <string name="label_no_connection">Нет интернета...</string>
+
+    <string name="label_version">Версия:</string>
+    <string name="label_feedback">Обратная связь</string>
+    <string name="label_share_app">Поделиться приложением</string>
+    <string name="label_donate">Поддержите проект</string>
+    <string name="label_show_later">Показать позже</string>
+
+    <string name="label_donate_1_usd">Каила̄с</string>
+    <string name="label_donate_2_usd">Вайкун̣т̣ха</string>
+    <string name="label_donate_3_usd">Айодхйā</string>
+    <string name="label_donate_5_usd">Двāракā</string>
+    <string name="label_donate_10_usd">Матхурā</string>
+    <string name="label_donate_25_usd">Голока</string>
+
+    <string name="label_restart">Перезагрузить</string>
+    <string name="label_update_is_ready">Загрузка обновлений завершена</string>
+
+    <string name="label_select_locale">Выбор языка</string>
+    <string name="label_locale_en">английский</string>
+    <string name="label_locale_ru">русский</string>
+    <string name="label_locale_uk">украинский</string>
+
+    <string name="label_prerating_title">Любишь учить стихи?!</string>
+    <string name="label_prerating_subtitle">Поставь 5 звезд!</string>
+    <string name="label_prerating_accept">Конечно!</string>
+    <string name="label_prerating_close">Позже</string>
+
+<!--    <string name="label_close_player_title">Остановить аудио плеер?</string>-->
+<!--    <string name="label_close_player_subtitle">Прогресс не будет сохранен.</string>-->
+<!--    <string name="label_close_player_stop">Остановить</string>-->
+<!--    <string name="label_close_player_continue">Продолжить</string>-->
+<!--    <string name="label_do_not_show_again">Больше не показывать</string>-->
+<!--    <string name="label_show_close_player_dialog">Спрашивать перед выходом из плеера</string>-->
+
+</resources>

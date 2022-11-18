@@ -6,6 +6,13 @@
     <string name="header_lectures">лекций</string>
     <string name="header_of_srila_prabhupada">Шрилы Прабхупады</string>
 
+    <string name="label_version">Версия:</string>
+    <string name="label_feedback">Обратная связь</string>
+    <string name="label_share_app">Поделиться приложением</string>
+    <string name="label_rate_us">Оцените приложение</string>
+    <string name="label_donate">Поддержите проект</string>
+    <string name="label_show_later">Показать позже</string>
+
     <string name="header_of_total_audio">Всего %s аудио</string>
     <string name="header_of_needs_translation">(осталось перевести %s лекций)</string>
     <string name="header_help_with_translation">Помочь c переводом</string>

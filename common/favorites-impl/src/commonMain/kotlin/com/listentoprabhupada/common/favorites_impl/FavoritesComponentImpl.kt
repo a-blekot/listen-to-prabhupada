@@ -1,6 +1,5 @@
 package com.listentoprabhupada.common.favorites_impl
 
-import co.touchlab.stately.ensureNeverFrozen
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -44,8 +43,6 @@ class FavoritesComponentImpl(
         store.labels
             .onEach(::handleLabel)
             .launchIn(scope)
-
-        flow.ensureNeverFrozen()
 
         store.init()
     }

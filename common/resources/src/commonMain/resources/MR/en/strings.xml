@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="email_title">Shlokas - feedback.</string>
+    <string name="email_body">Hare Krishna! Thank you for this application!</string>
+
+    <string name="label_no_connection">No connection...</string>
+
+    <string name="label_version">Version:</string>
+    <string name="label_feedback">Feedback</string>
+    <string name="label_share_app">Share app</string>
+    <string name="label_donate">Donate</string>
+    <string name="label_show_later">Show later</string>
+
+    <string name="label_donate_1_usd">Kailāsa</string>
+    <string name="label_donate_2_usd">Vaikuṇṭha</string>
+    <string name="label_donate_3_usd">Ayodhyā</string>
+    <string name="label_donate_5_usd">Dvārakā</string>
+    <string name="label_donate_10_usd">Mathurā</string>
+    <string name="label_donate_25_usd">Goloka</string>
+
+    <string name="label_restart">Restart</string>
+    <string name="label_update_is_ready">An update has just been downloaded</string>
+
+    <string name="label_select_locale">Select locale</string>
+    <string name="label_locale_en">english</string>
+    <string name="label_locale_ru">russian</string>
+    <string name="label_locale_uk">ukrainian</string>
+
+    <string name="label_prerating_title">Love studying verses?!</string>
+    <string name="label_prerating_subtitle">Rate us 5 stars!</string>
+    <string name="label_prerating_accept">Sure!</string>
+    <string name="label_prerating_close">Not now</string>
+
+<!--    <string name="label_close_player_title">Stop audio player?</string>-->
+<!--    <string name="label_close_player_subtitle">Progress will not be saved.</string>-->
+<!--    <string name="label_close_player_stop">Stop</string>-->
+<!--    <string name="label_close_player_continue">Continue</string>-->
+<!--    <string name="label_do_not_show_again">Do not show again</string>-->
+<!--    <string name="label_show_close_player_dialog">Ask before stop playback</string>-->
+
+</resources>

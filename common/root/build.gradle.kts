@@ -14,9 +14,11 @@ kotlin {
         it.binaries {
             framework {
                 baseName = "Prabhupada"
+
                 linkerOpts.add("-lsqlite3")
                 export(projects.common.data)
                 export(projects.common.database)
+                export(projects.common.donationsApi)
                 export(projects.common.downloadsApi)
                 export(projects.common.favoritesApi)
                 export(projects.common.filtersApi)
@@ -24,6 +26,7 @@ kotlin {
                 export(projects.common.networkImpl)
                 export(projects.common.playerApi)
                 export(projects.common.playerImpl)
+//                export(projects.common.resources)
                 export(projects.common.resultsApi)
                 export(projects.common.settingsApi)
                 export(projects.common.utils)
@@ -40,6 +43,8 @@ kotlin {
             dependencies {
                 implementation(projects.common.data)
                 implementation(projects.common.database)
+                implementation(projects.common.donationsApi)
+                implementation(projects.common.donationsImpl)
                 implementation(projects.common.downloadsApi)
                 implementation(projects.common.downloadsImpl)
                 implementation(projects.common.favoritesApi)
@@ -64,6 +69,7 @@ kotlin {
             dependencies {
                 api(projects.common.data)
                 api(projects.common.database)
+                api(projects.common.donationsApi)
                 api(projects.common.downloadsApi)
                 api(projects.common.favoritesApi)
                 api(projects.common.filtersApi)
@@ -71,6 +77,7 @@ kotlin {
                 api(projects.common.networkImpl)
                 api(projects.common.playerApi)
                 api(projects.common.playerImpl)
+//                api(projects.common.resources)
                 api(projects.common.resultsApi)
                 api(projects.common.settingsApi)
                 api(projects.common.utils)

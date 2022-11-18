@@ -3,9 +3,7 @@ package com.listentoprabhupada.common.network_api
 import com.listentoprabhupada.common.network_api.lectures.ResultsApiModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.native.concurrent.SharedImmutable
 
-@SharedImmutable
 const val FIRST_PAGE = 1
 
 @Serializable

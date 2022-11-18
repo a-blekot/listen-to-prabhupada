@@ -78,7 +78,8 @@ internal class FiltersStoreFactory(
 
             when (intent) {
                 is FiltersIntent.ClearAll -> load(buildQueryParams())
-                is FiltersIntent.UpdateFilter -> load(buildQueryParams(getState().filters, intent.queryParam))
+                is FiltersIntent.SearchQuery -> load(buildQueryParams(getState().filters, searchQuery = intent.searchQuery))
+                is FiltersIntent.UpdateFilter -> load(buildQueryParams(getState().filters, intent.queryParam, searchQuery = getState().searchQuery))
                 is FiltersIntent.ApplyChanges -> applyChanges(getState())
             }
         }
@@ -102,6 +103,7 @@ internal class FiltersStoreFactory(
         private fun state(apiModel: ApiModel) =
             FiltersState(
                 isLoading = false,
+                searchQuery = searchQuery(apiModel),
                 filters = filters(apiModel).updateFromDB(),
                 totalLecturesCount = totalLecturesCount(apiModel),
                 pagesCount = pagesCount(apiModel),
@@ -111,7 +113,7 @@ internal class FiltersStoreFactory(
             settings.run {
                 state.run {
                     saveFilterOptions(filters.encodeToString())
-                    saveFilters(buildQueryParams(filters))
+                    saveFilters(buildQueryParams(filters, searchQuery = searchQuery))
                     saveTotalLecturesCount(totalLecturesCount)
                     savePagesCount(pagesCount)
                 }
@@ -129,7 +131,10 @@ internal class FiltersStoreFactory(
         override fun FiltersState.reduce(msg: Msg): FiltersState =
             when (msg) {
                 Msg.StartLoading -> copy(isLoading = true)
-                is Msg.LoadingComplete -> msg.state
+                is Msg.LoadingComplete -> {
+                    Napier.d(message = "Query == ${msg.state.searchQuery}", tag = "FiltersStore")
+                    msg.state
+                }
             }
     }
 }

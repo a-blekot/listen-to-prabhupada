@@ -5,6 +5,9 @@ import ApkConfig.VERSION_CODE
 import ApkConfig.VERSION_NAME
 import ApkConfig.JAVA_VERSION
 import com.android.build.gradle.BaseExtension
+import org.gradle.accessors.dm.LibrariesForLibs
+
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 
 configure<BaseExtension> {
     compileSdkVersion(COMPILE_SDK_VERSION)
@@ -42,6 +45,6 @@ configure<BaseExtension> {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0-rc02"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
